@@ -1,0 +1,442 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairScheduleStatus</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.resources.view</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairScheduleStatus (io.cassandrareaper.resources.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairScheduleStatus</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/84)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.resources.view;
+&nbsp;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import com.fasterxml.jackson.annotation.JsonProperty;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.joda.time.format.ISODateTimeFormat;
+&nbsp;
+&nbsp;public final class RepairScheduleStatus {
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private UUID id;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private String owner;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;cluster_name&quot;)
+&nbsp;  private String clusterName;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;keyspace_name&quot;)
+&nbsp;  private String keyspaceName;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;column_families&quot;)
+&nbsp;  private Collection&lt;String&gt; columnFamilies;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private RepairSchedule.State state;
+&nbsp;
+&nbsp;  @JsonIgnore
+&nbsp;  private DateTime creationTime;
+&nbsp;
+&nbsp;  @JsonIgnore
+&nbsp;  private DateTime nextActivation;
+&nbsp;
+&nbsp;  @JsonIgnore
+&nbsp;  private DateTime pauseTime;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private double intensity;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;incremental_repair&quot;)
+&nbsp;  private boolean incrementalRepair;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;segment_count&quot;)
+&nbsp;  private int segmentCount;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;repair_parallelism&quot;)
+&nbsp;  private RepairParallelism repairParallelism;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;scheduled_days_between&quot;)
+&nbsp;  private int daysBetween;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;nodes&quot;)
+&nbsp;  private Collection&lt;String&gt; nodes;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;datacenters&quot;)
+&nbsp;  private Collection&lt;String&gt; datacenters;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;blacklisted_tables&quot;)
+&nbsp;  private Collection&lt;String&gt; blacklistedTables;
+&nbsp;
+&nbsp;  @JsonProperty(&quot;segment_count_per_node&quot;)
+&nbsp;  private int segmentCountPerNode;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Default public constructor Required for Jackson JSON parsing.
+&nbsp;   */
+<b class="nc">&nbsp;  public RepairScheduleStatus() {</b>
+&nbsp;  }
+&nbsp;
+<b class="nc">&nbsp;  public RepairScheduleStatus(</b>
+&nbsp;      UUID id,
+&nbsp;      String owner,
+&nbsp;      String clusterName,
+&nbsp;      String keyspaceName,
+&nbsp;      Collection&lt;String&gt; columnFamilies,
+&nbsp;      RepairSchedule.State state,
+&nbsp;      DateTime creationTime,
+&nbsp;      DateTime nextActivation,
+&nbsp;      DateTime pauseTime,
+&nbsp;      double intensity,
+&nbsp;      boolean incrementalRepair,
+&nbsp;      int segmentCount,
+&nbsp;      RepairParallelism repairParallelism,
+&nbsp;      int daysBetween,
+&nbsp;      Collection&lt;String&gt; nodes,
+&nbsp;      Collection&lt;String&gt; datacenters,
+&nbsp;      Collection&lt;String&gt; blacklistedTables,
+&nbsp;      int segmentCountPerNode) {
+&nbsp;
+<b class="nc">&nbsp;    this.id = id;</b>
+<b class="nc">&nbsp;    this.owner = owner;</b>
+<b class="nc">&nbsp;    this.clusterName = clusterName;</b>
+<b class="nc">&nbsp;    this.keyspaceName = keyspaceName;</b>
+<b class="nc">&nbsp;    this.columnFamilies = columnFamilies;</b>
+<b class="nc">&nbsp;    this.state = state;</b>
+<b class="nc">&nbsp;    this.creationTime = creationTime;</b>
+<b class="nc">&nbsp;    this.nextActivation = nextActivation;</b>
+<b class="nc">&nbsp;    this.pauseTime = pauseTime;</b>
+<b class="nc">&nbsp;    this.intensity = RepairRunStatus.roundDoubleNicely(intensity);</b>
+<b class="nc">&nbsp;    this.incrementalRepair = incrementalRepair;</b>
+<b class="nc">&nbsp;    this.segmentCount = segmentCount;</b>
+<b class="nc">&nbsp;    this.repairParallelism = repairParallelism;</b>
+<b class="nc">&nbsp;    this.daysBetween = daysBetween;</b>
+<b class="nc">&nbsp;    this.nodes = nodes;</b>
+<b class="nc">&nbsp;    this.datacenters = datacenters;</b>
+<b class="nc">&nbsp;    this.blacklistedTables = blacklistedTables;</b>
+<b class="nc">&nbsp;    this.segmentCountPerNode = segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairScheduleStatus(RepairSchedule repairSchedule, RepairUnit repairUnit) {
+<b class="nc">&nbsp;    this(</b>
+<b class="nc">&nbsp;        repairSchedule.getId(),</b>
+<b class="nc">&nbsp;        repairSchedule.getOwner(),</b>
+<b class="nc">&nbsp;        repairUnit.getClusterName(),</b>
+<b class="nc">&nbsp;        repairUnit.getKeyspaceName(),</b>
+<b class="nc">&nbsp;        repairUnit.getColumnFamilies(),</b>
+<b class="nc">&nbsp;        repairSchedule.getState(),</b>
+<b class="nc">&nbsp;        repairSchedule.getCreationTime(),</b>
+<b class="nc">&nbsp;        repairSchedule.getNextActivation(),</b>
+<b class="nc">&nbsp;        repairSchedule.getPauseTime(),</b>
+<b class="nc">&nbsp;        repairSchedule.getIntensity(),</b>
+<b class="nc">&nbsp;        repairUnit.getIncrementalRepair(),</b>
+<b class="nc">&nbsp;        repairSchedule.getSegmentCount(),</b>
+<b class="nc">&nbsp;        repairSchedule.getRepairParallelism(),</b>
+<b class="nc">&nbsp;        repairSchedule.getDaysBetween(),</b>
+<b class="nc">&nbsp;        repairUnit.getNodes(),</b>
+<b class="nc">&nbsp;        repairUnit.getDatacenters(),</b>
+<b class="nc">&nbsp;        repairUnit.getBlacklistedTables(),</b>
+<b class="nc">&nbsp;        repairSchedule.getSegmentCountPerNode());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public UUID getId() {
+<b class="nc">&nbsp;    return id;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setId(UUID id) {
+<b class="nc">&nbsp;    this.id = id;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public String getOwner() {
+<b class="nc">&nbsp;    return owner;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setOwner(String owner) {
+<b class="nc">&nbsp;    this.owner = owner;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public String getClusterName() {
+<b class="nc">&nbsp;    return clusterName;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setClusterName(String clusterName) {
+<b class="nc">&nbsp;    this.clusterName = clusterName;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public Collection&lt;String&gt; getColumnFamilies() {
+<b class="nc">&nbsp;    return columnFamilies;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setColumnFamilies(Collection&lt;String&gt; columnFamilies) {
+<b class="nc">&nbsp;    this.columnFamilies = columnFamilies;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public String getKeyspaceName() {
+<b class="nc">&nbsp;    return keyspaceName;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setKeyspaceName(String keyspaceName) {
+<b class="nc">&nbsp;    this.keyspaceName = keyspaceName;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairSchedule.State getState() {
+<b class="nc">&nbsp;    return state;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setState(RepairSchedule.State state) {
+<b class="nc">&nbsp;    this.state = state;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getCreationTime() {
+<b class="nc">&nbsp;    return creationTime;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setCreationTime(DateTime creationTime) {
+<b class="nc">&nbsp;    this.creationTime = creationTime;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getNextActivation() {
+<b class="nc">&nbsp;    return nextActivation;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setNextActivation(DateTime nextActivation) {
+<b class="nc">&nbsp;    this.nextActivation = nextActivation;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getPauseTime() {
+<b class="nc">&nbsp;    return pauseTime;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setPauseTime(DateTime pauseTime) {
+<b class="nc">&nbsp;    this.pauseTime = pauseTime;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public double getIntensity() {
+<b class="nc">&nbsp;    return intensity;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setIntensity(double intensity) {
+<b class="nc">&nbsp;    this.intensity = intensity;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getSegmentCount() {
+<b class="nc">&nbsp;    return segmentCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean getIncrementalRepair() {
+<b class="nc">&nbsp;    return incrementalRepair;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setIncrementalRepair(boolean incrementalRepair) {
+<b class="nc">&nbsp;    this.incrementalRepair = incrementalRepair;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setSegmentCount(int segmentCount) {
+<b class="nc">&nbsp;    this.segmentCount = segmentCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairParallelism getRepairParallelism() {
+<b class="nc">&nbsp;    return repairParallelism;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setRepairParallelism(RepairParallelism repairParallelism) {
+<b class="nc">&nbsp;    this.repairParallelism = repairParallelism;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getDaysBetween() {
+<b class="nc">&nbsp;    return daysBetween;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setDaysBetween(int daysBetween) {
+<b class="nc">&nbsp;    this.daysBetween = daysBetween;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;creation_time&quot;)
+&nbsp;  public String getCreationTimeIso8601() {
+<b class="nc">&nbsp;    return RepairRunStatus.dateTimeToIso8601(creationTime);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;creation_time&quot;)
+&nbsp;  public void setCreationTimeIso8601(String dateStr) {
+<b class="nc">&nbsp;    if (null != dateStr) {</b>
+<b class="nc">&nbsp;      creationTime = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(dateStr);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;next_activation&quot;)
+&nbsp;  public String getNextActivationIso8601() {
+<b class="nc">&nbsp;    return RepairRunStatus.dateTimeToIso8601(nextActivation);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;next_activation&quot;)
+&nbsp;  public void setNextActivationIso8601(String dateStr) {
+<b class="nc">&nbsp;    if (null != dateStr) {</b>
+<b class="nc">&nbsp;      nextActivation = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(dateStr);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;pause_time&quot;)
+&nbsp;  public String getPauseTimeIso8601() {
+<b class="nc">&nbsp;    return RepairRunStatus.dateTimeToIso8601(pauseTime);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;pause_time&quot;)
+&nbsp;  public void setPauseTimeIso8601(String dateStr) {
+<b class="nc">&nbsp;    if (null != dateStr) {</b>
+<b class="nc">&nbsp;      pauseTime = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(dateStr);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;nodes&quot;)
+&nbsp;  public Collection&lt;String&gt; getNodes() {
+<b class="nc">&nbsp;    return nodes;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;datacenters&quot;)
+&nbsp;  public Collection&lt;String&gt; getDatacenters() {
+<b class="nc">&nbsp;    return datacenters;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;nodes&quot;)
+&nbsp;  public void setNodes(Collection&lt;String&gt; nodes) {
+<b class="nc">&nbsp;    this.nodes = nodes;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;datacenters&quot;)
+&nbsp;  public void setDatacenters(Collection&lt;String&gt; datacenters) {
+<b class="nc">&nbsp;    this.datacenters = datacenters;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setBlacklistedTables(Collection&lt;String&gt; blacklistedTables) {
+<b class="nc">&nbsp;    this.blacklistedTables = blacklistedTables;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;blacklisted_tables&quot;)
+&nbsp;  public Collection&lt;String&gt; getBlacklistedTables() {
+<b class="nc">&nbsp;    return this.blacklistedTables;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;segment_count_per_node&quot;)
+&nbsp;  public int getSegmentCountPerNode() {
+<b class="nc">&nbsp;    return segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setSegmentCountPerNode(int segmentCountPerNode) {
+<b class="nc">&nbsp;    this.segmentCountPerNode = segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

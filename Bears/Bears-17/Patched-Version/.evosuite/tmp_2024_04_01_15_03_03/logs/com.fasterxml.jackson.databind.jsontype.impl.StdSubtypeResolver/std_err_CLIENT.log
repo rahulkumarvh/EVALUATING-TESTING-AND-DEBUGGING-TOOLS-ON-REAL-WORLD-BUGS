@@ -1,0 +1,6 @@
+[MASTER] 15:03:12.295 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.HashMap<K, V> : Type points to itself
+[MASTER] 15:03:13.494 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.TreeSet<E> : Type points to itself
+[MASTER] 15:03:27.823 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for com.fasterxml.jackson.databind.JsonSerializer<T> : Type points to itself
+[MASTER] 15:03:27.824 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for com.fasterxml.jackson.databind.JsonDeserializer<T> : Type points to itself
+[MASTER] 15:03:42.577 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for com.fasterxml.jackson.annotation.ObjectIdGenerator<T> : Type points to itself
+[MASTER] 15:04:03.618 [TEST_EXECUTION_THREAD_0] ERROR AbstractStatement - Error assigning value of type ObjectIdGenerator[] defined at statement ObjectIdGenerator<ObjectIdGenerators.UUIDGenerator>[] objectIdGeneratorArray0 = (ObjectIdGenerator<ObjectIdGenerators.UUIDGenerator>[]) Array.newInstance(ObjectIdGenerator.class, 4), assignment statement: objectIdGeneratorArray0[0] = (ObjectIdGenerator<ObjectIdGenerators.UUIDGenerator>) objectIdGeneratorArray0; SUT=com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver

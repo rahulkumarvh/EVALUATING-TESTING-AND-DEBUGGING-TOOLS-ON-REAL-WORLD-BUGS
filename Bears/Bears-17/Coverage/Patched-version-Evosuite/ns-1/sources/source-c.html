@@ -1,0 +1,404 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > StdSubtypeResolver</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.jsontype.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: StdSubtypeResolver (com.fasterxml.jackson.databind.jsontype.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StdSubtypeResolver</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25.4%
+  </span>
+  <span class="absValue">
+    (32/126)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.jsontype.impl;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.JavaType;
+&nbsp;import com.fasterxml.jackson.databind.cfg.MapperConfig;
+&nbsp;import com.fasterxml.jackson.databind.introspect.*;
+&nbsp;import com.fasterxml.jackson.databind.jsontype.NamedType;
+&nbsp;import com.fasterxml.jackson.databind.jsontype.SubtypeResolver;
+&nbsp;
+&nbsp;/**
+&nbsp; * Standard {@link SubtypeResolver} implementation.
+&nbsp; */
+&nbsp;public class StdSubtypeResolver
+&nbsp;    extends SubtypeResolver
+&nbsp;    implements java.io.Serializable
+&nbsp;{
+&nbsp;    private static final long serialVersionUID = 1L;
+&nbsp;
+&nbsp;    protected LinkedHashSet&lt;NamedType&gt; _registeredSubtypes;
+&nbsp;
+&nbsp;    public StdSubtypeResolver() { }
+<b class="fc">&nbsp;    </b>
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Subtype registration
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override    
+&nbsp;    public void registerSubtypes(NamedType... types) {
+&nbsp;        if (_registeredSubtypes == null) {
+<b class="fc">&nbsp;            _registeredSubtypes = new LinkedHashSet&lt;NamedType&gt;();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        for (NamedType type : types) {
+<b class="fc">&nbsp;            _registeredSubtypes.add(type);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+<b class="fc">&nbsp;</b>
+&nbsp;    @Override
+&nbsp;    public void registerSubtypes(Class&lt;?&gt;... classes) {
+&nbsp;        NamedType[] types = new NamedType[classes.length];
+<b class="fc">&nbsp;        for (int i = 0, len = classes.length; i &lt; len; ++i) {</b>
+<b class="fc">&nbsp;            types[i] = new NamedType(classes[i]);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        registerSubtypes(types);
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;</b>
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Resolution by class (serialization)
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Collection&lt;NamedType&gt; collectAndResolveSubtypesByClass(MapperConfig&lt;?&gt; config, 
+&nbsp;            AnnotatedMember property, JavaType baseType)
+&nbsp;    {
+&nbsp;        final AnnotationIntrospector ai = config.getAnnotationIntrospector();
+<b class="fc">&nbsp;        // for backwards compatibility, must allow null here:</b>
+&nbsp;        Class&lt;?&gt; rawBase = (baseType == null) ? property.getRawType() : baseType.getRawClass();
+<b class="nc">&nbsp;        </b>
+&nbsp;        HashMap&lt;NamedType, NamedType&gt; collected = new HashMap&lt;NamedType, NamedType&gt;();
+<b class="nc">&nbsp;        // start with registered subtypes (which have precedence)</b>
+&nbsp;        if (_registeredSubtypes != null) {
+<b class="nc">&nbsp;            for (NamedType subtype : _registeredSubtypes) {</b>
+<b class="nc">&nbsp;                // is it a subtype of root type?</b>
+&nbsp;                if (rawBase.isAssignableFrom(subtype.getType())) { // yes
+<b class="nc">&nbsp;                    AnnotatedClass curr = AnnotatedClass.constructWithoutSuperTypes(subtype.getType(), config);</b>
+<b class="nc">&nbsp;                    _collectAndResolve(curr, subtype, config, ai, collected);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        </b>
+&nbsp;        // then annotated types for property itself
+&nbsp;        Collection&lt;NamedType&gt; st = ai.findSubtypes(property);
+&nbsp;        if (st != null) {
+<b class="nc">&nbsp;            for (NamedType nt : st) {</b>
+<b class="nc">&nbsp;                AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(nt.getType(), config);</b>
+<b class="nc">&nbsp;                _collectAndResolve(ac, nt, config, ai, collected);</b>
+<b class="nc">&nbsp;            }            </b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        </b>
+<b class="nc">&nbsp;        NamedType rootType = new NamedType(rawBase, null);</b>
+<b class="nc">&nbsp;        AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(rawBase, config);</b>
+&nbsp;            
+&nbsp;        // and finally subtypes via annotations from base type (recursively)
+&nbsp;        _collectAndResolve(ac, rootType, config, ai, collected);
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        return new ArrayList&lt;NamedType&gt;(collected.values());</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public Collection&lt;NamedType&gt; collectAndResolveSubtypesByClass(MapperConfig&lt;?&gt; config,
+<b class="nc">&nbsp;            AnnotatedClass type)</b>
+&nbsp;    {
+&nbsp;        final AnnotationIntrospector ai = config.getAnnotationIntrospector();
+&nbsp;        HashMap&lt;NamedType, NamedType&gt; subtypes = new HashMap&lt;NamedType, NamedType&gt;();
+&nbsp;        // [JACKSON-257] then consider registered subtypes (which have precedence over annotations)
+&nbsp;        if (_registeredSubtypes != null) {
+&nbsp;            Class&lt;?&gt; rawBase = type.getRawType();
+<b class="fc">&nbsp;            for (NamedType subtype : _registeredSubtypes) {</b>
+<b class="nc">&nbsp;                // is it a subtype of root type?</b>
+&nbsp;                if (rawBase.isAssignableFrom(subtype.getType())) { // yes
+<b class="nc">&nbsp;                    AnnotatedClass curr = AnnotatedClass.constructWithoutSuperTypes(subtype.getType(), config);</b>
+<b class="nc">&nbsp;                    _collectAndResolve(curr, subtype, config, ai, subtypes);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        // and then check subtypes via annotations from base type (recursively)</b>
+<b class="nc">&nbsp;        NamedType rootType = new NamedType(type.getRawType(), null);</b>
+<b class="nc">&nbsp;        _collectAndResolve(type, rootType, config, ai, subtypes);</b>
+&nbsp;        return new ArrayList&lt;NamedType&gt;(subtypes.values());
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /*
+<b class="nc">&nbsp;    /**********************************************************</b>
+<b class="nc">&nbsp;    /* Resolution by class (deserialization)</b>
+<b class="nc">&nbsp;    /**********************************************************</b>
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Collection&lt;NamedType&gt; collectAndResolveSubtypesByTypeId(MapperConfig&lt;?&gt; config, 
+&nbsp;            AnnotatedMember property, JavaType baseType)
+&nbsp;    {
+&nbsp;        final AnnotationIntrospector ai = config.getAnnotationIntrospector();
+&nbsp;        Class&lt;?&gt; rawBase = (baseType == null) ? property.getRawType() : baseType.getRawClass();
+&nbsp;
+&nbsp;        // Need to keep track of classes that have been handled already 
+&nbsp;        Set&lt;Class&lt;?&gt;&gt; typesHandled = new HashSet&lt;Class&lt;?&gt;&gt;();
+&nbsp;        Map&lt;String,NamedType&gt; byName = new LinkedHashMap&lt;String,NamedType&gt;();
+<b class="fc">&nbsp;</b>
+<b class="nc">&nbsp;        // start with lowest-precedence, which is from type hierarchy</b>
+&nbsp;        NamedType rootType = new NamedType(rawBase, null);
+&nbsp;        AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(rawBase, config);
+<b class="nc">&nbsp;        _collectAndResolveByTypeId(ac, rootType, config, typesHandled, byName);</b>
+<b class="nc">&nbsp;        </b>
+&nbsp;        // then with definitions from property
+&nbsp;        Collection&lt;NamedType&gt; st = ai.findSubtypes(property);
+<b class="nc">&nbsp;        if (st != null) {</b>
+<b class="nc">&nbsp;            for (NamedType nt : st) {</b>
+&nbsp;                ac = AnnotatedClass.constructWithoutSuperTypes(nt.getType(), config);
+<b class="nc">&nbsp;                _collectAndResolveByTypeId(ac, nt, config, typesHandled, byName);</b>
+&nbsp;            }            
+&nbsp;        }
+<b class="nc">&nbsp;        </b>
+<b class="nc">&nbsp;        // and finally explicit type registrations (highest precedence)</b>
+<b class="nc">&nbsp;        if (_registeredSubtypes != null) {</b>
+<b class="nc">&nbsp;            for (NamedType subtype : _registeredSubtypes) {</b>
+<b class="nc">&nbsp;                // is it a subtype of root type?</b>
+<b class="nc">&nbsp;                if (rawBase.isAssignableFrom(subtype.getType())) { // yes</b>
+<b class="nc">&nbsp;                    AnnotatedClass curr = AnnotatedClass.constructWithoutSuperTypes(subtype.getType(), config);</b>
+&nbsp;                    _collectAndResolveByTypeId(curr, subtype, config, typesHandled, byName);
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return _combineNamedAndUnnamed(typesHandled, byName);</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public Collection&lt;NamedType&gt; collectAndResolveSubtypesByTypeId(MapperConfig&lt;?&gt; config,</b>
+<b class="nc">&nbsp;            AnnotatedClass type)</b>
+&nbsp;    {
+<b class="nc">&nbsp;        Set&lt;Class&lt;?&gt;&gt; typesHandled = new HashSet&lt;Class&lt;?&gt;&gt;();</b>
+&nbsp;        Map&lt;String,NamedType&gt; byName = new LinkedHashMap&lt;String,NamedType&gt;();
+<b class="nc">&nbsp;</b>
+&nbsp;        NamedType rootType = new NamedType(type.getRawType(), null);
+&nbsp;        _collectAndResolveByTypeId(type, rootType, config, typesHandled, byName);
+&nbsp;        
+&nbsp;        if (_registeredSubtypes != null) {
+&nbsp;            Class&lt;?&gt; rawBase = type.getRawType();
+&nbsp;            for (NamedType subtype : _registeredSubtypes) {
+<b class="fc">&nbsp;                // is it a subtype of root type?</b>
+<b class="fc">&nbsp;                if (rawBase.isAssignableFrom(subtype.getType())) { // yes</b>
+<b class="fc">&nbsp;                    AnnotatedClass curr = AnnotatedClass.constructWithoutSuperTypes(subtype.getType(), config);</b>
+&nbsp;                    _collectAndResolveByTypeId(curr, subtype, config, typesHandled, byName);
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return _combineNamedAndUnnamed(typesHandled, byName);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    /*</b>
+<b class="nc">&nbsp;    /**********************************************************</b>
+<b class="nc">&nbsp;    /* Deprecated method overrides</b>
+<b class="nc">&nbsp;    /**********************************************************</b>
+&nbsp;     */
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+<b class="nc">&nbsp;    @Deprecated</b>
+&nbsp;    public Collection&lt;NamedType&gt; collectAndResolveSubtypes(AnnotatedMember property,
+&nbsp;        MapperConfig&lt;?&gt; config, AnnotationIntrospector ai, JavaType baseType)
+&nbsp;    {
+&nbsp;        return collectAndResolveSubtypesByClass(config, property, baseType);
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Deprecated
+&nbsp;    public Collection&lt;NamedType&gt; collectAndResolveSubtypes(AnnotatedClass type,
+&nbsp;            MapperConfig&lt;?&gt; config, AnnotationIntrospector ai)
+&nbsp;    {
+&nbsp;        return collectAndResolveSubtypesByClass(config, type);
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+<b class="fc">&nbsp;    /* Internal methods</b>
+<b class="fc">&nbsp;    /**********************************************************</b>
+<b class="fc">&nbsp;     */</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    /**
+&nbsp;     * Method called to find subtypes for a specific type (class), using
+&nbsp;     * type (class) as the unique key (in case of conflicts).
+&nbsp;     */
+<b class="fc">&nbsp;    protected void _collectAndResolve(AnnotatedClass annotatedType, NamedType namedType,</b>
+&nbsp;            MapperConfig&lt;?&gt; config, AnnotationIntrospector ai,
+<b class="fc">&nbsp;            HashMap&lt;NamedType, NamedType&gt; collectedSubtypes)</b>
+<b class="fc">&nbsp;    {</b>
+<b class="fc">&nbsp;        if (!namedType.hasName()) {</b>
+<b class="nc">&nbsp;            String name = ai.findTypeName(annotatedType);</b>
+&nbsp;            if (name != null) {
+&nbsp;                namedType = new NamedType(namedType.getType(), name);
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        // First things first: is base type itself included?</b>
+<b class="fc">&nbsp;        if (collectedSubtypes.containsKey(namedType)) {</b>
+<b class="fc">&nbsp;            // if so, no recursion; however, may need to update name?</b>
+<b class="nc">&nbsp;            if (namedType.hasName()) {</b>
+<b class="nc">&nbsp;                NamedType prev = collectedSubtypes.get(namedType);</b>
+<b class="nc">&nbsp;                if (!prev.hasName()) {</b>
+<b class="nc">&nbsp;                    collectedSubtypes.put(namedType, namedType);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return;</b>
+&nbsp;        }
+&nbsp;        // if it wasn&#39;t, add and check subtypes recursively
+&nbsp;        collectedSubtypes.put(namedType, namedType);
+&nbsp;        Collection&lt;NamedType&gt; st = ai.findSubtypes(annotatedType);
+&nbsp;        if (st != null &amp;&amp; !st.isEmpty()) {
+&nbsp;            for (NamedType subtype : st) {
+&nbsp;                AnnotatedClass subtypeClass = AnnotatedClass.constructWithoutSuperTypes(subtype.getType(), config);
+&nbsp;                _collectAndResolve(subtypeClass, subtype, config, ai, collectedSubtypes);
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * Method called to find subtypes for a specific type (class), using</b>
+&nbsp;     * type id as the unique key (in case of conflicts).
+&nbsp;     */
+<b class="nc">&nbsp;    protected void _collectAndResolveByTypeId(AnnotatedClass annotatedType, NamedType namedType,</b>
+<b class="nc">&nbsp;            MapperConfig&lt;?&gt; config,</b>
+&nbsp;            Set&lt;Class&lt;?&gt;&gt; typesHandled, Map&lt;String,NamedType&gt; byName)
+&nbsp;    {
+&nbsp;        final AnnotationIntrospector ai = config.getAnnotationIntrospector();
+<b class="nc">&nbsp;        if (!namedType.hasName()) {</b>
+<b class="nc">&nbsp;            String name = ai.findTypeName(annotatedType);</b>
+<b class="nc">&nbsp;            if (name != null) {</b>
+<b class="nc">&nbsp;                namedType = new NamedType(namedType.getType(), name);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if (namedType.hasName()) {</b>
+<b class="nc">&nbsp;            byName.put(namedType.getName(), namedType);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        // only check subtypes if this type hadn&#39;t yet been handled</b>
+&nbsp;        if (typesHandled.add(namedType.getType())) {
+&nbsp;            Collection&lt;NamedType&gt; st = ai.findSubtypes(annotatedType);
+&nbsp;            if (st != null &amp;&amp; !st.isEmpty()) {
+&nbsp;                for (NamedType subtype : st) {
+&nbsp;                    AnnotatedClass subtypeClass = AnnotatedClass.constructWithoutSuperTypes(subtype.getType(), config);
+&nbsp;                    _collectAndResolveByTypeId(subtypeClass, subtype, config, typesHandled, byName);
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method used for merging explicitly named types and handled classes
+<b class="nc">&nbsp;     * without explicit names.</b>
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;    protected Collection&lt;NamedType&gt; _combineNamedAndUnnamed(Set&lt;Class&lt;?&gt;&gt; typesHandled,</b>
+<b class="nc">&nbsp;            Map&lt;String,NamedType&gt; byName)</b>
+&nbsp;    {
+&nbsp;        ArrayList&lt;NamedType&gt; result = new ArrayList&lt;NamedType&gt;(byName.values());
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        // Ok, so... we will figure out which classes have no explicitly assigned name,</b>
+&nbsp;        // by removing Classes from Set. And for remaining classes, add an anonymous
+<b class="nc">&nbsp;        // marker</b>
+<b class="nc">&nbsp;        for (NamedType t : byName.values()) {</b>
+<b class="nc">&nbsp;            typesHandled.remove(t.getType());</b>
+&nbsp;        }
+&nbsp;        for (Class&lt;?&gt; cls : typesHandled) {
+&nbsp;            result.add(new NamedType(cls));
+&nbsp;        }
+&nbsp;        return result;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 23:20</div>
+</div>
+</body>
+</html>

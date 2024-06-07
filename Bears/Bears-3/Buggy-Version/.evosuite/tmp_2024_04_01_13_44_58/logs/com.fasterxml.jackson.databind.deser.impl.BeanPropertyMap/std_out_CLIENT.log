@@ -1,0 +1,87 @@
+* Starting client
+* Connecting to master process on port 14660
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-3/buggy/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-3/buggy/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.8.5/jackson-core-2.8.5.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 13:45:06.515 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-3/buggy/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-3/buggy/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap.seed
+* Total number of test goals: 
+  - Line 226
+  - Branch 149
+  - Exception 0
+  - MutationFactory 929
+  - Output 91
+  - Method 21
+  - MethodNoException 21
+  - CBranchFitnessFactory 149
+* Using seed 1711997100031
+* Starting evolution
+* Search finished after 157s and 125 generations, 89461 statements, best individual has fitness: 678.6478922660748
+* Writing sequences to pool
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 73%
+* Total number of goals: 226
+* Number of covered goals: 166
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 62%
+* Total number of goals: 149
+* Number of covered goals: 93
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 20
+* Number of covered goals: 20
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 56%
+* Total number of goals: 929
+* Number of covered goals: 522
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 38%
+* Total number of goals: 91
+* Number of covered goals: 35
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 100%
+* Total number of goals: 21
+* Number of covered goals: 21
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 86%
+* Total number of goals: 21
+* Number of covered goals: 18
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 61%
+* Total number of goals: 149
+* Number of covered goals: 91
+* Generated 53 tests with total length 330
+* Resulting test suite's coverage: 72% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 19%
+* Compiling and checking tests
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 1
+* Writing JUnit test case 'BeanPropertyMap_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-3/buggy/.evosuite/tmp_2024_04_01_13_44_58/tests
+* Done!
+

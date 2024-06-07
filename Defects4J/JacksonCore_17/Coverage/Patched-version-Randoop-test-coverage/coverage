@@ -1,0 +1,2 @@
+project_id,version_id,test_suite_source,test_id,lines_total,lines_covered,branches_total,branches_covered
+JacksonCore,17f,randoop,1,1010,322,541,128

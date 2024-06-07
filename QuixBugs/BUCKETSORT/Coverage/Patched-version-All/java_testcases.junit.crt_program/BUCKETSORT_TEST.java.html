@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BUCKETSORT_TEST.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">java_testcases.junit.crt_program</a> &gt; <span class="el_source">BUCKETSORT_TEST.java</span></div><h1>BUCKETSORT_TEST.java</h1><pre class="source lang-java linenums">package java_testcases.junit.crt_program;
+
+
+<span class="fc" id="L4">public class BUCKETSORT_TEST {</span>
+    @org.junit.Test(timeout = 3000)
+    public void test_0() throws java.lang.Exception {
+<span class="fc" id="L7">        java.util.ArrayList result = correct_java_programs.BUCKETSORT.bucketsort(new java.util.ArrayList(java.util.Arrays.asList(3,11,2,9,1,5)),(int)12);</span>
+<span class="fc" id="L8">        String resultFormatted = java_testcases.junit.crt_program.QuixFixOracleHelper.format(result,true);</span>
+<span class="fc" id="L9">        org.junit.Assert.assertEquals(&quot;[1,2,3,5,9,11]&quot;, resultFormatted);</span>
+<span class="fc" id="L10">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_1() throws java.lang.Exception {
+<span class="fc" id="L14">        java.util.ArrayList result = correct_java_programs.BUCKETSORT.bucketsort(new java.util.ArrayList(java.util.Arrays.asList(3,2,4,2,3,5)),(int)6);</span>
+<span class="fc" id="L15">        String resultFormatted = java_testcases.junit.crt_program.QuixFixOracleHelper.format(result,true);</span>
+<span class="fc" id="L16">        org.junit.Assert.assertEquals(&quot;[2,2,3,3,4,5]&quot;, resultFormatted);</span>
+<span class="fc" id="L17">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_2() throws java.lang.Exception {
+<span class="fc" id="L21">        java.util.ArrayList result = correct_java_programs.BUCKETSORT.bucketsort(new java.util.ArrayList(java.util.Arrays.asList(1,3,4,6,4,2,9,1,2,9)),(int)10);</span>
+<span class="fc" id="L22">        String resultFormatted = java_testcases.junit.crt_program.QuixFixOracleHelper.format(result,true);</span>
+<span class="fc" id="L23">        org.junit.Assert.assertEquals(&quot;[1,1,2,2,3,4,4,6,9,9]&quot;, resultFormatted);</span>
+<span class="fc" id="L24">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_3() throws java.lang.Exception {
+<span class="fc" id="L28">        java.util.ArrayList result = correct_java_programs.BUCKETSORT.bucketsort(new java.util.ArrayList(java.util.Arrays.asList(20,19,18,17,16,15,14,13,12,11)),(int)21);</span>
+<span class="fc" id="L29">        String resultFormatted = java_testcases.junit.crt_program.QuixFixOracleHelper.format(result,true);</span>
+<span class="fc" id="L30">        org.junit.Assert.assertEquals(&quot;[11,12,13,14,15,16,17,18,19,20]&quot;, resultFormatted);</span>
+<span class="fc" id="L31">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_4() throws java.lang.Exception {
+<span class="fc" id="L35">        java.util.ArrayList result = correct_java_programs.BUCKETSORT.bucketsort(new java.util.ArrayList(java.util.Arrays.asList(20,21,22,23,24,25,26,27,28,29)),(int)30);</span>
+<span class="fc" id="L36">        String resultFormatted = java_testcases.junit.crt_program.QuixFixOracleHelper.format(result,true);</span>
+<span class="fc" id="L37">        org.junit.Assert.assertEquals(&quot;[20,21,22,23,24,25,26,27,28,29]&quot;, resultFormatted);</span>
+<span class="fc" id="L38">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_5() throws java.lang.Exception {
+<span class="fc" id="L42">        java.util.ArrayList result = correct_java_programs.BUCKETSORT.bucketsort(new java.util.ArrayList(java.util.Arrays.asList(8,5,3,1,9,6,0,7,4,2,5)),(int)10);</span>
+<span class="fc" id="L43">        String resultFormatted = java_testcases.junit.crt_program.QuixFixOracleHelper.format(result,true);</span>
+<span class="fc" id="L44">        org.junit.Assert.assertEquals(&quot;[0,1,2,3,4,5,5,6,7,8,9]&quot;, resultFormatted);</span>
+<span class="fc" id="L45">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

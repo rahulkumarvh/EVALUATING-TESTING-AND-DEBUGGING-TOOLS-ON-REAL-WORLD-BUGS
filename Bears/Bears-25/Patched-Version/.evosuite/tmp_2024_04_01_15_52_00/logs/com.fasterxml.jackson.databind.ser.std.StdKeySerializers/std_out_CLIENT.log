@@ -1,0 +1,88 @@
+* Starting client
+* Connecting to master process on port 21228
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-25/patched/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-25/patched/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.8.9/jackson-core-2.8.9.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.ser.std.StdKeySerializers
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 15:52:09.450 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-25/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.ser.std.StdKeySerializers.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-25/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.ser.std.StdKeySerializers.seed
+* Total number of test goals: 
+  - Line 85
+  - Branch 61
+  - Exception 0
+  - MutationFactory 68
+  - Output 15
+  - Method 15
+  - MethodNoException 15
+  - CBranchFitnessFactory 61
+* Using seed 1712004722754
+* Starting evolution
+[MASTER] 15:53:02.614 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+* Search finished after 69s and 203 generations, 122493 statements, best individual has fitness: 51.95238095238095
+* Writing sequences to pool
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 76%
+* Total number of goals: 85
+* Number of covered goals: 65
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 85%
+* Total number of goals: 61
+* Number of covered goals: 52
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 1
+* Number of covered goals: 1
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 94%
+* Total number of goals: 68
+* Number of covered goals: 64
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 20%
+* Total number of goals: 15
+* Number of covered goals: 3
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 100%
+* Total number of goals: 15
+* Number of covered goals: 15
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 80%
+* Total number of goals: 15
+* Number of covered goals: 12
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 84%
+* Total number of goals: 61
+* Number of covered goals: 51
+* Generated 26 tests with total length 95
+* Resulting test suite's coverage: 80% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 28%
+* Compiling and checking tests
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 17
+* Writing JUnit test case 'StdKeySerializers_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-25/patched/.evosuite/tmp_2024_04_01_15_52_00/tests
+* Done!
+

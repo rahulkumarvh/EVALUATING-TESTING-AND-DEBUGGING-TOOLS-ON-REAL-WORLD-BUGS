@@ -1,0 +1,196 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PubSubMessageChannelBinder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.stream.binder.pubsub</a>
+</div>
+
+<h1>Coverage Summary for Class: PubSubMessageChannelBinder (org.springframework.cloud.gcp.stream.binder.pubsub)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PubSubMessageChannelBinder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.stream.binder.pubsub;
+&nbsp;
+&nbsp;import org.springframework.cloud.gcp.pubsub.core.PubSubTemplate;
+&nbsp;import org.springframework.cloud.gcp.stream.binder.pubsub.properties.PubSubConsumerProperties;
+&nbsp;import org.springframework.cloud.gcp.stream.binder.pubsub.properties.PubSubExtendedBindingProperties;
+&nbsp;import org.springframework.cloud.gcp.stream.binder.pubsub.properties.PubSubProducerProperties;
+&nbsp;import org.springframework.cloud.gcp.stream.binder.pubsub.provisioning.PubSubChannelProvisioner;
+&nbsp;import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
+&nbsp;import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
+&nbsp;import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
+&nbsp;import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+&nbsp;import org.springframework.cloud.stream.provisioning.ConsumerDestination;
+&nbsp;import org.springframework.cloud.stream.provisioning.ProducerDestination;
+&nbsp;import org.springframework.integration.core.MessageProducer;
+&nbsp;import org.springframework.integration.gcp.pubsub.inbound.PubSubInboundChannelAdapter;
+&nbsp;import org.springframework.integration.gcp.pubsub.outbound.PubSubMessageHandler;
+&nbsp;import org.springframework.messaging.MessageChannel;
+&nbsp;import org.springframework.messaging.MessageHandler;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;public class PubSubMessageChannelBinder
+&nbsp;		extends AbstractMessageChannelBinder&lt;ExtendedConsumerProperties&lt;PubSubConsumerProperties&gt;,
+&nbsp;		ExtendedProducerProperties&lt;PubSubProducerProperties&gt;,
+&nbsp;		PubSubChannelProvisioner&gt;
+&nbsp;	implements ExtendedPropertiesBinder&lt;MessageChannel, PubSubConsumerProperties,
+&nbsp;		PubSubProducerProperties&gt; {
+&nbsp;
+&nbsp;	private PubSubTemplate pubSubTemplate;
+&nbsp;
+<b class="nc">&nbsp;	private PubSubExtendedBindingProperties pubSubExtendedBindingProperties =</b>
+&nbsp;			new PubSubExtendedBindingProperties();
+&nbsp;
+&nbsp;	public PubSubMessageChannelBinder(boolean supportsHeadersNatively, String[] headersToEmbed,
+&nbsp;			PubSubChannelProvisioner provisioningProvider, PubSubTemplate pubSubTemplate) {
+<b class="nc">&nbsp;		super(supportsHeadersNatively, headersToEmbed, provisioningProvider);</b>
+<b class="nc">&nbsp;		this.pubSubTemplate = pubSubTemplate;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
+&nbsp;			ExtendedProducerProperties&lt;PubSubProducerProperties&gt; producerProperties,
+&nbsp;			MessageChannel errorChannel) throws Exception {
+&nbsp;
+<b class="nc">&nbsp;		this.provisioningProvider.provisionProducerDestination(</b>
+<b class="nc">&nbsp;				destination.getName(), producerProperties);</b>
+&nbsp;
+<b class="nc">&nbsp;		return new PubSubMessageHandler(this.pubSubTemplate, destination.getName());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
+&nbsp;			ExtendedConsumerProperties&lt;PubSubConsumerProperties&gt; properties) throws Exception {
+&nbsp;
+<b class="nc">&nbsp;		String consumerName = group == null</b>
+<b class="nc">&nbsp;				? destination.getName() : destination.getName() + &quot;-&quot; + group;</b>
+&nbsp;
+<b class="nc">&nbsp;		this.provisioningProvider.provisionConsumerDestination(</b>
+&nbsp;				consumerName, group, properties);
+&nbsp;
+<b class="nc">&nbsp;		return new PubSubInboundChannelAdapter(this.pubSubTemplate, destination.getName());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public PubSubConsumerProperties getExtendedConsumerProperties(String channelName) {
+<b class="nc">&nbsp;		return this.pubSubExtendedBindingProperties.getExtendedConsumerProperties(channelName);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public PubSubProducerProperties getExtendedProducerProperties(String channelName) {
+<b class="nc">&nbsp;		return this.pubSubExtendedBindingProperties.getExtendedProducerProperties(channelName);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 23:17</div>
+</div>
+</body>
+</html>

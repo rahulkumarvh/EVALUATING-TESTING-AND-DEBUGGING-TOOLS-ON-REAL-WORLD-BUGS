@@ -1,0 +1,432 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairSchedule</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.core</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairSchedule (io.cassandrareaper.core)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairSchedule</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/43)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RepairSchedule$Builder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/59)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RepairSchedule$LongCollectionSqlType</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RepairSchedule$State</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/57)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/109)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.core;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import com.google.common.collect.ImmutableList;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;
+&nbsp;public final class RepairSchedule {
+&nbsp;
+&nbsp;  private final UUID id;
+&nbsp;
+<b class="nc">&nbsp;  private final UUID repairUnitId;</b>
+<b class="nc">&nbsp;  private final State state;</b>
+<b class="nc">&nbsp;  private final int daysBetween;</b>
+<b class="nc">&nbsp;  private final DateTime nextActivation;</b>
+<b class="nc">&nbsp;  private final ImmutableList&lt;UUID&gt; runHistory;</b>
+<b class="nc">&nbsp;  @Deprecated private final int segmentCount;</b>
+<b class="nc">&nbsp;  private final RepairParallelism repairParallelism;</b>
+<b class="nc">&nbsp;  private final double intensity;</b>
+<b class="nc">&nbsp;  private final DateTime creationTime;</b>
+<b class="nc">&nbsp;  private final String owner;</b>
+<b class="nc">&nbsp;  private final DateTime pauseTime;</b>
+<b class="nc">&nbsp;  private final int segmentCountPerNode;</b>
+&nbsp;
+<b class="nc">&nbsp;  private RepairSchedule(Builder builder, UUID id) {</b>
+<b class="nc">&nbsp;    this.id = id;</b>
+<b class="nc">&nbsp;    this.repairUnitId = builder.repairUnitId;</b>
+<b class="nc">&nbsp;    this.state = builder.state;</b>
+<b class="nc">&nbsp;    this.daysBetween = builder.daysBetween;</b>
+<b class="nc">&nbsp;    this.nextActivation = builder.nextActivation;</b>
+<b class="nc">&nbsp;    this.runHistory = builder.runHistory;</b>
+<b class="nc">&nbsp;    this.segmentCount = builder.segmentCount;</b>
+<b class="nc">&nbsp;    this.repairParallelism = builder.repairParallelism;</b>
+<b class="nc">&nbsp;    this.intensity = builder.intensity;</b>
+<b class="nc">&nbsp;    this.creationTime = builder.creationTime;</b>
+<b class="nc">&nbsp;    this.owner = builder.owner;</b>
+<b class="nc">&nbsp;    this.pauseTime = builder.pauseTime;</b>
+<b class="nc">&nbsp;    this.segmentCountPerNode = builder.segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public UUID getId() {
+<b class="nc">&nbsp;    return id;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public UUID getRepairUnitId() {
+<b class="nc">&nbsp;    return repairUnitId;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public State getState() {
+<b class="nc">&nbsp;    return state;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getDaysBetween() {
+<b class="nc">&nbsp;    return daysBetween;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getFollowingActivation() {
+<b class="nc">&nbsp;    return getNextActivation().plusDays(getDaysBetween());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getNextActivation() {
+<b class="nc">&nbsp;    return nextActivation;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public ImmutableList&lt;UUID&gt; getRunHistory() {
+<b class="nc">&nbsp;    return runHistory;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Required for JDBI mapping into database. Generic collection type would be hard to map into Postgres array types.
+&nbsp;   */
+&nbsp;  public LongCollectionSqlType getRunHistorySql() {
+<b class="nc">&nbsp;    List&lt;Long&gt; list = runHistory.stream().map(UUID::getMostSignificantBits).collect(Collectors.toList());</b>
+<b class="nc">&nbsp;    return new LongCollectionSqlType(list);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getSegmentCount() {
+<b class="nc">&nbsp;    return segmentCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getSegmentCountPerNode() {
+<b class="nc">&nbsp;    return segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairParallelism getRepairParallelism() {
+<b class="nc">&nbsp;    return repairParallelism;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public double getIntensity() {
+<b class="nc">&nbsp;    return intensity;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getCreationTime() {
+<b class="nc">&nbsp;    return creationTime;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public String getOwner() {
+<b class="nc">&nbsp;    return owner;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DateTime getPauseTime() {
+<b class="nc">&nbsp;    return pauseTime;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public Builder with() {
+<b class="nc">&nbsp;    return new Builder(this);</b>
+&nbsp;  }
+&nbsp;
+<b class="nc">&nbsp;  public enum State {</b>
+<b class="nc">&nbsp;    ACTIVE,</b>
+<b class="nc">&nbsp;    PAUSED,</b>
+<b class="nc">&nbsp;    DELETED</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static class Builder {
+&nbsp;
+&nbsp;    public final UUID repairUnitId;
+<b class="nc">&nbsp;    private State state;</b>
+<b class="nc">&nbsp;    private int daysBetween;</b>
+<b class="nc">&nbsp;    private DateTime nextActivation;</b>
+<b class="nc">&nbsp;    private ImmutableList&lt;UUID&gt; runHistory;</b>
+<b class="nc">&nbsp;    @Deprecated private int segmentCount;</b>
+<b class="nc">&nbsp;    private RepairParallelism repairParallelism;</b>
+<b class="nc">&nbsp;    private double intensity;</b>
+<b class="nc">&nbsp;    private DateTime creationTime;</b>
+<b class="nc">&nbsp;    private String owner;</b>
+<b class="nc">&nbsp;    private DateTime pauseTime;</b>
+<b class="nc">&nbsp;    private int segmentCountPerNode;</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    public Builder(</b>
+&nbsp;        UUID repairUnitId,
+&nbsp;        State state,
+&nbsp;        int daysBetween,
+&nbsp;        DateTime nextActivation,
+&nbsp;        ImmutableList&lt;UUID&gt; runHistory,
+&nbsp;        int segmentCount,
+&nbsp;        RepairParallelism repairParallelism,
+&nbsp;        double intensity,
+&nbsp;        DateTime creationTime,
+&nbsp;        int segmentCountPerNode) {
+<b class="nc">&nbsp;      this.repairUnitId = repairUnitId;</b>
+<b class="nc">&nbsp;      this.state = state;</b>
+<b class="nc">&nbsp;      this.daysBetween = daysBetween;</b>
+<b class="nc">&nbsp;      this.nextActivation = nextActivation;</b>
+<b class="nc">&nbsp;      this.runHistory = runHistory;</b>
+<b class="nc">&nbsp;      this.segmentCount = segmentCount;</b>
+<b class="nc">&nbsp;      this.repairParallelism = repairParallelism;</b>
+<b class="nc">&nbsp;      this.intensity = intensity;</b>
+<b class="nc">&nbsp;      this.creationTime = creationTime;</b>
+<b class="nc">&nbsp;      this.segmentCountPerNode = segmentCountPerNode;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private Builder(RepairSchedule original) {</b>
+<b class="nc">&nbsp;      repairUnitId = original.repairUnitId;</b>
+<b class="nc">&nbsp;      state = original.state;</b>
+<b class="nc">&nbsp;      daysBetween = original.daysBetween;</b>
+<b class="nc">&nbsp;      nextActivation = original.nextActivation;</b>
+<b class="nc">&nbsp;      runHistory = original.runHistory;</b>
+<b class="nc">&nbsp;      segmentCount = original.segmentCount;</b>
+<b class="nc">&nbsp;      repairParallelism = original.repairParallelism;</b>
+<b class="nc">&nbsp;      intensity = original.intensity;</b>
+<b class="nc">&nbsp;      creationTime = original.creationTime;</b>
+<b class="nc">&nbsp;      owner = original.owner;</b>
+<b class="nc">&nbsp;      pauseTime = original.pauseTime;</b>
+<b class="nc">&nbsp;      intensity = original.intensity;</b>
+<b class="nc">&nbsp;      segmentCountPerNode = original.segmentCountPerNode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder state(State state) {
+<b class="nc">&nbsp;      this.state = state;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder daysBetween(int daysBetween) {
+<b class="nc">&nbsp;      this.daysBetween = daysBetween;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder nextActivation(DateTime nextActivation) {
+<b class="nc">&nbsp;      this.nextActivation = nextActivation;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder runHistory(ImmutableList&lt;UUID&gt; runHistory) {
+<b class="nc">&nbsp;      this.runHistory = runHistory;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder segmentCount(int segmentCount) {
+<b class="nc">&nbsp;      this.segmentCount = segmentCount;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder repairParallelism(RepairParallelism repairParallelism) {
+<b class="nc">&nbsp;      this.repairParallelism = repairParallelism;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder intensity(double intensity) {
+<b class="nc">&nbsp;      this.intensity = intensity;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder creationTime(DateTime creationTime) {
+<b class="nc">&nbsp;      this.creationTime = creationTime;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder owner(String owner) {
+<b class="nc">&nbsp;      this.owner = owner;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder pauseTime(DateTime pauseTime) {
+<b class="nc">&nbsp;      this.pauseTime = pauseTime;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Builder segmentCountPerNode(int segmentCountPerNode) {
+<b class="nc">&nbsp;      this.segmentCountPerNode = segmentCountPerNode;</b>
+<b class="nc">&nbsp;      return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public RepairSchedule build(UUID id) {
+<b class="nc">&nbsp;      return new RepairSchedule(this, id);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * This is required to be able to map in generic manner into Postgres array types through JDBI.
+&nbsp;   */
+&nbsp;  public static final class LongCollectionSqlType {
+&nbsp;
+&nbsp;    private final Collection&lt;Long&gt; collection;
+&nbsp;
+<b class="nc">&nbsp;    public LongCollectionSqlType(Collection&lt;Long&gt; collection) {</b>
+<b class="nc">&nbsp;      this.collection = collection;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Collection&lt;Long&gt; getValue() {
+<b class="nc">&nbsp;      return null == collection ? collection : Lists.newArrayList();</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

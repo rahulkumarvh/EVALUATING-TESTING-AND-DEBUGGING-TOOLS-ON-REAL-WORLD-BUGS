@@ -1,0 +1,237 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MergingSettableBeanProperty</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: MergingSettableBeanProperty (com.fasterxml.jackson.databind.deser.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MergingSettableBeanProperty</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (4/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    36%
+  </span>
+  <span class="absValue">
+    (9/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser.impl;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.JsonParser;
+&nbsp;import com.fasterxml.jackson.databind.DeserializationContext;
+&nbsp;import com.fasterxml.jackson.databind.deser.*;
+&nbsp;import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+&nbsp;
+&nbsp;/**
+&nbsp; * {@link SettableBeanProperty} implementation that will try to access value of
+&nbsp; * the property first, and if non-null value found, pass that for update
+&nbsp; * (using {@link com.fasterxml.jackson.databind.JsonDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, Object)})
+&nbsp; * instead of constructing a new value. This is necessary to support &quot;merging&quot; properties.
+&nbsp; *&lt;p&gt;
+&nbsp; * Note that there are many similarities to {@link SetterlessProperty}, which predates
+&nbsp; * this variant; and that one is even used in cases where there is no mutator
+&nbsp; * available.
+&nbsp; *
+&nbsp; * @since 2.9
+&nbsp; */
+&nbsp;public class MergingSettableBeanProperty
+&nbsp;    extends SettableBeanProperty.Delegating
+&nbsp;{
+&nbsp;    private static final long serialVersionUID = 1L;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Member (field, method) used for accessing existing value.
+&nbsp;     */
+&nbsp;    protected final AnnotatedMember _accessor;
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Life-cycle
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    protected MergingSettableBeanProperty(SettableBeanProperty delegate,
+&nbsp;            AnnotatedMember accessor)
+&nbsp;    {
+<b class="fc">&nbsp;        super(delegate);</b>
+<b class="fc">&nbsp;        _accessor = accessor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected MergingSettableBeanProperty(MergingSettableBeanProperty src,
+&nbsp;            SettableBeanProperty delegate)
+&nbsp;    {
+<b class="nc">&nbsp;        super(delegate);</b>
+<b class="nc">&nbsp;        _accessor = src._accessor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static MergingSettableBeanProperty construct(SettableBeanProperty delegate,
+&nbsp;            AnnotatedMember accessor)
+&nbsp;    {
+<b class="fc">&nbsp;        return new MergingSettableBeanProperty(delegate, accessor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected SettableBeanProperty withDelegate(SettableBeanProperty d) {
+<b class="fc">&nbsp;        return new MergingSettableBeanProperty(d, _accessor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Deserialization methods
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+&nbsp;            Object instance) throws IOException
+&nbsp;    {
+<b class="fc">&nbsp;        Object oldValue = _accessor.getValue(instance);</b>
+&nbsp;        Object newValue;
+&nbsp;        // 20-Oct-2016, tatu: Couple of possibilities of how to proceed; for
+&nbsp;        //    now, default to &quot;normal&quot; handling without merging
+<b class="fc">&nbsp;        if (oldValue == null) {</b>
+<b class="nc">&nbsp;            newValue = delegate.deserialize(p, ctxt);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            newValue = delegate.deserializeWith(p, ctxt, oldValue);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (newValue != oldValue) {</b>
+&nbsp;            // 18-Apr-2017, tatu: Null handling should occur within delegate, which may
+&nbsp;            //     set/skip/transform it, or throw an exception.
+<b class="fc">&nbsp;            delegate.set(instance, newValue);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Object deserializeSetAndReturn(JsonParser p,
+&nbsp;            DeserializationContext ctxt, Object instance) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        Object oldValue = _accessor.getValue(instance);</b>
+&nbsp;        Object newValue;
+&nbsp;        // 20-Oct-2016, tatu: Couple of possibilities of how to proceed; for
+&nbsp;        //    now, default to &quot;normal&quot; handling without merging
+<b class="nc">&nbsp;        if (oldValue == null) {</b>
+<b class="nc">&nbsp;            newValue = delegate.deserialize(p, ctxt);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            newValue = delegate.deserializeWith(p, ctxt, oldValue);</b>
+&nbsp;        }
+&nbsp;        // 23-Oct-2016, tatu: One possible complication here; should we always
+&nbsp;        //    try calling setter on builder? Presumably should not be required,
+&nbsp;        //    but may need to revise
+<b class="nc">&nbsp;        if (newValue != oldValue) {</b>
+&nbsp;            // 31-Oct-2016, tatu: Basically should just ignore as null can&#39;t really
+&nbsp;            //    contribute to merging.
+<b class="nc">&nbsp;            if (newValue != null) {</b>
+<b class="nc">&nbsp;                return delegate.setAndReturn(instance, newValue);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void set(Object instance, Object value) throws IOException {
+&nbsp;        // 31-Oct-2016, tatu: Basically should just ignore as null can&#39;t really
+&nbsp;        //    contribute to merging.
+<b class="nc">&nbsp;        if (value != null) {</b>
+<b class="nc">&nbsp;            delegate.set(instance, value);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Object setAndReturn(Object instance, Object value) throws IOException {
+&nbsp;        // 31-Oct-2016, tatu: Basically should just ignore as null can&#39;t really
+&nbsp;        //    contribute to merging.
+<b class="nc">&nbsp;        if (value != null) {</b>
+<b class="nc">&nbsp;            return delegate.setAndReturn(instance, value);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:38</div>
+</div>
+</body>
+</html>

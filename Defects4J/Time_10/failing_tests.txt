@@ -1,0 +1,11 @@
+src.test.java.org.joda.time.field.EvosuiteBaseSingleFieldPeriod_ESTest
+src.test.java.org.joda.time.field.EvosuiteBaseSingleFieldPeriod_ESTest_scaffolding
+src.test.java.org.joda.time.field.EvosuitePartial_ESTest
+src.test.java.org.joda.time.field.EvosuitePartial_ESTest_scaffolding
+src.test.java.org.joda.time.field.EvosuiteUnsupportedDurationField_ESTest
+src.test.java.org.joda.time.field.EvosuiteUnsupportedDurationField_ESTest_scaffolding
+src.test.java.org.joda.time.field.RandoopErrorTest
+src.test.java.org.joda.time.field.RandoopErrorTest0
+src.test.java.org.joda.time.field.RandoopRegressionTest
+src.test.java.org.joda.time.field.RandoopRegressionTest0
+src.test.java.org.joda.time.field.RandoopRegressionTest1

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NEXT_PERMUTATION.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">correct_java_programs</a> &gt; <span class="el_source">NEXT_PERMUTATION.java</span></div><h1>NEXT_PERMUTATION.java</h1><pre class="source lang-java linenums">package correct_java_programs;
+import java.util.*;
+//import com.google.guava.Lists;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author derricklin
+ */
+<span class="nc" id="L14">public class NEXT_PERMUTATION {</span>
+    public static ArrayList&lt;Integer&gt; next_permutation(ArrayList&lt;Integer&gt; perm) {
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        for (int i=perm.size()-2; i!=-1; i--) {</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">            if (perm.get(i) &lt; perm.get(i+1)) {</span>
+<span class="nc bnc" id="L18" title="All 2 branches missed.">                for (int j=perm.size()-1; j!=i; j--) {</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">                    if (perm.get(j) &gt; perm.get(i)) {</span>
+<span class="nc" id="L20">                        ArrayList&lt;Integer&gt; next_perm = perm;</span>
+<span class="nc" id="L21">                        int temp_j = perm.get(j);</span>
+<span class="nc" id="L22">                        int temp_i = perm.get(i);</span>
+<span class="nc" id="L23">                        next_perm.set(i,temp_j);</span>
+<span class="nc" id="L24">                        next_perm.set(j,temp_i);</span>
+
+<span class="nc" id="L26">                        ArrayList&lt;Integer&gt; reversed = new ArrayList&lt;Integer&gt;(100);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">                        for (int k=next_perm.size()-1; k!=i; k--) {</span>
+<span class="nc" id="L28">                            reversed.add(next_perm.get(k));</span>
+                        }
+
+<span class="nc" id="L31">                        int q = i + 1;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                        for (Integer replace : reversed) {</span>
+<span class="nc" id="L33">                            next_perm.set(q, replace);</span>
+<span class="nc" id="L34">                            q++;</span>
+<span class="nc" id="L35">                        }</span>
+
+<span class="nc" id="L37">                        return next_perm;</span>
+                    }
+                }
+            }
+        }
+
+<span class="nc" id="L43">        return new ArrayList&lt;Integer&gt;();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

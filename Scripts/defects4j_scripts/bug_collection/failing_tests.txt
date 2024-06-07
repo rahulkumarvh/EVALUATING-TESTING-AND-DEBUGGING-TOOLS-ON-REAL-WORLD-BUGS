@@ -1,0 +1,290 @@
+Gson_3:
+Failing tests: 2
+- com.google.gson.functional.MapTest::testConcurrentMap
+- com.google.gson.functional.MapTest::testConcurrentNavigableMap
+Gson_12:
+Failing tests: 2
+- com.google.gson.internal.bind.JsonTreeReaderTest::testSkipValue_filledJsonObject
+- com.google.gson.internal.bind.JsonTreeReaderTest::testSkipValue_emptyJsonObject
+Math_75:
+Failing tests: 1
+- org.apache.commons.math.stat.FrequencyTest::testPcts
+Mockito_7:
+Failing tests: 1
+- org.mockitousage.bugs.deepstubs.DeepStubFailingWhenGenricNestedAsRawTypeTest::discoverDeepMockingOfGenerics
+Mockito_9:
+Failing tests: 3
+- org.mockitousage.constructor.CreatingMocksWithConstructorTest::abstractMethodStubbed
+- org.mockitousage.constructor.CreatingMocksWithConstructorTest::testCallsRealInterfaceMethod
+- org.mockitousage.constructor.CreatingMocksWithConstructorTest::abstractMethodReturnsDefault
+Codec_16:
+Failing tests: 1
+- org.apache.commons.codec.binary.Base32Test::testCodec200
+Gson_5:
+Failing tests: 1
+- com.google.gson.DefaultDateTypeAdapterTest::testDateDeserializationISO8601
+JacksonCore_20:
+Failing tests: 2
+- com.fasterxml.jackson.core.base64.Base64GenerationTest::testBinaryAsEmbeddedObject
+- com.fasterxml.jackson.core.main.TestGeneratorMisc::testAsEmbedded
+Csv_8:
+Failing tests: 1
+- org.apache.commons.csv.CSVFormatTest::testDuplicateHeaderElements
+Time_6:
+Failing tests: 5
+- org.joda.time.chrono.TestGJDate::test_cutoverPreZero
+- org.joda.time.chrono.TestGJDate::test_plusWeekyears_positiveToNegative_crossCutover
+- org.joda.time.chrono.TestGJDate::test_plusYears_positiveToZero_crossCutover
+- org.joda.time.chrono.TestGJDate::test_plusYears_positiveToNegative_crossCutover
+- org.joda.time.chrono.TestGJDate::test_plusWeekyears_positiveToZero_crossCutover
+Time_1:
+Failing tests: 1
+- org.joda.time.TestPartial_Constructors::testConstructorEx7_TypeArray_intArray
+JacksonXml_2:
+Failing tests: 1
+- com.fasterxml.jackson.dataformat.xml.misc.XmlTextTest::testMixedContent
+JacksonXml_5:
+Failing tests: 1
+- com.fasterxml.jackson.dataformat.xml.MapperCopyTest::testCopyWith
+Closure_164:
+Failing tests: 3
+- com.google.javascript.jscomp.LooseTypeCheckTest::testMethodInference7
+- com.google.javascript.jscomp.TypeCheckTest::testMethodInference7
+- com.google.javascript.rhino.jstype.FunctionTypeTest::testSupAndInfOfReturnTypesWithNumOfParams
+JxPath_3:
+Failing tests: 1
+- org.apache.commons.jxpath.ri.model.beans.BadlyImplementedFactoryTest::testBadFactoryImplementation
+Chart_15:
+Csv_7:
+Failing tests: 1
+- org.apache.commons.csv.CSVParserTest::testDuplicateHeaderEntries
+Codec_3:
+Failing tests: 1
+- org.apache.commons.codec.language.DoubleMetaphone2Test::testDoubleMetaphoneAlternate
+JacksonCore_17:
+Failing tests: 1
+- com.fasterxml.jackson.core.json.RawValueWithSurrogatesTest::testRawWithSurrogatesString
+JacksonCore_19:
+Failing tests: 1
+- com.fasterxml.jackson.core.json.TestNumericValues::testLongerFloatingPoint
+Lang_64:
+Failing tests: 1
+- org.apache.commons.lang.enums.ValuedEnumTest::testCompareTo_otherEnumType
+JacksonCore_4:
+Failing tests: 1
+- com.fasterxml.jackson.core.util.TestTextBuffer::testExpand
+JxPath_5:
+Failing tests: 1
+- org.apache.commons.jxpath.ri.compiler.VariableTest::testUnionOfVariableAndNode
+Cli_35:
+Failing tests: 1
+- org.apache.commons.cli.bug.BugCLI252Test::testExactOptionNameMatch
+Mockito_11:
+Failing tests: 2
+- org.mockito.internal.creation.DelegatingMethodTest::equals_should_return_true_when_equal
+- org.mockito.internal.creation.DelegatingMethodTest::equals_should_return_true_when_self
+Chart_25:
+Closure_153:
+Failing tests: 2
+- com.google.javascript.jscomp.NormalizeTest::testDuplicateVarInExterns
+- com.google.javascript.jscomp.NormalizeTest::testMakeLocalNamesUnique
+JacksonDatabind_94:
+Failing tests: 1
+- com.fasterxml.jackson.databind.interop.IllegalTypesCheckTest::testC3P0Types
+JacksonXml_3:
+Failing tests: 1
+- com.fasterxml.jackson.dataformat.xml.stream.XmlParserNextXxxTest::testXmlAttributesWithNextTextValue
+Jsoup_7:
+Failing tests: 1
+- org.jsoup.nodes.DocumentTest::testNormalisesStructure
+Collections_28:
+Failing tests: 45
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testMapEntrySetIteratorEntrySetValue
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testSetEquals
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testSetHashCode
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionRemoveAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionRemove
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionIterator
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionIsEmpty
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionContains
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionRetainAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionToArray
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionToArray2
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testUnsupportedAdd
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapEntrySet::testCollectionContainsAll
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapIsEmpty
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapSize
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapContainsKey
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapContainsValue
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapEquals
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapGet
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapHashCode
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapToString
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testMapRemove
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testSetEquals
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionRemoveAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionRemove
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionIterator
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionIsEmpty
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionContains
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionRetainAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionToArray2
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testUnsupportedAdd
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionContainsAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapKeySet::testCollectionIteratorRemove
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionRemoveAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionRemove
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionIterator
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionIsEmpty
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionContains
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionRetainAll
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionToArray
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionToArray2
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testUnsupportedAdd
+- org.apache.commons.collections4.map.AbstractMapTest$TestMapValues::testCollectionContainsAll
+- org.apache.commons.collections4.multimap.AbstractMultiValuedMapTest$TestMultiValuedMapAsMap::testEntrySetRemoveChangesMap
+- org.apache.commons.collections4.trie.PatriciaTrieTest::testPrefixMapClear
+Collections_26:
+Failing tests: 1
+- org.apache.commons.collections4.keyvalue.MultiKeyTest::testEqualsAfterSerializationOfDerivedClass
+JacksonDatabind_87:
+Failing tests: 1
+- com.fasterxml.jackson.databind.deser.TestDateDeserialization::testDateUtilISO8601NoTimezoneNonDefault
+Lang_41:
+Failing tests: 2
+- org.apache.commons.lang.ClassUtilsTest::test_getShortClassName_Class
+- org.apache.commons.lang.ClassUtilsTest::test_getPackageName_Class
+Closure_114:
+Failing tests: 1
+- com.google.javascript.jscomp.NameAnalyzerTest::testAssignWithCall
+Closure_122:
+Failing tests: 3
+- com.google.javascript.jscomp.parsing.ParserTest::testSuspiciousBlockCommentWarning3
+- com.google.javascript.jscomp.parsing.ParserTest::testSuspiciousBlockCommentWarning4
+- com.google.javascript.jscomp.parsing.ParserTest::testSuspiciousBlockCommentWarning5
+Collections_27:
+Failing tests: 1
+- org.apache.commons.collections4.map.MultiValueMapTest::testUnsafeDeSerialization
+Jsoup_38:
+Failing tests: 1
+- org.jsoup.parser.HtmlParserTest::convertsImageToImg
+Cli_20:
+Failing tests: 1
+- org.apache.commons.cli.PosixParserTest::testStop3
+Cli_18:
+Failing tests: 1
+- org.apache.commons.cli.PosixParserTest::testStop2
+Compress_16:
+Failing tests: 1
+- org.apache.commons.compress.archivers.ArchiveStreamFactoryTest::aiffFilesAreNoTARs
+Csv_10:
+Failing tests: 1
+- org.apache.commons.csv.CSVPrinterTest::testHeader
+Math_67:
+Failing tests: 1
+- org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest::testQuinticMin
+Math_94:
+Failing tests: 1
+- org.apache.commons.math.util.MathUtilsTest::testGcd
+Compress_1:
+Failing tests: 1
+- org.apache.commons.compress.archivers.CpioTestCase::testCpioUnarchive
+Compress_6:
+Failing tests: 1
+- org.apache.commons.compress.archivers.zip.ZipArchiveEntryTest::testNotEquals
+Gson_10:
+Failing tests: 1
+- com.google.gson.functional.JsonAdapterAnnotationOnFieldsTest::testPrimitiveFieldAnnotationTakesPrecedenceOverDefault
+Codec_15:
+Failing tests: 1
+- org.apache.commons.codec.language.SoundexTest::testHWRuleEx1
+Codec_12:
+Failing tests: 12
+- org.apache.commons.codec.binary.Base32InputStreamTest::testSkipToEnd
+- org.apache.commons.codec.binary.Base32InputStreamTest::testCodec130
+- org.apache.commons.codec.binary.Base32InputStreamTest::testSkipWrongArgument
+- org.apache.commons.codec.binary.Base32InputStreamTest::testAvailable
+- org.apache.commons.codec.binary.Base32InputStreamTest::testSkipPastEnd
+- org.apache.commons.codec.binary.Base32InputStreamTest::testSkipBig
+- org.apache.commons.codec.binary.Base64InputStreamTest::testSkipToEnd
+- org.apache.commons.codec.binary.Base64InputStreamTest::testCodec130
+- org.apache.commons.codec.binary.Base64InputStreamTest::testSkipWrongArgument
+- org.apache.commons.codec.binary.Base64InputStreamTest::testAvailable
+- org.apache.commons.codec.binary.Base64InputStreamTest::testSkipPastEnd
+- org.apache.commons.codec.binary.Base64InputStreamTest::testSkipBig
+Math_78:
+Failing tests: 1
+- org.apache.commons.math.ode.events.EventStateTest::closeEvents
+JacksonXml_1:
+Failing tests: 3
+- com.fasterxml.jackson.dataformat.xml.lists.NestedUnwrappedLists180Test::testNestedUnwrappedLists180
+- com.fasterxml.jackson.dataformat.xml.lists.NestedUnwrappedListsTest::testNestedWithEmpty2
+- com.fasterxml.jackson.dataformat.xml.lists.NestedUnwrappedListsTest::testNestedWithEmpty
+Chart_16:
+Lang_7:
+Failing tests: 1
+- org.apache.commons.lang3.math.NumberUtilsTest::testCreateNumber
+Mockito_24:
+Failing tests: 2
+- org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest::should_return_zero_if_mock_is_compared_to_itself
+- org.mockitousage.bugs.ShouldMocksCompareToBeConsistentWithEqualsTest::should_compare_to_be_consistent_with_equals_when_comparing_the_same_reference
+Lang_9:
+Failing tests: 2
+- org.apache.commons.lang3.time.FastDateFormat_ParserTest::testLANG_832
+- org.apache.commons.lang3.time.FastDateParserTest::testLANG_832
+Jsoup_16:
+Failing tests: 2
+- org.jsoup.nodes.DocumentTypeTest::outerHtmlGeneration
+- org.jsoup.nodes.DocumentTypeTest::constructorValidationThrowsExceptionOnBlankName
+JacksonDatabind_39:
+Failing tests: 2
+- com.fasterxml.jackson.databind.jsontype.TestPolymorphicWithDefaultImpl::testUnknownTypeIDRecovery
+- com.fasterxml.jackson.databind.ser.TestJdkTypes::testInetAddress
+Jsoup_67:
+Failing tests: 1
+- org.jsoup.parser.HtmlParserTest::handlesDeepStack
+JacksonDatabind_3:
+Failing tests: 1
+- com.fasterxml.jackson.databind.deser.TestArrayDeserialization::testStringArray
+Cli_25:
+Failing tests: 1
+- org.apache.commons.cli.bug.BugCLI162Test::testLongLineChunkingIndentIgnored
+Collections_25:
+Failing tests: 1
+- org.apache.commons.collections4.IteratorUtilsTest::testCollatedIterator
+Time_10:
+Failing tests: 2
+- org.joda.time.TestDays::testFactory_daysBetween_RPartial_MonthDay
+- org.joda.time.TestMonths::testFactory_monthsBetween_RPartial_MonthDay
+Time_26:
+Failing tests: 8
+- org.joda.time.TestDateTimeZoneCutover::testWithSecondOfMinuteInDstChange
+- org.joda.time.TestDateTimeZoneCutover::testWithMinuteOfHourInDstChange
+- org.joda.time.TestDateTimeZoneCutover::testWithMinuteOfHourInDstChange_mockZone
+- org.joda.time.TestDateTimeZoneCutover::testBug2182444_usCentral
+- org.joda.time.TestDateTimeZoneCutover::testWithMillisOfSecondInDstChange_Paris_summer
+- org.joda.time.TestDateTimeZoneCutover::testWithHourOfDayInDstChange
+- org.joda.time.TestDateTimeZoneCutover::testWithMillisOfSecondInDstChange_NewYork_winter
+- org.joda.time.TestDateTimeZoneCutover::testBug2182444_ausNSW
+Compress_23:
+Failing tests: 1
+- org.apache.commons.compress.archivers.sevenz.SevenZFileTest::testCompressedHeaderWithNonDefaultDictionarySize
+JxPath_16:
+Failing tests: 4
+- org.apache.commons.jxpath.ri.model.dom.DOMModelTest::testAxisFollowing
+- org.apache.commons.jxpath.ri.model.dom.DOMModelTest::testAxisPreceding
+- org.apache.commons.jxpath.ri.model.jdom.JDOMModelTest::testAxisFollowing
+- org.apache.commons.jxpath.ri.model.jdom.JDOMModelTest::testAxisPreceding
+JxPath_19:
+Failing tests: 2
+- org.apache.commons.jxpath.ri.model.AliasedNamespaceIterationTest::testIterateJDOM
+- org.apache.commons.jxpath.ri.model.AliasedNamespaceIterationTest::testIterateDOM
+Chart_3:
+Csv_14:
+Failing tests: 6
+- org.apache.commons.csv.CSVPrinterTest::testEscapeNull1
+- org.apache.commons.csv.CSVPrinterTest::testEscapeNull4
+- org.apache.commons.csv.CSVPrinterTest::testEscapeNull5
+- org.apache.commons.csv.CSVPrinterTest::testEscapeBackslash1
+- org.apache.commons.csv.CSVPrinterTest::testEscapeBackslash4
+- org.apache.commons.csv.CSVPrinterTest::testEscapeBackslash5

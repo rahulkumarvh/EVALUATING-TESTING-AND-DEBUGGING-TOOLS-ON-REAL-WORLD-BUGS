@@ -1,0 +1,10 @@
+src.test.java.org.apache.commons.math.EvosuiteFrequency_ESTest
+src.test.java.org.apache.commons.math.EvosuiteFrequency_ESTest_scaffolding
+src.test.java.org.apache.commons.math.EvosuiteMultiStartUnivariateRealOptimizer_ESTest
+src.test.java.org.apache.commons.math.EvosuiteMultiStartUnivariateRealOptimizer_ESTest_scaffolding
+src.test.java.org.apache.commons.math.RandoopRegressionTest
+src.test.java.org.apache.commons.math.RandoopRegressionTest0
+src.test.java.org.apache.commons.math.RandoopRegressionTest1
+src.test.java.org.apache.commons.math.RandoopRegressionTest2
+src.test.java.org.apache.commons.math.RandoopRegressionTest3
+src.test.java.org.apache.commons.math.RandoopRegressionTest4

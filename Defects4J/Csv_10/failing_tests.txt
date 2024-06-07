@@ -1,0 +1,5 @@
+src.test.java.org.apache.commons.csv.EvosuiteCSVPrinter_ESTest
+src.test.java.org.apache.commons.csv.EvosuiteCSVPrinter_ESTest_scaffolding
+src.test.java.org.apache.commons.csv.RandoopRegressionTest
+src.test.java.org.apache.commons.csv.RandoopRegressionTest0
+src.test.java.org.apache.commons.csv.RandoopRegressionTest1

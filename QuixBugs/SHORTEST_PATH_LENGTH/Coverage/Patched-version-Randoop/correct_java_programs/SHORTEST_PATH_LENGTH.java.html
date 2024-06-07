@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SHORTEST_PATH_LENGTH.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">correct_java_programs</a> &gt; <span class="el_source">SHORTEST_PATH_LENGTH.java</span></div><h1>SHORTEST_PATH_LENGTH.java</h1><pre class="source lang-java linenums">package correct_java_programs;
+import java.util.*;
+
+import java_programs.Node;
+
+/**
+ *
+ * @author Angela Chen
+ */
+
+<span class="fc" id="L11">public class SHORTEST_PATH_LENGTH {</span>
+    public static int shortest_path_length(Map&lt;List&lt;Node&gt;, Integer&gt; length_by_edge, Node startnode, Node goalnode) {
+<span class="nc" id="L13">        int n = length_by_edge.size();</span>
+        // the shortest distance from source to each node
+<span class="nc" id="L15">        Map&lt;Node, Integer&gt; unvisitedNodes = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L16">        Set&lt;Node&gt; visitedNodes = new HashSet&lt;&gt;();</span>
+
+<span class="nc" id="L18">        unvisitedNodes.put(startnode, 0);</span>
+
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        while (!unvisitedNodes.isEmpty()) {</span>
+<span class="nc" id="L21">            Node node = getNodeWithMinDistance(unvisitedNodes);</span>
+<span class="nc" id="L22">            int distance = unvisitedNodes.get(node);</span>
+<span class="nc" id="L23">            unvisitedNodes.remove(node);</span>
+
+<span class="nc bnc" id="L25" title="All 2 branches missed.">            if (node.getValue() == goalnode.getValue()) {</span>
+<span class="nc" id="L26">                return distance;</span>
+            }
+<span class="nc" id="L28">            visitedNodes.add(node);</span>
+
+<span class="nc bnc" id="L30" title="All 2 branches missed.">            for (Node nextnode : node.getSuccessors()) {</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">                if (visitedNodes.contains(nextnode)) {</span>
+<span class="nc" id="L32">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L35" title="All 2 branches missed.">                if (unvisitedNodes.get(nextnode) == null) {</span>
+<span class="nc" id="L36">                    unvisitedNodes.put(nextnode, Integer.MAX_VALUE);</span>
+                }
+
+<span class="nc" id="L39">                unvisitedNodes.put(nextnode, Math.min(unvisitedNodes.get(nextnode),</span>
+<span class="nc" id="L40">                        distance + length_by_edge.get(Arrays.asList(node, nextnode))));</span>
+<span class="nc" id="L41">            }</span>
+<span class="nc" id="L42">        }</span>
+
+<span class="nc" id="L44">        return Integer.MAX_VALUE;</span>
+    }
+
+    public static Node getNodeWithMinDistance(Map&lt;Node,Integer&gt; list) {
+<span class="fc" id="L48">        Node minNode = null;</span>
+<span class="fc" id="L49">        int minDistance = Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        for (Node node : list.keySet()) {</span>
+<span class="nc" id="L51">            int distance = list.get(node);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if (distance &lt; minDistance) {</span>
+<span class="nc" id="L53">                minDistance = distance;</span>
+<span class="nc" id="L54">                minNode = node;</span>
+            }
+<span class="nc" id="L56">        }</span>
+<span class="nc" id="L57">        return minNode;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

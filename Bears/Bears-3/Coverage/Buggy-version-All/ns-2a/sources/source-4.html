@@ -1,0 +1,129 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SubscriberFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.pubsub.support</a>
+</div>
+
+<h1>Coverage Summary for Class: SubscriberFactory (org.springframework.cloud.gcp.pubsub.support)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">SubscriberFactory</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017-2018 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.pubsub.support;
+&nbsp;
+&nbsp;import com.google.api.gax.retrying.RetrySettings;
+&nbsp;import com.google.cloud.pubsub.v1.MessageReceiver;
+&nbsp;import com.google.cloud.pubsub.v1.Subscriber;
+&nbsp;import com.google.cloud.pubsub.v1.stub.SubscriberStub;
+&nbsp;import com.google.pubsub.v1.PullRequest;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface used by the {@link org.springframework.cloud.gcp.pubsub.core.PubSubTemplate} to create supporting
+&nbsp; * objects for consuming messages from Pub/Sub subscriptions.
+&nbsp; *
+&nbsp; * @author João André Martins
+&nbsp; * @author Mike Eltsufin
+&nbsp; */
+&nbsp;public interface SubscriberFactory {
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a {@link Subscriber} for the specified subscription name and wired it up to asynchronously
+&nbsp;	 * deliver messages to the provided {@link MessageReceiver}.
+&nbsp;	 * @param subscriptionName the name of the subscription
+&nbsp;	 * @param receiver the callback for receiving messages asynchronously
+&nbsp;	 * @return the {@link Subscriber} that was created to bind the receiver to the subscription
+&nbsp;	 */
+&nbsp;	Subscriber createSubscriber(String subscriptionName, MessageReceiver receiver);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a {@link PullRequest} for synchronously pulling a number of messages from
+&nbsp;	 * a Google Cloud Pub/Sub subscription.
+&nbsp;	 * @param subscriptionName the name of the subscription
+&nbsp;	 * @param maxMessages the maximum number of pulled messages
+&nbsp;	 * @param returnImmediately causes the pull request to return immediately even
+&nbsp;	 * if subscription doesn&#39;t contain enough messages to satisfy {@code maxMessages}
+&nbsp;	 * @return the pull request that can be executed using a {@link SubscriberStub}
+&nbsp;	 */
+&nbsp;	PullRequest createPullRequest(String subscriptionName, Integer maxMessages, Boolean returnImmediately);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a {@link SubscriberStub} that is needed to execute {@link PullRequest}s.
+&nbsp;	 * @param retrySettings parameters for retrying pull requests when they fail, including
+&nbsp;	 * jitter logic, timeout, and exponential backoff
+&nbsp;	 * @return the {@link SubscriberStub} used for executing {@link PullRequest}s
+&nbsp;	 */
+&nbsp;	SubscriberStub createSubscriberStub(RetrySettings retrySettings);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

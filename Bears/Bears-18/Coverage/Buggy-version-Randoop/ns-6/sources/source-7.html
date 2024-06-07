@@ -1,0 +1,288 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ContainerDeserializerBase</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.std</a>
+</div>
+
+<h1>Coverage Summary for Class: ContainerDeserializerBase (com.fasterxml.jackson.databind.deser.std)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ContainerDeserializerBase</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/39)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser.std;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.lang.reflect.InvocationTargetException;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.deser.NullValueProvider;
+&nbsp;import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
+&nbsp;import com.fasterxml.jackson.databind.deser.ValueInstantiator;
+&nbsp;import com.fasterxml.jackson.databind.deser.impl.NullsConstantProvider;
+&nbsp;import com.fasterxml.jackson.databind.type.TypeFactory;
+&nbsp;import com.fasterxml.jackson.databind.util.AccessPattern;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;
+&nbsp;/**
+&nbsp; * Intermediate base deserializer class that adds more shared accessor
+&nbsp; * so that other classes can access information about contained (value) types
+&nbsp; */
+&nbsp;@SuppressWarnings(&quot;serial&quot;)
+&nbsp;public abstract class ContainerDeserializerBase&lt;T&gt;
+&nbsp;    extends StdDeserializer&lt;T&gt;
+&nbsp;    implements ValueInstantiator.Gettable // since 2.9
+&nbsp;{
+&nbsp;    protected final JavaType _containerType;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handler we need for dealing with nulls.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final NullValueProvider _nullProvider;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Specific override for this instance (from proper, or global per-type overrides)
+&nbsp;     * to indicate whether single value may be taken to mean an unwrapped one-element array
+&nbsp;     * or not. If null, left to global defaults.
+&nbsp;     *
+&nbsp;     * @since 2.9 (demoted from sub-classes where added in 2.7)
+&nbsp;     */
+&nbsp;    protected final Boolean _unwrapSingle;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Marker flag set if the &lt;code&gt;_nullProvider&lt;/code&gt; indicates that all null
+&nbsp;     * content values should be skipped (instead of being possibly converted).
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final boolean _skipNullValues;
+&nbsp;
+&nbsp;    protected ContainerDeserializerBase(JavaType selfType,
+&nbsp;            NullValueProvider nuller, Boolean unwrapSingle) {
+<b class="nc">&nbsp;        super(selfType);</b>
+<b class="nc">&nbsp;        _containerType = selfType;</b>
+<b class="nc">&nbsp;        _unwrapSingle = unwrapSingle;</b>
+<b class="nc">&nbsp;        _nullProvider = nuller;</b>
+<b class="nc">&nbsp;        _skipNullValues = NullsConstantProvider.isSkipper(nuller);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected ContainerDeserializerBase(JavaType selfType) {
+<b class="nc">&nbsp;        this(selfType, null, null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected ContainerDeserializerBase(ContainerDeserializerBase&lt;?&gt; base) {
+<b class="nc">&nbsp;        this(base, base._nullProvider, base._unwrapSingle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected ContainerDeserializerBase(ContainerDeserializerBase&lt;?&gt; base,
+&nbsp;            NullValueProvider nuller, Boolean unwrapSingle) {
+<b class="nc">&nbsp;        super(base._containerType);</b>
+<b class="nc">&nbsp;        _containerType = base._containerType;</b>
+<b class="nc">&nbsp;        _nullProvider = nuller;</b>
+<b class="nc">&nbsp;        _unwrapSingle = unwrapSingle;</b>
+<b class="nc">&nbsp;        _skipNullValues = NullsConstantProvider.isSkipper(nuller);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Overrides
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override // since 2.9
+<b class="nc">&nbsp;    public JavaType getValueType() { return _containerType; }</b>
+&nbsp;    
+&nbsp;    @Override // since 2.9
+&nbsp;    public Boolean supportsUpdate(DeserializationConfig config) {
+<b class="nc">&nbsp;        return Boolean.TRUE;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public SettableBeanProperty findBackReference(String refName) {
+<b class="nc">&nbsp;        JsonDeserializer&lt;Object&gt; valueDeser = getContentDeserializer();</b>
+<b class="nc">&nbsp;        if (valueDeser == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(String.format(</b>
+&nbsp;                    &quot;Can not handle managed/back reference &#39;%s&#39;: type: container deserializer of type %s returned null for &#39;getContentDeserializer()&#39;&quot;,
+<b class="nc">&nbsp;                    refName, getClass().getName()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return valueDeser.findBackReference(refName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Extended API
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Accessor for declared type of contained value elements; either exact
+&nbsp;     * type, or one of its supertypes.
+&nbsp;     */
+&nbsp;    public JavaType getContentType() {
+<b class="nc">&nbsp;        if (_containerType == null) {</b>
+<b class="nc">&nbsp;            return TypeFactory.unknownType(); // should never occur but...</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return _containerType.getContentType();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Accesor for deserializer use for deserializing content values.
+&nbsp;     */
+&nbsp;    public abstract JsonDeserializer&lt;Object&gt; getContentDeserializer();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ValueInstantiator getValueInstantiator() {
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override // since 2.9
+&nbsp;    public AccessPattern getEmptyAccessPattern() {
+&nbsp;        // 02-Feb-2017, tatu: Empty containers are usually constructed as needed
+&nbsp;        //   and may not be shared; for some deserializers this may be further refined.
+<b class="nc">&nbsp;        return AccessPattern.DYNAMIC;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Override // since 2.9
+&nbsp;    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+<b class="nc">&nbsp;        ValueInstantiator vi = getValueInstantiator();</b>
+<b class="nc">&nbsp;        if (vi == null || !vi.canCreateUsingDefault()) {</b>
+<b class="nc">&nbsp;            JavaType type = getValueType();</b>
+<b class="nc">&nbsp;            ctxt.reportBadDefinition(type,</b>
+<b class="nc">&nbsp;                    String.format(&quot;Can not create empty instance of %s, no default Creator&quot;, type));</b>
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            return vi.createUsingDefault(ctxt);</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            return ClassUtil.throwAsMappingException(ctxt, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Shared methods for sub-classes
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method called by various Map(-like) deserializers.
+&nbsp;     */
+&nbsp;    protected &lt;BOGUS&gt; BOGUS wrapAndThrow(Throwable t, Object ref, String key) throws IOException
+&nbsp;    {
+&nbsp;        // to handle StackOverflow:
+<b class="nc">&nbsp;        while (t instanceof InvocationTargetException &amp;&amp; t.getCause() != null) {</b>
+<b class="nc">&nbsp;            t = t.getCause();</b>
+&nbsp;        }
+&nbsp;        // Errors and &quot;plain&quot; IOExceptions to be passed as is
+<b class="nc">&nbsp;        ClassUtil.throwIfError(t);</b>
+&nbsp;        // ... except for mapping exceptions
+<b class="nc">&nbsp;        if (t instanceof IOException &amp;&amp; !(t instanceof JsonMappingException)) {</b>
+<b class="nc">&nbsp;            throw (IOException) t;</b>
+&nbsp;        }
+&nbsp;        // for [databind#1141]
+<b class="nc">&nbsp;        throw JsonMappingException.wrapWithPath(t, ref,</b>
+<b class="nc">&nbsp;                ClassUtil.nonNull(key, &quot;N/A&quot;));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:12</div>
+</div>
+</body>
+</html>

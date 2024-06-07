@@ -1,0 +1,85 @@
+* Starting client
+* Connecting to master process on port 13017
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-18/buggy/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-18/buggy/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.9.0.pr3/jackson-annotations-2.9.0.pr3.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.9.0.pr3/jackson-core-2.9.0.pr3.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 15:10:37.814 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-18/buggy/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-18/buggy/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector.seed
+* Total number of test goals: 
+  - Line 522
+  - Branch 391
+  - Exception 0
+  - MutationFactory 385
+  - Output 488
+  - Method 88
+  - MethodNoException 88
+  - CBranchFitnessFactory 391
+* Using seed 1712002230316
+* Starting evolution
+* Search finished after 67s and 33 generations, 12087 statements, best individual has fitness: 2550.6481534051377
+* Writing sequences to pool
+[MASTER] 15:11:50.542 [pool-2-thread-1] WARN  TimeController - Phase SEARCH lasted too long, 7 seconds more than allowed.
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 21%
+* Total number of goals: 522
+* Number of covered goals: 110
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 11%
+* Total number of goals: 391
+* Number of covered goals: 44
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 57
+* Number of covered goals: 57
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 12%
+* Total number of goals: 385
+* Number of covered goals: 45
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 11%
+* Total number of goals: 488
+* Number of covered goals: 53
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 81%
+* Total number of goals: 88
+* Number of covered goals: 71
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 33%
+* Total number of goals: 88
+* Number of covered goals: 29
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 11%
+* Total number of goals: 391
+* Number of covered goals: 44
+* Generated 89 tests with total length 287
+* Resulting test suite's coverage: 35% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 9%
+* Compiling and checking tests
+* Writing JUnit test case 'JacksonAnnotationIntrospector_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-18/buggy/.evosuite/tmp_2024_04_01_15_10_27/tests
+* Done!
+

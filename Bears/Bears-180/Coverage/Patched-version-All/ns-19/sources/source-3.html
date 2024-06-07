@@ -1,0 +1,302 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GcsSession</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.integration.gcp.storage</a>
+</div>
+
+<h1>Coverage Summary for Class: GcsSession (org.springframework.integration.gcp.storage)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GcsSession</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.integration.gcp.storage;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.InputStream;
+&nbsp;import java.io.OutputStream;
+&nbsp;import java.nio.ByteBuffer;
+&nbsp;import java.nio.channels.Channels;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;import java.util.stream.Stream;
+&nbsp;
+&nbsp;import com.google.cloud.WriteChannel;
+&nbsp;import com.google.cloud.storage.Blob;
+&nbsp;import com.google.cloud.storage.BlobId;
+&nbsp;import com.google.cloud.storage.BlobInfo;
+&nbsp;import com.google.cloud.storage.BucketInfo;
+&nbsp;import com.google.cloud.storage.Storage;
+&nbsp;import com.google.cloud.storage.StorageException;
+&nbsp;import org.apache.commons.logging.Log;
+&nbsp;import org.apache.commons.logging.LogFactory;
+&nbsp;
+&nbsp;import org.springframework.integration.file.remote.session.Session;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;import org.springframework.util.StreamUtils;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;public class GcsSession implements Session&lt;BlobInfo&gt; {
+&nbsp;
+&nbsp;	private Storage gcs;
+&nbsp;
+<b class="nc">&nbsp;	private static final Log LOGGER = LogFactory.getLog(GcsSession.class);</b>
+&nbsp;
+&nbsp;	private static final String SEPARATOR = &quot;/&quot;;
+&nbsp;
+<b class="nc">&nbsp;	public GcsSession(Storage gcs) {</b>
+<b class="nc">&nbsp;		Assert.notNull(gcs, &quot;The GCS client can&#39;t be null.&quot;);</b>
+<b class="nc">&nbsp;		this.gcs = gcs;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean remove(String path) throws IOException {
+<b class="nc">&nbsp;		String[] tokens = getBucketAndObjectFromPath(path);</b>
+<b class="nc">&nbsp;		Assert.state(tokens.length == 1 || tokens.length == 2,</b>
+&nbsp;				&quot;Path must be in the form of [bucket] or [bucket]/[blob name]&quot;);
+&nbsp;
+<b class="nc">&nbsp;		return tokens.length == 1</b>
+<b class="nc">&nbsp;				? this.gcs.delete(tokens[0])</b>
+<b class="nc">&nbsp;				: this.gcs.delete(tokens[0], tokens[1]);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public BlobInfo[] list(String path) throws IOException {
+&nbsp;		// TODO(joaomartins): Only supports listing buckets, not folders.
+&nbsp;
+<b class="nc">&nbsp;		Collection&lt;BlobInfo&gt; blobs = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;		for (Blob blob : this.gcs.list(path).iterateAll()) {</b>
+<b class="nc">&nbsp;			blobs.add(blob);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		return blobs.toArray(new BlobInfo[blobs.size()]);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void read(String source, OutputStream outputStream) throws IOException {
+<b class="nc">&nbsp;		String[] tokens = getBucketAndObjectFromPath(source);</b>
+<b class="nc">&nbsp;		Assert.state(tokens.length == 2, &quot;Can only read files. not buckets.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		try (OutputStream os = outputStream) {</b>
+<b class="nc">&nbsp;			os.write(this.gcs.readAllBytes(tokens[0], tokens[1]));</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void write(InputStream inputStream, String destination) throws IOException {
+<b class="nc">&nbsp;		String[] tokens = getBucketAndObjectFromPath(destination);</b>
+<b class="nc">&nbsp;		Assert.state(tokens.length == 2, &quot;Can only write to files, not buckets.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		BlobInfo gcsBlobInfo = BlobInfo.newBuilder(BlobId.of(tokens[0], tokens[1])).build();</b>
+&nbsp;
+<b class="nc">&nbsp;		try (InputStream is = inputStream) {</b>
+<b class="nc">&nbsp;			try (WriteChannel channel = this.gcs.writer(gcsBlobInfo)) {</b>
+<b class="nc">&nbsp;				channel.write(ByteBuffer.wrap(StreamUtils.copyToByteArray(is)));</b>
+<b class="nc">&nbsp;			}</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void append(InputStream inputStream, String destination) throws IOException {
+&nbsp;		// TODO(joaomartins): We could do compose here, but it assumes that InputStream is first copied to a
+&nbsp;		// GCS object that we can then &quot;compose&quot; to the original object.
+<b class="nc">&nbsp;		throw new UnsupportedOperationException(&quot;Appending isn&#39;t supported by Google Cloud Storage.&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean mkdir(String directory) throws IOException {
+&nbsp;		try {
+<b class="nc">&nbsp;			this.gcs.create(BucketInfo.of(directory));</b>
+<b class="nc">&nbsp;			return true;</b>
+&nbsp;		}
+<b class="nc">&nbsp;		catch (StorageException se) {</b>
+<b class="nc">&nbsp;			LOGGER.info(&quot;Error creating the GCS bucket.&quot;, se);</b>
+<b class="nc">&nbsp;			return false;</b>
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean rmdir(String directory) throws IOException {
+<b class="nc">&nbsp;		return this.gcs.delete(directory);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void rename(String pathFrom, String pathTo) throws IOException {
+<b class="nc">&nbsp;		String[] fromTokens = getBucketAndObjectFromPath(pathFrom);</b>
+<b class="nc">&nbsp;		String[] toTokens = getBucketAndObjectFromPath(pathTo);</b>
+&nbsp;
+&nbsp;		// There is currently no way to rename/move things in GCS, so we&#39;ll have to copy and remove.
+<b class="nc">&nbsp;		BlobId source = BlobId.of(fromTokens[0], fromTokens[1]);</b>
+<b class="nc">&nbsp;		BlobId target = BlobId.of(toTokens[0], toTokens[1]);</b>
+<b class="nc">&nbsp;		Storage.CopyRequest copyRequest = Storage.CopyRequest.of(source, target);</b>
+<b class="nc">&nbsp;		this.gcs.copy(copyRequest);</b>
+&nbsp;
+<b class="nc">&nbsp;		this.gcs.delete(source);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void close() {
+&nbsp;		// GCS session doesn&#39;t need to be closed.
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean isOpen() {
+<b class="nc">&nbsp;		return true;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean exists(String path) throws IOException {
+<b class="nc">&nbsp;		String[] tokens = getBucketAndObjectFromPath(path);</b>
+&nbsp;
+<b class="nc">&nbsp;		return tokens.length == 1</b>
+<b class="nc">&nbsp;				? this.gcs.get(path) != null</b>
+<b class="nc">&nbsp;				: this.gcs.get(tokens[0], tokens[1]) != null;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String[] listNames(String path) throws IOException {
+<b class="nc">&nbsp;		List&lt;String&gt; names = Stream.of(list(path))</b>
+<b class="nc">&nbsp;				.map(BlobInfo::getName)</b>
+<b class="nc">&nbsp;				.collect(Collectors.toList());</b>
+&nbsp;
+<b class="nc">&nbsp;		return names.toArray(new String[names.size()]);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public InputStream readRaw(String source) throws IOException {
+<b class="nc">&nbsp;		String[] tokens = getBucketAndObjectFromPath(source);</b>
+<b class="nc">&nbsp;		Assert.state(tokens.length == 2, &quot;Can only write to files, not buckets.&quot;);</b>
+<b class="nc">&nbsp;		return Channels.newInputStream(this.gcs.reader(tokens[0], tokens[1]));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean finalizeRaw() throws IOException {
+<b class="nc">&nbsp;		return true;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public Object getClientInstance() {
+<b class="nc">&nbsp;		return this.gcs;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private String[] getBucketAndObjectFromPath(String path) throws IOException {
+&nbsp;		// Assumes paths of the form bucket/folder/blob
+<b class="nc">&nbsp;		Assert.hasText(path, &quot;Path can&#39;t be empty.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		return path.split(SEPARATOR, 2);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 23:17</div>
+</div>
+</body>
+</html>

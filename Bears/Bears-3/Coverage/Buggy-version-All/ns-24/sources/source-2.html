@@ -1,0 +1,330 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > StackdriverTraceAutoConfiguration</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.autoconfigure.trace</a>
+</div>
+
+<h1>Coverage Summary for Class: StackdriverTraceAutoConfiguration (org.springframework.cloud.gcp.autoconfigure.trace)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StackdriverTraceAutoConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">StackdriverTraceAutoConfiguration$TraceConsumerConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.cloud.gcp.autoconfigure.trace;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.security.SecureRandom;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Random;
+&nbsp;import java.util.concurrent.Executors;
+&nbsp;import java.util.concurrent.ScheduledExecutorService;
+&nbsp;
+&nbsp;import com.google.api.gax.core.CredentialsProvider;
+&nbsp;import com.google.api.gax.core.ExecutorProvider;
+&nbsp;import com.google.api.gax.core.FixedCredentialsProvider;
+&nbsp;import com.google.api.gax.core.FixedExecutorProvider;
+&nbsp;import com.google.auth.oauth2.GoogleCredentials;
+&nbsp;import com.google.cloud.trace.v1.TraceServiceClient;
+&nbsp;import com.google.cloud.trace.v1.TraceServiceSettings;
+&nbsp;import com.google.cloud.trace.v1.consumer.ScheduledBufferingTraceConsumer;
+&nbsp;import com.google.cloud.trace.v1.consumer.TraceConsumer;
+&nbsp;import com.google.cloud.trace.v1.util.RoughTraceSizer;
+&nbsp;import com.google.cloud.trace.v1.util.Sizer;
+&nbsp;import com.google.devtools.cloudtrace.v1.Trace;
+&nbsp;
+&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+&nbsp;import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+&nbsp;import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+&nbsp;import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+&nbsp;import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+&nbsp;import org.springframework.boot.context.properties.EnableConfigurationProperties;
+&nbsp;import org.springframework.cloud.commons.util.IdUtils;
+&nbsp;import org.springframework.cloud.gcp.core.GcpProjectIdProvider;
+&nbsp;import org.springframework.cloud.gcp.trace.TraceServiceClientTraceConsumer;
+&nbsp;import org.springframework.cloud.gcp.trace.sleuth.LabelExtractor;
+&nbsp;import org.springframework.cloud.gcp.trace.sleuth.StackdriverTraceSpanListener;
+&nbsp;import org.springframework.cloud.sleuth.Sampler;
+&nbsp;import org.springframework.cloud.sleuth.SpanAdjuster;
+&nbsp;import org.springframework.cloud.sleuth.SpanNamer;
+&nbsp;import org.springframework.cloud.sleuth.SpanReporter;
+&nbsp;import org.springframework.cloud.sleuth.TraceKeys;
+&nbsp;import org.springframework.cloud.sleuth.Tracer;
+&nbsp;import org.springframework.cloud.sleuth.autoconfig.TraceAutoConfiguration;
+&nbsp;import org.springframework.cloud.sleuth.log.SpanLogger;
+&nbsp;import org.springframework.cloud.sleuth.sampler.PercentageBasedSampler;
+&nbsp;import org.springframework.cloud.sleuth.sampler.SamplerProperties;
+&nbsp;import org.springframework.cloud.sleuth.trace.DefaultTracer;
+&nbsp;import org.springframework.context.annotation.Bean;
+&nbsp;import org.springframework.context.annotation.Configuration;
+&nbsp;import org.springframework.context.annotation.Import;
+&nbsp;import org.springframework.context.annotation.Primary;
+&nbsp;import org.springframework.core.env.Environment;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Ray Tsang
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;@Configuration
+&nbsp;@EnableConfigurationProperties({ SamplerProperties.class, GcpTraceProperties.class })
+&nbsp;@ConditionalOnProperty(value = &quot;spring.cloud.gcp.trace.enabled&quot;, matchIfMissing = true)
+&nbsp;@ConditionalOnClass(TraceConsumer.class)
+&nbsp;@Import(StackdriverTraceAutoConfiguration.TraceConsumerConfiguration.class)
+&nbsp;@AutoConfigureBefore(TraceAutoConfiguration.class)
+<b class="nc">&nbsp;public class StackdriverTraceAutoConfiguration {</b>
+&nbsp;
+&nbsp;	private GcpProjectIdProvider finalProjectIdProvider;
+&nbsp;
+&nbsp;	private CredentialsProvider finalCredentialsProvider;
+&nbsp;
+&nbsp;	public StackdriverTraceAutoConfiguration(GcpProjectIdProvider gcpProjectIdProvider,
+&nbsp;			CredentialsProvider credentialsProvider,
+<b class="nc">&nbsp;			GcpTraceProperties gcpTraceProperties) throws IOException {</b>
+<b class="nc">&nbsp;		this.finalProjectIdProvider = gcpTraceProperties.getProjectId() != null</b>
+&nbsp;				? gcpTraceProperties::getProjectId
+&nbsp;				: gcpProjectIdProvider;
+<b class="nc">&nbsp;		this.finalCredentialsProvider = gcpTraceProperties.getCredentials().getLocation() != null</b>
+<b class="nc">&nbsp;				? FixedCredentialsProvider.create(GoogleCredentials.fromStream(</b>
+<b class="nc">&nbsp;						gcpTraceProperties.getCredentials().getLocation().getInputStream())</b>
+<b class="nc">&nbsp;				.createScoped(gcpTraceProperties.getCredentials().getScopes()))</b>
+&nbsp;				: credentialsProvider;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Bean
+&nbsp;	@ConditionalOnMissingBean
+&nbsp;	public Sampler defaultTraceSampler(SamplerProperties config) {
+<b class="nc">&nbsp;		return new PercentageBasedSampler(config);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Bean
+&nbsp;	@ConditionalOnMissingBean
+&nbsp;	public Random randomForSpanIds() {
+<b class="nc">&nbsp;		return new SecureRandom();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Bean
+&nbsp;	@ConditionalOnMissingBean
+&nbsp;	public SpanReporter traceSpanReporter(Environment environment,
+&nbsp;			LabelExtractor labelExtractor,
+&nbsp;			List&lt;SpanAdjuster&gt; spanAdjusters, TraceConsumer traceConsumer) {
+<b class="nc">&nbsp;		String instanceId = IdUtils.getDefaultInstanceId(environment);</b>
+<b class="nc">&nbsp;		return new StackdriverTraceSpanListener(instanceId,</b>
+<b class="nc">&nbsp;				this.finalProjectIdProvider.getProjectId(), labelExtractor,	spanAdjusters,</b>
+&nbsp;				traceConsumer);
+&nbsp;	}
+&nbsp;
+&nbsp;	@Bean
+&nbsp;	@ConditionalOnMissingBean(Tracer.class)
+&nbsp;	public Tracer sleuthTracer(Sampler sampler, Random random,
+&nbsp;			SpanNamer spanNamer, SpanLogger spanLogger,
+&nbsp;			SpanReporter spanReporter, TraceKeys traceKeys) {
+<b class="nc">&nbsp;		return new DefaultTracer(sampler, random, spanNamer, spanLogger,</b>
+&nbsp;				spanReporter, true, traceKeys);
+&nbsp;	}
+&nbsp;
+&nbsp;	@Bean
+&nbsp;	@ConditionalOnMissingBean
+&nbsp;	public LabelExtractor traceLabelExtractor(TraceKeys traceKeys) {
+<b class="nc">&nbsp;		return new LabelExtractor(traceKeys);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Configuration
+&nbsp;	@ConditionalOnMissingBean(TraceConsumer.class)
+<b class="nc">&nbsp;	public class TraceConsumerConfiguration {</b>
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean(name = &quot;traceExecutorProvider&quot;)
+&nbsp;		public ExecutorProvider traceExecutorProvider(GcpTraceProperties gcpTraceProperties) {
+<b class="nc">&nbsp;			return FixedExecutorProvider.create(</b>
+<b class="nc">&nbsp;					Executors.newScheduledThreadPool(gcpTraceProperties.getExecutorThreads()));</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean
+&nbsp;		public TraceServiceClient traceServiceClient(
+&nbsp;				@Qualifier(&quot;traceExecutorProvider&quot;) ExecutorProvider executorProvider)
+&nbsp;				throws IOException {
+<b class="nc">&nbsp;			return TraceServiceClient.create(</b>
+<b class="nc">&nbsp;					TraceServiceSettings.newBuilder()</b>
+<b class="nc">&nbsp;					.setCredentialsProvider(</b>
+<b class="nc">&nbsp;							StackdriverTraceAutoConfiguration.this.finalCredentialsProvider)</b>
+<b class="nc">&nbsp;					.setExecutorProvider(executorProvider)</b>
+<b class="nc">&nbsp;					.build());</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean(name = &quot;scheduledBufferingExecutorService&quot;)
+&nbsp;		public ScheduledExecutorService scheduledBufferingExecutorService() {
+<b class="nc">&nbsp;			return Executors.newSingleThreadScheduledExecutor();</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean(name = &quot;traceServiceClientTraceConsumer&quot;)
+&nbsp;		public TraceServiceClientTraceConsumer traceServiceClientTraceConsumer(
+&nbsp;				TraceServiceClient traceServiceClient) {
+<b class="nc">&nbsp;			return new TraceServiceClientTraceConsumer(</b>
+<b class="nc">&nbsp;					StackdriverTraceAutoConfiguration.this.finalProjectIdProvider.getProjectId(),</b>
+&nbsp;					traceServiceClient);
+&nbsp;
+&nbsp;		}
+&nbsp;
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean
+&nbsp;		public Sizer&lt;Trace&gt; traceSizer() {
+<b class="nc">&nbsp;			return new RoughTraceSizer();</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean(name = &quot;traceConsumerExecutorService&quot;)
+&nbsp;		public ScheduledExecutorService traceConsumerExecutorService(
+&nbsp;				GcpTraceProperties gcpTraceProperties) {
+<b class="nc">&nbsp;			return Executors.newScheduledThreadPool(gcpTraceProperties.getExecutorThreads());</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		@Primary
+&nbsp;		@Bean
+&nbsp;		@ConditionalOnMissingBean(name = &quot;traceConsumer&quot;)
+&nbsp;		public TraceConsumer traceConsumer(
+&nbsp;				TraceServiceClientTraceConsumer traceServiceClientTraceConsumer,
+&nbsp;				Sizer&lt;Trace&gt; traceSizer,
+&nbsp;				@Qualifier(&quot;scheduledBufferingExecutorService&quot;)
+&nbsp;						ScheduledExecutorService executorService,
+&nbsp;				GcpTraceProperties gcpTraceProperties) {
+<b class="nc">&nbsp;			return new ScheduledBufferingTraceConsumer(</b>
+&nbsp;					traceServiceClientTraceConsumer,
+<b class="nc">&nbsp;					traceSizer, gcpTraceProperties.getBufferSizeBytes(),</b>
+<b class="nc">&nbsp;					gcpTraceProperties.getScheduledDelaySeconds(), executorService);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

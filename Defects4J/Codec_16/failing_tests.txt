@@ -1,0 +1,6 @@
+src.test.org.apache.commons.codec.EvosuiteBase32_ESTest
+src.test.org.apache.commons.codec.EvosuiteBase32_ESTest_scaffolding
+src.test.org.apache.commons.codec.RandoopRegressionTest
+src.test.org.apache.commons.codec.RandoopRegressionTest0
+src.test.org.apache.commons.codec.RandoopRegressionTest1
+src.test.org.apache.commons.codec.RandoopRegressionTest2

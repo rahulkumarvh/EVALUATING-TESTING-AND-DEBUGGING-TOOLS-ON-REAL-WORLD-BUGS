@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LIS_TEST.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">java_testcases.junit.crt_program</a> &gt; <span class="el_source">LIS_TEST.java</span></div><h1>LIS_TEST.java</h1><pre class="source lang-java linenums">package java_testcases.junit.crt_program;
+
+
+<span class="fc" id="L4">public class LIS_TEST {</span>
+    @org.junit.Test(timeout = 3000)
+    public void test_0() throws java.lang.Exception {
+<span class="fc" id="L7">        int result = correct_java_programs.LIS.lis(new int[]{4,1,5,3,7,6,2});</span>
+<span class="fc" id="L8">        org.junit.Assert.assertEquals( (int) 3, result);</span>
+<span class="fc" id="L9">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_1() throws java.lang.Exception {
+<span class="fc" id="L13">        int result = correct_java_programs.LIS.lis(new int[]{10,22,9,33,21,50,41,60,80});</span>
+<span class="fc" id="L14">        org.junit.Assert.assertEquals( (int) 6, result);</span>
+<span class="fc" id="L15">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_2() throws java.lang.Exception {
+<span class="fc" id="L19">        int result = correct_java_programs.LIS.lis(new int[]{7,10,9,2,3,8,1});</span>
+<span class="fc" id="L20">        org.junit.Assert.assertEquals( (int) 3, result);</span>
+<span class="fc" id="L21">    }</span>
+
+    @org.junit.Test(timeout = 3000)
+    public void test_3() throws java.lang.Exception {
+<span class="fc" id="L25">        int result = correct_java_programs.LIS.lis(new int[]{9,11,2,13,7,15});</span>
+<span class="fc" id="L26">        org.junit.Assert.assertEquals( (int) 4, result);</span>
+<span class="fc" id="L27">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,198 @@
+Running ant (compile.tests)................................................ FAIL
+Executed command:  cd /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version && /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/major/bin/ant -f /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml -Dd4j.home=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j -Dd4j.dir.projects=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects -Dbasedir=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version -Dbuild.compiler=javac1.7  compile.tests 2>&1
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=1G; support was removed in 8.0
+Buildfile: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml
+
+test-offline:
+
+get-deps:
+
+gson-from-maven.compile:
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/maven-build.xml:73: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+
+compile:
+
+gson-from-maven.compile-tests:
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/maven-build.xml:98: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 4 source files to /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/target/test-classes
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.6
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Object.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Throwable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Class.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Object.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation': class file for jdk.Profile+Annotation not found
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Throwable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Class.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/AutoCloseable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/AutoCloseable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/System.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/System.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/PrintStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/PrintStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/String.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/String.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FilterOutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FilterOutputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/OutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/OutputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Locale.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Locale.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/IOException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/IOException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Number.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Number.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Float.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Float.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Character.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Character.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Boolean.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Boolean.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/math/BigInteger.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/math/BigInteger.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Set.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Set.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Map.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Map.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Map$Entry.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Appendable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Appendable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Closeable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Closeable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Flushable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Flushable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Type.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Type.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Error.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Error.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Exception.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Exception.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/RuntimeException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/RuntimeException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Byte.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Byte.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Short.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Short.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Long.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Long.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Double.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Double.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Void.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Void.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Reader.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Reader.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/NullPointerException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/NullPointerException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Enum.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Enum.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/IllegalArgumentException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/IllegalArgumentException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Field.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Field.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/IllegalStateException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/IllegalStateException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Writer.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Writer.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:404: warning: [deprecation] JsonNull() in JsonNull has been deprecated
+    [javac]         com.google.gson.JsonNull jsonNull1 = new com.google.gson.JsonNull();
+    [javac]                                              ^
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/UnsupportedOperationException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/UnsupportedOperationException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:431: warning: [deprecation] JsonNull() in JsonNull has been deprecated
+    [javac]         com.google.gson.JsonNull jsonNull1 = new com.google.gson.JsonNull();
+    [javac]                                              ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:458: warning: [deprecation] JsonNull() in JsonNull has been deprecated
+    [javac]         com.google.gson.JsonNull jsonNull0 = new com.google.gson.JsonNull();
+    [javac]                                              ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:548: warning: [deprecation] JsonNull() in JsonNull has been deprecated
+    [javac]         com.google.gson.JsonNull jsonNull0 = new com.google.gson.JsonNull();
+    [javac]                                              ^
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/EOFException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/EOFException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:2732: error: cannot find symbol
+    [javac]         java.util.Spliterator<com.google.gson.JsonElement> jsonElementSpliterator1 = jsonArray0.spliterator();
+    [javac]                                                                                                ^
+    [javac]   symbol:   method spliterator()
+    [javac]   location: variable jsonArray0 of type JsonArray
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:3813: error: cannot find symbol
+    [javac]         java.util.Spliterator<com.google.gson.JsonElement> jsonElementSpliterator11 = jsonArray10.spliterator();
+    [javac]                                                                                                  ^
+    [javac]   symbol:   method spliterator()
+    [javac]   location: variable jsonArray10 of type JsonArray
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java:3950: error: cannot find symbol
+    [javac]         java.util.Spliterator<com.google.gson.JsonElement> jsonElementSpliterator12 = jsonArray3.spliterator();
+    [javac]                                                                                                 ^
+    [javac]   symbol:   method spliterator()
+    [javac]   location: variable jsonArray3 of type JsonArray
+    [javac] Note: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/src/test/java/com/google/gson/RegressionTest0.java has additional uses or overrides of a deprecated API.
+    [javac] 3 errors
+    [javac] 100 warnings
+
+BUILD FAILED
+/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Gson_10/Buggy-Version/gson/maven-build.xml:98: Compile failed; see the compiler error output for details.
+
+Total time: 2 seconds
+Cannot compile test suite! at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/d4j/d4j-test line 134.
+Compilation failed in require at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/defects4j line 195.

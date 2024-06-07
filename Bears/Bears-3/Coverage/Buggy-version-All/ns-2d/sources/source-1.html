@@ -1,0 +1,241 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LabelExtractor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.trace.sleuth</a>
+</div>
+
+<h1>Coverage Summary for Class: LabelExtractor (org.springframework.cloud.gcp.trace.sleuth)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LabelExtractor</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.cloud.gcp.trace.sleuth;
+&nbsp;
+&nbsp;import java.text.DateFormat;
+&nbsp;import java.text.SimpleDateFormat;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import com.google.devtools.cloudtrace.v1.TraceSpan;
+&nbsp;
+&nbsp;import org.springframework.cloud.sleuth.Log;
+&nbsp;import org.springframework.cloud.sleuth.Span;
+&nbsp;import org.springframework.cloud.sleuth.TraceKeys;
+&nbsp;import org.springframework.util.StringUtils;
+&nbsp;
+&nbsp;/**
+&nbsp; * Translated from Adrian Cole&#39;s
+&nbsp; * &lt;a href= &quot;https://github.com/GoogleCloudPlatform/stackdriver-zipkin/&quot;&gt;Stackdriver
+&nbsp; * Zipkin Proxy&lt;/a&gt;.
+&nbsp; *
+&nbsp; * This extracts Stackdriver Span labels equivalent from Sleuth Span.
+&nbsp; *
+&nbsp; * Sleuth Span Logs are converted to Stackdriver Span labels by using
+&nbsp; * {@link Log#getEvent()} as the key and {@link Log#getTimestamp()} as the value.
+&nbsp; *
+&nbsp; * Sleuth Span tags with equivalent Stackdriver labels will be renamed to the Stackdriver
+&nbsp; * name. Any Sleuth Span without a Stackdriver label equivalent are renamed to
+&nbsp; * spring.sleuth/[key_name]
+&nbsp; *
+&nbsp; * @author Ray Tsang
+&nbsp; */
+&nbsp;public class LabelExtractor {
+&nbsp;	public static final String DEFAULT_AGENT_NAME = &quot;spring-cloud-gcp-trace&quot;;
+&nbsp;
+&nbsp;	public static final String DEFAULT_PREFIX = &quot;cloud.spring.io/&quot;;
+&nbsp;
+&nbsp;	public static final String DEFAULT_TIMESTAMP_FORMAT = &quot;yyyy-MM-dd (HH:mm:ss.SSS z)&quot;;
+&nbsp;
+&nbsp;	private final String agentName;
+&nbsp;
+&nbsp;	private final String prefix;
+&nbsp;
+&nbsp;	private final Map&lt;String, String&gt; labelRenameMap;
+&nbsp;
+&nbsp;	private final DateFormat timestampFormat;
+&nbsp;
+&nbsp;	public LabelExtractor(TraceKeys traceKeys) {
+<b class="nc">&nbsp;		this(buildLabelRenameMapFromTraceKeys(traceKeys));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public LabelExtractor(Map&lt;String, String&gt; labelRenameMap) {
+<b class="nc">&nbsp;		this(DEFAULT_AGENT_NAME, DEFAULT_PREFIX, labelRenameMap, new SimpleDateFormat(DEFAULT_TIMESTAMP_FORMAT));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public LabelExtractor(String agentName, String prefix, Map&lt;String, String&gt; labelRenameMap,
+<b class="nc">&nbsp;			DateFormat timestampFormat) {</b>
+<b class="nc">&nbsp;		this.agentName = agentName;</b>
+<b class="nc">&nbsp;		this.prefix = prefix;</b>
+<b class="nc">&nbsp;		this.labelRenameMap = labelRenameMap;</b>
+<b class="nc">&nbsp;		this.timestampFormat = timestampFormat;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Builds a
+&nbsp;	 * @param traceKeys Sleuth&#39;s {@link TraceKeys}
+&nbsp;	 * @return A mapping of Sleuth&#39;s HTTP trace keys to Stackdriver label keys
+&nbsp;	 */
+&nbsp;	public static Map&lt;String, String&gt; buildLabelRenameMapFromTraceKeys(TraceKeys traceKeys) {
+<b class="nc">&nbsp;		Map&lt;String, String&gt; labelRenameMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;		TraceKeys.Http httpKeys = traceKeys.getHttp();</b>
+<b class="nc">&nbsp;		labelRenameMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;		labelRenameMap.put(httpKeys.getHost(), &quot;/http/host&quot;);</b>
+<b class="nc">&nbsp;		labelRenameMap.put(httpKeys.getMethod(), &quot;/http/method&quot;);</b>
+<b class="nc">&nbsp;		labelRenameMap.put(httpKeys.getStatusCode(), &quot;/http/status_code&quot;);</b>
+<b class="nc">&nbsp;		labelRenameMap.put(httpKeys.getRequestSize(), &quot;/http/request/size&quot;);</b>
+<b class="nc">&nbsp;		labelRenameMap.put(httpKeys.getResponseSize(), &quot;/http/response/size&quot;);</b>
+<b class="nc">&nbsp;		labelRenameMap.put(httpKeys.getUrl(), &quot;/http/url&quot;);</b>
+<b class="nc">&nbsp;		return labelRenameMap;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Map&lt;String, String&gt; extract(Span span, TraceSpan.SpanKind kind, String instanceId) {
+<b class="nc">&nbsp;		Map&lt;String, String&gt; labels = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;		for (Map.Entry&lt;String, String&gt; tag : span.tags().entrySet()) {</b>
+<b class="nc">&nbsp;			labels.put(label(tag.getKey()), tag.getValue());</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		for (Log log : span.logs()) {</b>
+<b class="nc">&nbsp;			labels.put(label(log.getEvent()), formatTimestamp(log.getTimestamp()));</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		if (span.tags().containsKey(Span.SPAN_PEER_SERVICE_TAG_NAME)) {</b>
+<b class="nc">&nbsp;			labels.put(&quot;/component&quot;, span.tags().get(Span.SPAN_PEER_SERVICE_TAG_NAME));</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (span.getParents() == null || span.getParents().isEmpty()) {</b>
+<b class="nc">&nbsp;			labels.put(&quot;/agent&quot;, this.agentName);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if ((kind == TraceSpan.SpanKind.RPC_CLIENT || kind == TraceSpan.SpanKind.RPC_SERVER)</b>
+<b class="nc">&nbsp;				&amp;&amp; StringUtils.hasText(instanceId)) {</b>
+<b class="nc">&nbsp;			if (StringUtils.hasText(instanceId)) {</b>
+<b class="nc">&nbsp;				labels.put(label(Span.INSTANCEID), instanceId);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		return labels;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	protected String label(String key) {
+<b class="nc">&nbsp;		if (this.labelRenameMap.containsKey(key)) {</b>
+<b class="nc">&nbsp;			return this.labelRenameMap.get(key);</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			return this.prefix + key;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	protected String formatTimestamp(long milliseconds) {
+<b class="nc">&nbsp;		return this.timestampFormat.format(new Date(milliseconds));</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

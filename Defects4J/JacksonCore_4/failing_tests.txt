@@ -1,0 +1,5 @@
+src.test.java.com.fasterxml.jackson.core.util.RandoopErrorTest
+src.test.java.com.fasterxml.jackson.core.util.RandoopErrorTest0
+src.test.java.com.fasterxml.jackson.core.util.RandoopRegressionTest
+src.test.java.com.fasterxml.jackson.core.util.RandoopRegressionTest0
+src.test.java.com.fasterxml.jackson.core.util.RandoopRegressionTest1

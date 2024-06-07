@@ -1,0 +1,2 @@
+project_id,version_id,test_suite_source,test_id,lines_total,lines_covered,branches_total,branches_covered
+Codec,3f,evosuite,1,414,379,450,369

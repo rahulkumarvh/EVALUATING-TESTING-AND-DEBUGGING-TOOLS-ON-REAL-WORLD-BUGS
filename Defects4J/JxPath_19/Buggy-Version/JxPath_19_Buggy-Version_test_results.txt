@@ -1,0 +1,6 @@
+Failing tests: 3
+  - org.apache.commons.jxpath.ri.model.beans.RegressionTest
+  - org.apache.commons.jxpath.ri.model.AliasedNamespaceIterationTest::testIterateJDOM
+  - org.apache.commons.jxpath.ri.model.AliasedNamespaceIterationTest::testIterateDOM
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

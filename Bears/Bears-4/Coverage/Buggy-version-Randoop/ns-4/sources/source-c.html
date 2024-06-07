@@ -1,0 +1,171 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DeserializationProblemHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser</a>
+</div>
+
+<h1>Coverage Summary for Class: DeserializationProblemHandler (com.fasterxml.jackson.databind.deser)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DeserializationProblemHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.JsonParser;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import com.fasterxml.jackson.databind.DeserializationConfig;
+&nbsp;import com.fasterxml.jackson.databind.DeserializationContext;
+&nbsp;import com.fasterxml.jackson.databind.JsonDeserializer;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;
+&nbsp;/**
+&nbsp; * This is the class that can be registered (via
+&nbsp; * {@link DeserializationConfig} object owner by
+&nbsp; * {@link ObjectMapper}) to get called when a potentially
+&nbsp; * recoverable problem is encountered during deserialization
+&nbsp; * process. Handlers can try to resolve the problem, throw
+&nbsp; * an exception or just skip the content.
+&nbsp; *&lt;p&gt;
+&nbsp; * Default implementations for all methods implemented minimal
+&nbsp; * &quot;do nothing&quot; functionality, which is roughly equivalent to
+&nbsp; * not having a registered listener at all. This allows for
+&nbsp; * only implemented handler methods one is interested in, without
+&nbsp; * handling other cases.
+&nbsp; *&lt;p&gt;
+&nbsp; * NOTE: it is typically &lt;b&gt;NOT&lt;/b&gt; acceptable to simply do nothing,
+&nbsp; * because this will result in unprocessed tokens being left in
+&nbsp; * token stream (read via {@link JsonParser}, in case a structured
+&nbsp; * (JSON Object or JSON Array) value is being pointed to by parser.
+&nbsp; */
+<b class="nc">&nbsp;public abstract class DeserializationProblemHandler</b>
+&nbsp;{
+&nbsp;    /**
+&nbsp;     * Method called when a JSON Map (&quot;Object&quot;) entry with an unrecognized
+&nbsp;     * name is encountered.
+&nbsp;     * Content (supposedly) matching the property are accessible via
+&nbsp;     * parser that can be obtained from passed deserialization context.
+&nbsp;     * Handler can also choose to skip the content; if so, it MUST return
+&nbsp;     * true to indicate it did handle property successfully.
+&nbsp;     * Skipping is usually done like so:
+&nbsp;     *&lt;pre&gt;
+&nbsp;     *  jp.skipChildren();
+&nbsp;     *&lt;/pre&gt;
+&nbsp;     *&lt;p&gt;
+&nbsp;     * Note: version 1.2 added new deserialization feature
+&nbsp;     * (&lt;code&gt;DeserializationConfig.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES&lt;/code&gt;).
+&nbsp;     * It will only have effect &lt;b&gt;after&lt;/b&gt; handler is called, and only
+&nbsp;     * if handler did &lt;b&gt;not&lt;/b&gt; handle the problem.
+&nbsp;     *
+&nbsp;     * @param beanOrClass Either bean instance being deserialized (if one
+&nbsp;     *   has been instantiated so far); or Class that indicates type that
+&nbsp;     *   will be instantiated (if no instantiation done yet: for example
+&nbsp;     *   when bean uses non-default constructors)
+&nbsp;     * @param jp Parser to use for handling problematic content
+&nbsp;     * 
+&nbsp;     * @return True if the problem is resolved (and content available used or skipped);
+&nbsp;     *  false if the handler did not anything and the problem is unresolved. Note that in
+&nbsp;     *  latter case caller will either throw an exception or explicitly skip the content,
+&nbsp;     *  depending on configuration.
+&nbsp;     */
+&nbsp;    public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser jp,
+&nbsp;            JsonDeserializer&lt;?&gt; deserializer, Object beanOrClass, String propertyName)
+&nbsp;        throws IOException, JsonProcessingException
+&nbsp;    {
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 19:53</div>
+</div>
+</body>
+</html>

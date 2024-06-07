@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BREADTH_FIRST_SEARCH_TEST.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">java_testcases.junit.crt_program</a> &gt; <span class="el_source">BREADTH_FIRST_SEARCH_TEST.java</span></div><h1>BREADTH_FIRST_SEARCH_TEST.java</h1><pre class="source lang-java linenums">package java_testcases.junit.crt_program;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.junit.Test;
+
+import correct_java_programs.BREADTH_FIRST_SEARCH;
+import java_programs.Node;
+
+<span class="fc" id="L13">public class BREADTH_FIRST_SEARCH_TEST {</span>
+
+    /**
+     * Case 1: Strongly connected graph Output: Path found!
+     */
+
+    @Test
+    public void test1() {
+<span class="fc" id="L21">        Node station1 = new Node(&quot;Westminster&quot;);</span>
+<span class="fc" id="L22">        Node station2 = new Node(&quot;Waterloo&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(station1)));</span>
+<span class="fc" id="L23">        Node station3 = new Node(&quot;Trafalgar Square&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(station1, station2)));</span>
+<span class="fc" id="L24">        Node station4 = new Node(&quot;Canary Wharf&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(station2, station3)));</span>
+<span class="fc" id="L25">        Node station5 = new Node(&quot;London Bridge&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(station4, station3)));</span>
+<span class="fc" id="L26">        Node station6 = new Node(&quot;Tottenham Court Road&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(station5, station4)));</span>
+<span class="fc" id="L27">        Boolean result = BREADTH_FIRST_SEARCH.breadth_first_search(station6, station1);</span>
+<span class="fc" id="L28">        String resultStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (result) {</span>
+<span class="fc" id="L30">            resultStr = &quot;Path found!&quot;;</span>
+        } else {
+<span class="nc" id="L32">            resultStr = &quot;Path not found!&quot;;</span>
+        }
+
+<span class="fc" id="L35">        assertEquals(&quot;Path found!&quot;, resultStr);</span>
+
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * Case 2: Branching graph Output: Path found!
+     */
+    @Test
+    public void test2() {
+<span class="fc" id="L44">        Node nodef = new Node(&quot;F&quot;);</span>
+<span class="fc" id="L45">        Node nodee = new Node(&quot;E&quot;);</span>
+<span class="fc" id="L46">        Node noded = new Node(&quot;D&quot;);</span>
+<span class="fc" id="L47">        Node nodec = new Node(&quot;C&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(nodef)));</span>
+<span class="fc" id="L48">        Node nodeb = new Node(&quot;B&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(nodee)));</span>
+<span class="fc" id="L49">        Node nodea = new Node(&quot;A&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(nodeb, nodec, noded)));</span>
+
+<span class="fc" id="L51">        Boolean result = BREADTH_FIRST_SEARCH.breadth_first_search(nodea, nodee);</span>
+<span class="fc" id="L52">        String resultStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (result) {</span>
+<span class="fc" id="L54">            resultStr = &quot;Path found!&quot;;</span>
+        } else {
+<span class="nc" id="L56">            resultStr = &quot;Path not found!&quot;;</span>
+        }
+<span class="fc" id="L58">        assertEquals(&quot;Path found!&quot;, resultStr);</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Case 3: Two unconnected nodes in graph Output: Path not found!
+     */
+    @Test
+    public void test3() {
+<span class="fc" id="L66">        Node nodef = new Node(&quot;F&quot;);</span>
+<span class="fc" id="L67">        Node nodee = new Node(&quot;E&quot;);</span>
+<span class="fc" id="L68">        Node noded = new Node(&quot;D&quot;);</span>
+<span class="fc" id="L69">        Node nodec = new Node(&quot;C&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(nodef)));</span>
+<span class="fc" id="L70">        Node nodeb = new Node(&quot;B&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(nodee)));</span>
+<span class="fc" id="L71">        Node nodea = new Node(&quot;A&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(nodeb, nodec, noded)));</span>
+
+<span class="fc" id="L73">        Boolean result = BREADTH_FIRST_SEARCH.breadth_first_search(nodef, nodee);</span>
+<span class="fc" id="L74">        String resultStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (result) {</span>
+<span class="nc" id="L76">            resultStr = &quot;Path found!&quot;;</span>
+        } else {
+<span class="fc" id="L78">            resultStr = &quot;Path not found!&quot;;</span>
+        }
+<span class="fc" id="L80">        assertEquals(&quot;Path not found!&quot;, resultStr);</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Case 4: One node graph Output: Path found!
+     */
+    @Test
+    public void test4() {
+<span class="fc" id="L88">        ArrayList&lt;Node&gt; empty = new ArrayList&lt;Node&gt;();</span>
+<span class="fc" id="L89">        Node nodef = new Node(&quot;F&quot;);</span>
+
+<span class="fc" id="L91">        Boolean result = BREADTH_FIRST_SEARCH.breadth_first_search(nodef, nodef);</span>
+<span class="fc" id="L92">        String resultStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (result) {</span>
+<span class="fc" id="L94">            resultStr = &quot;Path found!&quot;;</span>
+        } else {
+<span class="nc" id="L96">            resultStr = &quot;Path not found!&quot;;</span>
+        }
+<span class="fc" id="L98">        assertEquals(&quot;Path found!&quot;, resultStr);</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Case 5: Graph with cycles Output: Path found!
+     */
+
+    @Test
+    public void test5() {
+<span class="fc" id="L107">        Node node1 = new Node(&quot;1&quot;);</span>
+<span class="fc" id="L108">        Node node2 = new Node(&quot;2&quot;);</span>
+<span class="fc" id="L109">        Node node3 = new Node(&quot;3&quot;);</span>
+<span class="fc" id="L110">        Node node4 = new Node(&quot;4&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node1)));</span>
+<span class="fc" id="L111">        Node node5 = new Node(&quot;5&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node2)));</span>
+<span class="fc" id="L112">        Node node6 = new Node(&quot;6&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node5, node4, node3)));</span>
+
+<span class="fc" id="L114">        Boolean result = BREADTH_FIRST_SEARCH.breadth_first_search(node6, node1);</span>
+<span class="fc" id="L115">        String resultStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (result) {</span>
+<span class="fc" id="L117">            resultStr = &quot;Path found!&quot;;</span>
+        } else {
+<span class="nc" id="L119">            resultStr = &quot;Path not found!&quot;;</span>
+        }
+<span class="fc" id="L121">        assertEquals(&quot;Path found!&quot;, resultStr);</span>
+<span class="fc" id="L122">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

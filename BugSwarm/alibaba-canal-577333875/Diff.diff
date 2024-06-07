@@ -1,0 +1,17 @@
+diff --git a/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java b/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java
+index abcd1473..3a781777 100644
+--- a/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java
++++ b/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java
+@@ -4,10 +4,12 @@ import java.io.IOException;
+ import java.net.InetSocketAddress;
+ 
+ import org.junit.Assert;
++import org.junit.Ignore;
+ import org.junit.Test;
+ 
+ import com.alibaba.otter.canal.parse.driver.mysql.packets.server.ResultSetPacket;
+ 
++@Ignore
+ public class MysqlConnectorTest {
+ 
+     @Test

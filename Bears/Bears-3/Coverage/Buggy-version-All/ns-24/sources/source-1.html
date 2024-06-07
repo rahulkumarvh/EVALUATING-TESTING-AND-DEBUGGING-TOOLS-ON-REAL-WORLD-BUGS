@@ -1,0 +1,211 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GcpTraceProperties</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.autoconfigure.trace</a>
+</div>
+
+<h1>Coverage Summary for Class: GcpTraceProperties (org.springframework.cloud.gcp.autoconfigure.trace)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GcpTraceProperties</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.cloud.gcp.autoconfigure.trace;
+&nbsp;
+&nbsp;import org.springframework.boot.context.properties.ConfigurationProperties;
+&nbsp;import org.springframework.boot.context.properties.NestedConfigurationProperty;
+&nbsp;import org.springframework.cloud.gcp.core.Credentials;
+&nbsp;import org.springframework.cloud.gcp.core.GcpScope;
+&nbsp;
+&nbsp;/**
+&nbsp; * Stackdriver Trace Properties.
+&nbsp; *
+&nbsp; * @author Ray Tsang
+&nbsp; */
+&nbsp;@ConfigurationProperties(&quot;spring.cloud.gcp.trace&quot;)
+<b class="nc">&nbsp;public class GcpTraceProperties {</b>
+&nbsp;	/**
+&nbsp;	 * Number of threads to use by the underlying gRPC channel to send the trace request to
+&nbsp;	 * Stackdriver.
+&nbsp;	 */
+<b class="nc">&nbsp;	private int executorThreads = 4;</b>
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Buffer size in bytes. Traces will be flushed to Stackdriver when buffered trace
+&nbsp;	 * messages exceed this size.
+&nbsp;	 *
+&nbsp;	 * This value is defaulted to 1% of the {@link Runtime#totalMemory()} in bytes.
+&nbsp;	 * However, be careful when running inside of a containerized environment. You should either set JVM&#39;s max heap
+&nbsp;	 * or set this value explicitly.
+&nbsp;	 */
+<b class="nc">&nbsp;	private int bufferSizeBytes = percentOfRuntimeTotalMemory(0.01f);</b>
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Scheduled delay in seconds. Buffered trace messages will be flushed to Stackdriver when
+&nbsp;	 * buffered longer than scheduled delays.
+&nbsp;	 */
+<b class="nc">&nbsp;	private int scheduledDelaySeconds = 10;</b>
+&nbsp;
+&nbsp;	private String projectId;
+&nbsp;
+<b class="nc">&nbsp;	@NestedConfigurationProperty</b>
+<b class="nc">&nbsp;	private final Credentials credentials = new Credentials(GcpScope.TRACE_APPEND.getUrl());</b>
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * A utility method to determine x% of total memory based on Zipkin&#39;s AsyncReporter.
+&nbsp;	 * However, need to be careful about running this inside of a container environment since only certain versions
+&nbsp;	 * of the JDK with additional flags can accurately detect container memory limit.
+&nbsp;	 *
+&nbsp;	 * @param percentage 1.0 means 100%, 0.01 means 1%
+&nbsp;	 * @return Percentage of @{link Runtime{@link Runtime#totalMemory()}}
+&nbsp;	 */
+&nbsp;	static int percentOfRuntimeTotalMemory(float percentage) {
+<b class="nc">&nbsp;		long result = (long) (Runtime.getRuntime().totalMemory() * percentage);</b>
+&nbsp;		// don&#39;t overflow in the rare case 1% of memory is larger than 2 GiB!
+<b class="nc">&nbsp;		return (int) Math.max(Math.min(Integer.MAX_VALUE, result), Integer.MIN_VALUE);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getExecutorThreads() {
+<b class="nc">&nbsp;		return this.executorThreads;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setExecutorThreads(int executorThreads) {
+<b class="nc">&nbsp;		this.executorThreads = executorThreads;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getBufferSizeBytes() {
+<b class="nc">&nbsp;		return this.bufferSizeBytes;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setBufferSizeBytes(int bufferSizeBytes) {
+<b class="nc">&nbsp;		this.bufferSizeBytes = bufferSizeBytes;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getScheduledDelaySeconds() {
+<b class="nc">&nbsp;		return this.scheduledDelaySeconds;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setScheduledDelaySeconds(int scheduledDelaySeconds) {
+<b class="nc">&nbsp;		this.scheduledDelaySeconds = scheduledDelaySeconds;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getProjectId() {
+<b class="nc">&nbsp;		return this.projectId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setProjectId(String projectId) {
+<b class="nc">&nbsp;		this.projectId = projectId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Credentials getCredentials() {
+<b class="nc">&nbsp;		return this.credentials;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

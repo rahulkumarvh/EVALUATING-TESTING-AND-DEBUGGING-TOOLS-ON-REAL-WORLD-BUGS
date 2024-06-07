@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FIND_IN_SORTED.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Buggy-Version</a> &gt; <a href="index.source.html" class="el_package">java_programs</a> &gt; <span class="el_source">FIND_IN_SORTED.java</span></div><h1>FIND_IN_SORTED.java</h1><pre class="source lang-java linenums">package java_programs;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author derricklin
+ */
+<span class="fc" id="L11">public class FIND_IN_SORTED {</span>
+    public static int binsearch(int[] arr, int x, int start, int end) {
+<span class="fc bfc" id="L13" title="All 2 branches covered.">        if (start == end) {</span>
+<span class="fc" id="L14">            return -1;</span>
+        }
+<span class="fc" id="L16">        int mid = start + (end - start) / 2; // check this is floor division</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (x &lt; arr[mid]) {</span>
+<span class="fc" id="L18">            return binsearch(arr, x, start, mid);</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        } else if (x &gt; arr[mid]) {</span>
+<span class="fc" id="L20">            return binsearch(arr, x, mid, end);</span>
+        } else {
+<span class="fc" id="L22">            return mid;</span>
+        }
+    }
+
+    public static int find_in_sorted(int[] arr, int x) {
+<span class="fc" id="L27">        return binsearch(arr, x, 0, arr.length);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

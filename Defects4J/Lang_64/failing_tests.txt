@@ -1,0 +1,13 @@
+src.test.java.org.apache.commons.lang3.math.EvosuiteClassUtils_ESTest
+src.test.java.org.apache.commons.lang3.math.EvosuiteClassUtils_ESTest_scaffolding
+src.test.java.org.apache.commons.lang3.math.EvosuiteValuedEnum_ESTest
+src.test.java.org.apache.commons.lang3.math.EvosuiteValuedEnum_ESTest_scaffolding
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest0
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest1
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest2
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest3
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest4
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest5
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest6
+src.test.java.org.apache.commons.lang3.math.RandoopRegressionTest7

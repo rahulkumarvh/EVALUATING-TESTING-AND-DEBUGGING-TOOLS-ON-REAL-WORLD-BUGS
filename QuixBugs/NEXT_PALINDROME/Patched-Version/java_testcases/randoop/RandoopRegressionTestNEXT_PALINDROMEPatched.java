@@ -1,0 +1,8 @@
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RandoopRegressionTestNEXT_PALINDROMEPatched0.class, RandoopRegressionTestNEXT_PALINDROMEPatched1.class, RandoopRegressionTestNEXT_PALINDROMEPatched2.class, RandoopRegressionTestNEXT_PALINDROMEPatched3.class, RandoopRegressionTestNEXT_PALINDROMEPatched4.class, RandoopRegressionTestNEXT_PALINDROMEPatched5.class, RandoopRegressionTestNEXT_PALINDROMEPatched6.class, RandoopRegressionTestNEXT_PALINDROMEPatched7.class, RandoopRegressionTestNEXT_PALINDROMEPatched8.class, RandoopRegressionTestNEXT_PALINDROMEPatched9.class, RandoopRegressionTestNEXT_PALINDROMEPatched10.class, RandoopRegressionTestNEXT_PALINDROMEPatched11.class, RandoopRegressionTestNEXT_PALINDROMEPatched12.class })
+public class RandoopRegressionTestNEXT_PALINDROMEPatched {
+}
+

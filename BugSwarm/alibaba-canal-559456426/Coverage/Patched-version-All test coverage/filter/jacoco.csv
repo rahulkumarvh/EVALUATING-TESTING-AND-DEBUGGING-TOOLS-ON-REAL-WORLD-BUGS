@@ -1,0 +1,9 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter,PatternUtils,6,15,0,0,3,2,2,2,2,2
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter,PatternUtils.new Function() {...},6,12,0,0,2,3,0,2,0,2
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter.exception,CanalFilterException,40,0,0,0,10,0,5,0,5,0
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter.aviater,AviaterELFilter,2,26,1,1,1,7,1,2,0,2
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter.aviater,RegexFunction,0,26,0,0,0,7,0,3,0,3
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter.aviater,AviaterRegexFilter.StringComparator,0,16,0,4,0,5,0,3,0,1
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter.aviater,AviaterSimpleFilter,8,52,2,4,2,13,2,3,0,2
+canal sink module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.filter.aviater,AviaterRegexFilter,11,123,2,6,3,32,3,7,1,5

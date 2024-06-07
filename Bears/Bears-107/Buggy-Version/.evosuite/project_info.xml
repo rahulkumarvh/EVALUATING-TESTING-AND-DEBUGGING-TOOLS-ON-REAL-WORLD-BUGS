@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project>
+    <totalNumberOfTestableClasses>1</totalNumberOfTestableClasses>
+    <cut>
+        <fullNameOfTargetClass>org.traccar.protocol.StarLinkProtocolDecoder</fullNameOfTargetClass>
+        <fullNameOfTestSuite>org.traccar.protocol.StarLinkProtocolDecoder_ESTest</fullNameOfTestSuite>
+        <generation>
+            <id>0</id>
+            <failed>true</failed>
+            <modified>true</modified>
+            <timeBudgetInSeconds>60</timeBudgetInSeconds>
+            <memoryInMB>2000</memoryInMB>
+            <std_err_CLIENT>/Users/rahul/Downloads/WD/Bears-107/Buggy/.evosuite/tmp_2024_04_02_19_59_34/logs/org.traccar.protocol.StarLinkProtocolDecoder/std_err_CLIENT.log</std_err_CLIENT>
+            <std_out_CLIENT>/Users/rahul/Downloads/WD/Bears-107/Buggy/.evosuite/tmp_2024_04_02_19_59_34/logs/org.traccar.protocol.StarLinkProtocolDecoder/std_out_CLIENT.log</std_out_CLIENT>
+            <std_err_MASTER>/Users/rahul/Downloads/WD/Bears-107/Buggy/.evosuite/tmp_2024_04_02_19_59_34/logs/org.traccar.protocol.StarLinkProtocolDecoder/std_err_MASTER.log</std_err_MASTER>
+            <std_out_MASTER>/Users/rahul/Downloads/WD/Bears-107/Buggy/.evosuite/tmp_2024_04_02_19_59_34/logs/org.traccar.protocol.StarLinkProtocolDecoder/std_out_MASTER.log</std_out_MASTER>
+        </generation>
+    </cut>
+</Project>

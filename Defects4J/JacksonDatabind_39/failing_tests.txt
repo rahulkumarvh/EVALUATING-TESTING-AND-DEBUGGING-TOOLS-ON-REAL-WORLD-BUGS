@@ -1,0 +1,6 @@
+src.test.java.com.fasterxml.jackson.databind.deser.EvosuiteNullifyingDeserializer_ESTest
+src.test.java.com.fasterxml.jackson.databind.deser.EvosuiteNullifyingDeserializer_ESTest_scaffolding
+src.test.java.com.fasterxml.jackson.databind.deser.EvosuiteStringArrayDeserializer_ESTest
+src.test.java.com.fasterxml.jackson.databind.deser.EvosuiteStringArrayDeserializer_ESTest_scaffolding
+src.test.java.com.fasterxml.jackson.databind.deser.RandoopRegressionTest
+src.test.java.com.fasterxml.jackson.databind.deser.RandoopRegressionTest0

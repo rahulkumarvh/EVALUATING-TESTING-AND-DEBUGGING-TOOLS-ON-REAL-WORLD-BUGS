@@ -1,0 +1,9 @@
+src.test.java.com.fasterxml.jackson.core.util.EvosuiteReaderBasedJsonParser_ESTest
+src.test.java.com.fasterxml.jackson.core.util.EvosuiteReaderBasedJsonParser_ESTest_scaffolding
+src.test.java.com.fasterxml.jackson.core.util.EvosuiteUTF8JsonGenerator_ESTest
+src.test.java.com.fasterxml.jackson.core.util.EvosuiteUTF8JsonGenerator_ESTest_scaffolding
+src.test.java.com.fasterxml.jackson.core.util.EvosuiteUTF8StreamJsonParser_ESTest
+src.test.java.com.fasterxml.jackson.core.util.EvosuiteUTF8StreamJsonParser_ESTest_scaffolding
+src.test.java.com.fasterxml.jackson.core.util.RandoopRegressionTest
+src.test.java.com.fasterxml.jackson.core.util.RandoopRegressionTest0
+src.test.java.com.fasterxml.jackson.core.util.RandoopRegressionTest1

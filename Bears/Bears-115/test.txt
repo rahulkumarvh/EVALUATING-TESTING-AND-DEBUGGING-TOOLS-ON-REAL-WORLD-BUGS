@@ -1,0 +1,4 @@
+GeolocationProviderTest
+CarTrackProtocolDecoderTest
+EvosuiteStdKeySerializers_ESTest
+FreedomProtocolDecoderTest

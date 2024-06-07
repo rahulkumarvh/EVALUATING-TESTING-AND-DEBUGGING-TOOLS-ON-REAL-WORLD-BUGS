@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > IStorage</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.storage</a>
+</div>
+
+<h1>Coverage Summary for Class: IStorage (io.cassandrareaper.storage)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IStorage</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.storage;
+&nbsp;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairSegment;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.resources.view.RepairRunStatus;
+&nbsp;import io.cassandrareaper.resources.view.RepairScheduleStatus;
+&nbsp;import io.cassandrareaper.service.RepairParameters;
+&nbsp;import io.cassandrareaper.service.RingRange;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * API definition for cassandra-reaper.
+&nbsp; */
+&nbsp;public interface IStorage {
+&nbsp;
+&nbsp;  boolean isStorageConnected();
+&nbsp;
+&nbsp;  Collection&lt;Cluster&gt; getClusters();
+&nbsp;
+&nbsp;  boolean addCluster(Cluster cluster);
+&nbsp;
+&nbsp;  boolean updateCluster(Cluster newCluster);
+&nbsp;
+&nbsp;  Optional&lt;Cluster&gt; getCluster(String clusterName);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Delete the Cluster instance identified by the given cluster name. Delete succeeds only if there are no repair runs
+&nbsp;   * for the targeted cluster.
+&nbsp;   *
+&nbsp;   * @param clusterName The name of the Cluster instance to delete.
+&nbsp;   * @return The deleted Cluster instance if delete succeeds, with state set to DELETED.
+&nbsp;   */
+&nbsp;  Optional&lt;Cluster&gt; deleteCluster(String clusterName);
+&nbsp;
+&nbsp;  RepairRun addRepairRun(RepairRun.Builder repairRun, Collection&lt;RepairSegment.Builder&gt; newSegments);
+&nbsp;
+&nbsp;  boolean updateRepairRun(RepairRun repairRun);
+&nbsp;
+&nbsp;  Optional&lt;RepairRun&gt; getRepairRun(UUID id);
+&nbsp;
+&nbsp;  Collection&lt;RepairRun&gt; getRepairRunsForCluster(String clusterName);
+&nbsp;
+&nbsp;  Collection&lt;RepairRun&gt; getRepairRunsForUnit(UUID repairUnitId);
+&nbsp;
+&nbsp;  Collection&lt;RepairRun&gt; getRepairRunsWithState(RepairRun.RunState runState);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Delete the RepairRun instance identified by the given id, and delete also all the related repair segments.
+&nbsp;   *
+&nbsp;   * @param id The id of the RepairRun instance to delete, and all segments for it.
+&nbsp;   * @return The deleted RepairRun instance, if delete succeeds, with state set to DELETED.
+&nbsp;   */
+&nbsp;  Optional&lt;RepairRun&gt; deleteRepairRun(UUID id);
+&nbsp;
+&nbsp;  RepairUnit addRepairUnit(RepairUnit.Builder newRepairUnit);
+&nbsp;
+&nbsp;  Optional&lt;RepairUnit&gt; getRepairUnit(UUID id);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Get a stored RepairUnit targeting the given tables in the given keyspace.
+&nbsp;   *
+&nbsp;   * @param cluster Cluster name for the RepairUnit.
+&nbsp;   * @param keyspace Keyspace name for the RepairUnit.
+&nbsp;   * @param columnFamilyNames Set of column families targeted by the RepairUnit.
+&nbsp;   * @return Instance of a RepairUnit matching the parameters, or null if not found.
+&nbsp;   */
+&nbsp;  Optional&lt;RepairUnit&gt; getRepairUnit(
+&nbsp;      String cluster,
+&nbsp;      String keyspace,
+&nbsp;      Set&lt;String&gt; columnFamilyNames,
+&nbsp;      Set&lt;String&gt; nodes,
+&nbsp;      Set&lt;String&gt; datacenters,
+&nbsp;      Set&lt;String&gt; blacklistedTables);
+&nbsp;
+&nbsp;  boolean updateRepairSegment(RepairSegment newRepairSegment);
+&nbsp;
+&nbsp;  Optional&lt;RepairSegment&gt; getRepairSegment(UUID runId, UUID segmentId);
+&nbsp;
+&nbsp;  Collection&lt;RepairSegment&gt; getRepairSegmentsForRun(UUID runId);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param runId the run id that the segment belongs to.
+&nbsp;   * @param range a ring range. The start of the range may be greater than or equal to the end. This case has to be
+&nbsp;   *      handled. When start = end, consider that as a range that covers the whole ring.
+&nbsp;   * @return a segment enclosed by the range with state NOT_STARTED, or nothing.
+&nbsp;   */
+&nbsp;  Optional&lt;RepairSegment&gt; getNextFreeSegmentInRange(UUID runId, Optional&lt;RingRange&gt; range);
+&nbsp;
+&nbsp;  Collection&lt;RepairSegment&gt; getSegmentsWithState(UUID runId, RepairSegment.State segmentState);
+&nbsp;
+&nbsp;  Collection&lt;RepairParameters&gt; getOngoingRepairsInCluster(String clusterName);
+&nbsp;
+&nbsp;  Collection&lt;UUID&gt; getRepairRunIdsForCluster(String clusterName);
+&nbsp;
+&nbsp;  int getSegmentAmountForRepairRun(UUID runId);
+&nbsp;
+&nbsp;  int getSegmentAmountForRepairRunWithState(UUID runId, RepairSegment.State state);
+&nbsp;
+&nbsp;  RepairSchedule addRepairSchedule(RepairSchedule.Builder repairSchedule);
+&nbsp;
+&nbsp;  Optional&lt;RepairSchedule&gt; getRepairSchedule(UUID repairScheduleId);
+&nbsp;
+&nbsp;  Collection&lt;RepairSchedule&gt; getRepairSchedulesForCluster(String clusterName);
+&nbsp;
+&nbsp;  Collection&lt;RepairSchedule&gt; getRepairSchedulesForKeyspace(String keyspaceName);
+&nbsp;
+&nbsp;  Collection&lt;RepairSchedule&gt; getRepairSchedulesForClusterAndKeyspace(String clusterName, String keyspaceName);
+&nbsp;
+&nbsp;  Collection&lt;RepairSchedule&gt; getAllRepairSchedules();
+&nbsp;
+&nbsp;  boolean updateRepairSchedule(RepairSchedule newRepairSchedule);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Delete the RepairSchedule instance identified by the given id. Related repair runs or other resources tied to the
+&nbsp;   * schedule will not be deleted.
+&nbsp;   *
+&nbsp;   * @param id The id of the RepairSchedule instance to delete.
+&nbsp;   * @return The deleted RepairSchedule instance, if delete succeeds, with state set to DELETED.
+&nbsp;   */
+&nbsp;  Optional&lt;RepairSchedule&gt; deleteRepairSchedule(UUID id);
+&nbsp;
+&nbsp;  Collection&lt;RepairRunStatus&gt; getClusterRunStatuses(String clusterName, int limit);
+&nbsp;
+&nbsp;  Collection&lt;RepairScheduleStatus&gt; getClusterScheduleStatuses(String clusterName);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

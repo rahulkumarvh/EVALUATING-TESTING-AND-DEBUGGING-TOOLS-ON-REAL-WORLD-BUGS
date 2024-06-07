@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BREADTH_FIRST_SEARCH.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">correct_java_programs</a> &gt; <span class="el_source">BREADTH_FIRST_SEARCH.java</span></div><h1>BREADTH_FIRST_SEARCH.java</h1><pre class="source lang-java linenums">package correct_java_programs;
+import java.util.*;
+import java.util.ArrayDeque;
+
+import java_programs.Node;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author derricklin
+ */
+<span class="fc" id="L16">public class BREADTH_FIRST_SEARCH {</span>
+
+<span class="fc" id="L18">    public static Set&lt;Node&gt; nodesvisited = new HashSet&lt;&gt;();</span>
+
+    public static boolean breadth_first_search(Node startnode, Node goalnode) {
+<span class="fc" id="L21">        Deque&lt;Node&gt; queue = new ArrayDeque&lt;&gt;();</span>
+<span class="nc" id="L22">        queue.addLast(startnode);</span>
+
+<span class="nc" id="L24">        nodesvisited.add(startnode);</span>
+
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        while (!queue.isEmpty()) {</span>
+<span class="nc" id="L27">            Node node = queue.removeFirst();</span>
+
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            if (node == goalnode) {</span>
+<span class="nc" id="L30">                return true;</span>
+            } else {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                for (Node successor_node : node.getSuccessors()) {</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">                    if (!nodesvisited.contains(successor_node)) {</span>
+<span class="nc" id="L34">                        queue.addFirst(successor_node);</span>
+<span class="nc" id="L35">                        nodesvisited.add(successor_node);</span>
+                    }
+<span class="nc" id="L37">                }</span>
+            }
+<span class="nc" id="L39">        }</span>
+        /**
+         * The buggy program always drops into while(true) loop and will not return false
+         * Removed below line to fix compilation error
+         */
+<span class="nc" id="L44">         return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,320 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > StackdriverTraceSpanListener</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.trace.sleuth</a>
+</div>
+
+<h1>Coverage Summary for Class: StackdriverTraceSpanListener (org.springframework.cloud.gcp.trace.sleuth)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StackdriverTraceSpanListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/79)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.cloud.gcp.trace.sleuth;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import com.google.cloud.trace.v1.consumer.TraceConsumer;
+&nbsp;import com.google.devtools.cloudtrace.v1.Trace;
+&nbsp;import com.google.devtools.cloudtrace.v1.TraceSpan;
+&nbsp;import com.google.devtools.cloudtrace.v1.Traces;
+&nbsp;import com.google.protobuf.Timestamp;
+&nbsp;import org.apache.commons.logging.LogFactory;
+&nbsp;
+&nbsp;import org.springframework.cloud.sleuth.Log;
+&nbsp;import org.springframework.cloud.sleuth.Span;
+&nbsp;import org.springframework.cloud.sleuth.SpanAdjuster;
+&nbsp;import org.springframework.cloud.sleuth.SpanReporter;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;import org.springframework.util.StringUtils;
+&nbsp;
+&nbsp;/**
+&nbsp; * Adapted from &lt;a href=
+&nbsp; * &quot;https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-zipkin&quot;&gt;Spring
+&nbsp; * Cloud Sleuth Zipkin&#39;s Span Listener&lt;/a&gt;
+&nbsp; *
+&nbsp; * Listener of Sleuth events. Reports to Stackdriver Trace via {@link TraceConsumer}
+&nbsp; *
+&nbsp; * @author Ray Tsang
+&nbsp; */
+&nbsp;public class StackdriverTraceSpanListener implements SpanReporter {
+<b class="nc">&nbsp;	private static final org.apache.commons.logging.Log LOGGER = LogFactory.getLog(StackdriverTraceSpanListener.class);</b>
+&nbsp;
+&nbsp;	private final String instanceId;
+&nbsp;
+&nbsp;	private final String projectId;
+&nbsp;
+&nbsp;	private final LabelExtractor labelExtractor;
+&nbsp;
+&nbsp;	private final List&lt;SpanAdjuster&gt; spanAdjusters;
+&nbsp;
+&nbsp;	private final TraceConsumer traceConsumer;
+&nbsp;
+&nbsp;	public StackdriverTraceSpanListener(String instanceId, String projectId, LabelExtractor labelExtractor,
+<b class="nc">&nbsp;			List&lt;SpanAdjuster&gt; spanAdjusters, TraceConsumer traceConsumer) {</b>
+<b class="nc">&nbsp;		this.instanceId = instanceId;</b>
+<b class="nc">&nbsp;		this.projectId = projectId;</b>
+<b class="nc">&nbsp;		this.labelExtractor = labelExtractor;</b>
+<b class="nc">&nbsp;		this.spanAdjusters = spanAdjusters;</b>
+<b class="nc">&nbsp;		this.traceConsumer = traceConsumer;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	protected Timestamp createTimestamp(long milliseconds) {
+<b class="nc">&nbsp;		long seconds = (milliseconds / 1000);</b>
+<b class="nc">&nbsp;		int remainderMicros = (int) (milliseconds % 1000);</b>
+<b class="nc">&nbsp;		int remainderNanos = remainderMicros * 1000000;</b>
+&nbsp;
+<b class="nc">&nbsp;		return Timestamp.newBuilder().setSeconds(seconds).setNanos(remainderNanos).build();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private TraceSpan.SpanKind getKind(Span span) {
+<b class="nc">&nbsp;		for (Log log : span.logs()) {</b>
+<b class="nc">&nbsp;			if (Span.CLIENT_SEND.equals(log.getEvent()) || Span.CLIENT_RECV.equals(log.getEvent())) {</b>
+<b class="nc">&nbsp;				return TraceSpan.SpanKind.RPC_CLIENT;</b>
+&nbsp;			}
+<b class="nc">&nbsp;			else if (Span.SERVER_RECV.equals(log.getEvent()) || Span.SERVER_SEND.equals(log.getEvent())) {</b>
+<b class="nc">&nbsp;				return TraceSpan.SpanKind.RPC_SERVER;</b>
+&nbsp;			}
+<b class="nc">&nbsp;		}</b>
+<b class="nc">&nbsp;		return TraceSpan.SpanKind.SPAN_KIND_UNSPECIFIED;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private Log findLog(Span span, String event) {
+<b class="nc">&nbsp;		for (Log log : span.logs()) {</b>
+<b class="nc">&nbsp;			if (event.equals(log.getEvent())) {</b>
+<b class="nc">&nbsp;				return log;</b>
+&nbsp;			}
+<b class="nc">&nbsp;		}</b>
+<b class="nc">&nbsp;		return null;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	protected TraceSpan convert(Span span) {
+<b class="nc">&nbsp;		Span adjustedSpan = span;</b>
+<b class="nc">&nbsp;		for (SpanAdjuster adjuster : this.spanAdjusters) {</b>
+<b class="nc">&nbsp;			adjustedSpan = adjuster.adjust(adjustedSpan);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		TraceSpan.Builder builder = TraceSpan.newBuilder();</b>
+&nbsp;
+&nbsp;		// Set name
+<b class="nc">&nbsp;		if (StringUtils.hasText(adjustedSpan.getName())) {</b>
+<b class="nc">&nbsp;			builder.setName(adjustedSpan.getName());</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		TraceSpan.SpanKind kind = getKind(adjustedSpan);</b>
+<b class="nc">&nbsp;		builder.setKind(kind);</b>
+<b class="nc">&nbsp;		builder.setSpanId(adjustedSpan.getSpanId());</b>
+<b class="nc">&nbsp;		rewriteIds(adjustedSpan, kind, builder);</b>
+<b class="nc">&nbsp;		writeStartEndTime(adjustedSpan, builder);</b>
+&nbsp;
+<b class="nc">&nbsp;		builder.putAllLabels(this.labelExtractor.extract(adjustedSpan, builder.getKind(), this.instanceId));</b>
+&nbsp;
+<b class="nc">&nbsp;		return builder.build();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private void writeStartEndTime(Span span, TraceSpan.Builder builder) {
+<b class="nc">&nbsp;		if (!span.isRemote()) {</b>
+<b class="nc">&nbsp;			Log clientSend = findLog(span, Span.CLIENT_SEND);</b>
+<b class="nc">&nbsp;			Log clientReceive = findLog(span, Span.CLIENT_RECV);</b>
+<b class="nc">&nbsp;			if (clientSend != null) {</b>
+<b class="nc">&nbsp;				builder.setStartTime(createTimestamp(clientSend.getTimestamp()));</b>
+&nbsp;			}
+&nbsp;			else {
+<b class="nc">&nbsp;				builder.setStartTime(createTimestamp(span.getBegin()));</b>
+&nbsp;			}
+<b class="nc">&nbsp;			if (!span.isRunning()) {</b>
+<b class="nc">&nbsp;				if (clientReceive != null) {</b>
+<b class="nc">&nbsp;					builder.setEndTime(createTimestamp(clientReceive.getTimestamp()));</b>
+&nbsp;				}
+&nbsp;				else {
+<b class="nc">&nbsp;					builder.setEndTime(createTimestamp(span.getEnd()));</b>
+&nbsp;				}
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	private void rewriteIds(Span span, TraceSpan.SpanKind kind, TraceSpan.Builder builder) {
+&nbsp;		// Find the parent ID. Use 0 if no parent found.
+<b class="nc">&nbsp;		long parentId = 0;</b>
+<b class="nc">&nbsp;		if (span.getParents().size() &gt; 0) {</b>
+<b class="nc">&nbsp;			if (span.getParents().size() &gt; 1) {</b>
+<b class="nc">&nbsp;				LOGGER.error(&quot;Stackdriver Trace doesn&#39;t support spans with multiple parents. Omitting &quot;</b>
+&nbsp;						+ &quot;other parents for &quot; + span);
+&nbsp;			}
+<b class="nc">&nbsp;			parentId = span.getParents().get(0);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		// Every span will need a different Span ID.
+&nbsp;		// If it&#39;s a RPC_CLIENT span, there is likely to be a RPC_SERVER span. Both spans would&#39;ve
+&nbsp;		// had the same Span ID and that won&#39;t work. Thus, we need to change one of the Span IDs.
+&nbsp;		// If it&#39;s a RPC_CLIENT, we&#39;ll rewrite the Span ID. Later, we&#39;ll need to rewrite the
+&nbsp;		// corresponding RPC_SERVER span&#39;s parent ID to match this one.
+<b class="nc">&nbsp;		if (kind == TraceSpan.SpanKind.RPC_CLIENT) {</b>
+<b class="nc">&nbsp;			builder.setSpanId(rewriteId(span.getSpanId()));</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			builder.setSpanId(span.getSpanId());</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		// Change the parentSpanId of RPC_SERVER spans to use the rewritten spanId of the
+&nbsp;		// RPC_CLIENT spans.
+<b class="nc">&nbsp;		if (kind == TraceSpan.SpanKind.RPC_SERVER) {</b>
+<b class="nc">&nbsp;			if (!span.isRemote()) {</b>
+&nbsp;				// Owns the Span.
+&nbsp;				// This means the parent RPC_CLIENT span was a separate span with id=span.parentId.
+&nbsp;				// When that span was converted, it would have had id=rewriteId(span.parentId)
+<b class="nc">&nbsp;				builder.setParentSpanId(rewriteId(parentId));</b>
+&nbsp;			}
+&nbsp;			else {
+&nbsp;				// This is a multi-host span.
+&nbsp;				// This means the parent client-side span has the same id as this span. When that fragment
+&nbsp;				// of the span was converted, it would have had id rewriteId(span.spanId)
+<b class="nc">&nbsp;				builder.setParentSpanId(rewriteId(span.getSpanId()));</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			builder.setParentSpanId(parentId);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	private long rewriteId(long id) {
+<b class="nc">&nbsp;		if (id == 0) {</b>
+<b class="nc">&nbsp;			return 0;</b>
+&nbsp;		}
+&nbsp;		// To deterministically rewrite the ID, xor it with a random 64-bit constant.
+<b class="nc">&nbsp;		final long pad = 0x3f6a2ec3c810c2abL;</b>
+<b class="nc">&nbsp;		return id ^ pad;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private String formatTraceId(Span span) {
+<b class="nc">&nbsp;		return span.traceIdString();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void report(Span span) {
+<b class="nc">&nbsp;		Assert.notNull(span, &quot;span cannot be null&quot;);</b>
+<b class="nc">&nbsp;		if (span.isExportable()) {</b>
+<b class="nc">&nbsp;			TraceSpan traceSpan = convert(span);</b>
+<b class="nc">&nbsp;			Traces traces = Traces.newBuilder()</b>
+<b class="nc">&nbsp;					.addTraces(Trace.newBuilder()</b>
+<b class="nc">&nbsp;							.setTraceId(formatTraceId(span))</b>
+<b class="nc">&nbsp;							.setProjectId(this.projectId)</b>
+<b class="nc">&nbsp;							.addSpans(traceSpan)</b>
+<b class="nc">&nbsp;							.build())</b>
+<b class="nc">&nbsp;					.build();</b>
+<b class="nc">&nbsp;			this.traceConsumer.receive(traces);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;		else {
+<b class="nc">&nbsp;			if (LOGGER.isDebugEnabled()) {</b>
+<b class="nc">&nbsp;				LOGGER.debug(&quot;The span &quot; + span + &quot; will not be sent to Stackdriver Trace due to sampling&quot;);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

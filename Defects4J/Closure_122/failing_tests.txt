@@ -1,0 +1,4 @@
+test.com.google.javascript.jscomp.EvosuiteIRFactory_ESTest
+test.com.google.javascript.jscomp.EvosuiteIRFactory_ESTest_scaffolding
+test.com.google.javascript.jscomp.EvosuiteNameAnalyzer_ESTest
+test.com.google.javascript.jscomp.EvosuiteNameAnalyzer_ESTest_scaffolding

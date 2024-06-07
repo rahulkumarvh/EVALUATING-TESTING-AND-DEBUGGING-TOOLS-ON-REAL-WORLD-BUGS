@@ -1,0 +1,90 @@
+* Starting client
+* Connecting to master process on port 8655
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-8/patched/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-8/patched/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.8.6/jackson-core-2.8.6.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.ser.std.MapSerializer
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 14:45:19.029 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-8/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.ser.std.MapSerializer.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-8/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.ser.std.MapSerializer.seed
+* Total number of test goals: 
+  - Line 443
+  - Branch 326
+  - Exception 0
+  - MutationFactory 557
+  - Output 120
+  - Method 34
+  - MethodNoException 34
+  - CBranchFitnessFactory 326
+* Using seed 1712000712624
+* Starting evolution
+[MASTER] 14:45:30.060 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 14:45:36.223 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 14:45:39.424 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+* Search finished after 67s and 40 generations, 30939 statements, best individual has fitness: 1677.7346109119499
+* Writing sequences to pool
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 35%
+* Total number of goals: 443
+* Number of covered goals: 157
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 22%
+* Total number of goals: 326
+* Number of covered goals: 71
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 13
+* Number of covered goals: 13
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 26%
+* Total number of goals: 557
+* Number of covered goals: 144
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 43%
+* Total number of goals: 120
+* Number of covered goals: 52
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 97%
+* Total number of goals: 34
+* Number of covered goals: 33
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 79%
+* Total number of goals: 34
+* Number of covered goals: 27
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 22%
+* Total number of goals: 326
+* Number of covered goals: 71
+* Generated 49 tests with total length 373
+* Resulting test suite's coverage: 53% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 9%
+* Compiling and checking tests
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 3
+* Writing JUnit test case 'MapSerializer_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-8/patched/.evosuite/tmp_2024_04_01_14_45_10/tests
+* Done!
+

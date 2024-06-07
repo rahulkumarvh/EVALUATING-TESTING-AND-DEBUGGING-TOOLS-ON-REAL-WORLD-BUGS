@@ -1,0 +1,210 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairRunStatusMapper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.storage.postgresql</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairRunStatusMapper (io.cassandrareaper.storage.postgresql)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairRunStatusMapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/44)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.storage.postgresql;
+&nbsp;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.resources.view.RepairRunStatus;
+&nbsp;
+&nbsp;import java.sql.ResultSet;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import com.google.common.collect.ImmutableSet;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.skife.jdbi.v2.StatementContext;
+&nbsp;import org.skife.jdbi.v2.tweak.ResultSetMapper;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;public final class RepairRunStatusMapper implements ResultSetMapper&lt;RepairRunStatus&gt; {</b>
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public RepairRunStatus map(int index, ResultSet rs, StatementContext ctx) throws SQLException {
+<b class="nc">&nbsp;    long runId = rs.getLong(&quot;id&quot;);</b>
+<b class="nc">&nbsp;    String clusterName = rs.getString(&quot;cluster_name&quot;);</b>
+<b class="nc">&nbsp;    String keyspaceName = rs.getString(&quot;keyspace_name&quot;);</b>
+<b class="nc">&nbsp;    Collection&lt;String&gt; columnFamilies =</b>
+<b class="nc">&nbsp;        ImmutableSet.copyOf(getStringArray(rs.getArray(&quot;column_families&quot;).getArray()));</b>
+<b class="nc">&nbsp;    int segmentsRepaired = rs.getInt(&quot;segments_repaired&quot;);</b>
+<b class="nc">&nbsp;    int totalSegments = rs.getInt(&quot;segments_total&quot;);</b>
+<b class="nc">&nbsp;    RepairRun.RunState state = RepairRun.RunState.valueOf(rs.getString(&quot;state&quot;));</b>
+<b class="nc">&nbsp;    DateTime startTime = RepairRunMapper.getDateTimeOrNull(rs, &quot;start_time&quot;);</b>
+<b class="nc">&nbsp;    DateTime endTime = RepairRunMapper.getDateTimeOrNull(rs, &quot;end_time&quot;);</b>
+<b class="nc">&nbsp;    String cause = rs.getString(&quot;cause&quot;);</b>
+<b class="nc">&nbsp;    String owner = rs.getString(&quot;owner&quot;);</b>
+<b class="nc">&nbsp;    String lastEvent = rs.getString(&quot;last_event&quot;);</b>
+<b class="nc">&nbsp;    DateTime creationTime = RepairRunMapper.getDateTimeOrNull(rs, &quot;creation_time&quot;);</b>
+<b class="nc">&nbsp;    DateTime pauseTime = RepairRunMapper.getDateTimeOrNull(rs, &quot;pause_time&quot;);</b>
+<b class="nc">&nbsp;    Double intensity = rs.getDouble(&quot;intensity&quot;);</b>
+<b class="nc">&nbsp;    Boolean incrementalRepair = rs.getBoolean(&quot;incremental_repair&quot;);</b>
+<b class="nc">&nbsp;    RepairParallelism repairParallelism = RepairParallelism.fromName(</b>
+<b class="nc">&nbsp;        rs.getString(&quot;repair_parallelism&quot;).toLowerCase().replace(&quot;datacenter_aware&quot;, &quot;dc_parallel&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;    Collection&lt;String&gt; nodes =</b>
+<b class="nc">&nbsp;        ImmutableSet.copyOf(</b>
+<b class="nc">&nbsp;            rs.getArray(&quot;nodes&quot;) == null</b>
+&nbsp;                ? new String[] {}
+<b class="nc">&nbsp;                : getStringArray(rs.getArray(&quot;nodes&quot;).getArray()));</b>
+<b class="nc">&nbsp;    Collection&lt;String&gt; datacenters =</b>
+<b class="nc">&nbsp;        ImmutableSet.copyOf(</b>
+<b class="nc">&nbsp;            getStringArray(</b>
+<b class="nc">&nbsp;                rs.getArray(&quot;datacenters&quot;) == null</b>
+&nbsp;                    ? new String[] {}
+<b class="nc">&nbsp;                    : rs.getArray(&quot;datacenters&quot;).getArray()));</b>
+<b class="nc">&nbsp;    Collection&lt;String&gt; blacklistedTables =</b>
+<b class="nc">&nbsp;        ImmutableSet.copyOf(</b>
+<b class="nc">&nbsp;            getStringArray(</b>
+<b class="nc">&nbsp;                rs.getArray(&quot;blacklisted_tables&quot;) == null</b>
+&nbsp;                    ? new String[] {}
+<b class="nc">&nbsp;                    : rs.getArray(&quot;blacklisted_tables&quot;).getArray()));</b>
+&nbsp;
+<b class="nc">&nbsp;    return new RepairRunStatus(</b>
+<b class="nc">&nbsp;        UuidUtil.fromSequenceId(runId),</b>
+&nbsp;        clusterName,
+&nbsp;        keyspaceName,
+&nbsp;        columnFamilies,
+&nbsp;        segmentsRepaired,
+&nbsp;        totalSegments,
+&nbsp;        state,
+&nbsp;        startTime,
+&nbsp;        endTime,
+&nbsp;        cause,
+&nbsp;        owner,
+&nbsp;        lastEvent,
+&nbsp;        creationTime,
+&nbsp;        pauseTime,
+<b class="nc">&nbsp;        intensity,</b>
+<b class="nc">&nbsp;        incrementalRepair,</b>
+&nbsp;        repairParallelism,
+&nbsp;        nodes,
+&nbsp;        datacenters,
+&nbsp;        blacklistedTables);
+&nbsp;  }
+&nbsp;
+&nbsp;  private String[] getStringArray(Object array) {
+<b class="nc">&nbsp;    String[] stringArray = new String[((Object[]) array).length];</b>
+<b class="nc">&nbsp;    return Lists.newArrayList(((Object[]) array))</b>
+<b class="nc">&nbsp;        .stream()</b>
+<b class="nc">&nbsp;        .map(element -&gt; (String) element)</b>
+<b class="nc">&nbsp;        .collect(Collectors.toList())</b>
+<b class="nc">&nbsp;        .toArray(stringArray);</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

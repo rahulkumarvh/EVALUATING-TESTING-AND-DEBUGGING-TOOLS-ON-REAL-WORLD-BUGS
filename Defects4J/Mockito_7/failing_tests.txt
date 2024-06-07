@@ -1,0 +1,12 @@
+test.org.mockito.internal.util.reflection.EvosuiteCallsRealMethods_ESTest
+test.org.mockito.internal.util.reflection.EvosuiteCallsRealMethods_ESTest_scaffolding
+test.org.mockito.internal.util.reflection.EvosuiteDelegatingMethod_ESTest
+test.org.mockito.internal.util.reflection.EvosuiteDelegatingMethod_ESTest_scaffolding
+test.org.mockito.internal.util.reflection.EvosuiteGenericMetadataSupport_ESTest
+test.org.mockito.internal.util.reflection.EvosuiteGenericMetadataSupport_ESTest_scaffolding
+test.org.mockito.internal.util.reflection.EvosuiteReturnsEmptyValues_ESTest
+test.org.mockito.internal.util.reflection.EvosuiteReturnsEmptyValues_ESTest_scaffolding
+test.org.mockito.internal.util.reflection.RandoopErrorTest
+test.org.mockito.internal.util.reflection.RandoopErrorTest0
+test.org.mockito.internal.util.reflection.RandoopRegressionTest
+test.org.mockito.internal.util.reflection.RandoopRegressionTest0

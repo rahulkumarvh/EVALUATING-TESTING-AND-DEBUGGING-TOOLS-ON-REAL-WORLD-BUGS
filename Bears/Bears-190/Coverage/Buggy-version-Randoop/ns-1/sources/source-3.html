@@ -1,0 +1,594 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ReaperApplicationConfiguration</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper</a>
+</div>
+
+<h1>Coverage Summary for Class: ReaperApplicationConfiguration (io.cassandrareaper)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReaperApplicationConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/48)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/50)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ReaperApplicationConfiguration$AutoSchedulingConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ReaperApplicationConfiguration$DatacenterAvailability</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ReaperApplicationConfiguration$JmxCredentials</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/67)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/74)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper;
+&nbsp;
+&nbsp;import java.time.Duration;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import javax.validation.constraints.DecimalMin;
+&nbsp;import javax.validation.constraints.Max;
+&nbsp;import javax.validation.constraints.NotNull;
+&nbsp;import javax.ws.rs.DefaultValue;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonProperty;
+&nbsp;import io.dropwizard.Configuration;
+&nbsp;import io.dropwizard.db.DataSourceFactory;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.hibernate.validator.constraints.NotEmpty;
+&nbsp;import systems.composable.dropwizard.cassandra.CassandraFactory;
+&nbsp;
+<b class="nc">&nbsp;public final class ReaperApplicationConfiguration extends Configuration {</b>
+&nbsp;
+&nbsp;  private static final int DEFAULT_SEGMENT_COUNT_PER_NODE = 16;
+&nbsp;
+&nbsp;  @Deprecated
+&nbsp;  @JsonProperty
+&nbsp;  private Integer segmentCount;
+&nbsp;
+&nbsp;  @JsonProperty private Integer segmentCountPerNode;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @NotNull
+&nbsp;  private RepairParallelism repairParallelism;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @NotNull
+&nbsp;  @DecimalMin(value = &quot;0&quot;, inclusive = false)
+&nbsp;  @Max(1)
+&nbsp;  private Double repairIntensity;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @NotNull
+&nbsp;  @DefaultValue(&quot;false&quot;)
+&nbsp;  private Boolean incrementalRepair;
+&nbsp;
+&nbsp;  @DefaultValue(&quot;7&quot;)
+&nbsp;  private Integer scheduleDaysBetween;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @DefaultValue(&quot;false&quot;)
+&nbsp;  private Boolean useAddressTranslator;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @NotNull
+&nbsp;  private Integer repairRunThreadCount;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @NotNull
+&nbsp;  private Integer hangingRepairTimeoutMins;
+&nbsp;
+&nbsp;  @NotEmpty
+&nbsp;  private String storageType;
+&nbsp;
+&nbsp;  private String enableCrossOrigin;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private Map&lt;String, Integer&gt; jmxPorts;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private JmxCredentials jmxAuth;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private AutoSchedulingConfiguration autoScheduling;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @DefaultValue(&quot;true&quot;)
+&nbsp;  private Boolean enableDynamicSeedList;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private Integer repairManagerSchedulingIntervalSeconds;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @DefaultValue(&quot;false&quot;)
+&nbsp;  private Boolean activateQueryLogger;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  @DefaultValue(&quot;5&quot;)
+&nbsp;  private Integer jmxConnectionTimeoutInSeconds;
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  private DatacenterAvailability datacenterAvailability;
+&nbsp;
+<b class="nc">&nbsp;  private CassandraFactory cassandra = new CassandraFactory();</b>
+&nbsp;
+&nbsp;  @Deprecated
+&nbsp;  @JsonProperty
+&nbsp;  private DataSourceFactory database;
+&nbsp;
+<b class="nc">&nbsp;  private DataSourceFactory relationalDb = new DataSourceFactory();</b>
+&nbsp;
+&nbsp;  public int getSegmentCount() {
+<b class="nc">&nbsp;    return segmentCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setSegmentCount(int segmentCount) {
+<b class="nc">&nbsp;    this.segmentCount = segmentCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getSegmentCountPerNode() {
+<b class="nc">&nbsp;    return segmentCountPerNode == null ? DEFAULT_SEGMENT_COUNT_PER_NODE : segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setSegmentCountPerNode(int segmentCountPerNode) {
+<b class="nc">&nbsp;    this.segmentCountPerNode = segmentCountPerNode;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairParallelism getRepairParallelism() {
+<b class="nc">&nbsp;    return repairParallelism;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setRepairParallelism(RepairParallelism repairParallelism) {
+<b class="nc">&nbsp;    this.repairParallelism = repairParallelism;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public double getRepairIntensity() {
+<b class="nc">&nbsp;    return repairIntensity;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setRepairIntensity(double repairIntensity) {
+<b class="nc">&nbsp;    this.repairIntensity = repairIntensity;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean getIncrementalRepair() {
+<b class="nc">&nbsp;    return incrementalRepair != null ? incrementalRepair : false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setIncrementalRepair(boolean incrementalRepair) {
+<b class="nc">&nbsp;    this.incrementalRepair = incrementalRepair;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public Integer getScheduleDaysBetween() {
+<b class="nc">&nbsp;    return scheduleDaysBetween != null ? scheduleDaysBetween : 7;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setScheduleDaysBetween(int scheduleDaysBetween) {
+<b class="nc">&nbsp;    this.scheduleDaysBetween = scheduleDaysBetween;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getRepairRunThreadCount() {
+<b class="nc">&nbsp;    return repairRunThreadCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setRepairRunThreadCount(int repairRunThreadCount) {
+<b class="nc">&nbsp;    this.repairRunThreadCount = repairRunThreadCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public String getStorageType() {
+<b class="nc">&nbsp;    return storageType;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setEnableCrossOrigin(String enableCrossOrigin) {
+<b class="nc">&nbsp;    this.enableCrossOrigin = enableCrossOrigin;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public String getEnableCrossOrigin() {
+<b class="nc">&nbsp;    return this.enableCrossOrigin;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean isEnableCrossOrigin() {
+<b class="nc">&nbsp;    return this.enableCrossOrigin != null &amp;&amp; (&quot;true&quot;).equalsIgnoreCase(this.enableCrossOrigin);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setStorageType(String storageType) {
+<b class="nc">&nbsp;    this.storageType = storageType;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DataSourceFactory getDataSourceFactory() {
+<b class="nc">&nbsp;    return database != null ? database : relationalDb;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;h2&quot;)
+&nbsp;  public DataSourceFactory getH2DataSourceFactory() {
+<b class="nc">&nbsp;    return relationalDb;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;h2&quot;)
+&nbsp;  public void setH2DataSourceFactory(DataSourceFactory h2) {
+<b class="nc">&nbsp;    this.relationalDb = h2;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;postgres&quot;)
+&nbsp;  public DataSourceFactory getPostgresDataSourceFactory() {
+<b class="nc">&nbsp;    return relationalDb;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;postgres&quot;)
+&nbsp;  public void setPostgresDataSourceFactory(DataSourceFactory postgres) {
+<b class="nc">&nbsp;    this.relationalDb = postgres;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getRepairManagerSchedulingIntervalSeconds() {
+<b class="nc">&nbsp;    return this.repairManagerSchedulingIntervalSeconds == null ? 30 : this.repairManagerSchedulingIntervalSeconds;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  public void setRepairManagerSchedulingIntervalSeconds(int repairManagerSchedulingIntervalSeconds) {
+<b class="nc">&nbsp;    this.repairManagerSchedulingIntervalSeconds = repairManagerSchedulingIntervalSeconds;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public Map&lt;String, Integer&gt; getJmxPorts() {
+<b class="nc">&nbsp;    return jmxPorts;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setJmxPorts(Map&lt;String, Integer&gt; jmxPorts) {
+<b class="nc">&nbsp;    this.jmxPorts = jmxPorts;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public JmxCredentials getJmxAuth() {
+<b class="nc">&nbsp;    return jmxAuth;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setJmxAuth(JmxCredentials jmxAuth) {
+<b class="nc">&nbsp;    this.jmxAuth = jmxAuth;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean hasAutoSchedulingEnabled() {
+<b class="nc">&nbsp;    return autoScheduling != null &amp;&amp; autoScheduling.isEnabled();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public AutoSchedulingConfiguration getAutoScheduling() {
+<b class="nc">&nbsp;    return autoScheduling;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setAutoScheduling(AutoSchedulingConfiguration autoRepairScheduling) {
+<b class="nc">&nbsp;    this.autoScheduling = autoRepairScheduling;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setEnableDynamicSeedList(boolean enableDynamicSeedList) {
+<b class="nc">&nbsp;    this.enableDynamicSeedList = enableDynamicSeedList;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean getEnableDynamicSeedList() {
+<b class="nc">&nbsp;    return this.enableDynamicSeedList == null ? true : this.enableDynamicSeedList;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setActivateQueryLogger(boolean activateQueryLogger) {
+<b class="nc">&nbsp;    this.activateQueryLogger = activateQueryLogger;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean getActivateQueryLogger() {
+<b class="nc">&nbsp;    return this.activateQueryLogger == null ? false : this.activateQueryLogger;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setUseAddressTranslator(boolean useAddressTranslator) {
+<b class="nc">&nbsp;    this.useAddressTranslator = useAddressTranslator;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public boolean useAddressTranslator() {
+<b class="nc">&nbsp;    return this.useAddressTranslator != null ? useAddressTranslator : false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;cassandra&quot;)
+&nbsp;  public CassandraFactory getCassandraFactory() {
+<b class="nc">&nbsp;    return cassandra;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;cassandra&quot;)
+&nbsp;  public void setCassandraFactory(CassandraFactory cassandra) {
+<b class="nc">&nbsp;    this.cassandra = cassandra;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getHangingRepairTimeoutMins() {
+<b class="nc">&nbsp;    return hangingRepairTimeoutMins;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  public void setJmxConnectionTimeoutInSeconds(int jmxConnectionTimeoutInSeconds) {
+<b class="nc">&nbsp;    this.jmxConnectionTimeoutInSeconds = jmxConnectionTimeoutInSeconds;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int getJmxConnectionTimeoutInSeconds() {
+<b class="nc">&nbsp;    return jmxConnectionTimeoutInSeconds != null ? jmxConnectionTimeoutInSeconds : 20;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty
+&nbsp;  public void setHangingRepairTimeoutMins(int hangingRepairTimeoutMins) {
+<b class="nc">&nbsp;    this.hangingRepairTimeoutMins = hangingRepairTimeoutMins;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public DatacenterAvailability getDatacenterAvailability() {
+<b class="nc">&nbsp;    return this.datacenterAvailability != null ? this.datacenterAvailability : DatacenterAvailability.ALL;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @JsonProperty(&quot;datacenterAvailability&quot;)
+&nbsp;  public void setDatacenterAvailability(DatacenterAvailability datacenterAvailability) {
+<b class="nc">&nbsp;    this.datacenterAvailability = datacenterAvailability;</b>
+&nbsp;  }
+&nbsp;
+<b class="nc">&nbsp;  public static final class JmxCredentials {</b>
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private String username;
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private String password;
+&nbsp;
+&nbsp;    public String getUsername() {
+<b class="nc">&nbsp;      return username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getPassword() {
+<b class="nc">&nbsp;      return password;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+<b class="nc">&nbsp;  public static final class AutoSchedulingConfiguration {</b>
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private Boolean enabled;
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private Duration initialDelayPeriod;
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private Duration periodBetweenPolls;
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private Duration timeBeforeFirstSchedule;
+&nbsp;
+&nbsp;    @JsonProperty
+&nbsp;    private Duration scheduleSpreadPeriod;
+&nbsp;
+<b class="nc">&nbsp;    @JsonProperty</b>
+<b class="nc">&nbsp;    private List&lt;String&gt; excludedKeyspaces = Collections.emptyList();</b>
+&nbsp;
+&nbsp;    public Boolean isEnabled() {
+<b class="nc">&nbsp;      return enabled;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setEnabled(Boolean enable) {
+<b class="nc">&nbsp;      this.enabled = enable;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Duration getInitialDelayPeriod() {
+<b class="nc">&nbsp;      return initialDelayPeriod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setInitialDelayPeriod(Duration initialDelayPeriod) {
+<b class="nc">&nbsp;      this.initialDelayPeriod = initialDelayPeriod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Duration getPeriodBetweenPolls() {
+<b class="nc">&nbsp;      return periodBetweenPolls;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPeriodBetweenPolls(Duration periodBetweenPolls) {
+<b class="nc">&nbsp;      this.periodBetweenPolls = periodBetweenPolls;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Duration getTimeBeforeFirstSchedule() {
+<b class="nc">&nbsp;      return timeBeforeFirstSchedule;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTimeBeforeFirstSchedule(Duration timeBeforeFirstSchedule) {
+<b class="nc">&nbsp;      this.timeBeforeFirstSchedule = timeBeforeFirstSchedule;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Duration getScheduleSpreadPeriod() {
+<b class="nc">&nbsp;      return scheduleSpreadPeriod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setScheduleSpreadPeriod(Duration scheduleSpreadPeriod) {
+<b class="nc">&nbsp;      this.scheduleSpreadPeriod = scheduleSpreadPeriod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean hasScheduleSpreadPeriod() {
+<b class="nc">&nbsp;      return scheduleSpreadPeriod != null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setExcludedKeyspaces(List&lt;String&gt; excludedKeyspaces) {
+<b class="nc">&nbsp;      this.excludedKeyspaces = excludedKeyspaces;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;String&gt; getExcludedKeyspaces() {
+<b class="nc">&nbsp;      return excludedKeyspaces;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="nc">&nbsp;      return &quot;AutoSchedulingConfiguration{&quot;</b>
+&nbsp;          + &quot;enabled=&quot;
+&nbsp;          + enabled
+&nbsp;          + &quot;, initialDelayPeriod=&quot;
+&nbsp;          + initialDelayPeriod
+&nbsp;          + &quot;, periodBetweenPolls=&quot;
+&nbsp;          + periodBetweenPolls
+&nbsp;          + &quot;, timeBeforeFirstSchedule=&quot;
+&nbsp;          + timeBeforeFirstSchedule
+&nbsp;          + &quot;, scheduleSpreadPeriod=&quot;
+&nbsp;          + scheduleSpreadPeriod
+&nbsp;          + &#39;}&#39;;
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+<b class="nc">&nbsp;  public enum DatacenterAvailability {</b>
+&nbsp;    /* We require direct JMX access to all nodes across all datacenters */
+<b class="nc">&nbsp;    ALL,</b>
+&nbsp;    /* We require jmx access to all nodes in the local datacenter */
+<b class="nc">&nbsp;    LOCAL,</b>
+&nbsp;    /* Each datacenter requires at minimum one reaper instance that has jmx access to all nodes in that datacenter */
+<b class="nc">&nbsp;    EACH</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

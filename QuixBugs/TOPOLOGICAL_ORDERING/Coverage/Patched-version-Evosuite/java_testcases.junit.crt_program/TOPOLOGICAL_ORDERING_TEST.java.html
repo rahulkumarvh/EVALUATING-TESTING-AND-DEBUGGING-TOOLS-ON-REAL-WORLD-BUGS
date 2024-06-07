@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TOPOLOGICAL_ORDERING_TEST.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">java_testcases.junit.crt_program</a> &gt; <span class="el_source">TOPOLOGICAL_ORDERING_TEST.java</span></div><h1>TOPOLOGICAL_ORDERING_TEST.java</h1><pre class="source lang-java linenums">package java_testcases.junit.crt_program;
+
+import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
+import java.util.Arrays;
+import org.junit.Test;
+import correct_java_programs.TOPOLOGICAL_ORDERING;
+import java_programs.Node;
+
+<span class="nc" id="L10">public class TOPOLOGICAL_ORDERING_TEST {</span>
+
+    /**
+     * Case 1: Wikipedia graph Output: 5 7 3 11 8 10 2 9
+     */
+    @Test
+    public void test1() {
+<span class="nc" id="L17">        Node five = new Node(&quot;5&quot;);</span>
+<span class="nc" id="L18">        Node seven = new Node(&quot;7&quot;);</span>
+<span class="nc" id="L19">        Node three = new Node(&quot;3&quot;);</span>
+<span class="nc" id="L20">        Node eleven = new Node(&quot;11&quot;);</span>
+<span class="nc" id="L21">        Node eight = new Node(&quot;8&quot;);</span>
+<span class="nc" id="L22">        Node two = new Node(&quot;2&quot;);</span>
+<span class="nc" id="L23">        Node nine = new Node(&quot;9&quot;);</span>
+<span class="nc" id="L24">        Node ten = new Node(&quot;10&quot;);</span>
+
+<span class="nc" id="L26">        five.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(eleven)));</span>
+<span class="nc" id="L27">        seven.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(eleven, eight)));</span>
+<span class="nc" id="L28">        three.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(eight, ten)));</span>
+<span class="nc" id="L29">        eleven.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(five, seven)));</span>
+<span class="nc" id="L30">        eleven.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(two, nine, ten)));</span>
+<span class="nc" id="L31">        eight.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(seven, three)));</span>
+<span class="nc" id="L32">        eight.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(nine)));</span>
+<span class="nc" id="L33">        two.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(eleven)));</span>
+<span class="nc" id="L34">        nine.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(eleven, eight)));</span>
+<span class="nc" id="L35">        ten.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(eleven, three)));</span>
+
+<span class="nc" id="L37">        new ArrayList&lt;Node&gt;(Arrays.asList(five, seven, three, eleven, eight, two, nine, ten));</span>
+
+<span class="nc" id="L39">        ArrayList&lt;Node&gt; results = TOPOLOGICAL_ORDERING.topological_ordering(</span>
+<span class="nc" id="L40">                new ArrayList&lt;Node&gt;(Arrays.asList(five, seven, three, eleven, eight, two, nine, ten)));</span>
+
+<span class="nc" id="L42">        String resultStr = &quot;&quot;;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for (Node node : results) {</span>
+<span class="nc" id="L44">            resultStr += node.getValue() + &quot; &quot;;</span>
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">        assertEquals(&quot;5 7 3 11 8 10 2 9 &quot;, resultStr);</span>
+
+<span class="nc" id="L48">    }</span>
+
+/**
+ * 	 Case 2: GeekforGeeks example
+ *
+ */
+    @Test
+    public void test2() {
+<span class="nc" id="L56">        Node five = new Node(&quot;5&quot;);</span>
+<span class="nc" id="L57">        Node zero = new Node(&quot;0&quot;);</span>
+<span class="nc" id="L58">        Node four = new Node(&quot;4&quot;);</span>
+<span class="nc" id="L59">        Node one = new Node(&quot;1&quot;);</span>
+<span class="nc" id="L60">        Node two = new Node(&quot;2&quot;);</span>
+<span class="nc" id="L61">        Node three = new Node(&quot;3&quot;);</span>
+
+<span class="nc" id="L63">        five.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(two, zero)));</span>
+<span class="nc" id="L64">        four.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(zero, one)));</span>
+<span class="nc" id="L65">        two.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(five)));</span>
+<span class="nc" id="L66">        two.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(three)));</span>
+<span class="nc" id="L67">        zero.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(five, four)));</span>
+<span class="nc" id="L68">        one.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(four, three)));</span>
+<span class="nc" id="L69">        three.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(two)));</span>
+<span class="nc" id="L70">        three.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(one)));</span>
+
+<span class="nc" id="L72">        ArrayList&lt;Node&gt; results = TOPOLOGICAL_ORDERING</span>
+<span class="nc" id="L73">                .topological_ordering(new ArrayList&lt;Node&gt;(Arrays.asList(zero, one, two, three, four, five)));</span>
+
+<span class="nc" id="L75">        String resultStr = &quot;&quot;;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        for (Node node : results) {</span>
+<span class="nc" id="L77">            resultStr += node.getValue() + &quot; &quot;;</span>
+<span class="nc" id="L78">        }</span>
+<span class="nc" id="L79">        assertEquals(&quot;4 5 0 2 3 1 &quot;, resultStr);</span>
+<span class="nc" id="L80">    }</span>
+
+    /*
+     *  Case 3: Cooking with InteractivePython
+     */
+
+    @Test
+    public void test3() {
+<span class="nc" id="L88">        Node milk = new Node(&quot;3/4 cup milk&quot;);</span>
+<span class="nc" id="L89">        Node egg = new Node(&quot;1 egg&quot;);</span>
+<span class="nc" id="L90">        Node oil = new Node(&quot;1 Tbl oil&quot;);</span>
+<span class="nc" id="L91">        Node mix = new Node (&quot;1 cup mix&quot;);</span>
+<span class="nc" id="L92">        Node syrup = new Node(&quot;heat syrup&quot;);</span>
+<span class="nc" id="L93">        Node griddle = new Node(&quot;heat griddle&quot;);</span>
+<span class="nc" id="L94">        Node pour = new Node(&quot;pour 1/4 cup&quot;);</span>
+<span class="nc" id="L95">        Node turn = new Node(&quot;turn when bubbly&quot;);</span>
+<span class="nc" id="L96">        Node eat = new Node(&quot;eat&quot;);</span>
+
+<span class="nc" id="L98">        milk.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(mix)));</span>
+<span class="nc" id="L99">        egg.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(mix)));</span>
+<span class="nc" id="L100">        oil.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(mix)));</span>
+<span class="nc" id="L101">        mix.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(milk, egg, oil)));</span>
+<span class="nc" id="L102">        mix.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(syrup, pour)));</span>
+<span class="nc" id="L103">        griddle.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(pour)));</span>
+<span class="nc" id="L104">        pour.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(mix, griddle)));</span>
+<span class="nc" id="L105">        pour.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(turn)));</span>
+<span class="nc" id="L106">        turn.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(pour)));</span>
+<span class="nc" id="L107">        turn.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(eat)));</span>
+<span class="nc" id="L108">        syrup.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(mix)));</span>
+<span class="nc" id="L109">        syrup.setSuccessors(new ArrayList&lt;Node&gt;(Arrays.asList(eat)));</span>
+<span class="nc" id="L110">        eat.setPredecessors(new ArrayList&lt;Node&gt;(Arrays.asList(syrup, turn)));</span>
+
+<span class="nc" id="L112">        ArrayList&lt;Node&gt; results = TOPOLOGICAL_ORDERING.topological_ordering(new ArrayList&lt;Node&gt;(Arrays.asList(milk, egg, oil, mix, syrup, griddle, pour, turn, eat)));</span>
+
+<span class="nc" id="L114">        String resultStr = &quot;&quot;;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        for (Node node : results) {</span>
+<span class="nc" id="L116">            resultStr += node.getValue() + &quot; &quot;;</span>
+<span class="nc" id="L117">        }</span>
+<span class="nc" id="L118">        assertEquals(&quot;3/4 cup milk 1 egg 1 Tbl oil heat griddle 1 cup mix pour 1/4 cup heat syrup turn when bubbly eat &quot;, resultStr);</span>
+<span class="nc" id="L119">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

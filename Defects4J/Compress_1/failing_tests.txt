@@ -1,0 +1,11 @@
+src.test.java.org.apache.commons.compress.EvosuiteArchiveStreamFactory_ESTest
+src.test.java.org.apache.commons.compress.EvosuiteArchiveStreamFactory_ESTest_scaffolding
+src.test.java.org.apache.commons.compress.EvosuiteCoders_ESTest
+src.test.java.org.apache.commons.compress.EvosuiteCoders_ESTest_scaffolding
+src.test.java.org.apache.commons.compress.EvosuiteCpioArchiveOutputStream_ESTest
+src.test.java.org.apache.commons.compress.EvosuiteCpioArchiveOutputStream_ESTest_scaffolding
+src.test.java.org.apache.commons.compress.EvosuiteZipArchiveEntry_ESTest
+src.test.java.org.apache.commons.compress.EvosuiteZipArchiveEntry_ESTest_scaffolding
+src.test.java.org.apache.commons.compress.RandoopRegressionTest
+src.test.java.org.apache.commons.compress.RandoopRegressionTest0
+src.test.java.org.apache.commons.compress.RandoopRegressionTest1

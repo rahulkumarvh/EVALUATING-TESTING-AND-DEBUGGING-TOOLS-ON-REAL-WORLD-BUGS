@@ -1,0 +1,95 @@
+* Starting client
+* Connecting to master process on port 13468
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-20/buggy/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-20/buggy/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.8.8/jackson-core-2.8.8.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.deser.std.FromStringDeserializer
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 15:25:00.478 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-20/buggy/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.deser.std.FromStringDeserializer.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-20/buggy/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.deser.std.FromStringDeserializer.seed
+* Total number of test goals: 
+  - Line 122
+  - Branch 107
+  - Exception 0
+  - MutationFactory 416
+  - Output 12
+  - Method 9
+  - MethodNoException 9
+  - CBranchFitnessFactory 107
+* Using seed 1712003094191
+* Starting evolution
+[MASTER] 15:25:08.932 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:25:09.338 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:25:09.409 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Have no generator for class java.time.chrono.JapaneseChronology canUseFunctionalMocks=true, canBeMocked: false
+[MASTER] 15:25:10.081 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:25:10.404 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedParameter due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:25:11.482 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.SimpleMixInResolver due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:25:14.653 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:25:15.289 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+* Search finished after 96s and 191 generations, 99843 statements, best individual has fitness: 173.55894308849957
+* Writing sequences to pool
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 67%
+* Total number of goals: 122
+* Number of covered goals: 82
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 72%
+* Total number of goals: 107
+* Number of covered goals: 77
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 3
+* Number of covered goals: 3
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 92%
+* Total number of goals: 416
+* Number of covered goals: 384
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 42%
+* Total number of goals: 12
+* Number of covered goals: 5
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 100%
+* Total number of goals: 9
+* Number of covered goals: 9
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 78%
+* Total number of goals: 9
+* Number of covered goals: 7
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 72%
+* Total number of goals: 107
+* Number of covered goals: 77
+* Generated 35 tests with total length 132
+* Resulting test suite's coverage: 78% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 59%
+* Compiling and checking tests
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 1
+* Writing JUnit test case 'FromStringDeserializer_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-20/buggy/.evosuite/tmp_2024_04_01_15_24_52/tests
+* Done!
+

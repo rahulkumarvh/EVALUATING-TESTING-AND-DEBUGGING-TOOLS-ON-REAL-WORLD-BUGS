@@ -1,0 +1,770 @@
+Running ant (compile.tests)................................................ FAIL
+Executed command:  cd /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version && /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/major/bin/ant -f /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml -Dd4j.home=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j -Dd4j.dir.projects=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects -Dbasedir=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version -Dbuild.compiler=javac1.7  compile.tests 2>&1
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=1G; support was removed in 8.0
+Buildfile: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml
+
+compile.tests:
+
+init:
+     [echo] -------- commons-collections4 4.1-SNAPSHOT --------
+    [mkdir] Created dir: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target
+
+compile:
+    [mkdir] Created dir: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes
+    [javac] Compiling 308 source files to /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.7
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/MapUtils.java:41: warning: [deprecation] MultiValueMap in org.apache.commons.collections4.map has been deprecated
+    [javac] import org.apache.commons.collections4.map.MultiValueMap;
+    [javac]                                           ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/map/MultiValueMap.java:35: warning: [deprecation] MultiMap in org.apache.commons.collections4 has been deprecated
+    [javac] import org.apache.commons.collections4.MultiMap;
+    [javac]                                       ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/collection/IndexedCollection.java:22: warning: [deprecation] MultiMap in org.apache.commons.collections4 has been deprecated
+    [javac] import org.apache.commons.collections4.MultiMap;
+    [javac]                                       ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/collection/IndexedCollection.java:24: warning: [deprecation] MultiValueMap in org.apache.commons.collections4.map has been deprecated
+    [javac] import org.apache.commons.collections4.map.MultiValueMap;
+    [javac]                                           ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/collection/IndexedCollection.java:55: warning: [deprecation] MultiMap in org.apache.commons.collections4 has been deprecated
+    [javac]     private final MultiMap<K, C> index;
+    [javac]                   ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/collection/IndexedCollection.java:75: warning: [deprecation] MultiValueMap in org.apache.commons.collections4.map has been deprecated
+    [javac]                                            MultiValueMap.<K, C>multiValueMap(new HashMap<K, Collection<C>>()),
+    [javac]                                            ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/collection/IndexedCollection.java:91: warning: [deprecation] MultiValueMap in org.apache.commons.collections4.map has been deprecated
+    [javac]                                            MultiValueMap.<K, C>multiValueMap(new HashMap<K, Collection<C>>()),
+    [javac]                                            ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/main/java/org/apache/commons/collections4/collection/IndexedCollection.java:104: warning: [deprecation] MultiMap in org.apache.commons.collections4 has been deprecated
+    [javac]                              final MultiMap<K, C> map, final boolean uniqueIndex) {
+    [javac]                                    ^
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 9 warnings
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/keyvalue/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/splitmap/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/collection/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/comparators/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/sequence/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/trie/analyzer/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/bag/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/list/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/trie/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/bidimap/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/functors/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/map/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/multimap/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/iterators/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/set/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/package-info.class
+    [javac] Creating empty /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/classes/org/apache/commons/collections4/queue/package-info.class
+
+compile.tests:
+    [mkdir] Created dir: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/tests
+    [javac] Compiling 201 source files to /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/target/tests
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.6
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ArrayList.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/IOException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/InvocationTargetException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Method.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/AbstractCollection.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Arrays.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Collection.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Collections.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ConcurrentModificationException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Iterator.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/List.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ListIterator.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/NoSuchElementException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ByteArrayInputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ByteArrayOutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ObjectInputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ObjectOutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Array.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/HashMap.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/HashSet.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Map.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/File.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FileInputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FileOutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/InputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/OutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Constructor.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Modifier.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Object.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Cloneable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/String.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassNotFoundException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Map$Entry.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Exception.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Class.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/LinkedList.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/TreeMap.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Set.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/EmptyStackException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/SuppressWarnings.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Comparator.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Enumeration.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Hashtable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Queue.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/SortedMap.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Vector.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Long.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Number.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Iterable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/StringTokenizer.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/NotSerializableException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Date.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/TimeZone.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/org/w3c/dom/Node.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/org/w3c/dom/NodeList.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/PrintStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ListResourceBundle.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ResourceBundle.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Throwable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Runnable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/SortedSet.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/TreeSet.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FileNotFoundException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Boolean.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Random.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/org/w3c/dom/Element.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/org/w3c/dom/Text.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Character.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Locale.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/AbstractMap.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/InterruptedException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Deprecated.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/concurrent/TimeUnit.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ref/WeakReference.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/NavigableSet.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/math/BigInteger.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ArrayList.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation': class file for jdk.Profile+Annotation not found
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/IOException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/InvocationTargetException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Method.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/AbstractCollection.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Arrays.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Collection.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Collections.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ConcurrentModificationException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Iterator.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/List.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/ListIterator.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/NoSuchElementException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ByteArrayInputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ByteArrayOutputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ObjectInputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/ObjectOutputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/reflect/Array.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/HashMap.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:1648: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2131: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2172: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator27 = strComparableComparator18.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator18 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2173: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator28 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2175: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator26.thenComparing((java.util.Comparator<java.lang.String>) comparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator26 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2692: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2699: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2700: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2701: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2834: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2841: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2842: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2843: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:2895: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:3227: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor8 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass7);
+    [javac]                                                                                                                                            ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:3798: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator27 = strComparableComparator18.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator18 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:3799: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator28 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:3801: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator26.thenComparing((java.util.Comparator<java.lang.String>) comparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator26 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:3838: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor8 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass7);
+    [javac]                                                                                                                                            ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4102: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator14 = strComparableComparator5.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator13);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator5 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4131: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4344: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator14 = strComparableComparator5.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator13);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator5 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4345: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator15 = strComparableComparator2.thenComparing(strComparator14);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4506: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator27 = strComparableComparator18.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator18 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4507: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator28 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4509: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator26.thenComparing((java.util.Comparator<java.lang.String>) comparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator26 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4615: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4624: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor30 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass29);
+    [javac]                                                                                                                                             ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4840: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4842: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator15 = strComparableComparator4.reversed();
+    [javac]                                                                                          ^
+    [javac]   symbol:   method reversed()
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:4848: error: cannot find symbol
+    [javac]             java.util.Comparator<java.lang.String> strComparator21 = strComparableComparator4.thenComparing(strComparator20);
+    [javac]                                                                                              ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5168: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator21.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator21 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5169: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator31 = strComparableComparator18.thenComparing(strComparator30);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator18 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5176: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator44 = strComparableComparator35.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator43);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator35 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5179: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator49 = strComparableComparator18.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator35);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator18 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5364: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5371: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5372: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5373: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:5582: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6119: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6126: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6127: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6128: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6209: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor8 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass7);
+    [javac]                                                                                                                                            ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6752: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator14 = strComparableComparator5.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator13);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator5 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:6753: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator15 = strComparableComparator2.thenComparing(strComparator14);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:7013: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:7458: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:7463: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator20 = strComparableComparator10.reversed();
+    [javac]                                                                                           ^
+    [javac]   symbol:   method reversed()
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:7769: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator12 = strComparableComparator3.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator11);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator3 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:7770: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator0.thenComparing(strComparator12);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator0 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:7937: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor8 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass7);
+    [javac]                                                                                                                                            ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8098: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8319: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator12 = strComparableComparator3.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator11);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator3 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8320: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator0.thenComparing(strComparator12);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator0 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8459: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8460: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator17 = strComparableComparator4.thenComparing(strComparator16);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8467: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator21.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator21 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8470: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator35 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator21);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8548: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8607: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8608: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator17 = strComparableComparator4.thenComparing(strComparator16);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8615: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator21.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator21 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:8618: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator35 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator21);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9149: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9151: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator15 = strComparableComparator4.reversed();
+    [javac]                                                                                          ^
+    [javac]   symbol:   method reversed()
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9174: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor53 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass52);
+    [javac]                                                                                                                                             ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9228: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9280: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9287: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9288: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9289: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9546: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9548: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator2.reversed();
+    [javac]                                                                                          ^
+    [javac]   symbol:   method reversed()
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9580: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator27 = strComparableComparator18.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator18 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9581: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator28 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator26);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9583: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator26.thenComparing((java.util.Comparator<java.lang.String>) comparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator26 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9786: error: incompatible types
+    [javac]         java.util.ListIterator<java.lang.Class<?>> wildcardClassItor8 = org.apache.commons.collections4.IteratorUtils.singletonListIterator(wildcardClass7);
+    [javac]                                                                                                                                            ^
+    [javac]   required: ListIterator<Class<?>>
+    [javac]   found:    ListIterator<Class<CAP#1>>
+    [javac]   where CAP#1 is a fresh type-variable:
+    [javac]     CAP#1 extends Object from capture of ?
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9869: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator29 = strComparableComparator20.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator28);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator20 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9870: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator28);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:9872: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator32 = strComparableComparator28.thenComparing((java.util.Comparator<java.lang.String>) comparator31);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator28 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:10128: error: incompatible types
+    [javac]         org.apache.commons.collections4.ResettableIterator<java.lang.Object> objItor7 = org.apache.commons.collections4.IteratorUtils.loopingIterator((java.util.Collection<java.util.Iterator<? extends java.lang.reflect.Type>>) wildcardItorList4);
+    [javac]                                                                                                                                                      ^
+    [javac]   required: ResettableIterator<Object>
+    [javac]   found:    ResettableIterator<Iterator<? extends Type>>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:10469: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:10550: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest0.java:10555: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator20 = strComparableComparator10.reversed();
+    [javac]                                                                                           ^
+    [javac]   symbol:   method reversed()
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:123: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:130: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:131: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:132: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:793: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator11 = strComparableComparator2.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator10);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator2 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:800: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator24 = strComparableComparator15.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator23);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator15 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:801: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator25 = strComparableComparator12.thenComparing(strComparator24);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator12 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:802: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator26 = strComparableComparator10.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator10 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:848: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator16 = strComparableComparator7.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator15);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator7 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:849: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator17 = strComparableComparator4.thenComparing(strComparator16);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:856: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator21.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator21 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:859: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator35 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator21);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:1013: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator13 = strComparableComparator4.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator12);
+    [javac]                                                                                          ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator4 of type ComparableComparator<String>
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/src/test/java/org/apache/commons/collections4/RegressionTest1.java:1258: error: cannot find symbol
+    [javac]         java.util.Comparator<java.lang.String> strComparator30 = strComparableComparator21.thenComparing((java.util.Comparator<java.lang.String>) strComparableComparator29);
+    [javac]                                                                                           ^
+    [javac]   symbol:   method thenComparing(Comparator<String>)
+    [javac]   location: variable strComparableComparator21 of type ComparableComparator<String>
+    [javac] Note: Some input files use or override a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 100 errors
+    [javac] 100 warnings
+
+BUILD FAILED
+/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/Collections/Collections.build.xml:54: The following error occurred while executing this line:
+/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Collections_25/Patched-Version/build.xml:72: Compile failed; see the compiler error output for details.
+
+Total time: 23 seconds
+Cannot compile test suite! at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/d4j/d4j-test line 134.
+Compilation failed in require at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/defects4j line 195.

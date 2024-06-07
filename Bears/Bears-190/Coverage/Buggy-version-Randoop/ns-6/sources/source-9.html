@@ -1,0 +1,223 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairUnitService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairUnitService (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairUnitService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.jmx.JmxProxy;
+&nbsp;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;
+&nbsp;public final class RepairUnitService {
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(RepairUnitService.class);</b>
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;
+<b class="nc">&nbsp;  private RepairUnitService(AppContext context) {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static RepairUnitService create(AppContext context) {
+<b class="nc">&nbsp;    return new RepairUnitService(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairUnit getNewOrExistingRepairUnit(
+&nbsp;      Cluster cluster,
+&nbsp;      String keyspace,
+&nbsp;      Set&lt;String&gt; tableNames,
+&nbsp;      Boolean incrementalRepair,
+&nbsp;      Set&lt;String&gt; nodesToRepair,
+&nbsp;      Set&lt;String&gt; datacenters,
+&nbsp;      Set&lt;String&gt; blacklistedTables) throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    Optional&lt;RepairUnit&gt; storedRepairUnit = context.storage.getRepairUnit(</b>
+<b class="nc">&nbsp;        cluster.getName(),</b>
+&nbsp;        keyspace,
+&nbsp;        tableNames,
+&nbsp;        nodesToRepair,
+&nbsp;        datacenters,
+&nbsp;        blacklistedTables);
+&nbsp;
+<b class="nc">&nbsp;    Optional&lt;String&gt; cassandraVersion = Optional.absent();</b>
+&nbsp;
+<b class="nc">&nbsp;    try (JmxProxy jmxProxy = context.jmxConnectionFactory</b>
+<b class="nc">&nbsp;        .connectAny(</b>
+<b class="nc">&nbsp;            Optional.absent(),</b>
+<b class="nc">&nbsp;            cluster.getSeedHosts(),</b>
+<b class="nc">&nbsp;            context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;      cassandraVersion = Optional.fromNullable(jmxProxy.getCassandraVersion());</b>
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;couldn&#39;t connect to hosts: {}, life sucks...&quot;, cluster.getSeedHosts(), e);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    if (cassandraVersion.isPresent() &amp;&amp; cassandraVersion.get().startsWith(&quot;2.0&quot;) &amp;&amp; incrementalRepair) {</b>
+<b class="nc">&nbsp;      String errMsg = &quot;Incremental repair does not work with Cassandra versions before 2.1&quot;;</b>
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(errMsg);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    RepairUnit theRepairUnit;
+&nbsp;
+<b class="nc">&nbsp;    if (storedRepairUnit.isPresent()</b>
+<b class="nc">&nbsp;        &amp;&amp; storedRepairUnit.get().getIncrementalRepair().equals(incrementalRepair)</b>
+<b class="nc">&nbsp;        &amp;&amp; storedRepairUnit.get().getNodes().equals(nodesToRepair)</b>
+<b class="nc">&nbsp;        &amp;&amp; storedRepairUnit.get().getDatacenters().equals(datacenters)</b>
+<b class="nc">&nbsp;        &amp;&amp; storedRepairUnit.get().getBlacklistedTables().equals(blacklistedTables)</b>
+<b class="nc">&nbsp;        &amp;&amp; storedRepairUnit.get().getColumnFamilies().equals(tableNames)) {</b>
+<b class="nc">&nbsp;      LOG.info(</b>
+&nbsp;          &quot;use existing repair unit for cluster &#39;{}&#39;, keyspace &#39;{}&#39;, &quot;
+&nbsp;              + &quot;column families: {}, nodes: {} and datacenters: {}&quot;,
+<b class="nc">&nbsp;          cluster.getName(),</b>
+&nbsp;          keyspace,
+&nbsp;          tableNames,
+&nbsp;          nodesToRepair,
+&nbsp;          datacenters);
+&nbsp;
+<b class="nc">&nbsp;      theRepairUnit = storedRepairUnit.get();</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      LOG.info(</b>
+&nbsp;          &quot;create new repair unit for cluster &#39;{}&#39;, keyspace &#39;{}&#39;, column families: {}, nodes: {} and datacenters: {}&quot;,
+<b class="nc">&nbsp;          cluster.getName(),</b>
+&nbsp;          keyspace,
+&nbsp;          tableNames,
+&nbsp;          nodesToRepair,
+&nbsp;          datacenters);
+&nbsp;
+<b class="nc">&nbsp;      theRepairUnit = context.storage.addRepairUnit(</b>
+&nbsp;              new RepairUnit.Builder(
+<b class="nc">&nbsp;                  cluster.getName(),</b>
+&nbsp;                  keyspace,
+&nbsp;                  tableNames,
+&nbsp;                  incrementalRepair,
+&nbsp;                  nodesToRepair,
+&nbsp;                  datacenters,
+&nbsp;                  blacklistedTables));
+&nbsp;    }
+<b class="nc">&nbsp;    return theRepairUnit;</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,487 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > IStoragePostgreSql</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.storage.postgresql</a>
+</div>
+
+<h1>Coverage Summary for Class: IStoragePostgreSql (io.cassandrareaper.storage.postgresql)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IStoragePostgreSql</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.storage.postgresql;
+&nbsp;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairSegment;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.resources.view.RepairRunStatus;
+&nbsp;import io.cassandrareaper.resources.view.RepairScheduleStatus;
+&nbsp;import io.cassandrareaper.service.RepairParameters;
+&nbsp;
+&nbsp;import java.math.BigInteger;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Iterator;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import org.skife.jdbi.v2.sqlobject.Bind;
+&nbsp;import org.skife.jdbi.v2.sqlobject.BindBean;
+&nbsp;import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
+&nbsp;import org.skife.jdbi.v2.sqlobject.SqlBatch;
+&nbsp;import org.skife.jdbi.v2.sqlobject.SqlQuery;
+&nbsp;import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+&nbsp;import org.skife.jdbi.v2.sqlobject.customizers.BatchChunkSize;
+&nbsp;import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
+&nbsp;
+&nbsp;/**
+&nbsp; * JDBI based PostgreSQL interface.
+&nbsp; *
+&nbsp; * &lt;p&gt;
+&nbsp; * See following specification for more info: http://jdbi.org/sql_object_api_dml/
+&nbsp; */
+&nbsp;public interface IStoragePostgreSql {
+&nbsp;
+&nbsp;  // Cluster
+&nbsp;  //
+&nbsp;  String SQL_CLUSTER_ALL_FIELDS = &quot;name, partitioner, seed_hosts&quot;;
+&nbsp;  String SQL_GET_ALL_CLUSTERS = &quot;SELECT &quot; + SQL_CLUSTER_ALL_FIELDS + &quot; FROM cluster&quot;;
+&nbsp;  String SQL_GET_CLUSTER = &quot;SELECT &quot; + SQL_CLUSTER_ALL_FIELDS + &quot; FROM cluster WHERE name = :name&quot;;
+&nbsp;  String SQL_INSERT_CLUSTER = &quot;INSERT INTO cluster (&quot; + SQL_CLUSTER_ALL_FIELDS
+&nbsp;      + &quot;) VALUES (:name, :partitioner, :seedHosts)&quot;;
+&nbsp;  String SQL_UPDATE_CLUSTER = &quot;UPDATE cluster SET partitioner = :partitioner, &quot;
+&nbsp;      + &quot;seed_hosts = :seedHosts WHERE name = :name&quot;;
+&nbsp;  String SQL_DELETE_CLUSTER = &quot;DELETE FROM cluster WHERE name = :name&quot;;
+&nbsp;
+&nbsp;  // RepairRun
+&nbsp;  //
+&nbsp;  String SQL_REPAIR_RUN_ALL_FIELDS_NO_ID = &quot;cluster_name, repair_unit_id, cause, owner, state, creation_time, &quot;
+&nbsp;      + &quot;start_time, end_time, pause_time, intensity, last_event, &quot;
+&nbsp;      + &quot;segment_count, repair_parallelism&quot;;
+&nbsp;  String SQL_REPAIR_RUN_ALL_FIELDS = &quot;repair_run.id, &quot; + SQL_REPAIR_RUN_ALL_FIELDS_NO_ID;
+&nbsp;  String SQL_INSERT_REPAIR_RUN = &quot;INSERT INTO repair_run (&quot;
+&nbsp;      + SQL_REPAIR_RUN_ALL_FIELDS_NO_ID
+&nbsp;      + &quot;) VALUES &quot;
+&nbsp;      + &quot;(:clusterName, :repairUnitId, :cause, :owner, :runState, :creationTime, &quot;
+&nbsp;      + &quot;:startTime, :endTime, :pauseTime, :intensity, :lastEvent, :segmentCount, &quot;
+&nbsp;      + &quot;:repairParallelism)&quot;;
+&nbsp;  String SQL_UPDATE_REPAIR_RUN = &quot;UPDATE repair_run SET cause = :cause, owner = :owner, state = :runState, &quot;
+&nbsp;      + &quot;start_time = :startTime, end_time = :endTime, pause_time = :pauseTime, &quot;
+&nbsp;      + &quot;intensity = :intensity, last_event = :lastEvent, segment_count = :segmentCount, &quot;
+&nbsp;      + &quot;repair_parallelism = :repairParallelism WHERE id = :id&quot;;
+&nbsp;  String SQL_GET_REPAIR_RUN = &quot;SELECT &quot; + SQL_REPAIR_RUN_ALL_FIELDS + &quot; FROM repair_run WHERE id = :id&quot;;
+&nbsp;  String SQL_GET_REPAIR_RUNS_FOR_CLUSTER = &quot;SELECT &quot; + SQL_REPAIR_RUN_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_run WHERE cluster_name = :clusterName&quot;;
+&nbsp;  String SQL_GET_REPAIR_RUNS_WITH_STATE = &quot;SELECT &quot; + SQL_REPAIR_RUN_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_run WHERE state = :state&quot;;
+&nbsp;  String SQL_GET_REPAIR_RUNS_FOR_UNIT = &quot;SELECT &quot; + SQL_REPAIR_RUN_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_run WHERE repair_unit_id = :unitId&quot;;
+&nbsp;  String SQL_DELETE_REPAIR_RUN = &quot;DELETE FROM repair_run WHERE id = :id&quot;;
+&nbsp;
+&nbsp;  // RepairUni
+&nbsp;  //
+&nbsp;  String SQL_REPAIR_UNIT_ALL_FIELDS_NO_ID =
+&nbsp;      &quot;cluster_name, keyspace_name, column_families, &quot;
+&nbsp;          + &quot;incremental_repair, nodes, datacenters, blacklisted_tables&quot;;
+&nbsp;  String SQL_REPAIR_UNIT_ALL_FIELDS = &quot;repair_unit.id, &quot; + SQL_REPAIR_UNIT_ALL_FIELDS_NO_ID;
+&nbsp;  String SQL_INSERT_REPAIR_UNIT =
+&nbsp;      &quot;INSERT INTO repair_unit (&quot;
+&nbsp;          + SQL_REPAIR_UNIT_ALL_FIELDS_NO_ID
+&nbsp;          + &quot;) VALUES &quot;
+&nbsp;          + &quot;(:clusterName, :keyspaceName, :columnFamilies, &quot;
+&nbsp;          + &quot;:incrementalRepair, :nodes, :datacenters, :blacklistedTables)&quot;;
+&nbsp;  String SQL_GET_REPAIR_UNIT = &quot;SELECT &quot; + SQL_REPAIR_UNIT_ALL_FIELDS + &quot; FROM repair_unit WHERE id = :id&quot;;
+&nbsp;
+&nbsp;  String SQL_GET_REPAIR_UNIT_BY_CLUSTER_AND_TABLES =
+&nbsp;      &quot;SELECT &quot;
+&nbsp;          + SQL_REPAIR_UNIT_ALL_FIELDS
+&nbsp;          + &quot; FROM repair_unit &quot;
+&nbsp;          + &quot;WHERE cluster_name = :clusterName AND keyspace_name = :keyspaceName &quot;
+&nbsp;          + &quot;AND column_families = :columnFamilies AND nodes = :nodes AND datacenters = :datacenters &quot;
+&nbsp;          + &quot;AND blackListed_tables = :blacklisted_tables&quot;;
+&nbsp;
+&nbsp;  String SQL_DELETE_REPAIR_UNIT = &quot;DELETE FROM repair_unit WHERE id = :id&quot;;
+&nbsp;
+&nbsp;  // RepairSegmen
+&nbsp;  //
+&nbsp;  String SQL_REPAIR_SEGMENT_ALL_FIELDS_NO_ID
+&nbsp;      = &quot;repair_unit_id, run_id, start_token, end_token, state, coordinator_host, start_time, &quot;
+&nbsp;      + &quot;end_time, fail_count&quot;;
+&nbsp;  String SQL_REPAIR_SEGMENT_ALL_FIELDS = &quot;repair_segment.id, &quot; + SQL_REPAIR_SEGMENT_ALL_FIELDS_NO_ID;
+&nbsp;  String SQL_INSERT_REPAIR_SEGMENT = &quot;INSERT INTO repair_segment (&quot;
+&nbsp;      + SQL_REPAIR_SEGMENT_ALL_FIELDS_NO_ID
+&nbsp;      + &quot;) VALUES &quot;
+&nbsp;      + &quot;(:repairUnitId, :runId, :startToken, :endToken, :state, :coordinatorHost, :startTime, &quot;
+&nbsp;      + &quot;:endTime, :failCount)&quot;;
+&nbsp;  String SQL_UPDATE_REPAIR_SEGMENT = &quot;UPDATE repair_segment SET repair_unit_id = :repairUnitId, run_id = :runId, &quot;
+&nbsp;      + &quot;start_token = :startToken, end_token = :endToken, state = :state, &quot;
+&nbsp;      + &quot;coordinator_host = :coordinatorHost, start_time = :startTime, end_time = :endTime, &quot;
+&nbsp;      + &quot;fail_count = :failCount WHERE id = :id&quot;;
+&nbsp;  String SQL_GET_REPAIR_SEGMENT = &quot;SELECT &quot; + SQL_REPAIR_SEGMENT_ALL_FIELDS + &quot; FROM repair_segment WHERE id = :id&quot;;
+&nbsp;  String SQL_GET_REPAIR_SEGMENTS_FOR_RUN = &quot;SELECT &quot; + SQL_REPAIR_SEGMENT_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_segment WHERE run_id = :runId&quot;;
+&nbsp;  String SQL_GET_REPAIR_SEGMENTS_FOR_RUN_WITH_STATE = &quot;SELECT &quot; + SQL_REPAIR_SEGMENT_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_segment WHERE &quot; + &quot;run_id = :runId AND state = :state&quot;;
+&nbsp;  String SQL_GET_RUNNING_REPAIRS_FOR_CLUSTER
+&nbsp;      = &quot;SELECT start_token, end_token, keyspace_name, column_families, repair_parallelism &quot;
+&nbsp;      + &quot;FROM repair_segment &quot;
+&nbsp;      + &quot;JOIN repair_run ON run_id = repair_run.id &quot;
+&nbsp;      + &quot;JOIN repair_unit ON repair_run.repair_unit_id = repair_unit.id &quot;
+&nbsp;      + &quot;WHERE repair_segment.state = 1 AND repair_unit.cluster_name = :clusterName&quot;;
+&nbsp;  String SQL_GET_NEXT_FREE_REPAIR_SEGMENT = &quot;SELECT &quot;
+&nbsp;      + SQL_REPAIR_SEGMENT_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_segment WHERE run_id = :runId &quot;
+&nbsp;      + &quot;AND state = 0 ORDER BY fail_count ASC, start_token ASC LIMIT 1&quot;;
+&nbsp;  String SQL_GET_NEXT_FREE_REPAIR_SEGMENT_IN_NON_WRAPPING_RANGE = &quot;SELECT &quot;
+&nbsp;      + SQL_REPAIR_SEGMENT_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_segment WHERE &quot;
+&nbsp;      + &quot;run_id = :runId AND state = 0 AND start_token &lt; end_token AND &quot;
+&nbsp;      + &quot;(start_token &gt;= :startToken AND end_token &lt;= :endToken) &quot;
+&nbsp;      + &quot;ORDER BY fail_count ASC, start_token ASC LIMIT 1&quot;;
+&nbsp;  String SQL_GET_NEXT_FREE_REPAIR_SEGMENT_IN_WRAPPING_RANGE = &quot;SELECT &quot;
+&nbsp;      + SQL_REPAIR_SEGMENT_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_segment WHERE &quot;
+&nbsp;      + &quot;run_id = :runId AND state = 0 AND &quot;
+&nbsp;      + &quot;((start_token &lt; end_token AND (start_token &gt;= :startToken OR end_token &lt;= :endToken)) OR &quot;
+&nbsp;      + &quot;(start_token &gt;= :startToken AND end_token &lt;= :endToken)) &quot;
+&nbsp;      + &quot;ORDER BY fail_count ASC, start_token ASC LIMIT 1&quot;;
+&nbsp;  String SQL_DELETE_REPAIR_SEGMENTS_FOR_RUN = &quot;DELETE FROM repair_segment WHERE run_id = :runId&quot;;
+&nbsp;
+&nbsp;  // RepairSchedule
+&nbsp;  //
+&nbsp;  String SQL_REPAIR_SCHEDULE_ALL_FIELDS_NO_ID =
+&nbsp;      &quot;repair_unit_id, state, days_between, next_activation, run_history, segment_count, &quot;
+&nbsp;          + &quot;repair_parallelism, intensity, creation_time, owner, pause_time, segment_count_per_node &quot;;
+&nbsp;  String SQL_REPAIR_SCHEDULE_ALL_FIELDS = &quot;repair_schedule.id, &quot; + SQL_REPAIR_SCHEDULE_ALL_FIELDS_NO_ID;
+&nbsp;  String SQL_INSERT_REPAIR_SCHEDULE =
+&nbsp;      &quot;INSERT INTO repair_schedule (&quot;
+&nbsp;          + SQL_REPAIR_SCHEDULE_ALL_FIELDS_NO_ID
+&nbsp;          + &quot;) VALUES &quot;
+&nbsp;          + &quot;(:repairUnitId, :state, :daysBetween, :nextActivation, :runHistorySql, :segmentCount, &quot;
+&nbsp;          + &quot;:repairParallelism, :intensity, :creationTime, :owner, :pauseTime, :segmentCountPerNode)&quot;;
+&nbsp;  String SQL_UPDATE_REPAIR_SCHEDULE =
+&nbsp;      &quot;UPDATE repair_schedule SET repair_unit_id = :repairUnitId, state = :state, &quot;
+&nbsp;          + &quot;days_between = :daysBetween, next_activation = :nextActivation, &quot;
+&nbsp;          + &quot;run_history = :runHistorySql, segment_count = :segmentCount, &quot;
+&nbsp;          + &quot;segment_count_per_node = :segmentCountPerNode, &quot;
+&nbsp;          + &quot;repair_parallelism = :repairParallelism, creation_time = :creationTime, owner = :owner, &quot;
+&nbsp;          + &quot;pause_time = :pauseTime WHERE id = :id&quot;;
+&nbsp;  String SQL_GET_REPAIR_SCHEDULE = &quot;SELECT &quot; + SQL_REPAIR_SCHEDULE_ALL_FIELDS + &quot; FROM repair_schedule WHERE id = :id&quot;;
+&nbsp;  String SQL_GET_REPAIR_SCHEDULES_FOR_CLUSTER = &quot;SELECT &quot;
+&nbsp;      + SQL_REPAIR_SCHEDULE_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_schedule, repair_unit &quot;
+&nbsp;      + &quot;WHERE repair_schedule.repair_unit_id = repair_unit.id AND cluster_name = :clusterName&quot;;
+&nbsp;  String SQL_GET_REPAIR_SCHEDULES_FOR_KEYSPACE = &quot;SELECT &quot;
+&nbsp;      + SQL_REPAIR_SCHEDULE_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_schedule, repair_unit &quot;
+&nbsp;      + &quot;WHERE repair_schedule.repair_unit_id = repair_unit.id AND keyspace_name = :keyspaceName&quot;;
+&nbsp;  String SQL_GET_REPAIR_SCHEDULES_FOR_CLUSTER_AND_KEYSPACE = &quot;SELECT &quot;
+&nbsp;      + SQL_REPAIR_SCHEDULE_ALL_FIELDS
+&nbsp;      + &quot; FROM repair_schedule, repair_unit &quot;
+&nbsp;      + &quot;WHERE repair_schedule.repair_unit_id = repair_unit.id AND cluster_name = :clusterName &quot;
+&nbsp;      + &quot;AND keyspace_name = :keyspaceName&quot;;
+&nbsp;
+&nbsp;  String SQL_GET_ALL_REPAIR_SCHEDULES = &quot;SELECT &quot; + SQL_REPAIR_SCHEDULE_ALL_FIELDS + &quot; FROM repair_schedule&quot;;
+&nbsp;  String SQL_DELETE_REPAIR_SCHEDULE = &quot;DELETE FROM repair_schedule WHERE id = :id&quot;;
+&nbsp;
+&nbsp;  // Utility methods
+&nbsp;  //
+&nbsp;  String SQL_GET_REPAIR_RUN_IDS_FOR_CLUSTER = &quot;SELECT id FROM repair_run WHERE cluster_name = :clusterName&quot;;
+&nbsp;  String SQL_SEGMENT_AMOUNT_FOR_REPAIR_RUN = &quot;SELECT count(*) FROM repair_segment WHERE run_id = :runId&quot;;
+&nbsp;  String SQL_SEGMENT_AMOUNT_FOR_REPAIR_RUN_WITH_STATE
+&nbsp;      = &quot;SELECT count(*) FROM repair_segment WHERE run_id = :runId AND state = :state&quot;;
+&nbsp;
+&nbsp;  // View-specific queries
+&nbsp;  //
+&nbsp;  String SQL_CLUSTER_RUN_OVERVIEW =
+&nbsp;      &quot;SELECT repair_run.id, repair_unit.cluster_name, keyspace_name, column_families, &quot;
+&nbsp;          + &quot;nodes, datacenters, blacklisted_tables, &quot;
+&nbsp;          + &quot;(SELECT COUNT(case when state = 2 then 1 else null end) &quot;
+&nbsp;          + &quot;FROM repair_segment &quot;
+&nbsp;          + &quot;WHERE run_id = repair_run.id) AS segments_repaired, &quot;
+&nbsp;          + &quot;(SELECT COUNT(*) FROM repair_segment WHERE run_id = repair_run.id) AS segments_total, &quot;
+&nbsp;          + &quot;repair_run.state, repair_run.start_time, &quot;
+&nbsp;          + &quot;repair_run.end_time, cause, owner, last_event, &quot;
+&nbsp;          + &quot;creation_time, pause_time, intensity, repair_parallelism, incremental_repair &quot;
+&nbsp;          + &quot;FROM repair_run &quot;
+&nbsp;          + &quot;JOIN repair_unit ON repair_unit_id = repair_unit.id &quot;
+&nbsp;          + &quot;WHERE repair_unit.cluster_name = :clusterName &quot;
+&nbsp;          + &quot;ORDER BY COALESCE(end_time, start_time) DESC, start_time DESC &quot;
+&nbsp;          + &quot;LIMIT :limit&quot;;
+&nbsp;
+&nbsp;  String SQL_CLUSTER_SCHEDULE_OVERVIEW =
+&nbsp;      &quot;SELECT repair_schedule.id, owner, cluster_name, keyspace_name, column_families, state, &quot;
+&nbsp;          + &quot;creation_time, next_activation, pause_time, intensity, segment_count, &quot;
+&nbsp;          + &quot;repair_parallelism, days_between, incremental_repair, nodes, &quot;
+&nbsp;          + &quot;datacenters, blacklisted_tables, segment_count_per_node &quot;
+&nbsp;          + &quot;FROM repair_schedule &quot;
+&nbsp;          + &quot;JOIN repair_unit ON repair_unit_id = repair_unit.id &quot;
+&nbsp;          + &quot;WHERE cluster_name = :clusterName&quot;;
+&nbsp;
+&nbsp;  @SqlQuery(&quot;SELECT CURRENT_TIMESTAMP&quot;)
+&nbsp;  String getCurrentDate();
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_CLUSTER)
+&nbsp;  @Mapper(ClusterMapper.class)
+&nbsp;  Cluster getCluster(
+&nbsp;      @Bind(&quot;name&quot;) String clusterName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_ALL_CLUSTERS)
+&nbsp;  @Mapper(ClusterMapper.class)
+&nbsp;  Collection&lt;Cluster&gt; getClusters();
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_INSERT_CLUSTER)
+&nbsp;  int insertCluster(
+&nbsp;      @BindBean Cluster newCluster);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_UPDATE_CLUSTER)
+&nbsp;  int updateCluster(
+&nbsp;      @BindBean Cluster newCluster);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_DELETE_CLUSTER)
+&nbsp;  int deleteCluster(
+&nbsp;      @Bind(&quot;name&quot;) String clusterName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_RUN)
+&nbsp;  @Mapper(RepairRunMapper.class)
+&nbsp;  RepairRun getRepairRun(
+&nbsp;      @Bind(&quot;id&quot;) long repairRunId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_RUNS_FOR_CLUSTER)
+&nbsp;  @Mapper(RepairRunMapper.class)
+&nbsp;  Collection&lt;RepairRun&gt; getRepairRunsForCluster(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_RUNS_WITH_STATE)
+&nbsp;  @Mapper(RepairRunMapper.class)
+&nbsp;  Collection&lt;RepairRun&gt; getRepairRunsWithState(
+&nbsp;      @Bind(&quot;state&quot;) RepairRun.RunState state);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_RUNS_FOR_UNIT)
+&nbsp;  @Mapper(RepairRunMapper.class)
+&nbsp;  Collection&lt;RepairRun&gt; getRepairRunsForUnit(
+&nbsp;      @Bind(&quot;unitId&quot;) long unitId);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_INSERT_REPAIR_RUN)
+&nbsp;  @GetGeneratedKeys
+&nbsp;  long insertRepairRun(
+&nbsp;      @BindBean RepairRun newRepairRun);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_UPDATE_REPAIR_RUN)
+&nbsp;  int updateRepairRun(
+&nbsp;      @BindBean RepairRun newRepairRun);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_DELETE_REPAIR_RUN)
+&nbsp;  int deleteRepairRun(
+&nbsp;      @Bind(&quot;id&quot;) long repairRunId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_UNIT)
+&nbsp;  @Mapper(RepairUnitMapper.class)
+&nbsp;  RepairUnit getRepairUnit(
+&nbsp;      @Bind(&quot;id&quot;) long repairUnitId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_UNIT_BY_CLUSTER_AND_TABLES)
+&nbsp;  @Mapper(RepairUnitMapper.class)
+&nbsp;  RepairUnit getRepairUnitByClusterAndTables(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName,
+&nbsp;      @Bind(&quot;keyspaceName&quot;) String keyspaceName,
+&nbsp;      @Bind(&quot;columnFamilies&quot;) Collection&lt;String&gt; columnFamilies,
+&nbsp;      @Bind(&quot;nodes&quot;) Collection&lt;String&gt; nodes,
+&nbsp;      @Bind(&quot;datacenters&quot;) Collection&lt;String&gt; datacenters,
+&nbsp;      @Bind(&quot;blacklisted_tables&quot;) Collection&lt;String&gt; blacklistedTables);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_INSERT_REPAIR_UNIT)
+&nbsp;  @GetGeneratedKeys
+&nbsp;  long insertRepairUnit(
+&nbsp;      @BindBean RepairUnit newRepairUnit);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_DELETE_REPAIR_UNIT)
+&nbsp;  int deleteRepairUnit(
+&nbsp;      @Bind(&quot;id&quot;) long repairUnitId);
+&nbsp;
+&nbsp;  @SqlBatch(SQL_INSERT_REPAIR_SEGMENT)
+&nbsp;  @BatchChunkSize(500)
+&nbsp;  void insertRepairSegments(
+&nbsp;      @BindBean Iterator&lt;RepairSegment&gt; newRepairSegments);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_UPDATE_REPAIR_SEGMENT)
+&nbsp;  int updateRepairSegment(
+&nbsp;      @BindBean RepairSegment newRepairSegment);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SEGMENT)
+&nbsp;  @Mapper(RepairSegmentMapper.class)
+&nbsp;  RepairSegment getRepairSegment(
+&nbsp;      @Bind(&quot;id&quot;) long repairSegmentId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SEGMENTS_FOR_RUN)
+&nbsp;  @Mapper(RepairSegmentMapper.class)
+&nbsp;  Collection&lt;RepairSegment&gt; getRepairSegmentsForRun(
+&nbsp;      @Bind(&quot;runId&quot;) long runId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SEGMENTS_FOR_RUN_WITH_STATE)
+&nbsp;  @Mapper(RepairSegmentMapper.class)
+&nbsp;  Collection&lt;RepairSegment&gt; getRepairSegmentsForRunWithState(
+&nbsp;      @Bind(&quot;runId&quot;) long runId,
+&nbsp;      @Bind(&quot;state&quot;) RepairSegment.State state);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_RUNNING_REPAIRS_FOR_CLUSTER)
+&nbsp;  @Mapper(RepairParametersMapper.class)
+&nbsp;  Collection&lt;RepairParameters&gt; getRunningRepairsForCluster(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_NEXT_FREE_REPAIR_SEGMENT)
+&nbsp;  @Mapper(RepairSegmentMapper.class)
+&nbsp;  RepairSegment getNextFreeRepairSegment(
+&nbsp;      @Bind(&quot;runId&quot;) long runId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_NEXT_FREE_REPAIR_SEGMENT_IN_NON_WRAPPING_RANGE)
+&nbsp;  @Mapper(RepairSegmentMapper.class)
+&nbsp;  RepairSegment getNextFreeRepairSegmentInNonWrappingRange(
+&nbsp;      @Bind(&quot;runId&quot;) long runId,
+&nbsp;      @Bind(&quot;startToken&quot;) BigInteger startToken,
+&nbsp;      @Bind(&quot;endToken&quot;) BigInteger endToken);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_NEXT_FREE_REPAIR_SEGMENT_IN_WRAPPING_RANGE)
+&nbsp;  @Mapper(RepairSegmentMapper.class)
+&nbsp;  RepairSegment getNextFreeRepairSegmentInWrappingRange(
+&nbsp;      @Bind(&quot;runId&quot;) long runId,
+&nbsp;      @Bind(&quot;startToken&quot;) BigInteger startToken,
+&nbsp;      @Bind(&quot;endToken&quot;) BigInteger endToken);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_DELETE_REPAIR_SEGMENTS_FOR_RUN)
+&nbsp;  int deleteRepairSegmentsForRun(
+&nbsp;      @Bind(&quot;runId&quot;) long repairRunId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SCHEDULE)
+&nbsp;  @Mapper(RepairScheduleMapper.class)
+&nbsp;  RepairSchedule getRepairSchedule(
+&nbsp;      @Bind(&quot;id&quot;) long repairScheduleId);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_INSERT_REPAIR_SCHEDULE)
+&nbsp;  @GetGeneratedKeys
+&nbsp;  long insertRepairSchedule(
+&nbsp;      @BindBean RepairSchedule newRepairSchedule);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_UPDATE_REPAIR_SCHEDULE)
+&nbsp;  int updateRepairSchedule(
+&nbsp;      @BindBean RepairSchedule newRepairSchedule);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SCHEDULES_FOR_CLUSTER)
+&nbsp;  @Mapper(RepairScheduleMapper.class)
+&nbsp;  Collection&lt;RepairSchedule&gt; getRepairSchedulesForCluster(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SCHEDULES_FOR_KEYSPACE)
+&nbsp;  @Mapper(RepairScheduleMapper.class)
+&nbsp;  Collection&lt;RepairSchedule&gt; getRepairSchedulesForKeyspace(
+&nbsp;      @Bind(&quot;keyspaceName&quot;) String keyspaceName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_SCHEDULES_FOR_CLUSTER_AND_KEYSPACE)
+&nbsp;  @Mapper(RepairScheduleMapper.class)
+&nbsp;  Collection&lt;RepairSchedule&gt; getRepairSchedulesForClusterAndKeySpace(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName,
+&nbsp;      @Bind(&quot;keyspaceName&quot;) String keyspaceName);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_ALL_REPAIR_SCHEDULES)
+&nbsp;  @Mapper(RepairScheduleMapper.class)
+&nbsp;  Collection&lt;RepairSchedule&gt; getAllRepairSchedules();
+&nbsp;
+&nbsp;  @SqlQuery(SQL_GET_REPAIR_RUN_IDS_FOR_CLUSTER)
+&nbsp;  Collection&lt;Long&gt; getRepairRunIdsForCluster(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName);
+&nbsp;
+&nbsp;  @SqlUpdate(SQL_DELETE_REPAIR_SCHEDULE)
+&nbsp;  int deleteRepairSchedule(
+&nbsp;      @Bind(&quot;id&quot;) long repairScheduleId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_SEGMENT_AMOUNT_FOR_REPAIR_RUN)
+&nbsp;  int getSegmentAmountForRepairRun(
+&nbsp;      @Bind(&quot;runId&quot;) long runId);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_SEGMENT_AMOUNT_FOR_REPAIR_RUN_WITH_STATE)
+&nbsp;  int getSegmentAmountForRepairRunWithState(
+&nbsp;      @Bind(&quot;runId&quot;) long runId,
+&nbsp;      @Bind(&quot;state&quot;) RepairSegment.State state);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_CLUSTER_RUN_OVERVIEW)
+&nbsp;  @Mapper(RepairRunStatusMapper.class)
+&nbsp;  List&lt;RepairRunStatus&gt; getClusterRunOverview(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName,
+&nbsp;      @Bind(&quot;limit&quot;) int limit);
+&nbsp;
+&nbsp;  @SqlQuery(SQL_CLUSTER_SCHEDULE_OVERVIEW)
+&nbsp;  @Mapper(RepairScheduleStatusMapper.class)
+&nbsp;  Collection&lt;RepairScheduleStatus&gt; getClusterScheduleOverview(
+&nbsp;      @Bind(&quot;clusterName&quot;) String clusterName);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

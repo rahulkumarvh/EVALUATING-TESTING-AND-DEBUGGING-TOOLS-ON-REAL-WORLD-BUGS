@@ -1,0 +1,17 @@
+--- Buggy-Version/POSSIBLE_CHANGE.java	2024-02-29 22:34:35
++++ Patched-Version/POSSIBLE_CHANGE.java	2024-02-29 22:34:35
+@@ -1,4 +1,4 @@
+-package java_programs;
++package correct_java_programs;
+ import java.util.*;
+ /*
+  * To change this template, choose Tools | Templates
+@@ -14,7 +14,7 @@
+         if (total == 0) {
+             return 1;
+         }
+-        if (total < 0) {
++        if (total < 0 ||coins.length==0) {
+             return 0;
+         }
+ 

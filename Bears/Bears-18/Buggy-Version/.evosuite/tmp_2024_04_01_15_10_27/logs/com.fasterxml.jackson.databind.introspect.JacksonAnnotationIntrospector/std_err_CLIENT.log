@@ -1,0 +1,9 @@
+[MASTER] 15:10:38.091 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.lang.Enum<E> : Type points to itself
+[MASTER] 15:10:38.372 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.Map<K, V> : Type points to itself
+[MASTER] 15:10:38.415 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.LinkedList<E> : Type points to itself
+[MASTER] 15:10:45.491 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for com.fasterxml.jackson.annotation.ObjectIdGenerator<T> : Type points to itself
+[MASTER] 15:10:45.524 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.Comparator<T> : Type points to itself
+[MASTER] 15:11:00.027 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.function.BiFunction<T, U, R> : Type points to itself
+[MASTER] 15:11:01.519 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for com.fasterxml.jackson.databind.JsonDeserializer<T> : Type points to itself
+[MASTER] 15:11:05.678 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.util.function.Function<T, R> : Type points to itself
+[MASTER] 15:11:12.550 [TEST_EXECUTION_THREAD_0] ERROR AbstractStatement - Error assigning value of type Enum[] defined at statement Enum<TestJacksonAnnotationIntrospector.EnumExample>[] enumArray0 = (Enum<TestJacksonAnnotationIntrospector.EnumExample>[]) Array.newInstance(Enum.class, 3), assignment statement: enumArray0[0] = (Enum<TestJacksonAnnotationIntrospector.EnumExample>) enumArray0; SUT=com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector

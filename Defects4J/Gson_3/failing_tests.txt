@@ -1,0 +1,8 @@
+gson.src.test.java.com.google.gson.EvosuiteConstructorConstructor_ESTest
+gson.src.test.java.com.google.gson.EvosuiteConstructorConstructor_ESTest_scaffolding
+gson.src.test.java.com.google.gson.EvosuiteJsonTreeReader_ESTest
+gson.src.test.java.com.google.gson.EvosuiteJsonTreeReader_ESTest_scaffolding
+gson.src.test.java.com.google.gson.EvosuiteReflectiveTypeAdapterFactory_ESTest
+gson.src.test.java.com.google.gson.EvosuiteReflectiveTypeAdapterFactory_ESTest_scaffolding
+gson.src.test.java.com.google.gson.RandoopRegressionTest
+gson.src.test.java.com.google.gson.RandoopRegressionTest0

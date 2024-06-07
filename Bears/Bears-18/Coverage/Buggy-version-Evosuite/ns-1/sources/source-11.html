@@ -1,0 +1,800 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > BasicBeanDescription</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: BasicBeanDescription (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BasicBeanDescription</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.7%
+  </span>
+  <span class="absValue">
+    (4/46)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4.9%
+  </span>
+  <span class="absValue">
+    (12/245)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.lang.reflect.Constructor;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonFormat;
+&nbsp;import com.fasterxml.jackson.annotation.JsonInclude;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+&nbsp;import com.fasterxml.jackson.databind.cfg.HandlerInstantiator;
+&nbsp;import com.fasterxml.jackson.databind.cfg.MapperConfig;
+&nbsp;import com.fasterxml.jackson.databind.type.TypeBindings;
+&nbsp;import com.fasterxml.jackson.databind.util.Annotations;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;import com.fasterxml.jackson.databind.util.Converter;
+&nbsp;
+&nbsp;/**
+&nbsp; * Default {@link BeanDescription} implementation used by Jackson.
+&nbsp; *&lt;p&gt;
+&nbsp; * Although sub-classing is a theoretical possibility there are no known
+&nbsp; * use cases for that, nor is such usage tested or supported.
+&nbsp; * Separation from API is mostly to isolate some implementation details
+&nbsp; * here and keep API simple.
+&nbsp; */
+&nbsp;public class BasicBeanDescription extends BeanDescription
+&nbsp;{
+&nbsp;    /*
+&nbsp;    /**********************************************************
+<b class="fc">&nbsp;    /* General configuration</b>
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * We will hold a reference to the collector in cases where
+&nbsp;     * information is lazily accessed and constructed; properties
+&nbsp;     * are only accessed when they are actually needed.
+&nbsp;     */
+&nbsp;    final protected POJOPropertiesCollector _propCollector;
+&nbsp;    
+&nbsp;    final protected MapperConfig&lt;?&gt; _config;
+&nbsp;
+&nbsp;    final protected AnnotationIntrospector _annotationIntrospector;
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Information collected about the class introspected.
+&nbsp;     */
+&nbsp;    final protected AnnotatedClass _classInfo;
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Member information
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Properties collected for the POJO; initialized as needed.
+&nbsp;     */
+&nbsp;    protected List&lt;BeanPropertyDefinition&gt; _properties;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Details of Object Id to include, if any
+&nbsp;     */
+&nbsp;    protected ObjectIdInfo _objectIdInfo;
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Life-cycle
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    protected BasicBeanDescription(POJOPropertiesCollector coll,
+&nbsp;            JavaType type, AnnotatedClass classDef)
+&nbsp;    {
+&nbsp;        super(type);
+&nbsp;        _propCollector = coll;
+&nbsp;        _config = coll.getConfig();
+&nbsp;        // NOTE: null config only for some pre-constructed types
+&nbsp;        if (_config == null) {
+&nbsp;            _annotationIntrospector = null;
+&nbsp;        } else {
+&nbsp;            _annotationIntrospector = _config.getAnnotationIntrospector();
+&nbsp;        }
+&nbsp;        _classInfo = classDef;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Alternate constructor used in cases where property information is not needed,
+&nbsp;     * only class info.
+&nbsp;     */
+&nbsp;    protected BasicBeanDescription(MapperConfig&lt;?&gt; config,
+&nbsp;            JavaType type, AnnotatedClass classDef, List&lt;BeanPropertyDefinition&gt; props)
+&nbsp;    {
+&nbsp;        super(type);
+<b class="nc">&nbsp;        _propCollector = null;</b>
+<b class="nc">&nbsp;        _config = config;</b>
+<b class="nc">&nbsp;        // NOTE: null config only for some pre-constructed types</b>
+&nbsp;        if (_config == null) {
+<b class="nc">&nbsp;            _annotationIntrospector = null;</b>
+<b class="nc">&nbsp;        } else {</b>
+&nbsp;            _annotationIntrospector = _config.getAnnotationIntrospector();
+<b class="nc">&nbsp;        }</b>
+&nbsp;        _classInfo = classDef;
+<b class="nc">&nbsp;        _properties = props;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;    
+&nbsp;    protected BasicBeanDescription(POJOPropertiesCollector coll)
+&nbsp;    {
+&nbsp;        this(coll, coll.getType(), coll.getClassDef());
+&nbsp;        _objectIdInfo = coll.getObjectIdInfo();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+<b class="fc">&nbsp;     * Factory method to use for constructing an instance to use for building</b>
+<b class="fc">&nbsp;     * deserializers.</b>
+<b class="fc">&nbsp;     */</b>
+&nbsp;    public static BasicBeanDescription forDeserialization(POJOPropertiesCollector coll) {
+<b class="fc">&nbsp;        return new BasicBeanDescription(coll);</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    /**</b>
+&nbsp;     * Factory method to use for constructing an instance to use for building
+<b class="fc">&nbsp;     * serializers.</b>
+<b class="fc">&nbsp;     */</b>
+<b class="fc">&nbsp;    public static BasicBeanDescription forSerialization(POJOPropertiesCollector coll) {</b>
+&nbsp;        return new BasicBeanDescription(coll);
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * Factory method to use for constructing an instance to use for purposes</b>
+<b class="nc">&nbsp;     * other than building serializers or deserializers; will only have information</b>
+&nbsp;     * on class, not on properties.
+&nbsp;     */
+&nbsp;    public static BasicBeanDescription forOtherUse(MapperConfig&lt;?&gt; config,
+&nbsp;            JavaType type, AnnotatedClass ac)
+&nbsp;    {
+&nbsp;        return new BasicBeanDescription(config, type,
+<b class="nc">&nbsp;                ac, Collections.&lt;BeanPropertyDefinition&gt;emptyList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected List&lt;BeanPropertyDefinition&gt; _properties() {
+&nbsp;        if (_properties == null) {
+&nbsp;            _properties = _propCollector.getProperties();
+&nbsp;        }
+&nbsp;        return _properties;
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Limited modifications by core databind functionality
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that can be used to prune unwanted properties, during
+&nbsp;     * construction of serializers and deserializers.
+<b class="fc">&nbsp;     * Use with utmost care, if at all...</b>
+<b class="fc">&nbsp;     * </b>
+&nbsp;     * @since 2.1
+&nbsp;     */
+&nbsp;    public boolean removeProperty(String propName)
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        Iterator&lt;BeanPropertyDefinition&gt; it = _properties().iterator();</b>
+&nbsp;        while (it.hasNext()) {
+<b class="nc">&nbsp;            BeanPropertyDefinition prop = it.next();</b>
+&nbsp;            if (prop.getName().equals(propName)) {
+&nbsp;                it.remove();
+&nbsp;                return true;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return false;
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean addProperty(BeanPropertyDefinition def)
+&nbsp;    {
+&nbsp;        // first: ensure we do not have such property
+&nbsp;        if (hasProperty(def.getFullName())) {
+&nbsp;            return false;
+&nbsp;        }
+&nbsp;        _properties().add(def);
+&nbsp;        return true;
+&nbsp;    }
+<b class="nc">&nbsp;    </b>
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * @since 2.6</b>
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;    public boolean hasProperty(PropertyName name) {</b>
+<b class="nc">&nbsp;        return findProperty(name) != null;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    </b>
+<b class="nc">&nbsp;    /**</b>
+&nbsp;     * @since 2.6
+&nbsp;     */
+&nbsp;    public BeanPropertyDefinition findProperty(PropertyName name)
+&nbsp;    {
+&nbsp;        for (BeanPropertyDefinition prop : _properties()) {
+<b class="nc">&nbsp;            if (prop.hasName(name)) {</b>
+<b class="nc">&nbsp;                return prop;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Simple accessors from BeanDescription
+&nbsp;    /**********************************************************
+<b class="nc">&nbsp;     */</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AnnotatedClass getClassInfo() { return _classInfo; }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public ObjectIdInfo getObjectIdInfo() { return  _objectIdInfo; }
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public List&lt;BeanPropertyDefinition&gt; findProperties() {</b>
+<b class="nc">&nbsp;        return _properties();</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public AnnotatedMethod findJsonValueMethod() {
+&nbsp;        return (_propCollector == null) ? null
+&nbsp;                : _propCollector.getJsonValueMethod();
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Set&lt;String&gt; getIgnoredPropertyNames() {
+&nbsp;        Set&lt;String&gt; ign = (_propCollector == null) ? null
+&nbsp;                : _propCollector.getIgnoredPropertyNames();
+<b class="nc">&nbsp;        if (ign == null) {</b>
+&nbsp;            return Collections.emptySet();
+&nbsp;        }
+<b class="nc">&nbsp;        return ign;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public boolean hasKnownClassAnnotations() {</b>
+&nbsp;        return _classInfo.hasAnnotations();
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Annotations getClassAnnotations() {
+<b class="nc">&nbsp;        return _classInfo.getAnnotations();</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Deprecated // since 2.7
+&nbsp;    public TypeBindings bindingsForBeanType() {
+<b class="nc">&nbsp;        return _type.getBindings();</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Deprecated // since 2.8
+&nbsp;    public JavaType resolveType(java.lang.reflect.Type jdkType) {
+<b class="nc">&nbsp;        if (jdkType == null) {</b>
+<b class="nc">&nbsp;            return null;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return _config.getTypeFactory().constructType(jdkType, _type.getBindings());</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+&nbsp;    public AnnotatedConstructor findDefaultConstructor() {
+&nbsp;        return _classInfo.getDefaultConstructor();
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+&nbsp;    public AnnotatedMethod findAnySetter() throws IllegalArgumentException
+&nbsp;    {
+&nbsp;        AnnotatedMethod anySetter = (_propCollector == null) ? null
+<b class="fc">&nbsp;                : _propCollector.getAnySetterMethod();</b>
+&nbsp;        if (anySetter != null) {
+&nbsp;            /* Also, let&#39;s be somewhat strict on how field name is to be
+&nbsp;             * passed; String, Object make sense, others not
+&nbsp;             * so much.
+&nbsp;             */
+<b class="nc">&nbsp;            /* !!! 18-May-2009, tatu: how about enums? Can add support if</b>
+&nbsp;             *  requested; easy enough for devs to add support within
+&nbsp;             *  method.
+&nbsp;             */
+&nbsp;            Class&lt;?&gt; type = anySetter.getRawParameterType(0);
+&nbsp;            if (type != String.class &amp;&amp; type != Object.class) {
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;Invalid &#39;any-setter&#39; annotation on method &quot;+anySetter.getName()+&quot;(): first argument not of type String or Object, but &quot;+type.getName());</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return anySetter;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Map&lt;Object, AnnotatedMember&gt; findInjectables() {
+<b class="nc">&nbsp;        if (_propCollector != null) {</b>
+&nbsp;            return _propCollector.getInjectables();
+&nbsp;        }
+&nbsp;        return Collections.emptyMap();
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public List&lt;AnnotatedConstructor&gt; getConstructors() {</b>
+<b class="nc">&nbsp;        return _classInfo.getConstructors();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Object instantiateBean(boolean fixAccess) {
+&nbsp;        AnnotatedConstructor ac = _classInfo.getDefaultConstructor();
+&nbsp;        if (ac == null) {
+<b class="nc">&nbsp;            return null;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if (fixAccess) {</b>
+&nbsp;            ac.fixAccess(_config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+<b class="nc">&nbsp;        }</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            return ac.getAnnotated().newInstance();</b>
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            Throwable t = e;</b>
+<b class="nc">&nbsp;            while (t.getCause() != null) {</b>
+&nbsp;                t = t.getCause();
+&nbsp;            }
+<b class="nc">&nbsp;            if (t instanceof Error) throw (Error) t;</b>
+<b class="nc">&nbsp;            if (t instanceof RuntimeException) throw (RuntimeException) t;</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Failed to instantiate bean of type &quot;+_classInfo.getAnnotated().getName()+&quot;: (&quot;+t.getClass().getName()+&quot;) &quot;+t.getMessage(), t);</b>
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    /*</b>
+&nbsp;    /**********************************************************
+&nbsp;    /* Simple accessors, extended
+<b class="nc">&nbsp;    /**********************************************************</b>
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AnnotatedMethod findMethod(String name, Class&lt;?&gt;[] paramTypes) {
+<b class="nc">&nbsp;        return _classInfo.findMethod(name, paramTypes);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    /*</b>
+&nbsp;    /**********************************************************
+&nbsp;    /* General per-class annotation introspection
+&nbsp;    /**********************************************************
+&nbsp;     */
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+&nbsp;    public JsonFormat.Value findExpectedFormat(JsonFormat.Value defValue)
+&nbsp;    {
+&nbsp;        // 15-Apr-2016, tatu: Let&#39;s check both per-type defaults and annotations; per-type
+<b class="nc">&nbsp;        //   defaults having higher precedence, so start with that</b>
+<b class="nc">&nbsp;        if (_annotationIntrospector != null) {</b>
+<b class="nc">&nbsp;            JsonFormat.Value v = _annotationIntrospector.findFormat(_classInfo);</b>
+&nbsp;            if (v != null) {
+<b class="nc">&nbsp;                if (defValue == null) {</b>
+<b class="nc">&nbsp;                    defValue = v;</b>
+&nbsp;                } else {
+&nbsp;                    defValue = defValue.withOverrides(v);
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        JsonFormat.Value v = _config.getDefaultPropertyFormat(_classInfo.getRawType());</b>
+<b class="nc">&nbsp;        if (v != null) {</b>
+&nbsp;            if (defValue == null) {
+<b class="nc">&nbsp;                defValue = v;</b>
+<b class="nc">&nbsp;            } else {</b>
+<b class="nc">&nbsp;                defValue = defValue.withOverrides(v);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return defValue;
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Introspection for serialization
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public Converter&lt;Object,Object&gt; findSerializationConverter()
+&nbsp;    {
+&nbsp;        if (_annotationIntrospector == null) {
+&nbsp;            return null;
+&nbsp;        }
+&nbsp;        return _createConverter(_annotationIntrospector.findSerializationConverter(_classInfo));
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method for determining whether null properties should be written
+&nbsp;     * out for a Bean of introspected type. This is based on global
+&nbsp;     * feature (lowest priority, passed as argument)
+&nbsp;     * and per-class annotation (highest priority).
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public JsonInclude.Value findPropertyInclusion(JsonInclude.Value defValue) {</b>
+<b class="nc">&nbsp;        if (_annotationIntrospector != null) {</b>
+<b class="nc">&nbsp;            JsonInclude.Value incl = _annotationIntrospector.findPropertyInclusion(_classInfo);</b>
+&nbsp;            if (incl != null) {
+<b class="nc">&nbsp;                return (defValue == null) ? incl : defValue.withOverrides(incl);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return defValue;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * Method used to locate the method of introspected class that</b>
+&nbsp;     * implements {@link com.fasterxml.jackson.annotation.JsonAnyGetter}.
+<b class="nc">&nbsp;     * If no such method exists null is returned.</b>
+&nbsp;     * If more than one are found, an exception is thrown.
+&nbsp;     */
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public AnnotatedMember findAnyGetter() throws IllegalArgumentException
+&nbsp;    {
+&nbsp;        AnnotatedMember anyGetter = (_propCollector == null) ? null
+&nbsp;                : _propCollector.getAnyGetter();
+&nbsp;        if (anyGetter != null) {
+<b class="nc">&nbsp;            /* For now let&#39;s require a Map; in future can add support for other</b>
+<b class="nc">&nbsp;             * types like perhaps Iterable&lt;Map.Entry&gt;?</b>
+<b class="nc">&nbsp;             */</b>
+<b class="nc">&nbsp;            Class&lt;?&gt; type = anyGetter.getRawType();</b>
+&nbsp;            if (!Map.class.isAssignableFrom(type)) {
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;Invalid &#39;any-getter&#39; annotation on method &quot;+anyGetter.getName()+&quot;(): return type is not instance of java.util.Map&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        return anyGetter;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+<b class="nc">&nbsp;    public AnnotatedMember findAnySetterField() throws IllegalArgumentException {</b>
+&nbsp;        AnnotatedMember anySetter = (_propCollector == null) ? null : _propCollector.getAnySetterField();
+&nbsp;		if (anySetter != null) {
+&nbsp;			/*
+&nbsp;			 * For now let&#39;s require a Map; in future can add support for other
+&nbsp;			 * types like perhaps Iterable&lt;Map.Entry&gt;?
+&nbsp;			 */
+&nbsp;			Class&lt;?&gt; type = anySetter.getRawType();
+&nbsp;			if (!Map.class.isAssignableFrom(type)) {
+&nbsp;				throw new IllegalArgumentException(&quot;Invalid &#39;any-setter&#39; annotation on field &quot; + anySetter.getName()
+&nbsp;				        + &quot;(): type is not instance of java.util.Map&quot;);
+&nbsp;			}
+<b class="nc">&nbsp;		}</b>
+<b class="nc">&nbsp;		return anySetter;</b>
+&nbsp;	}
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+&nbsp;    public Map&lt;String,AnnotatedMember&gt; findBackReferenceProperties()
+&nbsp;    {
+&nbsp;        HashMap&lt;String,AnnotatedMember&gt; result = null;
+&nbsp;//        boolean hasIgnored = (_ignoredPropertyNames != null);
+&nbsp;
+&nbsp;        for (BeanPropertyDefinition property : _properties()) {
+&nbsp;            /* 23-Sep-2014, tatu: As per [Databind#426], we _should_ try to avoid
+&nbsp;             *   calling accessor, as it triggers exception from seeming conflict.
+&nbsp;             *   But the problem is that _ignoredPropertyNames here only contains
+<b class="nc">&nbsp;             *   ones ignored on per-property annotations, but NOT class annotations...</b>
+<b class="nc">&nbsp;             *   so commented out part does not work, alas</b>
+<b class="nc">&nbsp;             */</b>
+<b class="nc">&nbsp;            /*</b>
+&nbsp;            if (hasIgnored &amp;&amp; _ignoredPropertyNames.contains(property.getName())) {
+&nbsp;                continue;
+<b class="nc">&nbsp;            }</b>
+&nbsp;            */
+&nbsp;            AnnotatedMember am = property.getMutator();
+&nbsp;            if (am == null) {
+&nbsp;                continue;
+&nbsp;            }
+&nbsp;            AnnotationIntrospector.ReferenceProperty refDef = _annotationIntrospector.findReferenceType(am);
+&nbsp;            if (refDef != null &amp;&amp; refDef.isBackReference()) {
+&nbsp;                if (result == null) {
+&nbsp;                    result = new HashMap&lt;String,AnnotatedMember&gt;();
+&nbsp;                }
+&nbsp;                String refName = refDef.getName();
+<b class="nc">&nbsp;                if (result.put(refName, am) != null) {</b>
+<b class="nc">&nbsp;                    throw new IllegalArgumentException(&quot;Multiple back-reference properties with name &#39;&quot;+refName+&quot;&#39;&quot;);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return result;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    /*</b>
+&nbsp;    /**********************************************************
+&nbsp;    /* Introspection for deserialization, factories
+<b class="nc">&nbsp;    /**********************************************************</b>
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;AnnotatedMethod&gt; getFactoryMethods()
+&nbsp;    {
+<b class="nc">&nbsp;        // must filter out anything that clearly is not a factory method</b>
+<b class="nc">&nbsp;        List&lt;AnnotatedMethod&gt; candidates = _classInfo.getStaticMethods();</b>
+<b class="nc">&nbsp;        if (candidates.isEmpty()) {</b>
+<b class="nc">&nbsp;            return candidates;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        ArrayList&lt;AnnotatedMethod&gt; result = new ArrayList&lt;AnnotatedMethod&gt;();</b>
+&nbsp;        for (AnnotatedMethod am : candidates) {
+<b class="nc">&nbsp;            if (isFactoryMethod(am)) {</b>
+<b class="nc">&nbsp;                result.add(am);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public Constructor&lt;?&gt; findSingleArgConstructor(Class&lt;?&gt;... argTypes)
+&nbsp;    {
+<b class="nc">&nbsp;        for (AnnotatedConstructor ac : _classInfo.getConstructors()) {</b>
+<b class="nc">&nbsp;            // This list is already filtered to only include accessible</b>
+<b class="nc">&nbsp;            /* (note: for now this is a redundant check; but in future</b>
+&nbsp;             * that may change; thus leaving here for now)
+&nbsp;             */
+&nbsp;            if (ac.getParameterCount() == 1) {
+&nbsp;                Class&lt;?&gt; actArg = ac.getRawParameterType(0);
+&nbsp;                for (Class&lt;?&gt; expArg : argTypes) {
+&nbsp;                    if (expArg == actArg) {
+<b class="nc">&nbsp;                        return ac.getAnnotated();</b>
+<b class="nc">&nbsp;                    }</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public Method findFactoryMethod(Class&lt;?&gt;... expArgTypes)
+&nbsp;    {
+&nbsp;        // So, of all single-arg static methods:
+&nbsp;        for (AnnotatedMethod am : _classInfo.getStaticMethods()) {
+&nbsp;            if (isFactoryMethod(am)) {
+&nbsp;                // And must take one of expected arg types (or supertype)
+&nbsp;                Class&lt;?&gt; actualArgType = am.getRawParameterType(0);
+&nbsp;                for (Class&lt;?&gt; expArgType : expArgTypes) {
+&nbsp;                    // And one that matches what we would pass in
+&nbsp;                    if (actualArgType.isAssignableFrom(expArgType)) {
+&nbsp;                        return am.getAnnotated();
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        return null;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    protected boolean isFactoryMethod(AnnotatedMethod am)</b>
+<b class="nc">&nbsp;    {</b>
+&nbsp;        /* First: return type must be compatible with the introspected class
+<b class="nc">&nbsp;         * (i.e. allowed to be sub-class, although usually is the same</b>
+<b class="nc">&nbsp;         * class)</b>
+&nbsp;         */
+&nbsp;        Class&lt;?&gt; rt = am.getRawReturnType();
+&nbsp;        if (!getBeanClass().isAssignableFrom(rt)) {
+&nbsp;            return false;
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+&nbsp;        /* Also: must be a recognized factory method, meaning:
+&nbsp;         * (a) marked with @JsonCreator annotation, or
+&nbsp;         * (b) &quot;valueOf&quot; (at this point, need not be public)
+&nbsp;         */
+<b class="nc">&nbsp;        if (_annotationIntrospector.hasCreatorAnnotation(am)) {</b>
+<b class="nc">&nbsp;            return true;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        final String name = am.getName();</b>
+<b class="nc">&nbsp;        if (&quot;valueOf&quot;.equals(name)) {</b>
+&nbsp;            return true;
+&nbsp;        }
+&nbsp;        // [databind#208] Also accept &quot;fromString()&quot;, if takes String or CharSequence
+<b class="nc">&nbsp;        if (&quot;fromString&quot;.equals(name)) {</b>
+<b class="nc">&nbsp;            if (1 == am.getParameterCount()) {</b>
+&nbsp;                Class&lt;?&gt; cls = am.getRawParameterType(0);
+&nbsp;                if (cls == String.class || CharSequence.class.isAssignableFrom(cls)) {
+&nbsp;                    return true;
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    /**
+<b class="nc">&nbsp;     * @deprecated since 2.8</b>
+<b class="nc">&nbsp;     */</b>
+&nbsp;    @Deprecated // since 2.8, not used at least since 2.7
+<b class="nc">&nbsp;    protected PropertyName _findCreatorPropertyName(AnnotatedParameter param)</b>
+<b class="nc">&nbsp;    {</b>
+&nbsp;        PropertyName name = _annotationIntrospector.findNameForDeserialization(param);
+&nbsp;        if (name == null || name.isEmpty()) {
+&nbsp;            String str = _annotationIntrospector.findImplicitPropertyName(param);
+<b class="nc">&nbsp;            if (str != null &amp;&amp; !str.isEmpty()) {</b>
+<b class="nc">&nbsp;                name = PropertyName.construct(str);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return name;
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+<b class="nc">&nbsp;    /**********************************************************</b>
+<b class="nc">&nbsp;    /* Introspection for deserialization, other</b>
+<b class="nc">&nbsp;    /**********************************************************</b>
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Class&lt;?&gt; findPOJOBuilder() {
+&nbsp;        return (_annotationIntrospector == null) ?
+<b class="nc">&nbsp;    			null : _annotationIntrospector.findPOJOBuilder(_classInfo);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    @Override
+<b class="nc">&nbsp;    public JsonPOJOBuilder.Value findPOJOBuilderConfig()</b>
+&nbsp;    {
+<b class="nc">&nbsp;        return (_annotationIntrospector == null) ?</b>
+<b class="nc">&nbsp;                null : _annotationIntrospector.findPOJOBuilderConfig(_classInfo);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Converter&lt;Object,Object&gt; findDeserializationConverter()
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        if (_annotationIntrospector == null) {</b>
+<b class="nc">&nbsp;            return null;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return _createConverter(_annotationIntrospector.findDeserializationConverter(_classInfo));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public String findClassDescription() {</b>
+&nbsp;        return (_annotationIntrospector == null) ?
+&nbsp;                null : _annotationIntrospector.findClassDescription(_classInfo);
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for field introspection
+&nbsp;    /**********************************************************
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * @param ignoredProperties (optional) names of properties to ignore;</b>
+<b class="nc">&nbsp;     *   any fields that would be recognized as one of these properties</b>
+&nbsp;     *   is ignored.
+&nbsp;     * @param forSerialization If true, will collect serializable property
+<b class="nc">&nbsp;     *    fields; if false, deserializable</b>
+&nbsp;     *
+&nbsp;     * @return Ordered Map with logical property name as key, and
+&nbsp;     *    matching field as value.
+&nbsp;     *
+&nbsp;     * @deprecated Since 2.7.2, does not seem to be used?
+&nbsp;     */
+&nbsp;    @Deprecated
+&nbsp;    public LinkedHashMap&lt;String,AnnotatedField&gt; _findPropertyFields(
+&nbsp;            Collection&lt;String&gt; ignoredProperties, boolean forSerialization)
+&nbsp;    {
+<b class="nc">&nbsp;        LinkedHashMap&lt;String,AnnotatedField&gt; results = new LinkedHashMap&lt;String,AnnotatedField&gt;();</b>
+<b class="nc">&nbsp;        for (BeanPropertyDefinition property : _properties()) {</b>
+&nbsp;            AnnotatedField f = property.getField();
+&nbsp;            if (f != null) {
+&nbsp;                String name = property.getName();
+&nbsp;                if (ignoredProperties != null) {
+&nbsp;                    if (ignoredProperties.contains(name)) {
+<b class="nc">&nbsp;                        continue;</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                }
+&nbsp;                results.put(name, f);
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return results;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    /*
+<b class="nc">&nbsp;    /**********************************************************</b>
+&nbsp;    /* Helper methods, other
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+<b class="nc">&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)</b>
+<b class="nc">&nbsp;    public Converter&lt;Object,Object&gt; _createConverter(Object converterDef)</b>
+&nbsp;    {
+&nbsp;        if (converterDef == null) {
+&nbsp;            return null;
+&nbsp;        }
+&nbsp;        if (converterDef instanceof Converter&lt;?,?&gt;) {
+&nbsp;            return (Converter&lt;Object,Object&gt;) converterDef;
+&nbsp;        }
+&nbsp;        if (!(converterDef instanceof Class)) {
+&nbsp;            throw new IllegalStateException(&quot;AnnotationIntrospector returned Converter definition of type &quot;
+&nbsp;                    +converterDef.getClass().getName()+&quot;; expected type Converter or Class&lt;Converter&gt; instead&quot;);
+&nbsp;        }
+&nbsp;        Class&lt;?&gt; converterClass = (Class&lt;?&gt;)converterDef;
+&nbsp;        // there are some known &quot;no class&quot; markers to consider too:
+&nbsp;        if (converterClass == Converter.None.class || ClassUtil.isBogusClass(converterClass)) {
+&nbsp;            return null;
+&nbsp;        }
+&nbsp;        if (!Converter.class.isAssignableFrom(converterClass)) {
+&nbsp;            throw new IllegalStateException(&quot;AnnotationIntrospector returned Class &quot;
+&nbsp;                    +converterClass.getName()+&quot;; expected Class&lt;Converter&gt;&quot;);
+&nbsp;        }
+&nbsp;        HandlerInstantiator hi = _config.getHandlerInstantiator();
+&nbsp;        Converter&lt;?,?&gt; conv = (hi == null) ? null : hi.converterInstance(_config, _classInfo, converterClass);
+&nbsp;        if (conv == null) {
+&nbsp;            conv = (Converter&lt;?,?&gt;) ClassUtil.createInstance(converterClass,
+<b class="nc">&nbsp;                    _config.canOverrideAccessModifiers());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return (Converter&lt;Object,Object&gt;) conv;</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;}</b>
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 23:23</div>
+</div>
+</body>
+</html>

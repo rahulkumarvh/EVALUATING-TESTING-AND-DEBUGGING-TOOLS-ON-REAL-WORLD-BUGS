@@ -1,0 +1,1307 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > StdDeserializer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.std</a>
+</div>
+
+<h1>Coverage Summary for Class: StdDeserializer (com.fasterxml.jackson.databind.deser.std)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StdDeserializer</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/63)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/380)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser.std;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonFormat;
+&nbsp;import com.fasterxml.jackson.annotation.Nulls;
+&nbsp;import com.fasterxml.jackson.core.*;
+&nbsp;import com.fasterxml.jackson.core.io.NumberInput;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
+&nbsp;import com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
+&nbsp;import com.fasterxml.jackson.databind.deser.NullValueProvider;
+&nbsp;import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
+&nbsp;import com.fasterxml.jackson.databind.deser.ValueInstantiator;
+&nbsp;import com.fasterxml.jackson.databind.deser.impl.NullsAsEmptyProvider;
+&nbsp;import com.fasterxml.jackson.databind.deser.impl.NullsConstantProvider;
+&nbsp;import com.fasterxml.jackson.databind.deser.impl.NullsFailProvider;
+&nbsp;import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+&nbsp;import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+&nbsp;import com.fasterxml.jackson.databind.util.AccessPattern;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;import com.fasterxml.jackson.databind.util.Converter;
+&nbsp;
+&nbsp;/**
+&nbsp; * Base class for common deserializers. Contains shared
+&nbsp; * base functionality for dealing with primitive values, such
+&nbsp; * as (re)parsing from String.
+&nbsp; */
+&nbsp;public abstract class StdDeserializer&lt;T&gt;
+&nbsp;    extends JsonDeserializer&lt;T&gt;
+&nbsp;    implements java.io.Serializable
+&nbsp;{
+&nbsp;    private static final long serialVersionUID = 1L;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Bitmask that covers {@link DeserializationFeature#USE_BIG_INTEGER_FOR_INTS}
+&nbsp;     * and {@link DeserializationFeature#USE_LONG_FOR_INTS}, used for more efficient
+&nbsp;     * cheks when coercing integral values for untyped deserialization.
+&nbsp;     *
+&nbsp;     * @since 2.6
+&nbsp;     */
+<b class="nc">&nbsp;    protected final static int F_MASK_INT_COERCIONS = </b>
+<b class="nc">&nbsp;            DeserializationFeature.USE_BIG_INTEGER_FOR_INTS.getMask()</b>
+<b class="nc">&nbsp;            | DeserializationFeature.USE_LONG_FOR_INTS.getMask();</b>
+&nbsp;
+&nbsp;    // @since 2.9
+<b class="nc">&nbsp;    protected final static int F_MASK_ACCEPT_ARRAYS =</b>
+<b class="nc">&nbsp;            DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS.getMask() |</b>
+<b class="nc">&nbsp;            DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT.getMask();</b>
+&nbsp;
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Type of values this deserializer handles: sometimes
+&nbsp;     * exact types, other time most specific supertype of
+&nbsp;     * types deserializer handles (which may be as generic
+&nbsp;     * as {@link Object} in some case)
+&nbsp;     */
+&nbsp;    final protected Class&lt;?&gt; _valueClass;
+&nbsp;
+<b class="nc">&nbsp;    protected StdDeserializer(Class&lt;?&gt; vc) {</b>
+<b class="nc">&nbsp;        _valueClass = vc;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    protected StdDeserializer(JavaType valueType) {</b>
+<b class="nc">&nbsp;        _valueClass = valueType.getRawClass();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Copy-constructor for sub-classes to use, most often when creating
+&nbsp;     * new instances for {@link com.fasterxml.jackson.databind.deser.ContextualDeserializer}.
+&nbsp;     * 
+&nbsp;     * @since 2.5
+&nbsp;     */
+<b class="nc">&nbsp;    protected StdDeserializer(StdDeserializer&lt;?&gt; src) {</b>
+<b class="nc">&nbsp;        _valueClass = src._valueClass;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Accessors
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    @Override
+<b class="nc">&nbsp;    public Class&lt;?&gt; handledType() { return _valueClass; }</b>
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Extended API
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @deprecated Since 2.3 use {@link #handledType} instead
+&nbsp;     */
+&nbsp;    @Deprecated
+<b class="nc">&nbsp;    public final Class&lt;?&gt; getValueClass() { return _valueClass; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Exact structured type this deserializer handles, if known.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * Default implementation just returns null.
+&nbsp;     */
+<b class="nc">&nbsp;    public JavaType getValueType() { return null; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that can be called to determine if given deserializer is the default
+&nbsp;     * deserializer Jackson uses; as opposed to a custom deserializer installed by
+&nbsp;     * a module or calling application. Determination is done using
+&nbsp;     * {@link JacksonStdImpl} annotation on deserializer class.
+&nbsp;     */
+&nbsp;    protected boolean isDefaultDeserializer(JsonDeserializer&lt;?&gt; deserializer) {
+<b class="nc">&nbsp;        return ClassUtil.isJacksonStdImpl(deserializer);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected boolean isDefaultKeyDeserializer(KeyDeserializer keyDeser) {
+<b class="nc">&nbsp;        return ClassUtil.isJacksonStdImpl(keyDeser);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Partial JsonDeserializer implementation 
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Base implementation that does not assume specific type
+&nbsp;     * inclusion mechanism. Sub-classes are expected to override
+&nbsp;     * this method if they are to handle type information.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+&nbsp;            TypeDeserializer typeDeserializer) throws IOException {
+<b class="nc">&nbsp;        return typeDeserializer.deserializeTypedFromAny(p, ctxt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for sub-classes, parsing: while mostly
+&nbsp;    /* useful for numeric types, can be also useful for dealing
+&nbsp;    /* with things serialized as numbers (such as Dates).
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    protected final boolean _parseBooleanPrimitive(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        JsonToken t = p.getCurrentToken();</b>
+<b class="nc">&nbsp;        if (t == JsonToken.VALUE_TRUE) return true;</b>
+<b class="nc">&nbsp;        if (t == JsonToken.VALUE_FALSE) return false;</b>
+<b class="nc">&nbsp;        if (t == JsonToken.VALUE_NULL) {</b>
+<b class="nc">&nbsp;            _verifyNullForPrimitive(ctxt);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // should accept ints too, (0 == false, otherwise true)
+<b class="nc">&nbsp;        if (t == JsonToken.VALUE_NUMBER_INT) {</b>
+<b class="nc">&nbsp;            return _parseBooleanFromInt(p, ctxt);</b>
+&nbsp;        }
+&nbsp;        // And finally, let&#39;s allow Strings to be converted too
+<b class="nc">&nbsp;        if (t == JsonToken.VALUE_STRING) {</b>
+<b class="nc">&nbsp;            String text = p.getText().trim();</b>
+&nbsp;            // [databind#422]: Allow aliases
+<b class="nc">&nbsp;            if (&quot;true&quot;.equals(text) || &quot;True&quot;.equals(text)) {</b>
+<b class="nc">&nbsp;                return true;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (&quot;false&quot;.equals(text) || &quot;False&quot;.equals(text)) {</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (_isEmptyOrTextualNull(text)) {</b>
+<b class="nc">&nbsp;                _verifyNullForPrimitiveCoercion(ctxt, text);</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            Boolean b = (Boolean) ctxt.handleWeirdStringValue(_valueClass, text,</b>
+&nbsp;                    &quot;only \&quot;true\&quot; or \&quot;false\&quot; recognized&quot;);
+<b class="nc">&nbsp;            return Boolean.TRUE.equals(b);</b>
+&nbsp;        }
+&nbsp;        // [databind#381]
+<b class="nc">&nbsp;        if (t == JsonToken.START_ARRAY &amp;&amp; ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;            p.nextToken();</b>
+<b class="nc">&nbsp;            final boolean parsed = _parseBooleanPrimitive(p, ctxt);</b>
+<b class="nc">&nbsp;            _verifyEndArrayForSingle(p, ctxt);</b>
+<b class="nc">&nbsp;            return parsed;            </b>
+&nbsp;        }
+&nbsp;        // Otherwise, no can do:
+<b class="nc">&nbsp;        return ((Boolean) ctxt.handleUnexpectedToken(_valueClass, p)).booleanValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected boolean _parseBooleanFromInt(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+&nbsp;        // 13-Oct-2016, tatu: As per [databind#1324], need to be careful wrt
+&nbsp;        //    degenerate case of huge integers, legal in JSON.
+&nbsp;        //  ... this is, on the other hand, probably wrong/sub-optimal for non-JSON
+&nbsp;        //  input. For now, no rea
+<b class="nc">&nbsp;        _verifyNumberForScalarCoercion(ctxt, p);</b>
+&nbsp;        // Anyway, note that since we know it&#39;s valid (JSON) integer, it can&#39;t have
+&nbsp;        // extra whitespace to trim.
+<b class="nc">&nbsp;        return !&quot;0&quot;.equals(p.getText());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final byte _parseBytePrimitive(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        int value = _parseIntPrimitive(p, ctxt);</b>
+&nbsp;        // So far so good: but does it fit?
+<b class="nc">&nbsp;        if (_byteOverflow(value)) {</b>
+<b class="nc">&nbsp;            Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, String.valueOf(value),</b>
+&nbsp;                    &quot;overflow, value can not be represented as 8-bit value&quot;);
+<b class="nc">&nbsp;            return _nonNullNumber(v).byteValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (byte) value;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final short _parseShortPrimitive(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        int value = _parseIntPrimitive(p, ctxt);</b>
+&nbsp;        // So far so good: but does it fit?
+<b class="nc">&nbsp;        if (_shortOverflow(value)) {</b>
+<b class="nc">&nbsp;            Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, String.valueOf(value),</b>
+&nbsp;                    &quot;overflow, value can not be represented as 16-bit value&quot;);
+<b class="nc">&nbsp;            return _nonNullNumber(v).shortValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (short) value;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final int _parseIntPrimitive(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        if (p.hasToken(JsonToken.VALUE_NUMBER_INT)) {</b>
+<b class="nc">&nbsp;            return p.getIntValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        switch (p.getCurrentTokenId()) {</b>
+&nbsp;        case JsonTokenId.ID_STRING:
+<b class="nc">&nbsp;            String text = p.getText().trim();</b>
+<b class="nc">&nbsp;            if (_isEmptyOrTextualNull(text)) {</b>
+<b class="nc">&nbsp;                _verifyNullForPrimitiveCoercion(ctxt, text);</b>
+<b class="nc">&nbsp;                return 0;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return _parseIntPrimitive(ctxt, text);</b>
+&nbsp;        case JsonTokenId.ID_NUMBER_FLOAT:
+<b class="nc">&nbsp;            if (!ctxt.isEnabled(DeserializationFeature.ACCEPT_FLOAT_AS_INT)) {</b>
+<b class="nc">&nbsp;                _failDoubleToIntCoercion(p, ctxt, &quot;int&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return p.getValueAsInt();</b>
+&nbsp;        case JsonTokenId.ID_NULL:
+<b class="nc">&nbsp;            _verifyNullForPrimitive(ctxt);</b>
+<b class="nc">&nbsp;            return 0;</b>
+&nbsp;        case JsonTokenId.ID_START_ARRAY:
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;                p.nextToken();</b>
+<b class="nc">&nbsp;                final int parsed = _parseIntPrimitive(p, ctxt);</b>
+<b class="nc">&nbsp;                _verifyEndArrayForSingle(p, ctxt);</b>
+<b class="nc">&nbsp;                return parsed;            </b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        default:
+&nbsp;        }
+&nbsp;        // Otherwise, no can do:
+<b class="nc">&nbsp;        return ((Number) ctxt.handleUnexpectedToken(_valueClass, p)).intValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final int _parseIntPrimitive(DeserializationContext ctxt, String text) throws IOException
+&nbsp;    {
+&nbsp;        try {
+<b class="nc">&nbsp;            if (text.length() &gt; 9) {</b>
+<b class="nc">&nbsp;                long l = Long.parseLong(text);</b>
+<b class="nc">&nbsp;                if (_intOverflow(l)) {</b>
+<b class="nc">&nbsp;                    Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text,</b>
+&nbsp;                        &quot;Overflow: numeric value (%s) out of range of int (%d -%d)&quot;,
+<b class="nc">&nbsp;                        text, Integer.MIN_VALUE, Integer.MAX_VALUE);</b>
+<b class="nc">&nbsp;                    return _nonNullNumber(v).intValue();</b>
+&nbsp;                }
+<b class="nc">&nbsp;                return (int) l;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return NumberInput.parseInt(text);</b>
+<b class="nc">&nbsp;        } catch (IllegalArgumentException iae) {</b>
+<b class="nc">&nbsp;            Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text,</b>
+&nbsp;                    &quot;not a valid int value&quot;);
+<b class="nc">&nbsp;            return _nonNullNumber(v).intValue();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    protected final long _parseLongPrimitive(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        if (p.hasToken(JsonToken.VALUE_NUMBER_INT)) {</b>
+<b class="nc">&nbsp;            return p.getLongValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        switch (p.getCurrentTokenId()) {</b>
+&nbsp;        case JsonTokenId.ID_STRING:
+<b class="nc">&nbsp;            String text = p.getText().trim();</b>
+<b class="nc">&nbsp;            if (_isEmptyOrTextualNull(text)) {</b>
+<b class="nc">&nbsp;                _verifyNullForPrimitiveCoercion(ctxt, text);</b>
+<b class="nc">&nbsp;                return 0L;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return _parseLongPrimitive(ctxt, text);</b>
+&nbsp;        case JsonTokenId.ID_NUMBER_FLOAT:
+<b class="nc">&nbsp;            if (!ctxt.isEnabled(DeserializationFeature.ACCEPT_FLOAT_AS_INT)) {</b>
+<b class="nc">&nbsp;                _failDoubleToIntCoercion(p, ctxt, &quot;long&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return p.getValueAsLong();</b>
+&nbsp;        case JsonTokenId.ID_NULL:
+<b class="nc">&nbsp;            _verifyNullForPrimitive(ctxt);</b>
+<b class="nc">&nbsp;            return 0L;</b>
+&nbsp;        case JsonTokenId.ID_START_ARRAY:
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;                p.nextToken();</b>
+<b class="nc">&nbsp;                final long parsed = _parseLongPrimitive(p, ctxt);</b>
+<b class="nc">&nbsp;                _verifyEndArrayForSingle(p, ctxt);</b>
+<b class="nc">&nbsp;                return parsed;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        }
+<b class="nc">&nbsp;        return ((Number) ctxt.handleUnexpectedToken(_valueClass, p)).longValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final long _parseLongPrimitive(DeserializationContext ctxt, String text) throws IOException
+&nbsp;    {
+&nbsp;        try {
+<b class="nc">&nbsp;            return NumberInput.parseLong(text);</b>
+<b class="nc">&nbsp;        } catch (IllegalArgumentException iae) { }</b>
+&nbsp;        {
+<b class="nc">&nbsp;            Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text,</b>
+&nbsp;                    &quot;not a valid long value&quot;);
+<b class="nc">&nbsp;            return _nonNullNumber(v).longValue();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final float _parseFloatPrimitive(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        if (p.hasToken(JsonToken.VALUE_NUMBER_FLOAT)) {</b>
+<b class="nc">&nbsp;            return p.getFloatValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        switch (p.getCurrentTokenId()) {</b>
+&nbsp;        case JsonTokenId.ID_STRING:
+<b class="nc">&nbsp;            String text = p.getText().trim();</b>
+<b class="nc">&nbsp;            if (_isEmptyOrTextualNull(text)) {</b>
+<b class="nc">&nbsp;                _verifyNullForPrimitiveCoercion(ctxt, text);</b>
+<b class="nc">&nbsp;                return 0.0f;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return _parseFloatPrimitive(ctxt, text);</b>
+&nbsp;        case JsonTokenId.ID_NUMBER_INT:
+<b class="nc">&nbsp;            return p.getFloatValue();</b>
+&nbsp;        case JsonTokenId.ID_NULL:
+<b class="nc">&nbsp;            _verifyNullForPrimitive(ctxt);</b>
+<b class="nc">&nbsp;            return 0.0f;</b>
+&nbsp;        case JsonTokenId.ID_START_ARRAY:
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;                p.nextToken();</b>
+<b class="nc">&nbsp;                final float parsed = _parseFloatPrimitive(p, ctxt);</b>
+<b class="nc">&nbsp;                _verifyEndArrayForSingle(p, ctxt);</b>
+<b class="nc">&nbsp;                return parsed;            </b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        }
+&nbsp;        // Otherwise, no can do:
+<b class="nc">&nbsp;        return ((Number) ctxt.handleUnexpectedToken(_valueClass, p)).floatValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final float _parseFloatPrimitive(DeserializationContext ctxt, String text)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        switch (text.charAt(0)) {</b>
+&nbsp;        case &#39;I&#39;:
+<b class="nc">&nbsp;            if (_isPosInf(text)) {</b>
+<b class="nc">&nbsp;                return Float.POSITIVE_INFINITY;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        case &#39;N&#39;:
+<b class="nc">&nbsp;            if (_isNaN(text)) { return Float.NaN; }</b>
+&nbsp;            break;
+&nbsp;        case &#39;-&#39;:
+<b class="nc">&nbsp;            if (_isNegInf(text)) {</b>
+<b class="nc">&nbsp;                return Float.NEGATIVE_INFINITY;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            return Float.parseFloat(text);</b>
+<b class="nc">&nbsp;        } catch (IllegalArgumentException iae) { }</b>
+<b class="nc">&nbsp;        Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text,</b>
+&nbsp;                &quot;not a valid float value&quot;);
+<b class="nc">&nbsp;        return _nonNullNumber(v).floatValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final double _parseDoublePrimitive(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        if (p.hasToken(JsonToken.VALUE_NUMBER_FLOAT)) {</b>
+<b class="nc">&nbsp;            return p.getDoubleValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        switch (p.getCurrentTokenId()) {</b>
+&nbsp;        case JsonTokenId.ID_STRING:
+<b class="nc">&nbsp;            String text = p.getText().trim();</b>
+<b class="nc">&nbsp;            if (_isEmptyOrTextualNull(text)) {</b>
+<b class="nc">&nbsp;                _verifyNullForPrimitiveCoercion(ctxt, text);</b>
+<b class="nc">&nbsp;                return 0.0;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return _parseDoublePrimitive(ctxt, text);</b>
+&nbsp;        case JsonTokenId.ID_NUMBER_INT:
+<b class="nc">&nbsp;            return p.getDoubleValue();</b>
+&nbsp;        case JsonTokenId.ID_NULL:
+<b class="nc">&nbsp;            _verifyNullForPrimitive(ctxt);</b>
+<b class="nc">&nbsp;            return 0.0;</b>
+&nbsp;        case JsonTokenId.ID_START_ARRAY:
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;                p.nextToken();</b>
+<b class="nc">&nbsp;                final double parsed = _parseDoublePrimitive(p, ctxt);</b>
+<b class="nc">&nbsp;                _verifyEndArrayForSingle(p, ctxt);</b>
+<b class="nc">&nbsp;                return parsed;            </b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        }
+&nbsp;        // Otherwise, no can do:
+<b class="nc">&nbsp;        return ((Number) ctxt.handleUnexpectedToken(_valueClass, p)).doubleValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final double _parseDoublePrimitive(DeserializationContext ctxt, String text)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        switch (text.charAt(0)) {</b>
+&nbsp;        case &#39;I&#39;:
+<b class="nc">&nbsp;            if (_isPosInf(text)) {</b>
+<b class="nc">&nbsp;                return Double.POSITIVE_INFINITY;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        case &#39;N&#39;:
+<b class="nc">&nbsp;            if (_isNaN(text)) {</b>
+<b class="nc">&nbsp;                return Double.NaN;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        case &#39;-&#39;:
+<b class="nc">&nbsp;            if (_isNegInf(text)) {</b>
+<b class="nc">&nbsp;                return Double.NEGATIVE_INFINITY;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            return parseDouble(text);</b>
+<b class="nc">&nbsp;        } catch (IllegalArgumentException iae) { }</b>
+<b class="nc">&nbsp;        Number v = (Number) ctxt.handleWeirdStringValue(_valueClass, text, </b>
+&nbsp;                &quot;not a valid double value&quot;);
+<b class="nc">&nbsp;        return _nonNullNumber(v).doubleValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected java.util.Date _parseDate(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        switch (p.getCurrentTokenId()) {</b>
+&nbsp;        case JsonTokenId.ID_STRING:
+<b class="nc">&nbsp;            return _parseDate(p.getText().trim(), ctxt);</b>
+&nbsp;        case JsonTokenId.ID_NUMBER_INT:
+<b class="nc">&nbsp;            return new java.util.Date(p.getLongValue());</b>
+&nbsp;        case JsonTokenId.ID_NULL:
+<b class="nc">&nbsp;            return (java.util.Date) getNullValue(ctxt);</b>
+&nbsp;        case JsonTokenId.ID_START_ARRAY:
+<b class="nc">&nbsp;            return _parseDateFromArray(p, ctxt);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (java.util.Date) ctxt.handleUnexpectedToken(_valueClass, p);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // @since 2.9
+&nbsp;    protected java.util.Date _parseDateFromArray(JsonParser p, DeserializationContext ctxt)
+&nbsp;            throws IOException
+&nbsp;    {
+&nbsp;        JsonToken t;
+<b class="nc">&nbsp;        if (ctxt.hasSomeOfFeatures(F_MASK_ACCEPT_ARRAYS)) {</b>
+<b class="nc">&nbsp;            t = p.nextToken();</b>
+<b class="nc">&nbsp;            if (t == JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;                if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)) {</b>
+<b class="nc">&nbsp;                    return (java.util.Date) getNullValue(ctxt);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;                final Date parsed = _parseDate(p, ctxt);</b>
+<b class="nc">&nbsp;                _verifyEndArrayForSingle(p, ctxt);</b>
+<b class="nc">&nbsp;                return parsed;            </b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            t = p.getCurrentToken();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (java.util.Date) ctxt.handleUnexpectedToken(_valueClass, t, p, null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.8
+&nbsp;     */
+&nbsp;    protected java.util.Date _parseDate(String value, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+&nbsp;        try {
+&nbsp;            // Take empty Strings to mean &#39;empty&#39; Value, usually &#39;null&#39;:
+<b class="nc">&nbsp;            if (_isEmptyOrTextualNull(value)) {</b>
+<b class="nc">&nbsp;                return (java.util.Date) getNullValue(ctxt);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return ctxt.parseDate(value);</b>
+<b class="nc">&nbsp;        } catch (IllegalArgumentException iae) {</b>
+<b class="nc">&nbsp;            return (java.util.Date) ctxt.handleWeirdStringValue(_valueClass, value,</b>
+<b class="nc">&nbsp;                    &quot;not a valid representation (error: %s)&quot;, iae.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method for encapsulating calls to low-level double value parsing; single place
+&nbsp;     * just because we need a work-around that must be applied to all calls.
+&nbsp;     */
+&nbsp;    protected final static double parseDouble(String numStr) throws NumberFormatException
+&nbsp;    {
+&nbsp;        // avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
+<b class="nc">&nbsp;        if (NumberInput.NASTY_SMALL_DOUBLE.equals(numStr)) {</b>
+<b class="nc">&nbsp;            return Double.MIN_NORMAL; // since 2.7; was MIN_VALUE prior</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return Double.parseDouble(numStr);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Helper method used for accessing String value, if possible, doing
+&nbsp;     * necessary conversion or throwing exception as necessary.
+&nbsp;     * 
+&nbsp;     * @since 2.1
+&nbsp;     */
+&nbsp;    protected final String _parseString(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        JsonToken t = p.getCurrentToken();</b>
+<b class="nc">&nbsp;        if (t == JsonToken.VALUE_STRING) {</b>
+<b class="nc">&nbsp;            return p.getText();</b>
+&nbsp;        }
+&nbsp;        // 07-Nov-2016, tatu: Caller should take care of unwrapping and there shouldn&#39;t
+&nbsp;        //    be need for extra pass here...
+&nbsp;        /*
+&nbsp;        // [databind#381]
+&nbsp;        if ((t == JsonToken.START_ARRAY) &amp;&amp; ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {
+&nbsp;            p.nextToken();
+&nbsp;            final String parsed = _parseString(p, ctxt);
+&nbsp;            _verifyEndArrayForSingle(p, ctxt);
+&nbsp;            return parsed;            
+&nbsp;        }
+&nbsp;        */
+<b class="nc">&nbsp;        String value = p.getValueAsString();</b>
+<b class="nc">&nbsp;        if (value != null) {</b>
+<b class="nc">&nbsp;            return value;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (String) ctxt.handleUnexpectedToken(String.class, p);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method that may be used to support fallback for Empty String / Empty Array
+&nbsp;     * non-standard representations; usually for things serialized as JSON Objects.
+&nbsp;     * 
+&nbsp;     * @since 2.5
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    protected T _deserializeFromEmpty(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        JsonToken t = p.getCurrentToken();</b>
+<b class="nc">&nbsp;        if (t == JsonToken.START_ARRAY) {</b>
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)) {</b>
+<b class="nc">&nbsp;                t = p.nextToken();</b>
+<b class="nc">&nbsp;                if (t == JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;                    return null;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                return (T) ctxt.handleUnexpectedToken(handledType(), p);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } else if (t == JsonToken.VALUE_STRING) {</b>
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {</b>
+<b class="nc">&nbsp;                String str = p.getText().trim();</b>
+<b class="nc">&nbsp;                if (str.isEmpty()) {</b>
+<b class="nc">&nbsp;                    return null;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return (T) ctxt.handleUnexpectedToken(handledType(), p);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method called to determine if we are seeing String value of
+&nbsp;     * &quot;null&quot;, and, further, that it should be coerced to null just like
+&nbsp;     * null token.
+&nbsp;     * 
+&nbsp;     * @since 2.3
+&nbsp;     */
+&nbsp;    protected boolean _hasTextualNull(String value) {
+<b class="nc">&nbsp;        return &quot;null&quot;.equals(value);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected boolean _isEmptyOrTextualNull(String value) {
+<b class="nc">&nbsp;        return value.isEmpty() || &quot;null&quot;.equals(value);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    protected final boolean _isNegInf(String text) {
+<b class="nc">&nbsp;        return &quot;-Infinity&quot;.equals(text) || &quot;-INF&quot;.equals(text);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final boolean _isPosInf(String text) {
+<b class="nc">&nbsp;        return &quot;Infinity&quot;.equals(text) || &quot;INF&quot;.equals(text);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    protected final boolean _isNaN(String text) { return &quot;NaN&quot;.equals(text); }</b>
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for sub-classes regarding decoding from
+&nbsp;    /* alternate representations
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method that allows easy support for array-related {@link DeserializationFeature}s
+&nbsp;     * `ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT` and `UNWRAP_SINGLE_VALUE_ARRAYS`: checks for either
+&nbsp;     * empty array, or single-value array-wrapped value (respectively), and either reports
+&nbsp;     * an exception (if no match, or feature(s) not enabled), or returns appropriate
+&nbsp;     * result value.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * This method should NOT be called if Array representation is explicitly supported
+&nbsp;     * for type: it should only be called in case it is otherwise unrecognized.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * NOTE: in case of unwrapped single element, will handle actual decoding
+&nbsp;     * by calling {@link #_deserializeWrappedValue}, which by default calls
+&nbsp;     * {@link #deserialize(JsonParser, DeserializationContext)}.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected T _deserializeFromArray(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+&nbsp;        JsonToken t;
+<b class="nc">&nbsp;        if (ctxt.hasSomeOfFeatures(F_MASK_ACCEPT_ARRAYS)) {</b>
+<b class="nc">&nbsp;            t = p.nextToken();</b>
+<b class="nc">&nbsp;            if (t == JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;                if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)) {</b>
+<b class="nc">&nbsp;                    return getNullValue(ctxt);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (ctxt.isEnabled(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)) {</b>
+<b class="nc">&nbsp;                final T parsed = deserialize(p, ctxt);</b>
+<b class="nc">&nbsp;                if (p.nextToken() != JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;                    handleMissingEndArrayForSingle(p, ctxt);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                return parsed;            </b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            t = p.getCurrentToken();</b>
+&nbsp;        }
+&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)
+<b class="nc">&nbsp;        T result = (T) ctxt.handleUnexpectedToken(_valueClass, t, p, null);</b>
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper called to support {@link DeserializationFeature#UNWRAP_SINGLE_VALUE_ARRAYS}:
+&nbsp;     * default implementation simply calls
+&nbsp;     * {@link #deserialize(JsonParser, DeserializationContext)},
+&nbsp;     * but handling may be overridden.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected T _deserializeWrappedValue(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+&nbsp;        // 23-Mar-2017, tatu: Let&#39;s specifically block recursive resolution to avoid
+&nbsp;        //   either supporting nested arrays, or to cause infinite looping.
+<b class="nc">&nbsp;        if (p.hasToken(JsonToken.START_ARRAY)) {</b>
+<b class="nc">&nbsp;            String msg = String.format(</b>
+&nbsp;&quot;Can not deserialize instance of %s out of %s token: nested Arrays not allowed with %s&quot;,
+<b class="nc">&nbsp;                    ClassUtil.nameOf(_valueClass), JsonToken.START_ARRAY,</b>
+&nbsp;                    &quot;DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS&quot;);
+&nbsp;            @SuppressWarnings(&quot;unchecked&quot;)
+<b class="nc">&nbsp;            T result = (T) ctxt.handleUnexpectedToken(_valueClass, p.getCurrentToken(), p, msg);</b>
+<b class="nc">&nbsp;            return result;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (T) deserialize(p, ctxt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /****************************************************
+&nbsp;    /* Helper methods for sub-classes, coercions
+&nbsp;    /****************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    protected void _failDoubleToIntCoercion(JsonParser p, DeserializationContext ctxt,
+&nbsp;            String type) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        ctxt.reportInputMismatch(handledType(),</b>
+&nbsp;                &quot;Can not coerce a floating-point value (&#39;%s&#39;) into %s (enable `DeserializationFeature.ACCEPT_FLOAT_AS_INT` to allow)&quot;,
+<b class="nc">&nbsp;                p.getValueAsString(), type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method called in case where an integral number is encountered, but
+&nbsp;     * config settings suggest that a coercion may be needed to &quot;upgrade&quot;
+&nbsp;     * {@link java.lang.Number} into &quot;bigger&quot; type like {@link java.lang.Long} or
+&nbsp;     * {@link java.math.BigInteger}
+&nbsp;     * 
+&nbsp;     * @see DeserializationFeature#USE_BIG_INTEGER_FOR_INTS
+&nbsp;     * @see DeserializationFeature#USE_LONG_FOR_INTS
+&nbsp;     *
+&nbsp;     * @since 2.6
+&nbsp;     */
+&nbsp;    protected Object _coerceIntegral(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        int feats = ctxt.getDeserializationFeatures();</b>
+<b class="nc">&nbsp;        if (DeserializationFeature.USE_BIG_INTEGER_FOR_INTS.enabledIn(feats)) {</b>
+<b class="nc">&nbsp;            return p.getBigIntegerValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (DeserializationFeature.USE_LONG_FOR_INTS.enabledIn(feats)) {</b>
+<b class="nc">&nbsp;            return p.getLongValue();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return p.getBigIntegerValue(); // should be optimal, whatever it is</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method to call when JSON `null` token is encountered. Note: only called when
+&nbsp;     * this deserializer encounters it but NOT when reached via property
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected Object _coerceNullToken(DeserializationContext ctxt, boolean isPrimitive) throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        if (isPrimitive) {</b>
+<b class="nc">&nbsp;            _verifyNullForPrimitive(ctxt);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return getNullValue(ctxt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called when JSON String with value &quot;null&quot; is encountered.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected Object _coerceTextualNull(DeserializationContext ctxt, boolean isPrimitive) throws JsonMappingException
+&nbsp;    {
+&nbsp;        Enum&lt;?&gt; feat;
+&nbsp;        boolean enable;
+&nbsp;
+<b class="nc">&nbsp;        if (!ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS)) {</b>
+<b class="nc">&nbsp;            feat = MapperFeature.ALLOW_COERCION_OF_SCALARS;</b>
+<b class="nc">&nbsp;            enable = true;</b>
+<b class="nc">&nbsp;        } else if (isPrimitive &amp;&amp; ctxt.isEnabled(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)) {</b>
+<b class="nc">&nbsp;            feat = DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES;</b>
+<b class="nc">&nbsp;            enable = false;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return getNullValue(ctxt);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        _reportFailedNullCoerce(ctxt, enable, feat, &quot;String \&quot;null\&quot;&quot;);</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called when JSON String with value &quot;&quot; (that is, zero length) is encountered.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected Object _coerceEmptyString(DeserializationContext ctxt, boolean isPrimitive) throws JsonMappingException
+&nbsp;    {
+&nbsp;        Enum&lt;?&gt; feat;
+&nbsp;        boolean enable;
+&nbsp;
+<b class="nc">&nbsp;        if (!ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS)) {</b>
+<b class="nc">&nbsp;            feat = MapperFeature.ALLOW_COERCION_OF_SCALARS;</b>
+<b class="nc">&nbsp;            enable = true;</b>
+<b class="nc">&nbsp;        } else if (isPrimitive &amp;&amp; ctxt.isEnabled(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)) {</b>
+<b class="nc">&nbsp;            feat = DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES;</b>
+<b class="nc">&nbsp;            enable = false;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return getNullValue(ctxt);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        _reportFailedNullCoerce(ctxt, enable, feat, &quot;empty String (\&quot;\&quot;)&quot;);</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // @since 2.9
+&nbsp;    protected final void _verifyNullForPrimitive(DeserializationContext ctxt) throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        if (ctxt.isEnabled(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)) {</b>
+<b class="nc">&nbsp;            ctxt.reportInputMismatch(this,</b>
+&nbsp;                    &quot;Can not coerce `null` %s (disable `DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES` to allow)&quot;,
+<b class="nc">&nbsp;                    _coercedTypeDesc());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // NOTE: only for primitive Scalars
+&nbsp;    // @since 2.9
+&nbsp;    protected final void _verifyNullForPrimitiveCoercion(DeserializationContext ctxt, String str) throws JsonMappingException
+&nbsp;    {
+&nbsp;        Enum&lt;?&gt; feat;
+&nbsp;        boolean enable;
+&nbsp;
+<b class="nc">&nbsp;        if (!ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS)) {</b>
+<b class="nc">&nbsp;            feat = MapperFeature.ALLOW_COERCION_OF_SCALARS;</b>
+<b class="nc">&nbsp;            enable = true;</b>
+<b class="nc">&nbsp;        } else if (ctxt.isEnabled(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)) {</b>
+<b class="nc">&nbsp;            feat = DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES;</b>
+<b class="nc">&nbsp;            enable = false;</b>
+&nbsp;        } else {
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        String strDesc = str.isEmpty() ? &quot;empty String (\&quot;\&quot;)&quot; : String.format(&quot;String \&quot;%s\&quot;&quot;, str);</b>
+<b class="nc">&nbsp;        _reportFailedNullCoerce(ctxt, enable, feat, strDesc);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // NOTE: for non-primitive Scalars
+&nbsp;    // @since 2.9
+&nbsp;    protected final void _verifyNullForScalarCoercion(DeserializationContext ctxt, String str) throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        if (!ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS)) {</b>
+<b class="nc">&nbsp;            String strDesc = str.isEmpty() ? &quot;empty String (\&quot;\&quot;)&quot; : String.format(&quot;String \&quot;%s\&quot;&quot;, str);</b>
+<b class="nc">&nbsp;            _reportFailedNullCoerce(ctxt, true, MapperFeature.ALLOW_COERCION_OF_SCALARS, strDesc);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // @since 2.9
+&nbsp;    protected void _verifyStringForScalarCoercion(DeserializationContext ctxt, String str) throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        MapperFeature feat = MapperFeature.ALLOW_COERCION_OF_SCALARS;</b>
+<b class="nc">&nbsp;        if (!ctxt.isEnabled(feat)) {</b>
+<b class="nc">&nbsp;            ctxt.reportInputMismatch(this, &quot;Can not coerce String \&quot;%s\&quot; %s (enable `%s.%s` to allow)&quot;,</b>
+<b class="nc">&nbsp;                str, _coercedTypeDesc(), feat.getClass().getSimpleName(), feat.name());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // @since 2.9
+&nbsp;    protected void _verifyNumberForScalarCoercion(DeserializationContext ctxt, JsonParser p) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        MapperFeature feat = MapperFeature.ALLOW_COERCION_OF_SCALARS;</b>
+<b class="nc">&nbsp;        if (!ctxt.isEnabled(feat)) {</b>
+&nbsp;            // 31-Mar-2017, tatu: Since we don&#39;t know (or this deep, care) about exact type,
+&nbsp;            //   access as a String: may require re-encoding by parser which should be fine
+<b class="nc">&nbsp;            String valueDesc = p.getText();</b>
+<b class="nc">&nbsp;            ctxt.reportInputMismatch(this, &quot;Can not coerce Number (%s) %s (enable `%s.%s` to allow)&quot;,</b>
+<b class="nc">&nbsp;                valueDesc, _coercedTypeDesc(), feat.getClass().getSimpleName(), feat.name());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    protected void _reportFailedNullCoerce(DeserializationContext ctxt, boolean state, Enum&lt;?&gt; feature,
+&nbsp;            String inputDesc) throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        String enableDesc = state ? &quot;enable&quot; : &quot;disable&quot;;</b>
+<b class="nc">&nbsp;        ctxt.reportInputMismatch(this, &quot;Can not coerce %s to Null value %s (%s `%s.%s` to allow)&quot;,</b>
+<b class="nc">&nbsp;            inputDesc, _coercedTypeDesc(), enableDesc, feature.getClass().getSimpleName(), feature.name());</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Helper method called to get a description of type into which a scalar value coercion
+&nbsp;     * is (most likely) being applied, to be used for constructing exception messages
+&nbsp;     * on coerce failure.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected String _coercedTypeDesc() {
+&nbsp;        boolean structured;
+&nbsp;        String typeDesc;
+&nbsp;
+<b class="nc">&nbsp;        JavaType t = getValueType();</b>
+<b class="nc">&nbsp;        if (t != null) {</b>
+<b class="nc">&nbsp;            structured = (t.isContainerType() || t.isReferenceType());</b>
+<b class="nc">&nbsp;            typeDesc = t.toString();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            Class&lt;?&gt; cls = handledType();</b>
+<b class="nc">&nbsp;            structured = cls.isArray() || Collection.class.isAssignableFrom(cls)</b>
+<b class="nc">&nbsp;                || Map.class.isAssignableFrom(cls);</b>
+<b class="nc">&nbsp;            typeDesc = ClassUtil.nameOf(cls);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (structured) {</b>
+<b class="nc">&nbsp;            return String.format(&quot;as content of type `%s`&quot;, typeDesc);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return String.format(&quot;for type `%s`&quot;, typeDesc);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /****************************************************
+&nbsp;    /* Helper methods for sub-classes, resolving dependencies
+&nbsp;    /****************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method used to locate deserializers for properties the
+&nbsp;     * type this deserializer handles contains (usually for properties of
+&nbsp;     * bean types)
+&nbsp;     * 
+&nbsp;     * @param type Type of property to deserialize
+&nbsp;     * @param property Actual property object (field, method, constuctor parameter) used
+&nbsp;     *     for passing deserialized values; provided so deserializer can be contextualized if necessary
+&nbsp;     */
+&nbsp;    protected JsonDeserializer&lt;Object&gt; findDeserializer(DeserializationContext ctxt,
+&nbsp;            JavaType type, BeanProperty property)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        return ctxt.findContextualValueDeserializer(type, property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method to check whether given text refers to what looks like a clean simple
+&nbsp;     * integer number, consisting of optional sign followed by a sequence of digits.
+&nbsp;     */
+&nbsp;    protected final boolean _isIntNumber(String text)
+&nbsp;    {
+<b class="nc">&nbsp;        final int len = text.length();</b>
+<b class="nc">&nbsp;        if (len &gt; 0) {</b>
+<b class="nc">&nbsp;            char c = text.charAt(0);</b>
+&nbsp;            // skip leading sign (plus not allowed for strict JSON numbers but...)
+<b class="nc">&nbsp;            int i = (c == &#39;-&#39; || c == &#39;+&#39;) ? 1 : 0;</b>
+<b class="nc">&nbsp;            for (; i &lt; len; ++i) {</b>
+<b class="nc">&nbsp;                int ch = text.charAt(i);</b>
+<b class="nc">&nbsp;                if (ch &gt; &#39;9&#39; || ch &lt; &#39;0&#39;) {</b>
+<b class="nc">&nbsp;                    return false;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for: deserializer construction
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method that can be used to see if specified property has annotation
+&nbsp;     * indicating that a converter is to be used for contained values (contents
+&nbsp;     * of structured types; array/List/Map values)
+&nbsp;     * 
+&nbsp;     * @param existingDeserializer (optional) configured content
+&nbsp;     *    serializer if one already exists.
+&nbsp;     * 
+&nbsp;     * @since 2.2
+&nbsp;     */
+&nbsp;    protected JsonDeserializer&lt;?&gt; findConvertingContentDeserializer(DeserializationContext ctxt,
+&nbsp;            BeanProperty prop, JsonDeserializer&lt;?&gt; existingDeserializer)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        final AnnotationIntrospector intr = ctxt.getAnnotationIntrospector();</b>
+<b class="nc">&nbsp;        if (intr != null &amp;&amp; prop != null) {</b>
+<b class="nc">&nbsp;            AnnotatedMember member = prop.getMember();</b>
+<b class="nc">&nbsp;            if (member != null) {</b>
+<b class="nc">&nbsp;                Object convDef = intr.findDeserializationContentConverter(member);</b>
+<b class="nc">&nbsp;                if (convDef != null) {</b>
+<b class="nc">&nbsp;                    Converter&lt;Object,Object&gt; conv = ctxt.converterInstance(prop.getMember(), convDef);</b>
+<b class="nc">&nbsp;                    JavaType delegateType = conv.getInputType(ctxt.getTypeFactory());</b>
+<b class="nc">&nbsp;                    if (existingDeserializer == null) {</b>
+<b class="nc">&nbsp;                        existingDeserializer = ctxt.findContextualValueDeserializer(delegateType, prop);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    return new StdDelegatingDeserializer&lt;Object&gt;(conv, delegateType, existingDeserializer);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return existingDeserializer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for: accessing contextual config settings
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Helper method that may be used to find if this deserializer has specific
+&nbsp;     * {@link JsonFormat} settings, either via property, or through type-specific
+&nbsp;     * defaulting.
+&nbsp;     *
+&nbsp;     * @param typeForDefaults Type (erased) used for finding default format settings, if any
+&nbsp;     *
+&nbsp;     * @since 2.7
+&nbsp;     */
+&nbsp;    protected JsonFormat.Value findFormatOverrides(DeserializationContext ctxt,
+&nbsp;            BeanProperty prop, Class&lt;?&gt; typeForDefaults)
+&nbsp;    {
+<b class="nc">&nbsp;        if (prop != null) {</b>
+<b class="nc">&nbsp;            return prop.findPropertyFormat(ctxt.getConfig(), typeForDefaults);</b>
+&nbsp;        }
+&nbsp;        // even without property or AnnotationIntrospector, may have type-specific defaults
+<b class="nc">&nbsp;        return ctxt.getDefaultPropertyFormat(typeForDefaults);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Convenience method that uses {@link #findFormatOverrides} to find possible
+&nbsp;     * defaults and/of overrides, and then calls
+&nbsp;     * &lt;code&gt;JsonFormat.Value.getFeature(feat)&lt;/code&gt;
+&nbsp;     * to find whether that feature has been specifically marked as enabled or disabled.
+&nbsp;     * 
+&nbsp;     * @param typeForDefaults Type (erased) used for finding default format settings, if any
+&nbsp;     *
+&nbsp;     * @since 2.7
+&nbsp;     */
+&nbsp;    protected Boolean findFormatFeature(DeserializationContext ctxt,
+&nbsp;            BeanProperty prop, Class&lt;?&gt; typeForDefaults, JsonFormat.Feature feat)
+&nbsp;    {
+<b class="nc">&nbsp;        JsonFormat.Value format = findFormatOverrides(ctxt, prop, typeForDefaults);</b>
+<b class="nc">&nbsp;        if (format != null) {</b>
+<b class="nc">&nbsp;            return format.getFeature(feat);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called to find {@link NullValueProvider} for a primary property, using
+&nbsp;     * &quot;value nulls&quot; setting. If no provider found (not defined, or is &quot;skip&quot;),
+&nbsp;     * will return `null`.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final NullValueProvider findValueNullProvider(DeserializationContext ctxt,
+&nbsp;            SettableBeanProperty prop, PropertyMetadata propMetadata)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        if (prop != null) {</b>
+<b class="nc">&nbsp;            return _findNullProvider(ctxt, prop, propMetadata.getValueNulls(),</b>
+<b class="nc">&nbsp;                    prop.getValueDeserializer());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called to find {@link NullValueProvider} for a contents of a structured
+&nbsp;     * primary property (Collection, Map, array), using
+&nbsp;     * &quot;content nulls&quot; setting. If no provider found (not defined),
+&nbsp;     * will return given value deserializer (which is a null value provider itself).
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected NullValueProvider findContentNullProvider(DeserializationContext ctxt,
+&nbsp;            BeanProperty prop, JsonDeserializer&lt;?&gt; valueDeser)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        final Nulls nulls = findContentNullStyle(ctxt, prop);</b>
+<b class="nc">&nbsp;        if (nulls == Nulls.SKIP) {</b>
+<b class="nc">&nbsp;            return NullsConstantProvider.skipper();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        NullValueProvider prov = _findNullProvider(ctxt, prop, nulls, valueDeser);</b>
+<b class="nc">&nbsp;        if (prov != null) {</b>
+<b class="nc">&nbsp;            return prov;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return valueDeser;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected Nulls findContentNullStyle(DeserializationContext ctxt, BeanProperty prop)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        if (prop != null) {</b>
+<b class="nc">&nbsp;            return prop.getMetadata().getContentNulls();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // @since 2.9
+&nbsp;    protected final NullValueProvider _findNullProvider(DeserializationContext ctxt,
+&nbsp;            BeanProperty prop, Nulls nulls, JsonDeserializer&lt;?&gt; valueDeser)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        if (nulls == Nulls.FAIL) {</b>
+<b class="nc">&nbsp;            if (prop == null) {</b>
+<b class="nc">&nbsp;                return NullsFailProvider.constructForRootValue(ctxt.constructType(valueDeser.handledType()));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return NullsFailProvider.constructForProperty(prop);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (nulls == Nulls.AS_EMPTY) {</b>
+&nbsp;            // can not deal with empty values if there is no value deserializer that
+&nbsp;            // can indicate what &quot;empty value&quot; is:
+<b class="nc">&nbsp;            if (valueDeser == null) {</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Let&#39;s first do some sanity checking...
+&nbsp;            // NOTE: although we could use `ValueInstantiator.Gettable` in general,
+&nbsp;            // let&#39;s not since that would prevent being able to use custom impls:
+<b class="nc">&nbsp;            if (valueDeser instanceof BeanDeserializerBase) {</b>
+<b class="nc">&nbsp;                ValueInstantiator vi = ((BeanDeserializerBase) valueDeser).getValueInstantiator();</b>
+<b class="nc">&nbsp;                if (!vi.canCreateUsingDefault()) {</b>
+<b class="nc">&nbsp;                    final JavaType type = prop.getType();</b>
+<b class="nc">&nbsp;                    ctxt.reportBadDefinition(type,</b>
+<b class="nc">&nbsp;                            String.format(&quot;Can not create empty instance of %s, no default Creator&quot;, type));</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;            // Second: can with pre-fetch value?
+&nbsp;            {
+<b class="nc">&nbsp;                AccessPattern access = valueDeser.getEmptyAccessPattern();</b>
+<b class="nc">&nbsp;                if (access == AccessPattern.ALWAYS_NULL) {</b>
+<b class="nc">&nbsp;                    return NullsConstantProvider.nuller();</b>
+&nbsp;                }
+<b class="nc">&nbsp;                if (access == AccessPattern.CONSTANT) {</b>
+<b class="nc">&nbsp;                    return NullsConstantProvider.forValue(valueDeser.getEmptyValue(ctxt));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            return new NullsAsEmptyProvider(valueDeser);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (nulls == Nulls.SKIP) {</b>
+<b class="nc">&nbsp;            return NullsConstantProvider.skipper();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for sub-classes, problem reporting
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called to deal with a property that did not map to a known
+&nbsp;     * Bean property. Method can deal with the problem as it sees fit (ignore,
+&nbsp;     * throw exception); but if it does return, it has to skip the matching
+&nbsp;     * Json content parser has.
+&nbsp;     *
+&nbsp;     * @param p Parser that points to value of the unknown property
+&nbsp;     * @param ctxt Context for deserialization; allows access to the parser,
+&nbsp;     *    error reporting functionality
+&nbsp;     * @param instanceOrClass Instance that is being populated by this
+&nbsp;     *   deserializer, or if not known, Class that would be instantiated.
+&nbsp;     *   If null, will assume type is what {@link #getValueClass} returns.
+&nbsp;     * @param propName Name of the property that can not be mapped
+&nbsp;     */
+&nbsp;    protected void handleUnknownProperty(JsonParser p, DeserializationContext ctxt,
+&nbsp;            Object instanceOrClass, String propName)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        if (instanceOrClass == null) {</b>
+<b class="nc">&nbsp;            instanceOrClass = handledType();</b>
+&nbsp;        }
+&nbsp;        // Maybe we have configured handler(s) to take care of it?
+<b class="nc">&nbsp;        if (ctxt.handleUnknownProperty(p, this, instanceOrClass, propName)) {</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;        /* But if we do get this far, need to skip whatever value we
+&nbsp;         * are pointing to now (although handler is likely to have done that already)
+&nbsp;         */
+<b class="nc">&nbsp;        p.skipChildren();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected void handleMissingEndArrayForSingle(JsonParser p, DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        ctxt.reportWrongTokenException(this, JsonToken.END_ARRAY, </b>
+&nbsp;&quot;Attempted to unwrap &#39;%s&#39; value from an array (with `DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS`) but it contains more than one value&quot;,
+<b class="nc">&nbsp;handledType().getName());</b>
+&nbsp;        // 05-May-2016, tatu: Should recover somehow (maybe skip until END_ARRAY);
+&nbsp;        //     but for now just fall through
+&nbsp;    }
+&nbsp;
+&nbsp;    protected void _verifyEndArrayForSingle(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+<b class="nc">&nbsp;        JsonToken t = p.nextToken();</b>
+<b class="nc">&nbsp;        if (t != JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;            handleMissingEndArrayForSingle(p, ctxt);</b>
+&nbsp;        }            
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods, other
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final boolean _byteOverflow(int value) {
+&nbsp;        // 07-nov-2016, tatu: We support &quot;unsigned byte&quot; as well
+&nbsp;        //    as Java signed range since that&#39;s relatively common usage
+<b class="nc">&nbsp;        return (value &lt; Byte.MIN_VALUE || value &gt; 255);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final boolean _shortOverflow(int value) {
+<b class="nc">&nbsp;        return (value &lt; Short.MIN_VALUE || value &gt; Short.MAX_VALUE);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected final boolean _intOverflow(long value) {
+<b class="nc">&nbsp;        return (value &lt; Integer.MIN_VALUE || value &gt; Integer.MAX_VALUE);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    protected Number _nonNullNumber(Number n) {
+<b class="nc">&nbsp;        if (n == null) {</b>
+<b class="nc">&nbsp;            n = Integer.valueOf(0);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return n;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:18</div>
+</div>
+</body>
+</html>

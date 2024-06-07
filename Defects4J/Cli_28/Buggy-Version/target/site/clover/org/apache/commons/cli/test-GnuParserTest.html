@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    
+    
+    <link rel="SHORTCUT ICON" href="../../../../img/clover.ico" />
+
+    <link rel="stylesheet" href="../../../../aui/css/aui.min.css" media="all"/>
+    <link rel="stylesheet" href="../../../../aui/css/aui-experimental.min.css" media="all"/>
+    <!--[if IE 9]><link rel="stylesheet" href="../../../../aui/css/aui-ie9.min.css" media="all"/><![endif]-->
+
+    <style type="text/css" media="all">
+        @import url('../../../../style.css');
+        @import url('../../../../tree.css');
+        
+    </style>
+
+    <script src="../../../../jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="../../../../aui/js/aui.min.js" type="text/javascript"></script>
+    <script src="../../../../aui/js/aui-experimental.min.js" type="text/javascript"></script>
+    <script src="../../../../aui/js/aui-soy.min.js" type="text/javascript"></script>
+
+    <script src="../../../../package-nodes-tree.js" type="text/javascript"></script>
+    <script src="../../../../clover-tree.js" type="text/javascript"></script>
+    <script src="../../../../clover.js" type="text/javascript"></script>
+    <script src="../../../../clover-descriptions.js" type="text/javascript"></script>
+    <script src="../../../../cloud.js" type="text/javascript"></script>
+
+            <title>Commons CLI 1.3-SNAPSHOT</title>
+    </head>
+
+<body>
+    <div id="page">
+        
+        
+
+
+<header id="header" role="banner">
+    <nav class="aui-header aui-dropdown2-trigger-group" role="navigation">
+        <div class="aui-header-inner">
+            <div class="aui-header-primary">
+                <h1 id="logo" class="aui-header-logo aui-header-logo-clover">
+                    <a href="https://openclover.org" title="Visit OpenClover home page"><span class="aui-header-logo-device">OpenClover</span></a>
+                </h1>
+                            </div>
+            <div class="aui-header-secondary">
+                <ul class="aui-nav">
+                    <li id="system-help-menu">
+                        <a class="aui-nav-link" title="Open online documentation" target="_blank"
+                           href="https://openclover.org/documentation">
+                            <span class="aui-icon aui-icon-small aui-iconfont-help">&#160;Help</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+        
+        <div class="aui-page-panel">
+            <div class="aui-page-panel-inner">
+                <div class="aui-page-panel-nav aui-page-panel-nav-clover">
+                    
+
+<div class="aui-page-header-inner" style="margin-bottom: 20px;">
+    <div class="aui-page-header-image">
+                    <a href="http://commons.apache.org/cli/" target="_top">
+                <div class="aui-avatar aui-avatar-large aui-avatar-project">
+            <div class="aui-avatar-inner">
+                                    <img src="../../../../img/clover_logo_large.png" alt="Clover icon"/>
+                            </div>
+        </div>
+                    </a>
+            </div>
+    <div class="aui-page-header-main" >
+        <h1>
+                            <a href="http://commons.apache.org/cli/" target="_top">
+                                        Commons CLI 1.3-SNAPSHOT
+                                        </a>
+                    </h1>
+    </div>
+</div>
+
+<nav class="aui-navgroup aui-navgroup-vertical">
+    <div class="aui-navgroup-inner">
+                                            <ul class="aui-nav">
+                <li class="">
+                    <a href="../../../../dashboard.html">Project overview</a>
+                </li>
+            </ul>
+        
+                <div class="aui-nav-heading packages-nav-heading">
+            <strong>Packages</strong>
+        </div>
+        <div class="aui-nav project-packages">
+            <form method="get" action="#" class="aui package-filter-container">
+                <input type="text" autocomplete="off" class="package-filter text"
+                       placeholder="Type to filter packages..." name="package-filter" id="package-filter"
+                       title="Start typing package name (or part of the name) to search through the tree. Use arrow keys and the Enter key to navigate."/>
+            </form>
+            <p class="package-filter-no-results-message hidden">
+                <small>No results found.</small>
+            </p>
+                                                <div class="packages-tree-wrapper" data-root-relative="../../../../" data-package-name="org.apache.commons.cli">
+                <div class="packages-tree-container"></div>
+                <div class="clover-packages-lozenges"></div>
+            </div>
+        </div>
+        
+            </div>
+</nav>                </div>
+                <section class="aui-page-panel-content">
+                    <div class="aui-page-panel-content-clover">
+
+                    
+                    <div class="aui-page-header-main"><ol class="aui-nav aui-nav-breadcrumbs">
+    
+    <li><a href="../../../../dashboard.html"> Project Clover database Tue Apr 30 2024 18:53:01 CDT</a></li>
+     <li><a href="test-pkg-summary.html">Package org.apache.commons.cli</a></li>
+</ol></div>
+    
+<h1 class="aui-h2-clover">
+            
+        Class GnuParserTest
+    </h1>
+
+
+ 
+<div class="aui-tabs horizontal-tabs" id="tabs-file">
+    <ul class="tabs-menu">
+        <li class="menu-item">
+            <a href="GnuParserTest.html"><strong>Source file</strong></a>
+        </li>
+        <li class="menu-item active-tab">
+            <a href="#tabs-file-test-results"><strong>Test results</strong></a>
+        </li>
+    </ul>
+    <div class="tabs-pane aui-tabs-pane-100-pcnt active-pane" id="tabs-file-test-results">
+        <div>&#160;</div>
+
+
+
+
+<table id="testClassSummaryTable" class="aui">
+<thead>
+    <tr>
+        <th width="40%"><label>Class</label></th>
+        <th width="10%"><label title="Total number of tests (or test iterations) executed.">Tests</label></th>
+        <th width="10%"><label title="Number of failed tests">Fail</label></th>
+        <th width="10%"><label title="Number of test errors">Error</label></th>
+        <th width="10%">
+            <label title="The total time in seconds taken to run this set of tests.">Time (secs)</label>
+        </th>
+        <th width="20%"><label>% Tests Success</label></th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>GnuParserTest</td>
+        <td class="testPasses"><span class="sortValue">51</span>51</td>
+<td class=""><span class="sortValue">0</span>0</td>
+<td class=""><span class="sortValue">0</span>0</td>
+        <td>0.011</td>
+        <td class="align-middle">
+            
+
+<div style="display: table; width: 100%">
+            <div class="barGraphValue"><span class="sortValue">1.0</span>100%</div>         <div style="display: table-cell">
+            
+            <div title="0% Errors" style="min-width: 40px;" class="testBarError">
+                <div title="100% of tests passed&lt;br/&gt;0% of tests failed" class="testBarFail" style="width: 100%"><div class="testBarPass" style="width: 100%"></div></div>
+            </div>
+        </div>
+    </div>        </td>
+    </tr>
+</tbody>
+</table>
+
+<div>&#160;</div>
+
+<table id="testClassTestsTable" class="aui aui-table-sortable">
+<thead>
+    <tr>
+        <th width="40%">
+            <label title="Tests (or test iterations) which were executed.">Tests</label>
+        </th>
+        <th width="10%"><label>Started</label></th>
+        <th width="10%"><label>Status</label></th>
+        <th width="10%">
+            <label title="The total time in seconds taken to run this set of tests.">Time (secs)</label>
+        </th>
+        <th width="30%"><label>Message</label></th>
+    </tr>
+</thead>
+<tbody>
+
+
+<tr>
+    <td><span class="sortValue">GnuParserTest.testBursting</span><a href="GnuParserTest_testBursting_76.html">GnuParserTest.testBursting</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193207</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testOptionAndRequiredOption</span><a href="GnuParserTest_testOptionAndRequiredOption_87.html">GnuParserTest.testOptionAndRequiredOption</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193280</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnambiguousPartialLongOption1</span><a href="GnuParserTest_testUnambiguousPartialLongOption1_1m.html">GnuParserTest.testUnambiguousPartialLongOption1</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193217</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnambiguousPartialLongOption3</span><a href="GnuParserTest_testUnambiguousPartialLongOption3_4h.html">GnuParserTest.testUnambiguousPartialLongOption3</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193218</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testShortWithEqual</span><a href="GnuParserTest_testShortWithEqual_6g.html">GnuParserTest.testShortWithEqual</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193270</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMissingArg</span><a href="GnuParserTest_testMissingArg_8q.html">GnuParserTest.testMissingArg</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193265</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testStopAtExpectedArg</span><a href="GnuParserTest_testStopAtExpectedArg_5a.html">GnuParserTest.testStopAtExpectedArg</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193268</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testPartialLongOptionSingleDash</span><a href="GnuParserTest_testPartialLongOptionSingleDash_42.html">GnuParserTest.testPartialLongOptionSingleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193249</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testStopAtNonOptionShort</span><a href="GnuParserTest_testStopAtNonOptionShort_7i.html">GnuParserTest.testStopAtNonOptionShort</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193268</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMissingRequiredOptions</span><a href="GnuParserTest_testMissingRequiredOptions_18.html">GnuParserTest.testMissingRequiredOptions</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193282</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testNegativeOption</span><a href="GnuParserTest_testNegativeOption_7s.html">GnuParserTest.testNegativeOption</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193206</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testLongWithoutEqualSingleDash</span><a href="GnuParserTest_testLongWithoutEqualSingleDash_3r.html">GnuParserTest.testLongWithoutEqualSingleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193208</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnambiguousPartialLongOption2</span><a href="GnuParserTest_testUnambiguousPartialLongOption2_93.html">GnuParserTest.testUnambiguousPartialLongOption2</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193218</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testDoubleDash2</span><a href="GnuParserTest_testDoubleDash2_f.html">GnuParserTest.testDoubleDash2</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193202</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testPropertiesOption1</span><a href="GnuParserTest_testPropertiesOption1_5n.html">GnuParserTest.testPropertiesOption1</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193271</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testAmbiguousPartialLongOption2</span><a href="GnuParserTest_testAmbiguousPartialLongOption2_78.html">GnuParserTest.testAmbiguousPartialLongOption2</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193237</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testStopAtNonOptionLong</span><a href="GnuParserTest_testStopAtNonOptionLong_4c.html">GnuParserTest.testStopAtNonOptionLong</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193269</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMultiple</span><a href="GnuParserTest_testMultiple_89.html">GnuParserTest.testMultiple</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193253</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testAmbiguousPartialLongOption1</span><a href="GnuParserTest_testAmbiguousPartialLongOption1_5k.html">GnuParserTest.testAmbiguousPartialLongOption1</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193220</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testSimpleShort</span><a href="GnuParserTest_testSimpleShort_7j.html">GnuParserTest.testSimpleShort</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193250</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testPropertiesOption2</span><a href="GnuParserTest_testPropertiesOption2_5c.html">GnuParserTest.testPropertiesOption2</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193271</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testAmbiguousPartialLongOption3</span><a href="GnuParserTest_testAmbiguousPartialLongOption3_2o.html">GnuParserTest.testAmbiguousPartialLongOption3</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193243</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testStopBursting</span><a href="GnuParserTest_testStopBursting_1e.html">GnuParserTest.testStopBursting</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193207</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMissingRequiredOption</span><a href="GnuParserTest_testMissingRequiredOption_4j.html">GnuParserTest.testMissingRequiredOption</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193282</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMissingArgWithBursting</span><a href="GnuParserTest_testMissingArgWithBursting_4p.html">GnuParserTest.testMissingArgWithBursting</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193250</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnrecognizedOptionWithBursting</span><a href="GnuParserTest_testUnrecognizedOptionWithBursting_69.html">GnuParserTest.testUnrecognizedOptionWithBursting</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193249</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMultipleWithLong</span><a href="GnuParserTest_testMultipleWithLong_6t.html">GnuParserTest.testMultipleWithLong</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193253</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testReuseOptionsTwice</span><a href="GnuParserTest_testReuseOptionsTwice_8e.html">GnuParserTest.testReuseOptionsTwice</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193277</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testWithRequiredOption</span><a href="GnuParserTest_testWithRequiredOption_4m.html">GnuParserTest.testWithRequiredOption</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193272</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testMissingRequiredGroup</span><a href="GnuParserTest_testMissingRequiredGroup_26.html">GnuParserTest.testMissingRequiredGroup</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193274</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testOptionGroup</span><a href="GnuParserTest_testOptionGroup_38.html">GnuParserTest.testOptionGroup</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193276</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testLongWithUnexpectedArgument2</span><a href="GnuParserTest_testLongWithUnexpectedArgument2_8r.html">GnuParserTest.testLongWithUnexpectedArgument2</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193211</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testSimpleLong</span><a href="GnuParserTest_testSimpleLong_5o.html">GnuParserTest.testSimpleLong</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193252</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnambiguousPartialLongOption4</span><a href="GnuParserTest_testUnambiguousPartialLongOption4_8m.html">GnuParserTest.testUnambiguousPartialLongOption4</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193218</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testLongWithoutEqualDoubleDash</span><a href="GnuParserTest_testLongWithoutEqualDoubleDash_35.html">GnuParserTest.testLongWithoutEqualDoubleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193279</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testOptionGroupLong</span><a href="GnuParserTest_testOptionGroupLong_59.html">GnuParserTest.testOptionGroupLong</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193277</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testStopAtUnexpectedArg</span><a href="GnuParserTest_testStopAtUnexpectedArg_1y.html">GnuParserTest.testStopAtUnexpectedArg</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193267</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnrecognizedOption</span><a href="GnuParserTest_testUnrecognizedOption_7o.html">GnuParserTest.testUnrecognizedOption</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193254</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.004</span>0.004</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testShortWithoutEqual</span><a href="GnuParserTest_testShortWithoutEqual_7l.html">GnuParserTest.testShortWithoutEqual</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193270</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testLongWithEqualDoubleDash</span><a href="GnuParserTest_testLongWithEqualDoubleDash_1r.html">GnuParserTest.testLongWithEqualDoubleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193279</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testSingleDash</span><a href="GnuParserTest_testSingleDash_5l.html">GnuParserTest.testSingleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193266</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testLongWithUnexpectedArgument1</span><a href="GnuParserTest_testLongWithUnexpectedArgument1_66.html">GnuParserTest.testLongWithUnexpectedArgument1</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193211</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testUnlimitedArgs</span><a href="GnuParserTest_testUnlimitedArgs_36.html">GnuParserTest.testUnlimitedArgs</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193278</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testAmbiguousLongWithoutEqualSingleDash</span><a href="GnuParserTest_testAmbiguousLongWithoutEqualSingleDash_7z.html">GnuParserTest.testAmbiguousLongWithoutEqualSingleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193210</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.001</span>0.001</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testStopBursting2</span><a href="GnuParserTest_testStopBursting2_6m.html">GnuParserTest.testStopBursting2</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193207</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testDoubleDash1</span><a href="GnuParserTest_testDoubleDash1_31.html">GnuParserTest.testDoubleDash1</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193266</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testLongWithEqualSingleDash</span><a href="GnuParserTest_testLongWithEqualSingleDash_43.html">GnuParserTest.testLongWithEqualSingleDash</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193279</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testShortWithUnexpectedArgument</span><a href="GnuParserTest_testShortWithUnexpectedArgument_7v.html">GnuParserTest.testShortWithUnexpectedArgument</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193212</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testAmbiguousPartialLongOption4</span><a href="GnuParserTest_testAmbiguousPartialLongOption4_8k.html">GnuParserTest.testAmbiguousPartialLongOption4</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193248</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testArgumentStartingWithHyphen</span><a href="GnuParserTest_testArgumentStartingWithHyphen_2g.html">GnuParserTest.testArgumentStartingWithHyphen</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193278</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+<tr>
+    <td><span class="sortValue">GnuParserTest.testNegativeArgument</span><a href="GnuParserTest_testNegativeArgument_4i.html">GnuParserTest.testNegativeArgument</a></td>
+    <td style="whitespace:nowrap;"><span class="sortValue">1714521193269</span>30 Apr 18:53:13</td>
+    <td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+    <td><span class="sortValue">0.0</span>0</td>
+    <td style="width:50%">
+     &#160;     </td>
+</tr>
+
+    </tbody>
+</table>
+
+    </div> <!-- tabs-pane -->
+</div> <!-- aui-tabs horizontal-tabs -->
+
+                        </div> <!-- class="aui-page-panel-content-clover" -->
+                    <footer id="footer" role="contentinfo">
+    <section class="footer-body">
+        <ul>
+            <li>
+                Report generated by <a target="_new" href="https://openclover.org">OpenClover</a> v 4.5.2
+                on Tue Apr 30 2024 18:53:15 CDT using coverage data from Tue Apr 30 2024 18:53:13 CDT.
+            </li>
+        </ul>
+        <ul>
+            <li>OpenClover is free and open-source software. </li>
+        </ul>
+    </section>
+</footer>                </section> <!-- class="aui-page-panel-content" -->
+            </div> <!-- class="aui-page-panel-inner" -->
+        </div> <!-- class="aui-page-panel" -->
+    </div> <!-- id="page" -->
+</body>
+</html>

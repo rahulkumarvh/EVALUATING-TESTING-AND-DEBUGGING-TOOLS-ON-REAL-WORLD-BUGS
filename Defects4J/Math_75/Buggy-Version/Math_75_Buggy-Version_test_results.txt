@@ -1,0 +1,5 @@
+Failing tests: 2
+  - org.apache.commons.math.RegressionTest
+  - org.apache.commons.math.stat.FrequencyTest::testPcts
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

@@ -1,0 +1,8 @@
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RandoopRegressionTestMAX_SUBLIST_SUMPatched0.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched1.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched2.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched3.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched4.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched5.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched6.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched7.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched8.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched9.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched10.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched11.class, RandoopRegressionTestMAX_SUBLIST_SUMPatched12.class })
+public class RandoopRegressionTestMAX_SUBLIST_SUMPatched {
+}
+

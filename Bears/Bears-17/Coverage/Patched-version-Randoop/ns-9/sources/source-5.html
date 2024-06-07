@@ -1,0 +1,462 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnotatedCreatorCollector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnotatedCreatorCollector (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnotatedCreatorCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/162)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.lang.annotation.Annotation;
+&nbsp;import java.lang.reflect.AnnotatedElement;
+&nbsp;import java.lang.reflect.Constructor;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.lang.reflect.Modifier;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.JavaType;
+&nbsp;import com.fasterxml.jackson.databind.introspect.AnnotatedClass.Creators;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;
+&nbsp;/**
+&nbsp; * Helper class used to contain details of how Creators (annotated constructors
+&nbsp; * and static methods) are discovered to be accessed by and via {@link AnnotatedClass}.
+&nbsp; *
+&nbsp; * @since 2.9
+&nbsp; */
+&nbsp;final class AnnotatedCreatorCollector
+&nbsp;    extends CollectorBase
+&nbsp;{
+&nbsp;    // // // Configuration
+&nbsp;
+&nbsp;    private final TypeResolutionContext _typeContext;
+&nbsp;
+&nbsp;    // // // Collected state
+&nbsp;
+&nbsp;    private AnnotatedConstructor _defaultConstructor;
+&nbsp;
+&nbsp;    AnnotatedCreatorCollector(AnnotationIntrospector intr,
+&nbsp;            TypeResolutionContext tc)
+&nbsp;    {
+<b class="nc">&nbsp;        super(intr);</b>
+<b class="nc">&nbsp;        _typeContext = tc;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static Creators collectCreators(AnnotationIntrospector intr,
+&nbsp;            TypeResolutionContext tc, 
+&nbsp;            JavaType type, Class&lt;?&gt; primaryMixIn)
+&nbsp;    {
+&nbsp;        // Constructor also always members of resolved class, parent == resolution context
+<b class="nc">&nbsp;        return new AnnotatedCreatorCollector(intr, tc)</b>
+<b class="nc">&nbsp;                .collect(type, primaryMixIn);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    Creators collect(JavaType type, Class&lt;?&gt; primaryMixIn)
+&nbsp;    {
+&nbsp;    // 30-Apr-2016, tatu: [databind#1215]: Actually, while true, this does
+&nbsp;    //   NOT apply to context since sub-class may have type bindings
+&nbsp;//        TypeResolutionContext typeContext = new TypeResolutionContext.Basic(_typeFactory, _type.getBindings());
+&nbsp;
+<b class="nc">&nbsp;        List&lt;AnnotatedConstructor&gt; constructors = _findPotentialConstructors(type, primaryMixIn);</b>
+<b class="nc">&nbsp;        List&lt;AnnotatedMethod&gt; factories = _findPotentialFactories(type, primaryMixIn);</b>
+&nbsp;
+&nbsp;        /* And then... let&#39;s remove all constructors that are deemed
+&nbsp;         * ignorable after all annotations have been properly collapsed.
+&nbsp;         */
+&nbsp;        // AnnotationIntrospector is null if annotations not enabled; if so, can skip:
+<b class="nc">&nbsp;        if (_intr != null) {</b>
+<b class="nc">&nbsp;            if (_defaultConstructor != null) {</b>
+<b class="nc">&nbsp;                if (_intr.hasIgnoreMarker(_defaultConstructor)) {</b>
+<b class="nc">&nbsp;                    _defaultConstructor = null;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;            // count down to allow safe removal
+<b class="nc">&nbsp;            for (int i = constructors.size(); --i &gt;= 0; ) {</b>
+<b class="nc">&nbsp;                if (_intr.hasIgnoreMarker(constructors.get(i))) {</b>
+<b class="nc">&nbsp;                    constructors.remove(i);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            for (int i = factories.size(); --i &gt;= 0; ) {</b>
+<b class="nc">&nbsp;                if (_intr.hasIgnoreMarker(factories.get(i))) {</b>
+<b class="nc">&nbsp;                    factories.remove(i);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return new AnnotatedClass.Creators(_defaultConstructor, constructors, factories);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method for locating constructors (and matching mix-in overrides)
+&nbsp;     * we might want to use; this is needed in order to mix information between
+&nbsp;     * the two and construct resulting {@link AnnotatedConstructor}s
+&nbsp;     */
+&nbsp;    private List&lt;AnnotatedConstructor&gt; _findPotentialConstructors(JavaType type,
+&nbsp;            Class&lt;?&gt; primaryMixIn)
+&nbsp;    {
+<b class="nc">&nbsp;        ClassUtil.Ctor defaultCtor = null;</b>
+<b class="nc">&nbsp;        List&lt;ClassUtil.Ctor&gt; ctors = null;</b>
+&nbsp;
+&nbsp;        // 18-Jun-2016, tatu: Enum constructors will never be useful (unlike
+&nbsp;        //    possibly static factory methods); but they can be royal PITA
+&nbsp;        //    due to some oddities by JVM; see:
+&nbsp;        //    [https://github.com/FasterXML/jackson-module-parameter-names/issues/35]
+&nbsp;        //    for more. So, let&#39;s just skip them.
+<b class="nc">&nbsp;        if (!type.isEnumType()) {</b>
+<b class="nc">&nbsp;            ClassUtil.Ctor[] declaredCtors = ClassUtil.getConstructors(type.getRawClass());</b>
+<b class="nc">&nbsp;            for (ClassUtil.Ctor ctor : declaredCtors) {</b>
+<b class="nc">&nbsp;                if (!isIncludableConstructor(ctor.getConstructor())) {</b>
+<b class="nc">&nbsp;                    continue;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                if (ctor.getParamCount() == 0) {</b>
+<b class="nc">&nbsp;                    defaultCtor = ctor;</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    if (ctors == null) {</b>
+<b class="nc">&nbsp;                        ctors = new ArrayList&lt;&gt;();</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    ctors.add(ctor);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;        List&lt;AnnotatedConstructor&gt; result;
+&nbsp;        int ctorCount;
+<b class="nc">&nbsp;        if (ctors == null) {</b>
+<b class="nc">&nbsp;            result = Collections.emptyList();</b>
+&nbsp;            // Nothing found? Short-circuit
+<b class="nc">&nbsp;            if (defaultCtor == null) { </b>
+<b class="nc">&nbsp;                return result;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            ctorCount = 0;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            ctorCount = ctors.size();</b>
+<b class="nc">&nbsp;            result = new ArrayList&lt;&gt;(ctorCount);</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; ctorCount; ++i) {</b>
+<b class="nc">&nbsp;                result.add(null);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        // so far so good; but do we also need to find mix-ins overrides?
+<b class="nc">&nbsp;        if (primaryMixIn != null) {</b>
+<b class="nc">&nbsp;            MemberKey[] ctorKeys = null;</b>
+<b class="nc">&nbsp;            for (ClassUtil.Ctor mixinCtor : ClassUtil.getConstructors(primaryMixIn)) {</b>
+<b class="nc">&nbsp;                if (mixinCtor.getParamCount() == 0) {</b>
+<b class="nc">&nbsp;                    if (defaultCtor != null) {</b>
+<b class="nc">&nbsp;                        _defaultConstructor = constructDefaultConstructor(defaultCtor, mixinCtor);</b>
+<b class="nc">&nbsp;                        defaultCtor = null;</b>
+&nbsp;                    }
+&nbsp;                    continue;
+&nbsp;                }
+<b class="nc">&nbsp;                if (ctors != null) {</b>
+<b class="nc">&nbsp;                    if (ctorKeys == null) {</b>
+<b class="nc">&nbsp;                        ctorKeys = new MemberKey[ctorCount];</b>
+<b class="nc">&nbsp;                        for (int i = 0; i &lt; ctorCount; ++i) {</b>
+<b class="nc">&nbsp;                            ctorKeys[i] = new MemberKey(ctors.get(i).getConstructor());</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                    MemberKey key = new MemberKey(mixinCtor.getConstructor());</b>
+&nbsp;    
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; ctorCount; ++i) {</b>
+<b class="nc">&nbsp;                        if (key.equals(ctorKeys[i])) {</b>
+<b class="nc">&nbsp;                            result.set(i,</b>
+<b class="nc">&nbsp;                                    constructNonDefaultConstructor(ctors.get(i), mixinCtor));</b>
+<b class="nc">&nbsp;                            break;</b>
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;        // Ok: anything within mix-ins has been resolved; anything remaining we must resolve
+<b class="nc">&nbsp;        if (defaultCtor != null) {</b>
+<b class="nc">&nbsp;            _defaultConstructor = constructDefaultConstructor(defaultCtor, null);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        for (int i = 0; i &lt; ctorCount; ++i) {</b>
+<b class="nc">&nbsp;            AnnotatedConstructor ctor = result.get(i);</b>
+<b class="nc">&nbsp;            if (ctor == null) {</b>
+<b class="nc">&nbsp;                result.set(i,</b>
+<b class="nc">&nbsp;                        constructNonDefaultConstructor(ctors.get(i), null));</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private List&lt;AnnotatedMethod&gt; _findPotentialFactories(JavaType type, Class&lt;?&gt; primaryMixIn)
+&nbsp;    {
+<b class="nc">&nbsp;        List&lt;Method&gt; candidates = null;</b>
+&nbsp;
+&nbsp;        // First find all potentially relevant static methods
+<b class="nc">&nbsp;        for (Method m : ClassUtil.getClassMethods(type.getRawClass())) {</b>
+<b class="nc">&nbsp;            if (!Modifier.isStatic(m.getModifiers())) {</b>
+<b class="nc">&nbsp;                continue;</b>
+&nbsp;            }
+&nbsp;            // all factory methods are fine:
+&nbsp;            //int argCount = m.getParameterTypes().length;
+<b class="nc">&nbsp;            if (candidates == null) {</b>
+<b class="nc">&nbsp;                candidates = new ArrayList&lt;&gt;();</b>
+&nbsp;            }
+<b class="nc">&nbsp;            candidates.add(m);</b>
+&nbsp;        }
+&nbsp;        // and then locate mix-ins, if any
+<b class="nc">&nbsp;        if (candidates == null) {</b>
+<b class="nc">&nbsp;            return Collections.emptyList();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        int factoryCount = candidates.size();</b>
+<b class="nc">&nbsp;        List&lt;AnnotatedMethod&gt; result = new ArrayList&lt;&gt;(factoryCount);</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; factoryCount; ++i) {</b>
+<b class="nc">&nbsp;            result.add(null);</b>
+&nbsp;        }
+&nbsp;        // so far so good; but do we also need to find mix-ins overrides?
+<b class="nc">&nbsp;        if (primaryMixIn != null) {</b>
+<b class="nc">&nbsp;            MemberKey[] methodKeys = null;</b>
+<b class="nc">&nbsp;            for (Method mixinFactory : ClassUtil.getDeclaredMethods(primaryMixIn)) {</b>
+<b class="nc">&nbsp;                if (!Modifier.isStatic(mixinFactory.getModifiers())) {</b>
+<b class="nc">&nbsp;                    continue;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                if (methodKeys == null) {</b>
+<b class="nc">&nbsp;                    methodKeys = new MemberKey[factoryCount];</b>
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; factoryCount; ++i) {</b>
+<b class="nc">&nbsp;                        methodKeys[i] = new MemberKey(candidates.get(i));</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="nc">&nbsp;                MemberKey key = new MemberKey(mixinFactory);</b>
+<b class="nc">&nbsp;                for (int i = 0; i &lt; factoryCount; ++i) {</b>
+<b class="nc">&nbsp;                    if (key.equals(methodKeys[i])) {</b>
+<b class="nc">&nbsp;                        result.set(i,</b>
+<b class="nc">&nbsp;                                constructFactoryCreator(candidates.get(i), mixinFactory));</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;        // Ok: anything within mix-ins has been resolved; anything remaining we must resolve
+<b class="nc">&nbsp;        for (int i = 0; i &lt; factoryCount; ++i) {</b>
+<b class="nc">&nbsp;            AnnotatedMethod factory = result.get(i);</b>
+<b class="nc">&nbsp;            if (factory == null) {</b>
+<b class="nc">&nbsp;                result.set(i,</b>
+<b class="nc">&nbsp;                        constructFactoryCreator(candidates.get(i), null));</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected AnnotatedConstructor constructDefaultConstructor(ClassUtil.Ctor ctor,
+&nbsp;            ClassUtil.Ctor mixin)
+&nbsp;    {
+<b class="nc">&nbsp;        if (_intr == null) { // when annotation processing is disabled</b>
+<b class="nc">&nbsp;            return new AnnotatedConstructor(_typeContext, ctor.getConstructor(),</b>
+<b class="nc">&nbsp;                    _emptyAnnotationMap(), NO_ANNOTATION_MAPS);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return new AnnotatedConstructor(_typeContext, ctor.getConstructor(),</b>
+<b class="nc">&nbsp;                collectAnnotations(ctor, mixin),</b>
+<b class="nc">&nbsp;                collectAnnotations(ctor.getConstructor().getParameterAnnotations(),</b>
+<b class="nc">&nbsp;                        (mixin == null) ? null : mixin.getConstructor().getParameterAnnotations()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected AnnotatedConstructor constructNonDefaultConstructor(ClassUtil.Ctor ctor,
+&nbsp;            ClassUtil.Ctor mixin)
+&nbsp;    {
+<b class="nc">&nbsp;        final int paramCount = ctor.getParamCount();</b>
+<b class="nc">&nbsp;        if (_intr == null) { // when annotation processing is disabled</b>
+<b class="nc">&nbsp;            return new AnnotatedConstructor(_typeContext, ctor.getConstructor(),</b>
+<b class="nc">&nbsp;                    _emptyAnnotationMap(), _emptyAnnotationMaps(paramCount));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /* Looks like JDK has discrepancy, whereas annotations for implicit &#39;this&#39;
+&nbsp;         * (for non-static inner classes) are NOT included, but type is?
+&nbsp;         * Strange, sounds like a bug. Alas, we can&#39;t really fix that...
+&nbsp;         */
+<b class="nc">&nbsp;        if (paramCount == 0) { // no-arg default constructors, can simplify slightly</b>
+<b class="nc">&nbsp;            return new AnnotatedConstructor(_typeContext, ctor.getConstructor(),</b>
+<b class="nc">&nbsp;                    collectAnnotations(ctor, mixin),</b>
+&nbsp;                    NO_ANNOTATION_MAPS);
+&nbsp;        }
+&nbsp;        // Also: enum value constructors
+&nbsp;        AnnotationMap[] resolvedAnnotations;
+<b class="nc">&nbsp;        Annotation[][] paramAnns = ctor.getParameterAnnotations();</b>
+<b class="nc">&nbsp;        if (paramCount != paramAnns.length) {</b>
+&nbsp;            // Limits of the work-around (to avoid hiding real errors):
+&nbsp;            // first, only applicable for member classes and then either:
+&nbsp;
+<b class="nc">&nbsp;            resolvedAnnotations = null;</b>
+<b class="nc">&nbsp;            Class&lt;?&gt; dc = ctor.getDeclaringClass();</b>
+&nbsp;            // (a) is enum, which have two extra hidden params (name, index)
+<b class="nc">&nbsp;            if (dc.isEnum() &amp;&amp; (paramCount == paramAnns.length + 2)) {</b>
+<b class="nc">&nbsp;                Annotation[][] old = paramAnns;</b>
+<b class="nc">&nbsp;                paramAnns = new Annotation[old.length+2][];</b>
+<b class="nc">&nbsp;                System.arraycopy(old, 0, paramAnns, 2, old.length);</b>
+<b class="nc">&nbsp;                resolvedAnnotations = collectAnnotations(paramAnns, null);</b>
+<b class="nc">&nbsp;            } else if (dc.isMemberClass()) {</b>
+&nbsp;                // (b) non-static inner classes, get implicit &#39;this&#39; for parameter, not  annotation
+<b class="nc">&nbsp;                if (paramCount == (paramAnns.length + 1)) {</b>
+&nbsp;                    // hack attack: prepend a null entry to make things match
+<b class="nc">&nbsp;                    Annotation[][] old = paramAnns;</b>
+<b class="nc">&nbsp;                    paramAnns = new Annotation[old.length+1][];</b>
+<b class="nc">&nbsp;                    System.arraycopy(old, 0, paramAnns, 1, old.length);</b>
+<b class="nc">&nbsp;                    paramAnns[0] = NO_ANNOTATIONS;</b>
+<b class="nc">&nbsp;                    resolvedAnnotations = collectAnnotations(paramAnns, null);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (resolvedAnnotations == null) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(String.format(</b>
+&nbsp;&quot;Internal error: constructor for %s has mismatch: %d parameters; %d sets of annotations&quot;,
+<b class="nc">&nbsp;ctor.getDeclaringClass().getName(), paramCount, paramAnns.length));</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            resolvedAnnotations = collectAnnotations(paramAnns,</b>
+<b class="nc">&nbsp;                    (mixin == null) ? null : mixin.getParameterAnnotations());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return new AnnotatedConstructor(_typeContext, ctor.getConstructor(),</b>
+<b class="nc">&nbsp;                collectAnnotations(ctor, mixin), resolvedAnnotations);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected AnnotatedMethod constructFactoryCreator(Method m, Method mixin)
+&nbsp;    {
+<b class="nc">&nbsp;        final int paramCount = m.getParameterTypes().length;</b>
+<b class="nc">&nbsp;        if (_intr == null) { // when annotation processing is disabled</b>
+<b class="nc">&nbsp;            return new AnnotatedMethod(_typeContext, m, _emptyAnnotationMap(),</b>
+<b class="nc">&nbsp;                    _emptyAnnotationMaps(paramCount));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (paramCount == 0) { // common enough we can slightly optimize</b>
+<b class="nc">&nbsp;            return new AnnotatedMethod(_typeContext, m, collectAnnotations(m, mixin),</b>
+&nbsp;                    NO_ANNOTATION_MAPS);
+&nbsp;        }
+<b class="nc">&nbsp;        return new AnnotatedMethod(_typeContext, m, collectAnnotations(m, mixin),</b>
+<b class="nc">&nbsp;                collectAnnotations(m.getParameterAnnotations(),</b>
+<b class="nc">&nbsp;                        (mixin == null) ? null : mixin.getParameterAnnotations()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private AnnotationMap[] collectAnnotations(Annotation[][] mainAnns, Annotation[][] mixinAnns) {
+<b class="nc">&nbsp;        final int count = mainAnns.length;</b>
+<b class="nc">&nbsp;        AnnotationMap[] result = new AnnotationMap[count];</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; count; ++i) {</b>
+<b class="nc">&nbsp;            AnnotationCollector c = collectAnnotations(AnnotationCollector.emptyCollector(),</b>
+&nbsp;                    mainAnns[i]);
+<b class="nc">&nbsp;            if (mixinAnns != null) {</b>
+<b class="nc">&nbsp;                c = collectAnnotations(c, mixinAnns[i]);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            result[i] = c.asAnnotationMap();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // // NOTE: these are only called when we know we have AnnotationIntrospector
+&nbsp;    
+&nbsp;    private AnnotationMap collectAnnotations(ClassUtil.Ctor main, ClassUtil.Ctor mixin) {
+<b class="nc">&nbsp;        AnnotationCollector c = collectAnnotations(main.getConstructor().getDeclaredAnnotations());</b>
+<b class="nc">&nbsp;        if (mixin != null) {</b>
+<b class="nc">&nbsp;            c = collectAnnotations(c, mixin.getConstructor().getDeclaredAnnotations());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return c.asAnnotationMap();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private final AnnotationMap collectAnnotations(AnnotatedElement main, AnnotatedElement mixin) {
+<b class="nc">&nbsp;        AnnotationCollector c = collectAnnotations(main.getDeclaredAnnotations());</b>
+<b class="nc">&nbsp;        if (mixin != null) {</b>
+<b class="nc">&nbsp;            c = collectAnnotations(c, mixin.getDeclaredAnnotations());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return c.asAnnotationMap();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // for [databind#1005]: do not use or expose synthetic constructors
+&nbsp;    private static boolean isIncludableConstructor(Constructor&lt;?&gt; c) {
+<b class="nc">&nbsp;        return !c.isSynthetic();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:05</div>
+</div>
+</body>
+</html>

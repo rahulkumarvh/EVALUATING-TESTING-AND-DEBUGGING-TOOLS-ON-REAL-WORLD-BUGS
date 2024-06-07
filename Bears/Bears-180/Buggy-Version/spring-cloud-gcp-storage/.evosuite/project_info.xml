@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project>
+    <totalNumberOfTestableClasses>1</totalNumberOfTestableClasses>
+    <cut>
+        <fullNameOfTargetClass>org.springframework.cloud.gcp.storage.GoogleStorageResourceObject</fullNameOfTargetClass>
+        <fullNameOfTestSuite>org.springframework.cloud.gcp.storage.GoogleStorageResourceObject_ESTest</fullNameOfTestSuite>
+        <generation>
+            <id>0</id>
+            <failed>false</failed>
+            <modified>true</modified>
+            <timeBudgetInSeconds>60</timeBudgetInSeconds>
+            <memoryInMB>2000</memoryInMB>
+            <std_err_CLIENT>/Users/rahul/Documents/UIUC SEM 2/527/Temp milestone 3/Final/Bears-180/Buggy-Version/spring-cloud-gcp-storage/.evosuite/tmp_2024_04_02_23_05_14/logs/org.springframework.cloud.gcp.storage.GoogleStorageResourceObject/std_err_CLIENT.log</std_err_CLIENT>
+            <std_out_CLIENT>/Users/rahul/Documents/UIUC SEM 2/527/Temp milestone 3/Final/Bears-180/Buggy-Version/spring-cloud-gcp-storage/.evosuite/tmp_2024_04_02_23_05_14/logs/org.springframework.cloud.gcp.storage.GoogleStorageResourceObject/std_out_CLIENT.log</std_out_CLIENT>
+            <std_err_MASTER>/Users/rahul/Documents/UIUC SEM 2/527/Temp milestone 3/Final/Bears-180/Buggy-Version/spring-cloud-gcp-storage/.evosuite/tmp_2024_04_02_23_05_14/logs/org.springframework.cloud.gcp.storage.GoogleStorageResourceObject/std_err_MASTER.log</std_err_MASTER>
+            <std_out_MASTER>/Users/rahul/Documents/UIUC SEM 2/527/Temp milestone 3/Final/Bears-180/Buggy-Version/spring-cloud-gcp-storage/.evosuite/tmp_2024_04_02_23_05_14/logs/org.springframework.cloud.gcp.storage.GoogleStorageResourceObject/std_out_MASTER.log</std_out_MASTER>
+            <suite>
+                <fullPathOfTestSuite>/Users/rahul/Documents/UIUC SEM 2/527/Temp milestone 3/Final/Bears-180/Buggy-Version/spring-cloud-gcp-storage/.evosuite/tmp_2024_04_02_23_05_14/tests/org/springframework/cloud/gcp/storage/GoogleStorageResourceObject_ESTest.java</fullPathOfTestSuite>
+                <numberOfTests>67</numberOfTests>
+                <totalNumberOfStatements>208</totalNumberOfStatements>
+                <totalEffortInSeconds>41</totalEffortInSeconds>
+                <coverage>
+                    <criterion>LineCoverage</criterion>
+                    <coverageValue>0.96</coverageValue>
+                    <coverageBitString>1111111111111111111001111111111111111111111111111111111</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>BranchCoverage</criterion>
+                    <coverageValue>0.84</coverageValue>
+                    <coverageBitString>11111111111111111110010111110101</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>ExceptionCoverage</criterion>
+                    <coverageValue>0.98</coverageValue>
+                    <coverageBitString>11111111111111111111111111111111111110111111111</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>WeakMutationScore</criterion>
+                    <coverageValue>0.89</coverageValue>
+                    <coverageBitString>110111111100111111111111111111111101</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>OutputCoverage</criterion>
+                    <coverageValue>0.24</coverageValue>
+                    <coverageBitString>000101001000000011000000000011100000000000000000000000000000000111001000010011110100100011100101000</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>MethodCoverage</criterion>
+                    <coverageValue>1.0</coverageValue>
+                    <coverageBitString>11111111111111111111</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>MethodNoExceptionCoverage</criterion>
+                    <coverageValue>0.7</coverageValue>
+                    <coverageBitString>11011101011001111110</coverageBitString>
+                </coverage>
+                <coverage>
+                    <criterion>CBranchCoverage</criterion>
+                    <coverageValue>0.84</coverageValue>
+                    <coverageBitString>11111111111111111101011011100111</coverageBitString>
+                </coverage>
+            </suite>
+        </generation>
+    </cut>
+</Project>

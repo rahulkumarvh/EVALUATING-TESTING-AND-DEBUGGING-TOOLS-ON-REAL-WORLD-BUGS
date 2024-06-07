@@ -1,0 +1,2 @@
+test.com.google.javascript.jscomp.EvosuiteNameAnalyzer_ESTest
+test.com.google.javascript.jscomp.EvosuiteNameAnalyzer_ESTest_scaffolding

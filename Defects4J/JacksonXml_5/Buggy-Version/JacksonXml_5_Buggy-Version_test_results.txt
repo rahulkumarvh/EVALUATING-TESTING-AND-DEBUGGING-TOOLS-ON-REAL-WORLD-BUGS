@@ -1,0 +1,6 @@
+Failing tests: 3
+  - com.fasterxml.jackson.dataformat.xml.deser.ErrorTest
+  - com.fasterxml.jackson.dataformat.xml.deser.RegressionTest
+  - com.fasterxml.jackson.dataformat.xml.MapperCopyTest::testCopyWith
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

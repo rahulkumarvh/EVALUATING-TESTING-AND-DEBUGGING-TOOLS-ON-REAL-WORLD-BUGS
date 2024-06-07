@@ -1,0 +1,12 @@
+Failing tests: 9
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test1
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test2
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test3
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test4
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test5
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test6
+  - org.mockito.internal.stubbing.defaultanswers.ErrorTest0::test7
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest::should_return_zero_if_mock_is_compared_to_itself
+  - org.mockitousage.bugs.ShouldMocksCompareToBeConsistentWithEqualsTest::should_compare_to_be_consistent_with_equals_when_comparing_the_same_reference
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

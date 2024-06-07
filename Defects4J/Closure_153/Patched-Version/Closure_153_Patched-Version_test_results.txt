@@ -1,0 +1,4 @@
+Failing tests: 1
+  - com.google.javascript.jscomp.ErrorTest0::test1
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

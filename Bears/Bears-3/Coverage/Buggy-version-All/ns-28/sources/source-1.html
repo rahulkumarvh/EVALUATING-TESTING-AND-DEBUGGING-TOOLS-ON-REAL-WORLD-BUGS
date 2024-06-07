@@ -1,0 +1,385 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PubSubAdmin</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.pubsub</a>
+</div>
+
+<h1>Coverage Summary for Class: PubSubAdmin (org.springframework.cloud.gcp.pubsub)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PubSubAdmin</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/63)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.pubsub;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import com.google.api.gax.core.CredentialsProvider;
+&nbsp;import com.google.api.gax.rpc.ApiException;
+&nbsp;import com.google.api.gax.rpc.StatusCode;
+&nbsp;import com.google.cloud.pubsub.v1.PagedResponseWrappers;
+&nbsp;import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
+&nbsp;import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
+&nbsp;import com.google.cloud.pubsub.v1.TopicAdminClient;
+&nbsp;import com.google.cloud.pubsub.v1.TopicAdminSettings;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import com.google.pubsub.v1.ProjectName;
+&nbsp;import com.google.pubsub.v1.PushConfig;
+&nbsp;import com.google.pubsub.v1.Subscription;
+&nbsp;import com.google.pubsub.v1.SubscriptionName;
+&nbsp;import com.google.pubsub.v1.Topic;
+&nbsp;import com.google.pubsub.v1.TopicName;
+&nbsp;
+&nbsp;import org.springframework.cloud.gcp.core.GcpProjectIdProvider;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;
+&nbsp;/**
+&nbsp; * Pub/Sub admin utility that creates new topics and subscriptions on Google Cloud Pub/Sub.
+&nbsp; *
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;public class PubSubAdmin {
+&nbsp;
+&nbsp;	private final String projectId;
+&nbsp;
+&nbsp;	private final TopicAdminClient topicAdminClient;
+&nbsp;
+&nbsp;	private final SubscriptionAdminClient subscriptionAdminClient;
+&nbsp;
+&nbsp;	/** Default inspired in the subscription creation web UI. */
+<b class="nc">&nbsp;	private int defaultAckDeadline = 10;</b>
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This constructor instantiates TopicAdminClient and SubscriptionAdminClient with all their
+&nbsp;	 * defaults and the provided credentials provider.
+&nbsp;	 */
+&nbsp;	public PubSubAdmin(GcpProjectIdProvider projectIdProvider,
+&nbsp;			CredentialsProvider credentialsProvider) throws IOException {
+<b class="nc">&nbsp;		this(projectIdProvider,</b>
+<b class="nc">&nbsp;				TopicAdminClient.create(</b>
+<b class="nc">&nbsp;						TopicAdminSettings.newBuilder()</b>
+<b class="nc">&nbsp;								.setCredentialsProvider(credentialsProvider)</b>
+<b class="nc">&nbsp;								.build()),</b>
+<b class="nc">&nbsp;				SubscriptionAdminClient.create(</b>
+<b class="nc">&nbsp;						SubscriptionAdminSettings.newBuilder()</b>
+<b class="nc">&nbsp;						.setCredentialsProvider(credentialsProvider)</b>
+<b class="nc">&nbsp;						.build()));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public PubSubAdmin(GcpProjectIdProvider projectIdProvider, TopicAdminClient topicAdminClient,
+<b class="nc">&nbsp;			SubscriptionAdminClient subscriptionAdminClient) {</b>
+<b class="nc">&nbsp;		Assert.notNull(projectIdProvider, &quot;The project ID provider can&#39;t be null.&quot;);</b>
+<b class="nc">&nbsp;		Assert.notNull(topicAdminClient, &quot;The topic administration client can&#39;t be null&quot;);</b>
+<b class="nc">&nbsp;		Assert.notNull(subscriptionAdminClient,</b>
+&nbsp;				&quot;The subscription administration client can&#39;t be null&quot;);
+&nbsp;
+<b class="nc">&nbsp;		this.projectId = projectIdProvider.getProjectId();</b>
+<b class="nc">&nbsp;		Assert.hasText(this.projectId, &quot;The project ID can&#39;t be null or empty.&quot;);</b>
+<b class="nc">&nbsp;		this.topicAdminClient = topicAdminClient;</b>
+<b class="nc">&nbsp;		this.subscriptionAdminClient = subscriptionAdminClient;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a new topic on Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param topicName the name for the new topic
+&nbsp;	 * @return the created topic
+&nbsp;	 */
+&nbsp;	public Topic createTopic(String topicName) {
+<b class="nc">&nbsp;		Assert.hasText(topicName, &quot;No topic name was specified.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		return this.topicAdminClient.createTopic(TopicName.create(this.projectId, topicName));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Get the configuration of a Google Cloud Pub/Sub topic.
+&nbsp;	 *
+&nbsp;	 * @param topicName canonical topic name, e.g., &quot;topicName&quot;
+&nbsp;	 * @return topic configuration or {@code null} if topic doesn&#39;t exist
+&nbsp;	 */
+&nbsp;	public Topic getTopic(String topicName) {
+<b class="nc">&nbsp;		Assert.hasText(topicName, &quot;No topic name was specified.&quot;);</b>
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			return this.topicAdminClient.getTopic(TopicName.create(this.projectId, topicName));</b>
+&nbsp;		}
+<b class="nc">&nbsp;		catch (ApiException aex) {</b>
+<b class="nc">&nbsp;			if (aex.getStatusCode().getCode() == StatusCode.Code.NOT_FOUND) {</b>
+<b class="nc">&nbsp;				return null;</b>
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			throw aex;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Delete a topic from Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param topicName the name of the topic to be deleted
+&nbsp;	 */
+&nbsp;	public void deleteTopic(String topicName) {
+<b class="nc">&nbsp;		Assert.hasText(topicName, &quot;No topic name was specified.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		this.topicAdminClient.deleteTopic(TopicName.create(this.projectId, topicName));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Return every topic in a project.
+&nbsp;	 *
+&nbsp;	 * &lt;p&gt;If there are multiple pages, they will all be merged into the same result.
+&nbsp;	 */
+&nbsp;	public List&lt;Topic&gt; listTopics() {
+<b class="nc">&nbsp;		PagedResponseWrappers.ListTopicsPagedResponse topicListPage =</b>
+<b class="nc">&nbsp;				this.topicAdminClient.listTopics(ProjectName.create(this.projectId));</b>
+&nbsp;
+<b class="nc">&nbsp;		return Lists.newArrayList(topicListPage.iterateAll());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a new subscription on Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param subscriptionName the name of the new subscription
+&nbsp;	 * @param topicName the name of the topic being subscribed to
+&nbsp;	 * @return the created subscription
+&nbsp;	 */
+&nbsp;	public Subscription createSubscription(String subscriptionName, String topicName) {
+<b class="nc">&nbsp;		return createSubscription(subscriptionName, topicName, null, null);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a new subscription on Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param subscriptionName the name of the new subscription
+&nbsp;	 * @param topicName the name of the topic being subscribed to
+&nbsp;	 * @param ackDeadline deadline in seconds before a message is resent. If not provided, set to
+&nbsp;	 *                    default of 10 seconds
+&nbsp;	 * @return the created subscription
+&nbsp;	 */
+&nbsp;	public Subscription createSubscription(String subscriptionName, String topicName,
+&nbsp;			Integer ackDeadline) {
+<b class="nc">&nbsp;		return createSubscription(subscriptionName, topicName, ackDeadline, null);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a new subscription on Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param subscriptionName the name of the new subscription
+&nbsp;	 * @param topicName the name of the topic being subscribed to
+&nbsp;	 * @param pushEndpoint URL of the service receiving the push messages. If not provided, uses
+&nbsp;	 *                     message pulling by default
+&nbsp;	 * @return the created subscription
+&nbsp;	 */
+&nbsp;	public Subscription createSubscription(String subscriptionName, String topicName,
+&nbsp;			String pushEndpoint) {
+<b class="nc">&nbsp;		return createSubscription(subscriptionName, topicName, null, pushEndpoint);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a new subscription on Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param subscriptionName the name of the new subscription
+&nbsp;	 * @param topicName the name of the topic being subscribed to
+&nbsp;	 * @param ackDeadline deadline in seconds before a message is resent. If not provided, set to
+&nbsp;	 *                    default of 10 seconds
+&nbsp;	 * @param pushEndpoint URL of the service receiving the push messages. If not provided, uses
+&nbsp;	 *                     message pulling by default
+&nbsp;	 * @return the created subscription
+&nbsp;	 */
+&nbsp;	public Subscription createSubscription(String subscriptionName, String topicName,
+&nbsp;			Integer ackDeadline, String pushEndpoint) {
+<b class="nc">&nbsp;		Assert.hasText(subscriptionName, &quot;No subscription name was specified.&quot;);</b>
+<b class="nc">&nbsp;		Assert.hasText(topicName, &quot;No topic name was specified.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		int finalAckDeadline = this.defaultAckDeadline;</b>
+<b class="nc">&nbsp;		if (ackDeadline != null) {</b>
+<b class="nc">&nbsp;			Assert.isTrue(ackDeadline &gt;= 0,</b>
+&nbsp;					&quot;The acknowledgement deadline value can&#39;t be negative.&quot;);
+<b class="nc">&nbsp;			finalAckDeadline = ackDeadline;</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		PushConfig.Builder pushConfigBuilder = PushConfig.newBuilder();</b>
+<b class="nc">&nbsp;		if (pushEndpoint != null) {</b>
+<b class="nc">&nbsp;			pushConfigBuilder.setPushEndpoint(pushEndpoint);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		return this.subscriptionAdminClient.createSubscription(</b>
+<b class="nc">&nbsp;				SubscriptionName.of(this.projectId, subscriptionName),</b>
+<b class="nc">&nbsp;				TopicName.of(this.projectId, topicName),</b>
+<b class="nc">&nbsp;				pushConfigBuilder.build(),</b>
+&nbsp;				finalAckDeadline);
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Get the configuration of a Google Cloud Pub/Sub subscription.
+&nbsp;	 *
+&nbsp;	 * @param subscriptionName canonical subscription name, e.g., &quot;subscriptionName&quot;
+&nbsp;	 * @return subscription configuration or {@code null} if subscription doesn&#39;t exist
+&nbsp;	 */
+&nbsp;	public Subscription getSubscription(String subscriptionName) {
+<b class="nc">&nbsp;		Assert.hasText(subscriptionName, &quot;No subscription name was specified&quot;);</b>
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			return this.subscriptionAdminClient.getSubscription(</b>
+<b class="nc">&nbsp;					SubscriptionName.create(this.projectId, subscriptionName));</b>
+&nbsp;		}
+<b class="nc">&nbsp;		catch (ApiException aex) {</b>
+<b class="nc">&nbsp;			if (aex.getStatusCode().getCode() == StatusCode.Code.NOT_FOUND) {</b>
+<b class="nc">&nbsp;				return null;</b>
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			throw aex;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Delete a subscription from Google Cloud Pub/Sub.
+&nbsp;	 *
+&nbsp;	 * @param subscriptionName
+&nbsp;	 */
+&nbsp;	public void deleteSubscription(String subscriptionName) {
+<b class="nc">&nbsp;		Assert.hasText(subscriptionName, &quot;No subscription name was specified&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		this.subscriptionAdminClient.deleteSubscription(</b>
+<b class="nc">&nbsp;				SubscriptionName.of(this.projectId, subscriptionName));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Return every subscription in a project.
+&nbsp;	 *
+&nbsp;	 * &lt;p&gt;If there are multiple pages, they will all be merged into the same result.
+&nbsp;	 */
+&nbsp;	public List&lt;Subscription&gt; listSubscriptions() {
+<b class="nc">&nbsp;		PagedResponseWrappers.ListSubscriptionsPagedResponse subscriptionsPage =</b>
+<b class="nc">&nbsp;				this.subscriptionAdminClient.listSubscriptions(ProjectName.of(this.projectId));</b>
+&nbsp;
+<b class="nc">&nbsp;		return Lists.newArrayList(subscriptionsPage.iterateAll());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * @return the default acknowledgement deadline value in seconds
+&nbsp;	 */
+&nbsp;	public int getDefaultAckDeadline() {
+<b class="nc">&nbsp;		return this.defaultAckDeadline;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the default acknowledgement deadline value.
+&nbsp;	 *
+&nbsp;	 * @param defaultAckDeadline default acknowledgement deadline value in seconds
+&nbsp;	 */
+&nbsp;	public void setDefaultAckDeadline(int defaultAckDeadline) {
+<b class="nc">&nbsp;		Assert.isTrue(defaultAckDeadline &gt;= 0,</b>
+&nbsp;				&quot;The acknowledgement deadline value can&#39;t be negative.&quot;);
+&nbsp;
+<b class="nc">&nbsp;		this.defaultAckDeadline = defaultAckDeadline;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

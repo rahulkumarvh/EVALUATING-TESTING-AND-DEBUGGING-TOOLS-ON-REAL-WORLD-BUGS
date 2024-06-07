@@ -1,0 +1,341 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PubSubTemplate</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.pubsub.core</a>
+</div>
+
+<h1>Coverage Summary for Class: PubSubTemplate (org.springframework.cloud.gcp.pubsub.core)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PubSubTemplate</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/46)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PubSubTemplate$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/52)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017-2018 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.pubsub.core;
+&nbsp;
+&nbsp;import java.nio.charset.Charset;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import com.google.api.core.ApiFuture;
+&nbsp;import com.google.api.core.ApiFutureCallback;
+&nbsp;import com.google.api.core.ApiFutures;
+&nbsp;import com.google.api.gax.retrying.RetrySettings;
+&nbsp;import com.google.cloud.pubsub.v1.MessageReceiver;
+&nbsp;import com.google.cloud.pubsub.v1.Subscriber;
+&nbsp;import com.google.cloud.pubsub.v1.stub.SubscriberStub;
+&nbsp;import com.google.protobuf.ByteString;
+&nbsp;import com.google.pubsub.v1.AcknowledgeRequest;
+&nbsp;import com.google.pubsub.v1.PubsubMessage;
+&nbsp;import com.google.pubsub.v1.PullRequest;
+&nbsp;import com.google.pubsub.v1.PullResponse;
+&nbsp;import com.google.pubsub.v1.ReceivedMessage;
+&nbsp;import org.apache.commons.logging.Log;
+&nbsp;import org.apache.commons.logging.LogFactory;
+&nbsp;
+&nbsp;import org.springframework.beans.factory.InitializingBean;
+&nbsp;import org.springframework.cloud.gcp.pubsub.support.PublisherFactory;
+&nbsp;import org.springframework.cloud.gcp.pubsub.support.SubscriberFactory;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;import org.springframework.util.concurrent.ListenableFuture;
+&nbsp;import org.springframework.util.concurrent.SettableListenableFuture;
+&nbsp;
+&nbsp;/**
+&nbsp; * Default implementation of {@link PubSubOperations}.
+&nbsp; *
+&nbsp; * &lt;p&gt;
+&nbsp; * The main Google Cloud Pub/Sub integration component for publishing to topics and
+&nbsp; * consuming messages from subscriptions asynchronously or by pulling.
+&nbsp; *
+&nbsp; * @author Vinicius Carvalho
+&nbsp; * @author João André Martins
+&nbsp; * @author Mike Eltsufin
+&nbsp; */
+<b class="nc">&nbsp;public class PubSubTemplate implements PubSubOperations, InitializingBean {</b>
+&nbsp;
+<b class="nc">&nbsp;	private static final Log LOGGER = LogFactory.getLog(PubSubTemplate.class);</b>
+&nbsp;
+&nbsp;	private final PublisherFactory publisherFactory;
+&nbsp;
+&nbsp;	private final SubscriberFactory subscriberFactory;
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Default {@link PubSubTemplate} constructor.
+&nbsp;	 *
+&nbsp;	 * @param publisherFactory the {@link com.google.cloud.pubsub.v1.Publisher} factory to
+&nbsp;	 *                         publish to topics
+&nbsp;	 * @param subscriberFactory the {@link com.google.cloud.pubsub.v1.Subscriber} factory to
+&nbsp;	 *                          subscribe to subscriptions
+&nbsp;	 */
+<b class="nc">&nbsp;	public PubSubTemplate(PublisherFactory publisherFactory, SubscriberFactory subscriberFactory) {</b>
+<b class="nc">&nbsp;		this.publisherFactory = publisherFactory;</b>
+<b class="nc">&nbsp;		this.subscriberFactory = subscriberFactory;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public ListenableFuture&lt;String&gt; publish(final String topic, String payload,
+&nbsp;			Map&lt;String, String&gt; headers) {
+<b class="nc">&nbsp;		return publish(topic, payload, headers, Charset.defaultCharset());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public ListenableFuture&lt;String&gt; publish(final String topic, String payload,
+&nbsp;			Map&lt;String, String&gt; headers, Charset charset) {
+<b class="nc">&nbsp;		return publish(topic, payload.getBytes(charset), headers);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public ListenableFuture&lt;String&gt; publish(final String topic, byte[] payload,
+&nbsp;			Map&lt;String, String&gt; headers) {
+<b class="nc">&nbsp;		return publish(topic, ByteString.copyFrom(payload), headers);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public ListenableFuture&lt;String&gt; publish(final String topic, ByteString payload,
+&nbsp;			Map&lt;String, String&gt; headers) {
+<b class="nc">&nbsp;		PubsubMessage.Builder pubsubMessageBuilder = PubsubMessage.newBuilder().setData(payload);</b>
+&nbsp;
+<b class="nc">&nbsp;		if (headers != null) {</b>
+<b class="nc">&nbsp;			pubsubMessageBuilder.putAllAttributes(headers);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		return publish(topic, pubsubMessageBuilder.build());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public ListenableFuture&lt;String&gt; publish(final String topic, PubsubMessage pubsubMessage) {
+<b class="nc">&nbsp;		ApiFuture&lt;String&gt; publishFuture =</b>
+<b class="nc">&nbsp;				this.publisherFactory.createPublisher(topic).publish(pubsubMessage);</b>
+&nbsp;
+<b class="nc">&nbsp;		final SettableListenableFuture&lt;String&gt; settableFuture = new SettableListenableFuture&lt;&gt;();</b>
+<b class="nc">&nbsp;		ApiFutures.addCallback(publishFuture, new ApiFutureCallback&lt;String&gt;() {</b>
+&nbsp;
+&nbsp;			@Override
+&nbsp;			public void onFailure(Throwable throwable) {
+<b class="nc">&nbsp;				LOGGER.warn(&quot;Publishing to &quot; + topic + &quot; topic failed.&quot;, throwable);</b>
+<b class="nc">&nbsp;				settableFuture.setException(throwable);</b>
+&nbsp;			}
+&nbsp;
+&nbsp;			@Override
+&nbsp;			public void onSuccess(String result) {
+<b class="nc">&nbsp;				if (LOGGER.isDebugEnabled()) {</b>
+<b class="nc">&nbsp;					LOGGER.debug(</b>
+&nbsp;							&quot;Publishing to &quot; + topic + &quot; was successful. Message ID: &quot; + result);
+&nbsp;				}
+<b class="nc">&nbsp;				settableFuture.set(result);</b>
+&nbsp;			}
+&nbsp;
+&nbsp;		});
+&nbsp;
+<b class="nc">&nbsp;		return settableFuture;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public Subscriber subscribe(String subscription, MessageReceiver messageHandler) {
+<b class="nc">&nbsp;		Subscriber subscriber = this.subscriberFactory.createSubscriber(subscription, messageHandler);</b>
+<b class="nc">&nbsp;		subscriber.startAsync();</b>
+<b class="nc">&nbsp;		return subscriber;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Pulls messages synchronously, on demand, using the pull request in argument.
+&nbsp;	 *
+&nbsp;	 * &lt;p&gt;
+&nbsp;	 * This method acknowledges all received messages.
+&nbsp;	 * @param pullRequest pull request containing the subscription name
+&nbsp;	 * @return the list of {@link PubsubMessage} containing the headers and payload
+&nbsp;	 */
+&nbsp;	private List&lt;PubsubMessage&gt; pull(PullRequest pullRequest, RetrySettings retrySettings) {
+<b class="nc">&nbsp;		Assert.notNull(pullRequest, &quot;The pull request cannot be null.&quot;);</b>
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			SubscriberStub subscriber = this.subscriberFactory.createSubscriberStub(retrySettings);</b>
+<b class="nc">&nbsp;			Assert.notNull(subscriber, &quot;A SubscriberStub is needed to execute the pull request.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;			PullResponse pullResponse =	subscriber.pullCallable().call(pullRequest);</b>
+&nbsp;
+&nbsp;			// Ack received messages.
+<b class="nc">&nbsp;			if (pullResponse.getReceivedMessagesCount() &gt; 0) {</b>
+<b class="nc">&nbsp;				List&lt;String&gt; ackIds = pullResponse.getReceivedMessagesList().stream()</b>
+<b class="nc">&nbsp;						.map(ReceivedMessage::getAckId)</b>
+<b class="nc">&nbsp;						.collect(Collectors.toList());</b>
+&nbsp;
+<b class="nc">&nbsp;				AcknowledgeRequest acknowledgeRequest = AcknowledgeRequest.newBuilder()</b>
+<b class="nc">&nbsp;						.setSubscriptionWithSubscriptionName(</b>
+<b class="nc">&nbsp;								pullRequest.getSubscriptionAsSubscriptionName())</b>
+<b class="nc">&nbsp;						.addAllAckIds(ackIds)</b>
+<b class="nc">&nbsp;						.build();</b>
+&nbsp;
+<b class="nc">&nbsp;				subscriber.acknowledgeCallable().call(acknowledgeRequest);</b>
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			return pullResponse.getReceivedMessagesList().stream()</b>
+<b class="nc">&nbsp;					.map(ReceivedMessage::getMessage)</b>
+<b class="nc">&nbsp;					.collect(Collectors.toList());</b>
+&nbsp;		}
+<b class="nc">&nbsp;		catch (Exception ioe) {</b>
+<b class="nc">&nbsp;			throw new PubSubException(&quot;Error pulling messages from subscription &quot;</b>
+<b class="nc">&nbsp;					+ pullRequest.getSubscription() + &quot;.&quot;, ioe);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public List&lt;PubsubMessage&gt; pull(String subscription, Integer maxMessages, Boolean returnImmediately,
+&nbsp;			RetrySettings retrySettings) {
+<b class="nc">&nbsp;		return pull(this.subscriberFactory.createPullRequest(subscription, maxMessages, returnImmediately),</b>
+&nbsp;				retrySettings);
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public PubsubMessage pullNext(String subscription) {
+<b class="nc">&nbsp;		List&lt;PubsubMessage&gt; receivedMessageList = pull(subscription, 1, true, null);</b>
+&nbsp;
+<b class="nc">&nbsp;		return receivedMessageList.size() &gt; 0 ?	receivedMessageList.get(0) : null;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void afterPropertiesSet() throws Exception {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	public PublisherFactory getPublisherFactory() {
+<b class="nc">&nbsp;		return this.publisherFactory;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public SubscriberFactory getSubscriberFactory() {
+<b class="nc">&nbsp;		return this.subscriberFactory;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 23:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,391 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SchedulingManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: SchedulingManager (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SchedulingManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/122)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SchedulingManager$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/123)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Timer;
+&nbsp;import java.util.TimerTask;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import com.google.common.collect.ImmutableList;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+<b class="nc">&nbsp;public final class SchedulingManager extends TimerTask {</b>
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(SchedulingManager.class);</b>
+&nbsp;
+&nbsp;  private static volatile TimerTask SCHEDULING_MANAGER;
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;  private final RepairRunService repairRunService;
+&nbsp;
+&nbsp;  /* nextActivatedSchedule used for nicer logging only */
+&nbsp;  private RepairSchedule nextActivatedSchedule;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;  private SchedulingManager(AppContext context) {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+<b class="nc">&nbsp;    this.repairRunService = RepairRunService.create(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static void start(AppContext context) {
+<b class="nc">&nbsp;    if (null == SCHEDULING_MANAGER) {</b>
+<b class="nc">&nbsp;      LOG.info(&quot;Starting new SchedulingManager instance&quot;);</b>
+<b class="nc">&nbsp;      SCHEDULING_MANAGER = new SchedulingManager(context);</b>
+<b class="nc">&nbsp;      Timer timer = new Timer(&quot;SchedulingManagerTimer&quot;);</b>
+<b class="nc">&nbsp;      timer.schedule(SCHEDULING_MANAGER, 1000L, 1000L * 60);</b>
+<b class="nc">&nbsp;    } else {</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;there is already one instance of SchedulingManager running, not starting new one&quot;);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  public static RepairSchedule pauseRepairSchedule(AppContext context, RepairSchedule schedule) {
+<b class="nc">&nbsp;    RepairSchedule updatedSchedule</b>
+<b class="nc">&nbsp;        = schedule.with().state(RepairSchedule.State.PAUSED).pauseTime(DateTime.now()).build(schedule.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;    if (!context.storage.updateRepairSchedule(updatedSchedule)) {</b>
+<b class="nc">&nbsp;      throw new IllegalStateException(String.format(&quot;failed updating repair schedule %s&quot;, updatedSchedule.getId()));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return updatedSchedule;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static RepairSchedule resumeRepairSchedule(AppContext context, RepairSchedule schedule) {
+<b class="nc">&nbsp;    RepairSchedule updatedSchedule</b>
+<b class="nc">&nbsp;        = schedule.with().state(RepairSchedule.State.ACTIVE).pauseTime(null).build(schedule.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;    if (!context.storage.updateRepairSchedule(updatedSchedule)) {</b>
+<b class="nc">&nbsp;      throw new IllegalStateException(String.format(&quot;failed updating repair schedule %s&quot;, updatedSchedule.getId()));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return updatedSchedule;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Called regularly, do not block!
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void run() {
+<b class="nc">&nbsp;    if (context.isRunning.get()) {</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;Checking for repair schedules...&quot;);</b>
+<b class="nc">&nbsp;      UUID lastId = null;</b>
+&nbsp;      try {
+<b class="nc">&nbsp;        Collection&lt;RepairSchedule&gt; schedules = context.storage.getAllRepairSchedules();</b>
+<b class="nc">&nbsp;        boolean anyRunStarted = false;</b>
+<b class="nc">&nbsp;        for (RepairSchedule schedule : schedules) {</b>
+<b class="nc">&nbsp;          lastId = schedule.getId();</b>
+<b class="nc">&nbsp;          anyRunStarted = manageSchedule(schedule) || anyRunStarted;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if (!anyRunStarted &amp;&amp; nextActivatedSchedule != null) {</b>
+<b class="nc">&nbsp;          LOG.debug(</b>
+&nbsp;              &quot;not scheduling new repairs yet, next activation is &#39;{}&#39; for schedule id &#39;{}&#39;&quot;,
+<b class="nc">&nbsp;              nextActivatedSchedule.getNextActivation(),</b>
+<b class="nc">&nbsp;              nextActivatedSchedule.getId());</b>
+&nbsp;        }
+<b class="nc">&nbsp;      } catch (Throwable ex) {</b>
+<b class="nc">&nbsp;        LOG.error(&quot;failed managing schedule for run with id: {}&quot;, lastId);</b>
+<b class="nc">&nbsp;        LOG.error(&quot;catch exception&quot;, ex);</b>
+&nbsp;        try {
+<b class="nc">&nbsp;          assert false : &quot;if assertions are enabled then exit the jvm&quot;;</b>
+<b class="nc">&nbsp;        } catch (AssertionError ae) {</b>
+<b class="nc">&nbsp;          if (context.isRunning.get()) {</b>
+<b class="nc">&nbsp;            LOG.error(&quot;SchedulingManager failed. Exiting JVM.&quot;);</b>
+<b class="nc">&nbsp;            System.exit(1);</b>
+&nbsp;          }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Manage, i.e. check whether a new repair run should be started with this schedule.
+&nbsp;   *
+&nbsp;   * @param schedule The schedule to be checked for activation.
+&nbsp;   * @return boolean indicating whether a new RepairRun instance was created and started.
+&nbsp;   */
+&nbsp;  private boolean manageSchedule(RepairSchedule schdle) {
+<b class="nc">&nbsp;    switch (schdle.getState()) {</b>
+&nbsp;      case ACTIVE:
+<b class="nc">&nbsp;        if (schdle.getNextActivation().isBeforeNow()) {</b>
+&nbsp;
+<b class="nc">&nbsp;          RepairSchedule schedule</b>
+<b class="nc">&nbsp;              = schdle.with().nextActivation(schdle.getFollowingActivation()).build(schdle.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;          context.storage.updateRepairSchedule(schedule);</b>
+&nbsp;
+<b class="nc">&nbsp;          LOG.info(</b>
+&nbsp;              &quot;repair unit &#39;{}&#39; should be repaired based on RepairSchedule with id &#39;{}&#39;&quot;,
+<b class="nc">&nbsp;              schedule.getRepairUnitId(),</b>
+<b class="nc">&nbsp;              schedule.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;          Optional&lt;RepairUnit&gt; fetchedUnit = context.storage.getRepairUnit(schedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;          if (!fetchedUnit.isPresent()) {</b>
+<b class="nc">&nbsp;            LOG.warn(&quot;RepairUnit with id {} not found&quot;, schedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;          }
+<b class="nc">&nbsp;          RepairUnit repairUnit = fetchedUnit.get();</b>
+<b class="nc">&nbsp;          if (repairRunAlreadyScheduled(schedule, repairUnit)) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;          }
+&nbsp;
+&nbsp;          try {
+<b class="nc">&nbsp;            RepairRun newRepairRun = createNewRunForUnit(schedule, repairUnit);</b>
+&nbsp;
+<b class="nc">&nbsp;            ImmutableList&lt;UUID&gt; newRunHistory</b>
+<b class="nc">&nbsp;                = new ImmutableList.Builder&lt;UUID&gt;().addAll(schedule.getRunHistory()).add(newRepairRun.getId()).build();</b>
+&nbsp;
+<b class="nc">&nbsp;            RepairSchedule latestSchedule = context.storage.getRepairSchedule(schedule.getId()).get();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (equal(schedule, latestSchedule)) {</b>
+&nbsp;
+<b class="nc">&nbsp;              boolean result = context.storage.updateRepairSchedule(</b>
+<b class="nc">&nbsp;                  schedule.with().runHistory(newRunHistory).build(schedule.getId()));</b>
+&nbsp;              // FIXME – concurrency is broken unless we atomically add/remove run history items
+&nbsp;              // boolean result = context.storage
+&nbsp;              //        .addRepairRunToRepairSchedule(schedule.getId(), newRepairRun.getId());
+&nbsp;
+<b class="nc">&nbsp;              if (result) {</b>
+<b class="nc">&nbsp;                context.repairManager.startRepairRun(newRepairRun);</b>
+<b class="nc">&nbsp;                return true;</b>
+&nbsp;              }
+<b class="nc">&nbsp;            } else if (schedule.getRunHistory().size() &lt; latestSchedule.getRunHistory().size()) {</b>
+<b class="nc">&nbsp;              UUID newRepairRunId = latestSchedule.getRunHistory().get(latestSchedule.getRunHistory().size() - 1);</b>
+<b class="nc">&nbsp;              LOG.info(&quot;schedule {} has already added a new repair run {}&quot;, schedule.getId(), newRepairRunId);</b>
+&nbsp;              // this repair_run is identified as a duplicate (for this activation):
+&nbsp;              // so take the last repair run, and try start it. it&#39;s ok if already running.
+<b class="nc">&nbsp;              newRepairRun = context.storage.getRepairRun(newRepairRunId).get();</b>
+<b class="nc">&nbsp;              context.repairManager.startRepairRun(newRepairRun);</b>
+<b class="nc">&nbsp;            } else {</b>
+<b class="nc">&nbsp;              LOG.warn(&quot;schedule {} has been altered by someone else. not running repair&quot;, schedule.getId());</b>
+&nbsp;            }
+&nbsp;            // this duplicated repair_run needs to be removed from the schedule&#39;s history
+&nbsp;            // FIXME – concurrency is broken unless we atomically add/remove run history items
+&nbsp;            // boolean result = context.storage
+&nbsp;            //        .deleteRepairRunFromRepairSchedule(schedule.getId(), newRepairRun.getId());
+<b class="nc">&nbsp;          } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;            LOG.error(e.getMessage(), e);</b>
+<b class="nc">&nbsp;          }</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;          if (nextActivatedSchedule == null</b>
+<b class="nc">&nbsp;              || nextActivatedSchedule.getNextActivation().isAfter(schdle.getNextActivation())) {</b>
+&nbsp;
+<b class="nc">&nbsp;            nextActivatedSchedule = schdle;</b>
+&nbsp;          }
+&nbsp;        }
+&nbsp;        break;
+&nbsp;      case PAUSED:
+<b class="nc">&nbsp;        LOG.info(&quot;Repair schedule &#39;{}&#39; is paused&quot;, schdle.getId());</b>
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;      default:
+<b class="nc">&nbsp;        throw new AssertionError(&quot;illegal schedule state in call to manageSchedule(..): &quot; + schdle.getState());</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static boolean equal(RepairSchedule s1, RepairSchedule s2) {
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getId().equals(s2.getId()));</b>
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getOwner().equals(s2.getOwner()));</b>
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getDaysBetween() == s2.getDaysBetween());</b>
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getIntensity() == s2.getIntensity());</b>
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getCreationTime().equals(s2.getCreationTime()));</b>
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getNextActivation().equals(s2.getNextActivation()));</b>
+<b class="nc">&nbsp;    Preconditions.checkArgument(s1.getFollowingActivation().equals(s2.getFollowingActivation()));</b>
+&nbsp;
+<b class="nc">&nbsp;    boolean result = s1.getState().equals(s2.getState());</b>
+<b class="nc">&nbsp;    result &amp;= s1.getRunHistory().size() == s2.getRunHistory().size();</b>
+&nbsp;
+<b class="nc">&nbsp;    for (int i = 0; result &amp;&amp; i &lt; s1.getRunHistory().size(); ++i) {</b>
+<b class="nc">&nbsp;      result &amp;= s1.getRunHistory().get(i).equals(s2.getRunHistory().get(i));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return result;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private boolean repairRunAlreadyScheduled(RepairSchedule schedule, RepairUnit repairUnit) {
+<b class="nc">&nbsp;    Collection&lt;RepairRun&gt; repairRuns = context.storage.getRepairRunsForUnit(schedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : repairRuns) {</b>
+<b class="nc">&nbsp;      if (repairRunComesFromSchedule(repairRun, schedule)) {</b>
+<b class="nc">&nbsp;        LOG.info(</b>
+&nbsp;            &quot;there is repair (id {}) in state &#39;{}&#39; for repair unit &#39;{}&#39;, &quot;
+&nbsp;            + &quot;postponing current schedule trigger until next scheduling&quot;,
+<b class="nc">&nbsp;            repairRun.getId(),</b>
+<b class="nc">&nbsp;            repairRun.getRunState(),</b>
+<b class="nc">&nbsp;            repairUnit.getId());</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    return false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static boolean repairRunComesFromSchedule(RepairRun repairRun, RepairSchedule schedule) {
+<b class="nc">&nbsp;    return repairRun.getRunState().isActive()</b>
+<b class="nc">&nbsp;        || (RepairRun.RunState.NOT_STARTED == repairRun.getRunState()</b>
+<b class="nc">&nbsp;        &amp;&amp; repairRun.getCause().equals(getCauseName(schedule)));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private RepairRun createNewRunForUnit(RepairSchedule schedule, RepairUnit repairUnit) throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    return repairRunService.registerRepairRun(</b>
+<b class="nc">&nbsp;        context.storage.getCluster(repairUnit.getClusterName()).get(),</b>
+&nbsp;        repairUnit,
+<b class="nc">&nbsp;        Optional.of(getCauseName(schedule)),</b>
+<b class="nc">&nbsp;        schedule.getOwner(),</b>
+<b class="nc">&nbsp;        schedule.getSegmentCount(),</b>
+<b class="nc">&nbsp;        schedule.getSegmentCountPerNode(),</b>
+<b class="nc">&nbsp;        schedule.getRepairParallelism(),</b>
+<b class="nc">&nbsp;        schedule.getIntensity());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static String getCauseName(RepairSchedule schedule) {
+<b class="nc">&nbsp;    return &quot;scheduled run (schedule id &quot; + schedule.getId().toString() + &#39;)&#39;;</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

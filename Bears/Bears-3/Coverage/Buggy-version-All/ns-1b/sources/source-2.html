@@ -1,0 +1,664 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MemoryStorage</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.storage</a>
+</div>
+
+<h1>Coverage Summary for Class: MemoryStorage (io.cassandrareaper.storage)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MemoryStorage</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/40)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/215)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MemoryStorage$RepairUnitKey</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/44)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/237)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.storage;
+&nbsp;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairSegment;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.resources.view.RepairRunStatus;
+&nbsp;import io.cassandrareaper.resources.view.RepairScheduleStatus;
+&nbsp;import io.cassandrareaper.service.RepairParameters;
+&nbsp;import io.cassandrareaper.service.RingRange;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.LinkedHashMap;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.concurrent.ConcurrentMap;
+&nbsp;
+&nbsp;import com.datastax.driver.core.utils.UUIDs;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import com.google.common.collect.Iterables;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import com.google.common.collect.Maps;
+&nbsp;
+&nbsp;/**
+&nbsp; * Implements the StorageAPI using transient Java classes.
+&nbsp; */
+<b class="nc">&nbsp;public final class MemoryStorage implements IStorage {</b>
+&nbsp;
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;String, Cluster&gt; clusters = Maps.newConcurrentMap();</b>
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;UUID, RepairRun&gt; repairRuns = Maps.newConcurrentMap();</b>
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;UUID, RepairUnit&gt; repairUnits = Maps.newConcurrentMap();</b>
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;RepairUnitKey, RepairUnit&gt; repairUnitsByKey = Maps.newConcurrentMap();</b>
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;UUID, RepairSegment&gt; repairSegments = Maps.newConcurrentMap();</b>
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;UUID, LinkedHashMap&lt;UUID, RepairSegment&gt;&gt; repairSegmentsByRunId = Maps.newConcurrentMap();</b>
+<b class="nc">&nbsp;  private final ConcurrentMap&lt;UUID, RepairSchedule&gt; repairSchedules = Maps.newConcurrentMap();</b>
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean isStorageConnected() {
+&nbsp;    // Just assuming the MemoryStorage is always functional when instantiated.
+<b class="nc">&nbsp;    return true;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;Cluster&gt; getClusters() {
+<b class="nc">&nbsp;    return clusters.values();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean addCluster(Cluster cluster) {
+<b class="nc">&nbsp;    Cluster existing = clusters.putIfAbsent(cluster.getName(), cluster);</b>
+<b class="nc">&nbsp;    return existing == null;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean updateCluster(Cluster newCluster) {
+<b class="nc">&nbsp;    if (!getCluster(newCluster.getName()).isPresent()) {</b>
+<b class="nc">&nbsp;      return false;</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      clusters.put(newCluster.getName(), newCluster);</b>
+<b class="nc">&nbsp;      return true;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;Cluster&gt; getCluster(String clusterName) {
+<b class="nc">&nbsp;    return Optional.fromNullable(clusters.get(clusterName));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;Cluster&gt; deleteCluster(String clusterName) {
+<b class="nc">&nbsp;    if (getRepairSchedulesForCluster(clusterName).isEmpty() &amp;&amp; getRepairRunsForCluster(clusterName).isEmpty()) {</b>
+<b class="nc">&nbsp;      return Optional.fromNullable(clusters.remove(clusterName));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return Optional.absent();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public RepairRun addRepairRun(RepairRun.Builder repairRun, Collection&lt;RepairSegment.Builder&gt; newSegments) {
+<b class="nc">&nbsp;    RepairRun newRepairRun = repairRun.build(UUIDs.timeBased());</b>
+<b class="nc">&nbsp;    repairRuns.put(newRepairRun.getId(), newRepairRun);</b>
+<b class="nc">&nbsp;    addRepairSegments(newSegments, newRepairRun.getId());</b>
+<b class="nc">&nbsp;    return newRepairRun;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean updateRepairRun(RepairRun repairRun) {
+<b class="nc">&nbsp;    if (!getRepairRun(repairRun.getId()).isPresent()) {</b>
+<b class="nc">&nbsp;      return false;</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      repairRuns.put(repairRun.getId(), repairRun);</b>
+<b class="nc">&nbsp;      return true;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairRun&gt; getRepairRun(UUID id) {
+<b class="nc">&nbsp;    return Optional.fromNullable(repairRuns.get(id));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public List&lt;RepairRun&gt; getRepairRunsForCluster(String clusterName) {
+<b class="nc">&nbsp;    List&lt;RepairRun&gt; foundRepairRuns = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : repairRuns.values()) {</b>
+<b class="nc">&nbsp;      if (repairRun.getClusterName().equalsIgnoreCase(clusterName)) {</b>
+<b class="nc">&nbsp;        foundRepairRuns.add(repairRun);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return foundRepairRuns;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairRun&gt; getRepairRunsForUnit(UUID repairUnitId) {
+<b class="nc">&nbsp;    List&lt;RepairRun&gt; foundRepairRuns = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : repairRuns.values()) {</b>
+<b class="nc">&nbsp;      if (repairRun.getRepairUnitId().equals(repairUnitId)) {</b>
+<b class="nc">&nbsp;        foundRepairRuns.add(repairRun);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return foundRepairRuns;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairRun&gt; getRepairRunsWithState(RepairRun.RunState runState) {
+<b class="nc">&nbsp;    List&lt;RepairRun&gt; foundRepairRuns = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : repairRuns.values()) {</b>
+<b class="nc">&nbsp;      if (repairRun.getRunState() == runState) {</b>
+<b class="nc">&nbsp;        foundRepairRuns.add(repairRun);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return foundRepairRuns;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Delete a RepairUnit instance from Storage, but only if no run or schedule is referencing it.
+&nbsp;   *
+&nbsp;   * @param repairUnitId The RepairUnit instance id to delete.
+&nbsp;   * @return The deleted RepairUnit instance, if delete succeeded.
+&nbsp;   */
+&nbsp;  private Optional&lt;RepairUnit&gt; deleteRepairUnit(UUID repairUnitId) {
+<b class="nc">&nbsp;    RepairUnit deletedUnit = null;</b>
+<b class="nc">&nbsp;    boolean canDelete = true;</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : repairRuns.values()) {</b>
+<b class="nc">&nbsp;      if (repairRun.getRepairUnitId().equals(repairUnitId)) {</b>
+<b class="nc">&nbsp;        canDelete = false;</b>
+<b class="nc">&nbsp;        break;</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    if (canDelete) {</b>
+<b class="nc">&nbsp;      for (RepairSchedule schedule : repairSchedules.values()) {</b>
+<b class="nc">&nbsp;        if (schedule.getRepairUnitId().equals(repairUnitId)) {</b>
+<b class="nc">&nbsp;          canDelete = false;</b>
+<b class="nc">&nbsp;          break;</b>
+&nbsp;        }
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    if (canDelete) {</b>
+<b class="nc">&nbsp;      deletedUnit = repairUnits.remove(repairUnitId);</b>
+<b class="nc">&nbsp;      repairUnitsByKey.remove(new RepairUnitKey(deletedUnit));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return Optional.fromNullable(deletedUnit);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private int deleteRepairSegmentsForRun(UUID runId) {
+<b class="nc">&nbsp;    Map&lt;UUID, RepairSegment&gt; segmentsMap = repairSegmentsByRunId.remove(runId);</b>
+<b class="nc">&nbsp;    if (null != segmentsMap) {</b>
+<b class="nc">&nbsp;      for (RepairSegment segment : segmentsMap.values()) {</b>
+<b class="nc">&nbsp;        repairSegments.remove(segment.getId());</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return segmentsMap != null ? segmentsMap.size() : 0;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairRun&gt; deleteRepairRun(UUID id) {
+<b class="nc">&nbsp;    RepairRun deletedRun = repairRuns.remove(id);</b>
+<b class="nc">&nbsp;    if (deletedRun != null) {</b>
+<b class="nc">&nbsp;      if (getSegmentAmountForRepairRunWithState(id, RepairSegment.State.RUNNING) == 0) {</b>
+<b class="nc">&nbsp;        deleteRepairUnit(deletedRun.getRepairUnitId());</b>
+<b class="nc">&nbsp;        deleteRepairSegmentsForRun(id);</b>
+<b class="nc">&nbsp;        deletedRun = deletedRun.with().runState(RepairRun.RunState.DELETED).build(id);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return Optional.fromNullable(deletedRun);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public RepairUnit addRepairUnit(RepairUnit.Builder repairUnit) {
+<b class="nc">&nbsp;    Optional&lt;RepairUnit&gt; existing =</b>
+<b class="nc">&nbsp;        getRepairUnit(</b>
+<b class="nc">&nbsp;            repairUnit.clusterName,</b>
+<b class="nc">&nbsp;            repairUnit.keyspaceName,</b>
+<b class="nc">&nbsp;            repairUnit.columnFamilies,</b>
+<b class="nc">&nbsp;            repairUnit.nodes,</b>
+<b class="nc">&nbsp;            repairUnit.datacenters,</b>
+<b class="nc">&nbsp;            repairUnit.blacklistedTables);</b>
+<b class="nc">&nbsp;    if (existing.isPresent() &amp;&amp; repairUnit.incrementalRepair == existing.get().getIncrementalRepair()) {</b>
+<b class="nc">&nbsp;      return existing.get();</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      RepairUnit newRepairUnit = repairUnit.build(UUIDs.timeBased());</b>
+<b class="nc">&nbsp;      repairUnits.put(newRepairUnit.getId(), newRepairUnit);</b>
+<b class="nc">&nbsp;      RepairUnitKey unitKey = new RepairUnitKey(newRepairUnit);</b>
+<b class="nc">&nbsp;      repairUnitsByKey.put(unitKey, newRepairUnit);</b>
+<b class="nc">&nbsp;      return newRepairUnit;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairUnit&gt; getRepairUnit(UUID id) {
+<b class="nc">&nbsp;    return Optional.fromNullable(repairUnits.get(id));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairUnit&gt; getRepairUnit(
+&nbsp;      String cluster,
+&nbsp;      String keyspace,
+&nbsp;      Set&lt;String&gt; tables,
+&nbsp;      Set&lt;String&gt; nodes,
+&nbsp;      Set&lt;String&gt; datacenters,
+&nbsp;      Set&lt;String&gt; blacklistedTables) {
+<b class="nc">&nbsp;    return Optional.fromNullable(</b>
+<b class="nc">&nbsp;        repairUnitsByKey.get(</b>
+<b class="nc">&nbsp;            new RepairUnitKey(cluster, keyspace, tables, nodes, datacenters, blacklistedTables)));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void addRepairSegments(Collection&lt;RepairSegment.Builder&gt; segments, UUID runId) {
+<b class="nc">&nbsp;    LinkedHashMap&lt;UUID, RepairSegment&gt; newSegments = Maps.newLinkedHashMap();</b>
+<b class="nc">&nbsp;    for (RepairSegment.Builder segment : segments) {</b>
+<b class="nc">&nbsp;      RepairSegment newRepairSegment = segment.withRunId(runId).build(UUIDs.timeBased());</b>
+<b class="nc">&nbsp;      repairSegments.put(newRepairSegment.getId(), newRepairSegment);</b>
+<b class="nc">&nbsp;      newSegments.put(newRepairSegment.getId(), newRepairSegment);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    repairSegmentsByRunId.put(runId, newSegments);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean updateRepairSegment(RepairSegment newRepairSegment) {
+<b class="nc">&nbsp;    if (getRepairSegment(newRepairSegment.getRunId(), newRepairSegment.getId()) == null) {</b>
+<b class="nc">&nbsp;      return false;</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      repairSegments.put(newRepairSegment.getId(), newRepairSegment);</b>
+<b class="nc">&nbsp;      LinkedHashMap&lt;UUID, RepairSegment&gt; updatedSegment = repairSegmentsByRunId.get(newRepairSegment.getRunId());</b>
+<b class="nc">&nbsp;      updatedSegment.put(newRepairSegment.getId(), newRepairSegment);</b>
+<b class="nc">&nbsp;      return true;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairSegment&gt; getRepairSegment(UUID runId, UUID segmentId) {
+<b class="nc">&nbsp;    return Optional.fromNullable(repairSegments.get(segmentId));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairSegment&gt; getRepairSegmentsForRun(UUID runId) {
+<b class="nc">&nbsp;    return repairSegmentsByRunId.get(runId).values();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Optional&lt;RepairSegment&gt; getNextFreeSegment(UUID runId) {
+<b class="nc">&nbsp;    for (RepairSegment segment : repairSegmentsByRunId.get(runId).values()) {</b>
+<b class="nc">&nbsp;      if (segment.getState() == RepairSegment.State.NOT_STARTED) {</b>
+<b class="nc">&nbsp;        return Optional.of(segment);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return Optional.absent();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairSegment&gt; getNextFreeSegmentInRange(UUID runId, Optional&lt;RingRange&gt; range) {
+<b class="nc">&nbsp;    if (range.isPresent()) {</b>
+<b class="nc">&nbsp;      for (RepairSegment segment : repairSegmentsByRunId.get(runId).values()) {</b>
+<b class="nc">&nbsp;        if (segment.getState() == RepairSegment.State.NOT_STARTED &amp;&amp; range.get().encloses(segment.getTokenRange())) {</b>
+<b class="nc">&nbsp;          return Optional.of(segment);</b>
+&nbsp;        }
+&nbsp;      }
+<b class="nc">&nbsp;    } else {</b>
+<b class="nc">&nbsp;      return getNextFreeSegment(runId);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return Optional.absent();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairSegment&gt; getSegmentsWithState(UUID runId, RepairSegment.State segmentState) {
+<b class="nc">&nbsp;    List&lt;RepairSegment&gt; segments = Lists.newArrayList();</b>
+<b class="nc">&nbsp;    for (RepairSegment segment : repairSegmentsByRunId.get(runId).values()) {</b>
+<b class="nc">&nbsp;      if (segment.getState() == segmentState) {</b>
+<b class="nc">&nbsp;        segments.add(segment);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return segments;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairParameters&gt; getOngoingRepairsInCluster(String clusterName) {
+<b class="nc">&nbsp;    List&lt;RepairParameters&gt; ongoingRepairs = Lists.newArrayList();</b>
+<b class="nc">&nbsp;    for (RepairRun run : getRepairRunsWithState(RepairRun.RunState.RUNNING)) {</b>
+<b class="nc">&nbsp;      for (RepairSegment segment : getSegmentsWithState(run.getId(), RepairSegment.State.RUNNING)) {</b>
+<b class="nc">&nbsp;        RepairUnit unit = getRepairUnit(segment.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;        ongoingRepairs.add(</b>
+<b class="nc">&nbsp;            new RepairParameters(</b>
+<b class="nc">&nbsp;                segment.getTokenRange(), unit.getKeyspaceName(), unit.getColumnFamilies(), run.getRepairParallelism()));</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return ongoingRepairs;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;UUID&gt; getRepairRunIdsForCluster(String clusterName) {
+<b class="nc">&nbsp;    Collection&lt;UUID&gt; repairRunIds = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : repairRuns.values()) {</b>
+<b class="nc">&nbsp;      if (repairRun.getClusterName().equalsIgnoreCase(clusterName)) {</b>
+<b class="nc">&nbsp;        repairRunIds.add(repairRun.getId());</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return repairRunIds;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public int getSegmentAmountForRepairRun(UUID runId) {
+<b class="nc">&nbsp;    Map&lt;UUID, RepairSegment&gt; segmentsMap = repairSegmentsByRunId.get(runId);</b>
+<b class="nc">&nbsp;    return segmentsMap == null ? 0 : segmentsMap.size();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public int getSegmentAmountForRepairRunWithState(UUID runId, RepairSegment.State state) {
+<b class="nc">&nbsp;    Map&lt;UUID, RepairSegment&gt; segmentsMap = repairSegmentsByRunId.get(runId);</b>
+<b class="nc">&nbsp;    int amount = 0;</b>
+<b class="nc">&nbsp;    if (null != segmentsMap) {</b>
+<b class="nc">&nbsp;      for (RepairSegment segment : segmentsMap.values()) {</b>
+<b class="nc">&nbsp;        if (segment.getState() == state) {</b>
+<b class="nc">&nbsp;          amount += 1;</b>
+&nbsp;        }
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return amount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public RepairSchedule addRepairSchedule(RepairSchedule.Builder repairSchedule) {
+<b class="nc">&nbsp;    RepairSchedule newRepairSchedule = repairSchedule.build(UUIDs.timeBased());</b>
+<b class="nc">&nbsp;    repairSchedules.put(newRepairSchedule.getId(), newRepairSchedule);</b>
+<b class="nc">&nbsp;    return newRepairSchedule;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairSchedule&gt; getRepairSchedule(UUID id) {
+<b class="nc">&nbsp;    return Optional.fromNullable(repairSchedules.get(id));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairSchedule&gt; getRepairSchedulesForCluster(String clusterName) {
+<b class="nc">&nbsp;    Collection&lt;RepairSchedule&gt; foundRepairSchedules = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairSchedule repairSchedule : repairSchedules.values()) {</b>
+<b class="nc">&nbsp;      RepairUnit repairUnit = getRepairUnit(repairSchedule.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;      if (repairUnit.getClusterName().equals(clusterName)) {</b>
+<b class="nc">&nbsp;        foundRepairSchedules.add(repairSchedule);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return foundRepairSchedules;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairSchedule&gt; getRepairSchedulesForKeyspace(String keyspaceName) {
+<b class="nc">&nbsp;    Collection&lt;RepairSchedule&gt; foundRepairSchedules = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairSchedule repairSchedule : repairSchedules.values()) {</b>
+<b class="nc">&nbsp;      RepairUnit repairUnit = getRepairUnit(repairSchedule.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;      if (repairUnit.getKeyspaceName().equals(keyspaceName)) {</b>
+<b class="nc">&nbsp;        foundRepairSchedules.add(repairSchedule);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return foundRepairSchedules;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairSchedule&gt; getRepairSchedulesForClusterAndKeyspace(String clusterName, String keyspaceName) {
+<b class="nc">&nbsp;    Collection&lt;RepairSchedule&gt; foundRepairSchedules = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairSchedule repairSchedule : repairSchedules.values()) {</b>
+<b class="nc">&nbsp;      RepairUnit repairUnit = getRepairUnit(repairSchedule.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;      if (repairUnit.getClusterName().equals(clusterName) &amp;&amp; repairUnit.getKeyspaceName().equals(keyspaceName)) {</b>
+<b class="nc">&nbsp;        foundRepairSchedules.add(repairSchedule);</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return foundRepairSchedules;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairSchedule&gt; getAllRepairSchedules() {
+<b class="nc">&nbsp;    return repairSchedules.values();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean updateRepairSchedule(RepairSchedule newRepairSchedule) {
+<b class="nc">&nbsp;    if (repairSchedules.get(newRepairSchedule.getId()) == null) {</b>
+<b class="nc">&nbsp;      return false;</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      repairSchedules.put(newRepairSchedule.getId(), newRepairSchedule);</b>
+<b class="nc">&nbsp;      return true;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;RepairSchedule&gt; deleteRepairSchedule(UUID id) {
+<b class="nc">&nbsp;    RepairSchedule deletedSchedule = repairSchedules.remove(id);</b>
+<b class="nc">&nbsp;    if (deletedSchedule != null) {</b>
+<b class="nc">&nbsp;      deletedSchedule = deletedSchedule.with().state(RepairSchedule.State.DELETED).build(id);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return Optional.fromNullable(deletedSchedule);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairRunStatus&gt; getClusterRunStatuses(String clusterName, int limit) {
+<b class="nc">&nbsp;    Optional&lt;Cluster&gt; cluster = getCluster(clusterName);</b>
+<b class="nc">&nbsp;    if (!cluster.isPresent()) {</b>
+<b class="nc">&nbsp;      return Collections.emptyList();</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      List&lt;RepairRunStatus&gt; runStatuses = Lists.newArrayList();</b>
+<b class="nc">&nbsp;      List&lt;RepairRun&gt; runs = getRepairRunsForCluster(clusterName);</b>
+<b class="nc">&nbsp;      Collections.sort(runs);</b>
+<b class="nc">&nbsp;      for (RepairRun run : Iterables.limit(runs, limit)) {</b>
+<b class="nc">&nbsp;        RepairUnit unit = getRepairUnit(run.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;        int segmentsRepaired = getSegmentAmountForRepairRunWithState(run.getId(), RepairSegment.State.DONE);</b>
+<b class="nc">&nbsp;        int totalSegments = getSegmentAmountForRepairRun(run.getId());</b>
+<b class="nc">&nbsp;        runStatuses.add(</b>
+<b class="nc">&nbsp;            new RepairRunStatus(</b>
+<b class="nc">&nbsp;                run.getId(),</b>
+<b class="nc">&nbsp;                clusterName,</b>
+<b class="nc">&nbsp;                unit.getKeyspaceName(),</b>
+<b class="nc">&nbsp;                unit.getColumnFamilies(),</b>
+<b class="nc">&nbsp;                segmentsRepaired,</b>
+<b class="nc">&nbsp;                totalSegments,</b>
+<b class="nc">&nbsp;                run.getRunState(),</b>
+<b class="nc">&nbsp;                run.getStartTime(),</b>
+<b class="nc">&nbsp;                run.getEndTime(),</b>
+<b class="nc">&nbsp;                run.getCause(),</b>
+<b class="nc">&nbsp;                run.getOwner(),</b>
+<b class="nc">&nbsp;                run.getLastEvent(),</b>
+<b class="nc">&nbsp;                run.getCreationTime(),</b>
+<b class="nc">&nbsp;                run.getPauseTime(),</b>
+<b class="nc">&nbsp;                run.getIntensity(),</b>
+<b class="nc">&nbsp;                unit.getIncrementalRepair(),</b>
+<b class="nc">&nbsp;                run.getRepairParallelism(),</b>
+<b class="nc">&nbsp;                unit.getNodes(),</b>
+<b class="nc">&nbsp;                unit.getDatacenters(),</b>
+<b class="nc">&nbsp;                unit.getBlacklistedTables()));</b>
+&nbsp;      }
+<b class="nc">&nbsp;      return runStatuses;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Collection&lt;RepairScheduleStatus&gt; getClusterScheduleStatuses(String clusterName) {
+<b class="nc">&nbsp;    Optional&lt;Cluster&gt; cluster = getCluster(clusterName);</b>
+<b class="nc">&nbsp;    if (!cluster.isPresent()) {</b>
+<b class="nc">&nbsp;      return Collections.emptyList();</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      List&lt;RepairScheduleStatus&gt; scheduleStatuses = Lists.newArrayList();</b>
+<b class="nc">&nbsp;      Collection&lt;RepairSchedule&gt; schedules = getRepairSchedulesForCluster(clusterName);</b>
+<b class="nc">&nbsp;      for (RepairSchedule schedule : schedules) {</b>
+<b class="nc">&nbsp;        RepairUnit unit = getRepairUnit(schedule.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;        scheduleStatuses.add(new RepairScheduleStatus(schedule, unit));</b>
+&nbsp;      }
+<b class="nc">&nbsp;      return scheduleStatuses;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  public static class RepairUnitKey {
+&nbsp;
+&nbsp;    public final String cluster;
+&nbsp;    public final String keyspace;
+&nbsp;    public final Set&lt;String&gt; tables;
+&nbsp;    public final Set&lt;String&gt; nodes;
+&nbsp;    public final Set&lt;String&gt; datacenters;
+&nbsp;    public final Set&lt;String&gt; blacklistedTables;
+&nbsp;
+&nbsp;    public RepairUnitKey(RepairUnit unit) {
+<b class="nc">&nbsp;      this(</b>
+<b class="nc">&nbsp;          unit.getClusterName(),</b>
+<b class="nc">&nbsp;          unit.getKeyspaceName(),</b>
+<b class="nc">&nbsp;          unit.getColumnFamilies(),</b>
+<b class="nc">&nbsp;          unit.getNodes(),</b>
+<b class="nc">&nbsp;          unit.getDatacenters(),</b>
+<b class="nc">&nbsp;          unit.getBlacklistedTables());</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public RepairUnitKey(</b>
+&nbsp;        String cluster,
+&nbsp;        String keyspace,
+&nbsp;        Set&lt;String&gt; tables,
+&nbsp;        Set&lt;String&gt; nodes,
+&nbsp;        Set&lt;String&gt; datacenters,
+&nbsp;        Set&lt;String&gt; blacklistedTables) {
+<b class="nc">&nbsp;      this.cluster = cluster;</b>
+<b class="nc">&nbsp;      this.keyspace = keyspace;</b>
+<b class="nc">&nbsp;      this.tables = tables;</b>
+<b class="nc">&nbsp;      this.nodes = nodes;</b>
+<b class="nc">&nbsp;      this.datacenters = datacenters;</b>
+<b class="nc">&nbsp;      this.blacklistedTables = blacklistedTables;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object other) {
+<b class="nc">&nbsp;      return other instanceof RepairUnitKey</b>
+<b class="nc">&nbsp;          &amp;&amp; cluster.equals(((RepairUnitKey) other).cluster)</b>
+<b class="nc">&nbsp;          &amp;&amp; keyspace.equals(((RepairUnitKey) other).keyspace)</b>
+<b class="nc">&nbsp;          &amp;&amp; tables.equals(((RepairUnitKey) other).tables)</b>
+<b class="nc">&nbsp;          &amp;&amp; nodes.equals(((RepairUnitKey) other).nodes)</b>
+<b class="nc">&nbsp;          &amp;&amp; datacenters.equals(((RepairUnitKey) other).datacenters)</b>
+<b class="nc">&nbsp;          &amp;&amp; blacklistedTables.equals(((RepairUnitKey) other).blacklistedTables);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int hashCode() {
+<b class="nc">&nbsp;      return cluster.hashCode() ^ keyspace.hashCode() ^ tables.hashCode();</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+src.test.java.org.apache.commons.compress.EvosuiteArchiveStreamFactory_ESTest
+src.test.java.org.apache.commons.compress.EvosuiteArchiveStreamFactory_ESTest_scaffolding
+src.test.java.org.apache.commons.compress.RandoopRegressionTest
+src.test.java.org.apache.commons.compress.RandoopRegressionTest0
+src.test.java.org.apache.commons.compress.RandoopRegressionTest1

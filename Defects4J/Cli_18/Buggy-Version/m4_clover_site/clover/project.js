@@ -1,0 +1,2 @@
+processClover (  {"children":["org/apache/commons/cli/"],"name":"Clover database Mon Apr 29 2024 01:04:58 CDT","stats":{"AvgMethodComplexity":2.119171,"Complexity":409,"ErroneousTests":0,"FailingTests":0,"FilteredElements":0,"PassingTests":0,"PcErroneousTests":-1,"PcFailingTests":-1,"PcPassingTests":-1,"TestExecutionTime":0,"Tests":0,"TotalChildren":1,"TotalPercentageCovered":92.5809,"TotalStatements":736,"UncoveredElements":94},"title":"Commons CLI 1.2-SNAPSHOT"}
+ ); 

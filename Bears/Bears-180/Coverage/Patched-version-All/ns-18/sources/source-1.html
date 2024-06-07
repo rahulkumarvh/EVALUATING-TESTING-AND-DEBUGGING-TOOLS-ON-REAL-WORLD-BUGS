@@ -1,0 +1,297 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PubSubMessageHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.integration.gcp.pubsub.outbound</a>
+</div>
+
+<h1>Coverage Summary for Class: PubSubMessageHandler (org.springframework.integration.gcp.pubsub.outbound)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PubSubMessageHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.integration.gcp.pubsub.outbound;
+&nbsp;
+&nbsp;import java.nio.charset.Charset;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;
+&nbsp;import com.google.protobuf.ByteString;
+&nbsp;import com.google.pubsub.v1.PubsubMessage;
+&nbsp;
+&nbsp;import org.springframework.cloud.gcp.pubsub.core.PubSubOperations;
+&nbsp;import org.springframework.expression.EvaluationContext;
+&nbsp;import org.springframework.expression.Expression;
+&nbsp;import org.springframework.integration.expression.ExpressionUtils;
+&nbsp;import org.springframework.integration.expression.ValueExpression;
+&nbsp;import org.springframework.integration.handler.AbstractMessageHandler;
+&nbsp;import org.springframework.messaging.Message;
+&nbsp;import org.springframework.messaging.converter.MessageConverter;
+&nbsp;import org.springframework.messaging.converter.StringMessageConverter;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;import org.springframework.util.concurrent.ListenableFuture;
+&nbsp;import org.springframework.util.concurrent.ListenableFutureCallback;
+&nbsp;
+&nbsp;/**
+&nbsp; * Outbound channel adapter to publish messages to Google Cloud Pub/Sub.
+&nbsp; *
+&nbsp; * &lt;p&gt;It delegates Google Cloud Pub/Sub interaction to {@link PubSubOperations}. It also converts
+&nbsp; * the {@link Message} payload into a {@link PubsubMessage} accepted by the Google Cloud Pub/Sub
+&nbsp; * Client Library. It supports synchronous and asynchronous sending.
+&nbsp; *
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;public class PubSubMessageHandler extends AbstractMessageHandler {
+&nbsp;
+&nbsp;	private static final long DEFAULT_PUBLISH_TIMEOUT = 10000;
+&nbsp;
+&nbsp;	private final PubSubOperations pubSubTemplate;
+&nbsp;
+<b class="nc">&nbsp;	private MessageConverter messageConverter = new StringMessageConverter();</b>
+&nbsp;
+&nbsp;	private String topic;
+&nbsp;
+&nbsp;	private boolean sync;
+&nbsp;
+&nbsp;	private EvaluationContext evaluationContext;
+&nbsp;
+<b class="nc">&nbsp;	private Expression publishTimeoutExpression = new ValueExpression&lt;&gt;(DEFAULT_PUBLISH_TIMEOUT);</b>
+&nbsp;
+&nbsp;	private ListenableFutureCallback&lt;String&gt; publishCallback;
+&nbsp;
+<b class="nc">&nbsp;	public PubSubMessageHandler(PubSubOperations pubSubTemplate, String topic) {</b>
+<b class="nc">&nbsp;		this.pubSubTemplate = pubSubTemplate;</b>
+<b class="nc">&nbsp;		this.topic = topic;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	protected void handleMessageInternal(Message&lt;?&gt; message) throws Exception {
+<b class="nc">&nbsp;		Object payload = message.getPayload();</b>
+&nbsp;
+<b class="nc">&nbsp;		if (payload instanceof PubsubMessage) {</b>
+<b class="nc">&nbsp;			this.pubSubTemplate.publish(this.topic, (PubsubMessage) payload);</b>
+&nbsp;			return;
+&nbsp;		}
+&nbsp;
+&nbsp;		ByteString pubsubPayload;
+&nbsp;
+<b class="nc">&nbsp;		if (payload instanceof byte[]) {</b>
+<b class="nc">&nbsp;			pubsubPayload = ByteString.copyFrom((byte[]) payload);</b>
+&nbsp;		}
+<b class="nc">&nbsp;		else if (payload instanceof ByteString) {</b>
+<b class="nc">&nbsp;			pubsubPayload = (ByteString) payload;</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			pubsubPayload =	ByteString.copyFrom(</b>
+<b class="nc">&nbsp;					(String) this.messageConverter.fromMessage(message, String.class),</b>
+<b class="nc">&nbsp;					Charset.defaultCharset());</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		Map&lt;String, String&gt; headers = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;		message.getHeaders().forEach(</b>
+<b class="nc">&nbsp;				(key, value) -&gt; headers.put(key, value.toString()));</b>
+&nbsp;
+<b class="nc">&nbsp;		ListenableFuture&lt;String&gt; pubsubFuture =</b>
+<b class="nc">&nbsp;				this.pubSubTemplate.publish(this.topic, pubsubPayload, headers);</b>
+&nbsp;
+<b class="nc">&nbsp;		if (this.publishCallback != null) {</b>
+<b class="nc">&nbsp;			pubsubFuture.addCallback(this.publishCallback);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.sync) {</b>
+<b class="nc">&nbsp;			Long timeout = this.publishTimeoutExpression.getValue(</b>
+&nbsp;					this.evaluationContext, message, Long.class);
+<b class="nc">&nbsp;			if (timeout == null || timeout &lt; 0) {</b>
+<b class="nc">&nbsp;				pubsubFuture.get();</b>
+&nbsp;			}
+&nbsp;			else {
+<b class="nc">&nbsp;				pubsubFuture.get(timeout, TimeUnit.MILLISECONDS);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public MessageConverter getMessageConverter() {
+<b class="nc">&nbsp;		return this.messageConverter;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMessageConverter(MessageConverter messageConverter) {
+<b class="nc">&nbsp;		Assert.notNull(messageConverter,</b>
+&nbsp;				&quot;The specified message converter can&#39;t be null.&quot;);
+<b class="nc">&nbsp;		this.messageConverter = messageConverter;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public boolean isSync() {
+<b class="nc">&nbsp;		return this.sync;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set publish method to be synchronous or asynchronous.
+&nbsp;	 *
+&nbsp;	 * &lt;p&gt;Publish is asynchronous be default.
+&nbsp;	 * @param sync true for synchronous, false for asynchronous
+&nbsp;	 */
+&nbsp;	public void setSync(boolean sync) {
+<b class="nc">&nbsp;		this.sync = sync;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Expression getPublishTimeoutExpression() {
+<b class="nc">&nbsp;		return this.publishTimeoutExpression;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the SpEL expression to evaluate a timeout in milliseconds for a synchronous publish call
+&nbsp;	 * to Google Cloud Pub/Sub.
+&nbsp;	 * @param publishTimeoutExpression the {@link Expression} for the publish timeout in
+&nbsp;	 *                                 milliseconds
+&nbsp;	 */
+&nbsp;	public void setPublishTimeoutExpression(Expression publishTimeoutExpression) {
+<b class="nc">&nbsp;		Assert.notNull(publishTimeoutExpression, &quot;Publish timeout expression can&#39;t be null.&quot;);</b>
+<b class="nc">&nbsp;		this.publishTimeoutExpression = publishTimeoutExpression;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the SpEL expression to evaluate a timeout in milliseconds for a synchronous publish call
+&nbsp;	 * to Google Cloud Pub/Sub from a string.
+&nbsp;	 * @param publishTimeoutExpression a string with an expression for the publish timeout in
+&nbsp;	 *                                milliseconds
+&nbsp;	 */
+&nbsp;	public void setPublishTimeoutExpressionString(String publishTimeoutExpression) {
+<b class="nc">&nbsp;		Assert.notNull(publishTimeoutExpression, &quot;Publish timeout expression can&#39;t be null.&quot;);</b>
+<b class="nc">&nbsp;		setPublishTimeoutExpression(EXPRESSION_PARSER.parseExpression(publishTimeoutExpression));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the timeout in milliseconds for a synchronous publish call to Google Cloud Pub/Sub.
+&nbsp;	 * @param timeoutMillis timeout in milliseconds
+&nbsp;	 */
+&nbsp;	public void setPublishTimeout(long timeoutMillis) {
+<b class="nc">&nbsp;		setPublishTimeoutExpression(new ValueExpression&lt;&gt;(timeoutMillis));</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	protected ListenableFutureCallback&lt;String&gt; getPublishCallback() {
+<b class="nc">&nbsp;		return this.publishCallback;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the callback to be activated when the publish call resolves.
+&nbsp;	 * @param publishCallback callback for the publish future
+&nbsp;	 */
+&nbsp;	public void setPublishCallback(ListenableFutureCallback&lt;String&gt; publishCallback) {
+<b class="nc">&nbsp;		this.publishCallback = publishCallback;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	protected void onInit() throws Exception {
+<b class="nc">&nbsp;		super.onInit();</b>
+<b class="nc">&nbsp;		this.evaluationContext = ExpressionUtils.createStandardEvaluationContext(getBeanFactory());</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 23:17</div>
+</div>
+</body>
+</html>

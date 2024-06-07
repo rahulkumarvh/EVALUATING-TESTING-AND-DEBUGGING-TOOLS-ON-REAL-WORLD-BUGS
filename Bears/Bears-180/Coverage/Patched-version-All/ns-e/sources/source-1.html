@@ -1,0 +1,256 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DefaultPublisherFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.pubsub.support</a>
+</div>
+
+<h1>Coverage Summary for Class: DefaultPublisherFactory (org.springframework.cloud.gcp.pubsub.support)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultPublisherFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.pubsub.support;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.concurrent.ConcurrentHashMap;
+&nbsp;
+&nbsp;import com.google.api.gax.batching.BatchingSettings;
+&nbsp;import com.google.api.gax.core.CredentialsProvider;
+&nbsp;import com.google.api.gax.core.ExecutorProvider;
+&nbsp;import com.google.api.gax.retrying.RetrySettings;
+&nbsp;import com.google.api.gax.rpc.TransportChannelProvider;
+&nbsp;import com.google.cloud.pubsub.v1.Publisher;
+&nbsp;import com.google.common.annotations.VisibleForTesting;
+&nbsp;import com.google.pubsub.v1.TopicName;
+&nbsp;
+&nbsp;import org.springframework.cloud.gcp.core.GcpProjectIdProvider;
+&nbsp;import org.springframework.cloud.gcp.pubsub.core.PubSubException;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;
+&nbsp;/**
+&nbsp; * The default {@link PublisherFactory} implementation.
+&nbsp; *
+&nbsp; * &lt;p&gt;
+&nbsp; * Creates {@link Publisher}s for topics once, caches and reuses them.
+&nbsp; *
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;public class DefaultPublisherFactory implements PublisherFactory {
+&nbsp;
+&nbsp;	private final String projectId;
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * {@link Publisher} cache, enforces only one {@link Publisher} per PubSub topic exists.
+&nbsp;	 */
+<b class="nc">&nbsp;	private final ConcurrentHashMap&lt;String, Publisher&gt; publishers = new ConcurrentHashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;	private ExecutorProvider executorProvider;
+&nbsp;
+&nbsp;	private TransportChannelProvider channelProvider;
+&nbsp;
+&nbsp;	private CredentialsProvider credentialsProvider;
+&nbsp;
+&nbsp;	private RetrySettings retrySettings;
+&nbsp;
+&nbsp;	private BatchingSettings batchingSettings;
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create {@link DefaultPublisherFactory} instance based on the provided {@link GcpProjectIdProvider}.
+&nbsp;	 * &lt;p&gt;The {@link GcpProjectIdProvider} must not be null, neither provide an empty {@code projectId}.
+&nbsp;	 * @param projectIdProvider provides the GCP project ID
+&nbsp;	 */
+<b class="nc">&nbsp;	public DefaultPublisherFactory(GcpProjectIdProvider projectIdProvider) {</b>
+<b class="nc">&nbsp;		Assert.notNull(projectIdProvider, &quot;The project ID provider can&#39;t be null.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		this.projectId = projectIdProvider.getProjectId();</b>
+<b class="nc">&nbsp;		Assert.hasText(this.projectId, &quot;The project ID can&#39;t be null or empty.&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the executor that will be used by the publisher. Useful to specify the number of threads to
+&nbsp;	 * be used by each executor.
+&nbsp;	 */
+&nbsp;	public void setExecutorProvider(ExecutorProvider executorProvider) {
+<b class="nc">&nbsp;		this.executorProvider = executorProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the channel to be used by the publisher. Useful to specify HTTP headers for the REST API
+&nbsp;	 * calls.
+&nbsp;	 */
+&nbsp;	public void setChannelProvider(TransportChannelProvider channelProvider) {
+<b class="nc">&nbsp;		this.channelProvider = channelProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the GCP credentials to be used by the publisher on every API calls it makes.
+&nbsp;	 */
+&nbsp;	public void setCredentialsProvider(CredentialsProvider credentialsProvider) {
+<b class="nc">&nbsp;		this.credentialsProvider = credentialsProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the API call retry configuration.
+&nbsp;	 */
+&nbsp;	public void setRetrySettings(RetrySettings retrySettings) {
+<b class="nc">&nbsp;		this.retrySettings = retrySettings;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the API call batching configuration.
+&nbsp;	 */
+&nbsp;	public void setBatchingSettings(BatchingSettings batchingSettings) {
+<b class="nc">&nbsp;		this.batchingSettings = batchingSettings;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public Publisher createPublisher(String topic) {
+<b class="nc">&nbsp;		return this.publishers.computeIfAbsent(topic, key -&gt; {</b>
+&nbsp;			try {
+<b class="nc">&nbsp;				Publisher.Builder publisherBuilder =</b>
+<b class="nc">&nbsp;						Publisher.newBuilder(TopicName.of(this.projectId, key));</b>
+&nbsp;
+<b class="nc">&nbsp;				if (this.executorProvider != null) {</b>
+<b class="nc">&nbsp;					publisherBuilder.setExecutorProvider(this.executorProvider);</b>
+&nbsp;				}
+&nbsp;
+<b class="nc">&nbsp;				if (this.channelProvider != null) {</b>
+<b class="nc">&nbsp;					publisherBuilder.setChannelProvider(this.channelProvider);</b>
+&nbsp;				}
+&nbsp;
+<b class="nc">&nbsp;				if (this.credentialsProvider != null) {</b>
+<b class="nc">&nbsp;					publisherBuilder.setCredentialsProvider(this.credentialsProvider);</b>
+&nbsp;				}
+&nbsp;
+<b class="nc">&nbsp;				if (this.retrySettings != null) {</b>
+<b class="nc">&nbsp;					publisherBuilder.setRetrySettings(this.retrySettings);</b>
+&nbsp;				}
+&nbsp;
+<b class="nc">&nbsp;				if (this.batchingSettings != null) {</b>
+<b class="nc">&nbsp;					publisherBuilder.setBatchingSettings(this.batchingSettings);</b>
+&nbsp;				}
+&nbsp;
+<b class="nc">&nbsp;				return publisherBuilder.build();</b>
+&nbsp;			}
+<b class="nc">&nbsp;			catch (IOException ioe) {</b>
+<b class="nc">&nbsp;				throw new PubSubException(&quot;An error creating the Google Cloud Pub/Sub publisher &quot; +</b>
+&nbsp;						&quot;occurred.&quot;, ioe);
+&nbsp;			}
+&nbsp;		});
+&nbsp;	}
+&nbsp;
+&nbsp;	@VisibleForTesting
+&nbsp;	Map&lt;String, Publisher&gt; getCache() {
+<b class="nc">&nbsp;		return this.publishers;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 23:17</div>
+</div>
+</body>
+</html>

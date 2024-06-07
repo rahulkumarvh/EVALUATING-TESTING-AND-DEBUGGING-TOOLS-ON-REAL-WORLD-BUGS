@@ -1,0 +1,655 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairScheduleResource</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.resources</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairScheduleResource (io.cassandrareaper.resources)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairScheduleResource</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/219)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.resources;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.resources.view.RepairRunStatus;
+&nbsp;import io.cassandrareaper.resources.view.RepairScheduleStatus;
+&nbsp;import io.cassandrareaper.service.RepairRunService;
+&nbsp;import io.cassandrareaper.service.RepairScheduleService;
+&nbsp;import io.cassandrareaper.service.RepairUnitService;
+&nbsp;import io.cassandrareaper.service.SchedulingManager;
+&nbsp;
+&nbsp;import java.net.MalformedURLException;
+&nbsp;import java.net.URI;
+&nbsp;import java.net.URISyntaxException;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;import javax.ws.rs.DELETE;
+&nbsp;import javax.ws.rs.GET;
+&nbsp;import javax.ws.rs.POST;
+&nbsp;import javax.ws.rs.PUT;
+&nbsp;import javax.ws.rs.Path;
+&nbsp;import javax.ws.rs.PathParam;
+&nbsp;import javax.ws.rs.Produces;
+&nbsp;import javax.ws.rs.QueryParam;
+&nbsp;import javax.ws.rs.core.Context;
+&nbsp;import javax.ws.rs.core.MediaType;
+&nbsp;import javax.ws.rs.core.Response;
+&nbsp;import javax.ws.rs.core.UriInfo;
+&nbsp;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import static com.google.common.base.Preconditions.checkNotNull;
+&nbsp;
+&nbsp;@Path(&quot;/repair_schedule&quot;)
+&nbsp;@Produces(MediaType.APPLICATION_JSON)
+&nbsp;public final class RepairScheduleResource {
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(RepairScheduleResource.class);</b>
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;  private final RepairUnitService repairUnitService;
+&nbsp;  private final RepairScheduleService repairScheduleService;
+&nbsp;  private final RepairRunService repairRunService;
+&nbsp;
+<b class="nc">&nbsp;  public RepairScheduleResource(AppContext context) {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+<b class="nc">&nbsp;    this.repairUnitService = RepairUnitService.create(context);</b>
+<b class="nc">&nbsp;    this.repairScheduleService = RepairScheduleService.create(context);</b>
+<b class="nc">&nbsp;    this.repairRunService = RepairRunService.create(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Endpoint used to create a repair schedule. Does not allow triggering the run. Repair schedule
+&nbsp;   * will create new repair runs based on the schedule.
+&nbsp;   *
+&nbsp;   * &lt;p&gt;Notice that query parameter &quot;tables&quot; can be a single String, or a comma-separated list of
+&nbsp;   * table names. If the &quot;tables&quot; parameter is omitted, and only the keyspace is defined, then
+&nbsp;   * created repair runs will target all the tables in the keyspace.
+&nbsp;   *
+&nbsp;   * @return created repair schedule data as JSON.
+&nbsp;   */
+&nbsp;  @POST
+&nbsp;  public Response addRepairSchedule(
+&nbsp;      @Context UriInfo uriInfo,
+&nbsp;      @QueryParam(&quot;clusterName&quot;) Optional&lt;String&gt; clusterName,
+&nbsp;      @QueryParam(&quot;keyspace&quot;) Optional&lt;String&gt; keyspace,
+&nbsp;      @QueryParam(&quot;tables&quot;) Optional&lt;String&gt; tableNamesParam,
+&nbsp;      @QueryParam(&quot;owner&quot;) Optional&lt;String&gt; owner,
+&nbsp;      @QueryParam(&quot;segmentCountPerNode&quot;) Optional&lt;Integer&gt; segmentCountPerNode,
+&nbsp;      @QueryParam(&quot;repairParallelism&quot;) Optional&lt;String&gt; repairParallelism,
+&nbsp;      @QueryParam(&quot;intensity&quot;) Optional&lt;String&gt; intensityStr,
+&nbsp;      @QueryParam(&quot;incrementalRepair&quot;) Optional&lt;String&gt; incrementalRepairStr,
+&nbsp;      @QueryParam(&quot;scheduleDaysBetween&quot;) Optional&lt;Integer&gt; scheduleDaysBetween,
+&nbsp;      @QueryParam(&quot;scheduleTriggerTime&quot;) Optional&lt;String&gt; scheduleTriggerTime,
+&nbsp;      @QueryParam(&quot;nodes&quot;) Optional&lt;String&gt; nodesToRepairParam,
+&nbsp;      @QueryParam(&quot;datacenters&quot;) Optional&lt;String&gt; datacentersToRepairParam,
+&nbsp;      @QueryParam(&quot;blacklistedTables&quot;) Optional&lt;String&gt; blacklistedTableNamesParam) {
+&nbsp;
+&nbsp;    try {
+<b class="nc">&nbsp;      Response possibleFailResponse =</b>
+<b class="nc">&nbsp;          RepairRunResource.checkRequestForAddRepair(</b>
+&nbsp;              context,
+&nbsp;              clusterName,
+&nbsp;              keyspace,
+&nbsp;              owner,
+&nbsp;              segmentCountPerNode,
+&nbsp;              repairParallelism,
+&nbsp;              intensityStr,
+&nbsp;              incrementalRepairStr,
+&nbsp;              nodesToRepairParam,
+&nbsp;              datacentersToRepairParam);
+&nbsp;
+<b class="nc">&nbsp;      if (null != possibleFailResponse) {</b>
+<b class="nc">&nbsp;        return possibleFailResponse;</b>
+&nbsp;      }
+&nbsp;
+&nbsp;      DateTime nextActivation;
+&nbsp;      try {
+<b class="nc">&nbsp;        nextActivation = getNextActivationTime(scheduleTriggerTime);</b>
+<b class="nc">&nbsp;        if (nextActivation.isBeforeNow()) {</b>
+<b class="nc">&nbsp;          return Response.status(Response.Status.BAD_REQUEST)</b>
+<b class="nc">&nbsp;              .entity(&quot;given schedule_trigger_time is in the past: &quot;</b>
+<b class="nc">&nbsp;                  + RepairRunStatus.dateTimeToIso8601(nextActivation))</b>
+<b class="nc">&nbsp;              .build();</b>
+&nbsp;        }
+<b class="nc">&nbsp;      } catch (IllegalArgumentException ex) {</b>
+<b class="nc">&nbsp;        LOG.info(&quot;cannot parse data string: {}&quot;, scheduleTriggerTime.get(), ex);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.BAD_REQUEST).entity(&quot;invalid schedule_trigger_time&quot;).build();</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;
+<b class="nc">&nbsp;      if (!scheduleDaysBetween.isPresent()) {</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.BAD_REQUEST)</b>
+<b class="nc">&nbsp;            .entity(&quot;missing required parameter: scheduleDaysBetween&quot;)</b>
+<b class="nc">&nbsp;            .build();</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      int segments = getSegmentCount(segmentCountPerNode);</b>
+<b class="nc">&nbsp;      int daysBetween = getDaysBetween(scheduleDaysBetween);</b>
+&nbsp;
+<b class="nc">&nbsp;      Cluster cluster = context.storage.getCluster(Cluster.toSymbolicName(clusterName.get())).get();</b>
+&nbsp;      Set&lt;String&gt; tableNames;
+&nbsp;      try {
+<b class="nc">&nbsp;        tableNames = repairRunService.getTableNamesBasedOnParam(cluster, keyspace.get(), tableNamesParam);</b>
+<b class="nc">&nbsp;      } catch (IllegalArgumentException ex) {</b>
+<b class="nc">&nbsp;        LOG.error(ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;
+&nbsp;      Set&lt;String&gt; blacklistedTableNames;
+&nbsp;      try {
+<b class="nc">&nbsp;        blacklistedTableNames</b>
+<b class="nc">&nbsp;            = repairRunService.getTableNamesBasedOnParam(cluster, keyspace.get(), blacklistedTableNamesParam);</b>
+<b class="nc">&nbsp;      } catch (IllegalArgumentException ex) {</b>
+<b class="nc">&nbsp;        LOG.error(ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;
+&nbsp;      final Set&lt;String&gt; nodesToRepair;
+&nbsp;      try {
+<b class="nc">&nbsp;        nodesToRepair = repairRunService.getNodesToRepairBasedOnParam(cluster, nodesToRepairParam);</b>
+<b class="nc">&nbsp;      } catch (final IllegalArgumentException ex) {</b>
+<b class="nc">&nbsp;        LOG.error(ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;
+&nbsp;      final Set&lt;String&gt; datacentersToRepair;
+&nbsp;      try {
+<b class="nc">&nbsp;        datacentersToRepair = RepairRunService</b>
+<b class="nc">&nbsp;            .getDatacentersToRepairBasedOnParam(cluster, datacentersToRepairParam);</b>
+<b class="nc">&nbsp;      } catch (final IllegalArgumentException ex) {</b>
+<b class="nc">&nbsp;        LOG.error(ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;
+<b class="nc">&nbsp;      Boolean incrementalRepair = isIncrementalRepair(incrementalRepairStr);</b>
+&nbsp;
+<b class="nc">&nbsp;      RepairUnit theRepairUnit =</b>
+<b class="nc">&nbsp;          repairUnitService.getNewOrExistingRepairUnit(</b>
+&nbsp;              cluster,
+<b class="nc">&nbsp;              keyspace.get(),</b>
+&nbsp;              tableNames,
+&nbsp;              incrementalRepair,
+&nbsp;              nodesToRepair,
+&nbsp;              datacentersToRepair,
+&nbsp;              blacklistedTableNames);
+&nbsp;
+<b class="nc">&nbsp;      if (theRepairUnit.getIncrementalRepair().booleanValue() != incrementalRepair) {</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.BAD_REQUEST)</b>
+<b class="nc">&nbsp;            .entity(</b>
+&nbsp;                &quot;A repair Schedule already exist for the same cluster/keyspace/table&quot;
+&nbsp;                    + &quot; but with a different incremental repair value. Requested value: &quot;
+&nbsp;                + incrementalRepair
+&nbsp;                + &quot; | Existing value: &quot;
+<b class="nc">&nbsp;                + theRepairUnit.getIncrementalRepair())</b>
+<b class="nc">&nbsp;            .build();</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      RepairParallelism parallelism = context.config.getRepairParallelism();</b>
+<b class="nc">&nbsp;      if (repairParallelism.isPresent()) {</b>
+<b class="nc">&nbsp;        LOG.debug(</b>
+&nbsp;            &quot;using given repair parallelism {} instead of configured value {}&quot;,
+<b class="nc">&nbsp;            repairParallelism.get(),</b>
+<b class="nc">&nbsp;            context.config.getRepairParallelism());</b>
+<b class="nc">&nbsp;        parallelism = RepairParallelism.valueOf(repairParallelism.get().toUpperCase());</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      if (!parallelism.equals(RepairParallelism.PARALLEL) &amp;&amp; incrementalRepair) {</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.BAD_REQUEST)</b>
+<b class="nc">&nbsp;            .entity(</b>
+&nbsp;                &quot;It is not possible to mix sequential repair and incremental repairs. parallelism &quot;
+&nbsp;                + parallelism
+&nbsp;                + &quot; : incrementalRepair &quot;
+&nbsp;                + incrementalRepair)
+<b class="nc">&nbsp;            .build();</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      Double intensity = getIntensity(intensityStr);</b>
+&nbsp;      try {
+<b class="nc">&nbsp;        RepairSchedule newRepairSchedule = repairScheduleService.storeNewRepairSchedule(</b>
+&nbsp;            cluster,
+&nbsp;            theRepairUnit,
+&nbsp;            daysBetween,
+&nbsp;            nextActivation,
+<b class="nc">&nbsp;            owner.get(),</b>
+&nbsp;            segments,
+&nbsp;            parallelism,
+&nbsp;            intensity);
+&nbsp;
+<b class="nc">&nbsp;        return Response.created(buildRepairScheduleUri(uriInfo, newRepairSchedule))</b>
+<b class="nc">&nbsp;            .entity(new RepairScheduleStatus(newRepairSchedule, theRepairUnit))</b>
+<b class="nc">&nbsp;            .build();</b>
+<b class="nc">&nbsp;      } catch (ReaperException ex) {</b>
+<b class="nc">&nbsp;        LOG.error(ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.CONFLICT).entity(ex.getMessage()).build();</b>
+&nbsp;      }
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      LOG.error(e.getMessage(), e);</b>
+<b class="nc">&nbsp;      return Response.status(500).entity(e.getMessage()).build();</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  private int getDaysBetween(Optional&lt;Integer&gt; scheduleDaysBetween) {
+<b class="nc">&nbsp;    int daysBetween = context.config.getScheduleDaysBetween();</b>
+<b class="nc">&nbsp;    if (scheduleDaysBetween.isPresent()) {</b>
+<b class="nc">&nbsp;      LOG.debug(</b>
+&nbsp;          &quot;using given schedule days between {} instead of configured value {}&quot;,
+<b class="nc">&nbsp;          scheduleDaysBetween.get(),</b>
+<b class="nc">&nbsp;          context.config.getScheduleDaysBetween());</b>
+<b class="nc">&nbsp;      daysBetween = scheduleDaysBetween.get();</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return daysBetween;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private int getSegmentCount(Optional&lt;Integer&gt; segmentCount) {
+<b class="nc">&nbsp;    int segments = 0;</b>
+<b class="nc">&nbsp;    if (segmentCount.isPresent()) {</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;using given segment count {}&quot;, segmentCount.get());</b>
+<b class="nc">&nbsp;      segments = segmentCount.get();</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return segments;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Boolean isIncrementalRepair(Optional&lt;String&gt; incrementalRepairStr) {
+&nbsp;    Boolean incrementalRepair;
+<b class="nc">&nbsp;    if (incrementalRepairStr.isPresent()) {</b>
+<b class="nc">&nbsp;      incrementalRepair = Boolean.parseBoolean(incrementalRepairStr.get());</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      incrementalRepair = context.config.getIncrementalRepair();</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;no incremental repair given, so using default value: {}&quot;, incrementalRepair);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return incrementalRepair;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Double getIntensity(Optional&lt;String&gt; intensityStr) throws NumberFormatException {
+&nbsp;    Double intensity;
+<b class="nc">&nbsp;    if (intensityStr.isPresent()) {</b>
+<b class="nc">&nbsp;      intensity = Double.parseDouble(intensityStr.get());</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      intensity = context.config.getRepairIntensity();</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;no intensity given, so using default value: {}&quot;, intensity);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return intensity;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Modifies a state of the repair schedule.
+&nbsp;   *
+&nbsp;   * &lt;p&gt;
+&nbsp;   * Currently supports PAUSED -&gt; ACTIVE and ACTIVE -&gt; PAUSED.
+&nbsp;   *
+&nbsp;   * @return OK if all goes well NOT_MODIFIED if new state is the same as the old one, and 400 (BAD_REQUEST) if
+&nbsp;   *      transition is not supported.
+&nbsp;   */
+&nbsp;  @PUT
+&nbsp;  @Path(&quot;/{id}&quot;)
+&nbsp;  public Response modifyState(
+&nbsp;      @Context UriInfo uriInfo,
+&nbsp;      @PathParam(&quot;id&quot;) UUID repairScheduleId,
+&nbsp;      @QueryParam(&quot;state&quot;) Optional&lt;String&gt; state) {
+&nbsp;
+<b class="nc">&nbsp;    LOG.info(&quot;modify repair schedule state called with: id = {}, state = {}&quot;, repairScheduleId, state);</b>
+&nbsp;
+<b class="nc">&nbsp;    if (!state.isPresent()) {</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity(&quot;\&quot;state\&quot; argument missing&quot;).build();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Optional&lt;RepairSchedule&gt; repairSchedule = context.storage.getRepairSchedule(repairScheduleId);</b>
+<b class="nc">&nbsp;    if (!repairSchedule.isPresent()) {</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.NOT_FOUND)</b>
+<b class="nc">&nbsp;          .entity(&quot;repair schedule with id &quot; + repairScheduleId + &quot; not found&quot;)</b>
+<b class="nc">&nbsp;          .build();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Optional&lt;RepairUnit&gt; repairUnit = context.storage.getRepairUnit(repairSchedule.get().getRepairUnitId());</b>
+<b class="nc">&nbsp;    if (!repairUnit.isPresent()) {</b>
+<b class="nc">&nbsp;      String errMsg = &quot;repair unit with id &quot; + repairSchedule.get().getRepairUnitId() + &quot; not found&quot;;</b>
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.NOT_FOUND).entity(errMsg).build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    RepairSchedule.State newState;
+&nbsp;    try {
+<b class="nc">&nbsp;      newState = RepairSchedule.State.valueOf(state.get().toUpperCase());</b>
+<b class="nc">&nbsp;    } catch (IllegalArgumentException ex) {</b>
+<b class="nc">&nbsp;      LOG.error(ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.BAD_REQUEST.getStatusCode())</b>
+<b class="nc">&nbsp;          .entity(&quot;invalid \&quot;state\&quot; argument: &quot; + state.get())</b>
+<b class="nc">&nbsp;          .build();</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    RepairSchedule.State oldState = repairSchedule.get().getState();</b>
+&nbsp;
+<b class="nc">&nbsp;    if (oldState == newState) {</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.NOT_MODIFIED)</b>
+<b class="nc">&nbsp;          .entity(&quot;given \&quot;state\&quot; is same as the current state&quot;)</b>
+<b class="nc">&nbsp;          .build();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (isPausing(oldState, newState)) {</b>
+<b class="nc">&nbsp;      return pauseSchedule(repairSchedule.get(), repairUnit.get());</b>
+<b class="nc">&nbsp;    } else if (isResuming(oldState, newState)) {</b>
+<b class="nc">&nbsp;      return resumeSchedule(repairSchedule.get(), repairUnit.get());</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      String errMsg = String.format(&quot;Transition %s-&gt;%s not supported.&quot;, oldState.toString(), newState.toString());</b>
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.BAD_REQUEST).entity(errMsg).build();</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  private static boolean isPausing(RepairSchedule.State oldState, RepairSchedule.State newState) {
+<b class="nc">&nbsp;    return oldState == RepairSchedule.State.ACTIVE &amp;&amp; newState == RepairSchedule.State.PAUSED;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static boolean isResuming(RepairSchedule.State oldState, RepairSchedule.State newState) {
+<b class="nc">&nbsp;    return oldState == RepairSchedule.State.PAUSED &amp;&amp; newState == RepairSchedule.State.ACTIVE;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Response pauseSchedule(RepairSchedule repairSchedule, RepairUnit repairUnit) {
+<b class="nc">&nbsp;    LOG.info(&quot;Pausing schedule {}&quot;, repairSchedule.getId());</b>
+<b class="nc">&nbsp;    RepairSchedule newSchedule = SchedulingManager.pauseRepairSchedule(context, repairSchedule);</b>
+<b class="nc">&nbsp;    return Response.ok().entity(new RepairScheduleStatus(newSchedule, repairUnit)).build();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Response resumeSchedule(RepairSchedule repairSchedule, RepairUnit repairUnit) {
+<b class="nc">&nbsp;    LOG.info(&quot;Resuming schedule {}&quot;, repairSchedule.getId());</b>
+<b class="nc">&nbsp;    RepairSchedule newSchedule = SchedulingManager.resumeRepairSchedule(context, repairSchedule);</b>
+<b class="nc">&nbsp;    return Response.ok().entity(new RepairScheduleStatus(newSchedule, repairUnit)).build();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return detailed information about a repair schedule.
+&nbsp;   */
+&nbsp;  @GET
+&nbsp;  @Path(&quot;/{id}&quot;)
+&nbsp;  public Response getRepairSchedule(
+&nbsp;      @PathParam(&quot;id&quot;) UUID repairScheduleId) {
+<b class="nc">&nbsp;    LOG.debug(&quot;get repair_schedule called with: id = {}&quot;, repairScheduleId);</b>
+<b class="nc">&nbsp;    Optional&lt;RepairSchedule&gt; repairSchedule = context.storage.getRepairSchedule(repairScheduleId);</b>
+<b class="nc">&nbsp;    if (repairSchedule.isPresent()) {</b>
+<b class="nc">&nbsp;      return Response.ok().entity(getRepairScheduleStatus(repairSchedule.get())).build();</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      return Response.status(404).entity(&quot;repair schedule with id &quot; + repairScheduleId + &quot; doesn&#39;t exist&quot;).build();</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param clusterName The cluster_name for which the repair schedule belongs to.
+&nbsp;   * @return all know repair schedules for a cluster.
+&nbsp;   */
+&nbsp;  @GET
+&nbsp;  @Path(&quot;/cluster/{cluster_name}&quot;)
+&nbsp;  public Response getRepairSchedulesForCluster(
+&nbsp;      @PathParam(&quot;cluster_name&quot;) String clusterName) {
+<b class="nc">&nbsp;    LOG.debug(&quot;get repair schedules for cluster called with: cluster_name = {}&quot;, clusterName);</b>
+<b class="nc">&nbsp;    Collection&lt;RepairSchedule&gt; repairSchedules = context.storage.getRepairSchedulesForCluster(clusterName);</b>
+<b class="nc">&nbsp;    Collection&lt;RepairScheduleStatus&gt; repairScheduleViews = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (RepairSchedule repairSchedule : repairSchedules) {</b>
+<b class="nc">&nbsp;      repairScheduleViews.add(getRepairScheduleStatus(repairSchedule));</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    return Response.ok().entity(repairScheduleViews).build();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return RepairSchedule status for viewing
+&nbsp;   */
+&nbsp;  private RepairScheduleStatus getRepairScheduleStatus(RepairSchedule repairSchedule) {
+<b class="nc">&nbsp;    Optional&lt;RepairUnit&gt; repairUnit = context.storage.getRepairUnit(repairSchedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;    Preconditions.checkState(</b>
+<b class="nc">&nbsp;        repairUnit.isPresent(), &quot;no repair unit found with id: &quot; + repairSchedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;    return new RepairScheduleStatus(repairSchedule, repairUnit.get());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Crafts an URI used to identify given repair schedule.
+&nbsp;   *
+&nbsp;   * @return The created resource URI.
+&nbsp;   */
+&nbsp;  private URI buildRepairScheduleUri(UriInfo uriInfo, RepairSchedule repairSchedule) {
+<b class="nc">&nbsp;    String newRepairSchedulePathPart = &quot;repair_schedule/&quot; + repairSchedule.getId();</b>
+<b class="nc">&nbsp;    URI scheduleUri = null;</b>
+&nbsp;    try {
+<b class="nc">&nbsp;      scheduleUri = new URL(uriInfo.getBaseUri().toURL(), newRepairSchedulePathPart).toURI();</b>
+<b class="nc">&nbsp;    } catch (MalformedURLException | URISyntaxException e) {</b>
+<b class="nc">&nbsp;      LOG.error(e.getMessage(), e);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    checkNotNull(scheduleUri, &quot;failed to build repair schedule uri&quot;);</b>
+<b class="nc">&nbsp;    return scheduleUri;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param clusterName The cluster name to list the schedules for. If not given, will list all schedules for all
+&nbsp;   *        clusters.
+&nbsp;   * @param keyspaceName The keyspace name to list schedules for. Limits the returned list and works whether the cluster
+&nbsp;   *        name is given or not.
+&nbsp;   * @return All schedules in the system.
+&nbsp;   */
+&nbsp;  @GET
+&nbsp;  public Response listSchedules(
+&nbsp;      @QueryParam(&quot;clusterName&quot;) Optional&lt;String&gt; clusterName,
+&nbsp;      @QueryParam(&quot;keyspace&quot;) Optional&lt;String&gt; keyspaceName) {
+<b class="nc">&nbsp;    List&lt;RepairScheduleStatus&gt; scheduleStatuses = Lists.newArrayList();</b>
+<b class="nc">&nbsp;    Collection&lt;RepairSchedule&gt; schedules = getScheduleList(clusterName, keyspaceName);</b>
+<b class="nc">&nbsp;    for (RepairSchedule schedule : schedules) {</b>
+<b class="nc">&nbsp;      Optional&lt;RepairUnit&gt; unit = context.storage.getRepairUnit(schedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;      if (unit.isPresent()) {</b>
+<b class="nc">&nbsp;        scheduleStatuses.add(new RepairScheduleStatus(schedule, unit.get()));</b>
+&nbsp;      } else {
+<b class="nc">&nbsp;        String errMsg = String.format(&quot;Found repair schedule %s with no associated repair unit&quot;, schedule.getId());</b>
+<b class="nc">&nbsp;        LOG.error(errMsg);</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    return Response.status(Response.Status.OK).entity(scheduleStatuses).build();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Collection&lt;RepairSchedule&gt; getScheduleList(Optional&lt;String&gt; clusterName, Optional&lt;String&gt; keyspaceName) {
+&nbsp;    Collection&lt;RepairSchedule&gt; schedules;
+<b class="nc">&nbsp;    if (clusterName.isPresent() &amp;&amp; keyspaceName.isPresent()) {</b>
+<b class="nc">&nbsp;      schedules = context.storage.getRepairSchedulesForClusterAndKeyspace(clusterName.get(), keyspaceName.get());</b>
+<b class="nc">&nbsp;    } else if (clusterName.isPresent()) {</b>
+<b class="nc">&nbsp;      schedules = context.storage.getRepairSchedulesForCluster(clusterName.get());</b>
+<b class="nc">&nbsp;    } else if (keyspaceName.isPresent()) {</b>
+<b class="nc">&nbsp;      schedules = context.storage.getRepairSchedulesForKeyspace(keyspaceName.get());</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      schedules = context.storage.getAllRepairSchedules();</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return schedules;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Delete a RepairSchedule object with given id.
+&nbsp;   *
+&nbsp;   * &lt;p&gt;
+&nbsp;   * Repair schedule can only be deleted when it is not active, so you must stop it first.
+&nbsp;   *
+&nbsp;   * @param repairScheduleId The id for the RepairSchedule instance to delete.
+&nbsp;   * @param owner The assigned owner of the deleted resource. Must match the stored one.
+&nbsp;   * @return The deleted RepairSchedule instance, with state overwritten to string &quot;DELETED&quot;.
+&nbsp;   */
+&nbsp;  @DELETE
+&nbsp;  @Path(&quot;/{id}&quot;)
+&nbsp;  public Response deleteRepairSchedule(
+&nbsp;      @PathParam(&quot;id&quot;) UUID repairScheduleId,
+&nbsp;      @QueryParam(&quot;owner&quot;) Optional&lt;String&gt; owner) {
+&nbsp;
+<b class="nc">&nbsp;    LOG.info(&quot;delete repair schedule called with repairScheduleId: {}, and owner: {}&quot;, repairScheduleId, owner);</b>
+<b class="nc">&nbsp;    if (!owner.isPresent()) {</b>
+<b class="nc">&nbsp;      return Response.status(Response.Status.BAD_REQUEST)</b>
+<b class="nc">&nbsp;          .entity(&quot;required query parameter \&quot;owner\&quot; is missing&quot;)</b>
+<b class="nc">&nbsp;          .build();</b>
+&nbsp;    }
+<b class="nc">&nbsp;    Optional&lt;RepairSchedule&gt; scheduleToDelete = context.storage.getRepairSchedule(repairScheduleId);</b>
+<b class="nc">&nbsp;    if (scheduleToDelete.isPresent()) {</b>
+<b class="nc">&nbsp;      if (scheduleToDelete.get().getState() == RepairSchedule.State.ACTIVE) {</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.FORBIDDEN)</b>
+<b class="nc">&nbsp;            .entity(</b>
+&nbsp;                &quot;Repair schedule with id \&quot;&quot;
+&nbsp;                + repairScheduleId
+&nbsp;                + &quot;\&quot; is currently running, and must be stopped before deleting&quot;)
+<b class="nc">&nbsp;            .build();</b>
+&nbsp;      }
+<b class="nc">&nbsp;      if (!scheduleToDelete.get().getOwner().equalsIgnoreCase(owner.get())) {</b>
+<b class="nc">&nbsp;        return Response.status(Response.Status.FORBIDDEN)</b>
+<b class="nc">&nbsp;            .entity(</b>
+&nbsp;                &quot;Repair schedule with id \&quot;&quot;
+&nbsp;                + repairScheduleId
+&nbsp;                + &quot;\&quot; is not owned by the user you defined: &quot;
+<b class="nc">&nbsp;                + owner.get())</b>
+<b class="nc">&nbsp;            .build();</b>
+&nbsp;      }
+&nbsp;      // Need to get the RepairUnit before it&#39;s possibly deleted.
+<b class="nc">&nbsp;      Optional&lt;RepairUnit&gt; possiblyDeletedUnit</b>
+<b class="nc">&nbsp;          = context.storage.getRepairUnit(scheduleToDelete.get().getRepairUnitId());</b>
+&nbsp;
+<b class="nc">&nbsp;      Optional&lt;RepairSchedule&gt; deletedSchedule</b>
+<b class="nc">&nbsp;          = context.storage.deleteRepairSchedule(repairScheduleId);</b>
+&nbsp;
+<b class="nc">&nbsp;      if (deletedSchedule.isPresent()) {</b>
+&nbsp;        return Response
+<b class="nc">&nbsp;            .ok()</b>
+<b class="nc">&nbsp;            .entity(new RepairScheduleStatus(deletedSchedule.get(), possiblyDeletedUnit.get()))</b>
+<b class="nc">&nbsp;            .build();</b>
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return Response.status(Response.Status.NOT_FOUND)</b>
+<b class="nc">&nbsp;        .entity(&quot;Repair schedule with id \&quot;&quot; + repairScheduleId + &quot;\&quot; not found&quot;)</b>
+<b class="nc">&nbsp;        .build();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private DateTime getNextActivationTime(Optional&lt;String&gt; scheduleTriggerTime) throws IllegalArgumentException {
+&nbsp;    DateTime nextActivation;
+<b class="nc">&nbsp;    if (scheduleTriggerTime.isPresent()) {</b>
+<b class="nc">&nbsp;      nextActivation = DateTime.parse(scheduleTriggerTime.get());</b>
+<b class="nc">&nbsp;      LOG.info(&quot;first schedule activation will be: {}&quot;, RepairRunStatus.dateTimeToIso8601(nextActivation));</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      nextActivation = DateTime.now().plusDays(1).withTimeAtStartOfDay();</b>
+<b class="nc">&nbsp;      LOG.info(</b>
+&nbsp;          &quot;no schedule_trigger_time given, so setting first scheduling next night: {}&quot;,
+<b class="nc">&nbsp;          RepairRunStatus.dateTimeToIso8601(nextActivation));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return nextActivation;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

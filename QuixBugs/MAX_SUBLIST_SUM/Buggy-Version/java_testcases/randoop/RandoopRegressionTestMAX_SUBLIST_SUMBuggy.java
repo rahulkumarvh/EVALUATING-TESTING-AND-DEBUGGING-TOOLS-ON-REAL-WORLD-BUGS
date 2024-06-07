@@ -1,0 +1,8 @@
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RandoopRegressionTestMAX_SUBLIST_SUMBuggy0.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy1.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy2.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy3.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy4.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy5.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy6.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy7.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy8.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy9.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy10.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy11.class, RandoopRegressionTestMAX_SUBLIST_SUMBuggy12.class })
+public class RandoopRegressionTestMAX_SUBLIST_SUMBuggy {
+}
+

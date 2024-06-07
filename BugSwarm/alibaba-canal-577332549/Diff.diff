@@ -1,0 +1,113 @@
+diff --git a/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/connector/SimpleAdminConnector.java b/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/connector/SimpleAdminConnector.java
+index 0e8d77c6..65364c3d 100644
+--- a/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/connector/SimpleAdminConnector.java
++++ b/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/connector/SimpleAdminConnector.java
+@@ -138,22 +138,22 @@ public class SimpleAdminConnector implements AdminConnector {
+ 
+     @Override
+     public boolean check() {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doServerAdmin("check")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doServerAdmin("check")));
+     }
+ 
+     @Override
+     public boolean start() {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doServerAdmin("start")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doServerAdmin("start")));
+     }
+ 
+     @Override
+     public boolean stop() {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doServerAdmin("stop")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doServerAdmin("stop")));
+     }
+ 
+     @Override
+     public boolean restart() {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doServerAdmin("restart")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doServerAdmin("restart")));
+     }
+ 
+     @Override
+@@ -163,22 +163,22 @@ public class SimpleAdminConnector implements AdminConnector {
+ 
+     @Override
+     public boolean checkInstance(String destination) {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doInstanceAdmin(destination, "check")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doInstanceAdmin(destination, "check")));
+     }
+ 
+     @Override
+     public boolean startInstance(String destination) {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doInstanceAdmin(destination, "start")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doInstanceAdmin(destination, "start")));
+     }
+ 
+     @Override
+     public boolean stopInstance(String destination) {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doInstanceAdmin(destination, "stop")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doInstanceAdmin(destination, "stop")));
+     }
+ 
+     @Override
+     public boolean restartInstance(String destination) {
+-        return BooleanUtils.toBoolean(Integer.valueOf(doInstanceAdmin(destination, "restart")));
++        return BooleanUtils.toBoolean(Integer.parseInt(doInstanceAdmin(destination, "restart")));
+     }
+ 
+     @Override
+diff --git a/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/controller/PollingConfigController.java b/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/controller/PollingConfigController.java
+index 0c83cbc7..ff43cda9 100644
+--- a/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/controller/PollingConfigController.java
++++ b/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/controller/PollingConfigController.java
+@@ -113,7 +113,7 @@ public class PollingConfigController {
+ 
+         CanalInstanceConfig canalInstanceConfig = new CanalInstanceConfig();
+         List<CanalInstanceConfig> configs = canalInstanceConfigService.findList(canalInstanceConfig);
+-        List<String> instances = configs.stream().map(config -> config.getName()).collect(Collectors.toList());
++        List<String> instances = configs.stream().map(CanalInstanceConfig::getName).collect(Collectors.toList());
+         String data = Joiner.on(',').join(instances);
+         canalInstanceConfig.setContent(data);
+         if (StringUtils.isEmpty(md5)) {
+diff --git a/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/service/impl/UserServiceImpl.java b/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/service/impl/UserServiceImpl.java
+index 606d1c99..bb23eeff 100644
+--- a/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/service/impl/UserServiceImpl.java
++++ b/canal-admin/canal-admin-server/src/main/java/com/alibaba/otter/canal/admin/service/impl/UserServiceImpl.java
+@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService {
+             return null;
+         }
+         User user = User.find.query().where().eq("username", username).findOne();
++        if (user == null) {
++            throw new ServiceException("user:" + username + " auth failed!");
++        }
+         try {
+             byte[] pass = SecurityUtil.scramble411(password.getBytes(), seeds);
+             if (!SecurityUtil.scrambleServerAuth(pass, SecurityUtil.hexStr2Bytes(user.getPassword()), seeds)) {
+@@ -35,9 +38,7 @@ public class UserServiceImpl implements UserService {
+             throw new ServiceException("user:" + user.getName() + " auth failed!");
+         }
+ 
+-        if (user != null) {
+-            user.setPassword("");
+-        }
++        user.setPassword("");
+         return user;
+     }
+ 
+diff --git a/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java b/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java
+index abcd1473..3a781777 100644
+--- a/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java
++++ b/driver/src/test/java/com/alibaba/otter/canal/parse/driver/mysql/MysqlConnectorTest.java
+@@ -4,10 +4,12 @@ import java.io.IOException;
+ import java.net.InetSocketAddress;
+ 
+ import org.junit.Assert;
++import org.junit.Ignore;
+ import org.junit.Test;
+ 
+ import com.alibaba.otter.canal.parse.driver.mysql.packets.server.ResultSetPacket;
+ 
++@Ignore
+ public class MysqlConnectorTest {
+ 
+     @Test

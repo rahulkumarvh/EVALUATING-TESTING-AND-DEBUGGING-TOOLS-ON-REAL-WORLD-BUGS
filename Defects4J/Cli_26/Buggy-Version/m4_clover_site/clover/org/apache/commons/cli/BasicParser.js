@@ -1,0 +1,10 @@
+var clover = new Object();
+
+// JSON: {classes : [{name, id, sl, el,  methods : [{sl, el}, ...]}, ...]}
+clover.pageData = {"classes":[{"el":47,"id":10,"methods":[{"el":46,"sc":5,"sl":42}],"name":"BasicParser","sl":27}]}
+
+// JSON: {test_ID : {"methods": [ID1, ID2, ID3...], "name" : "testXXX() void"}, ...};
+clover.testTargets = {"test_103":{"methods":[{"sl":42}],"name":"testDoubleDash","pass":true,"statements":[{"sl":45}]},"test_110":{"methods":[{"sl":42}],"name":"testMultiple","pass":true,"statements":[{"sl":45}]},"test_131":{"methods":[{"sl":42}],"name":"testSimpleShort","pass":true,"statements":[{"sl":45}]},"test_143":{"methods":[{"sl":42}],"name":"testMultipleWithLong","pass":true,"statements":[{"sl":45}]},"test_175":{"methods":[{"sl":42}],"name":"testUnrecognizedOption","pass":true,"statements":[{"sl":45}]},"test_177":{"methods":[{"sl":42}],"name":"testStopAtUnexpectedArg","pass":true,"statements":[{"sl":45}]},"test_30":{"methods":[{"sl":42}],"name":"testMissingArg","pass":true,"statements":[{"sl":45}]},"test_40":{"methods":[{"sl":42}],"name":"testStopAtNonOptionShort","pass":true,"statements":[{"sl":45}]},"test_42":{"methods":[{"sl":42}],"name":"testSimpleLong","pass":true,"statements":[{"sl":45}]},"test_57":{"methods":[{"sl":42}],"name":"testStopAtExpectedArg","pass":true,"statements":[{"sl":45}]},"test_68":{"methods":[{"sl":42}],"name":"testSingleDash","pass":true,"statements":[{"sl":45}]},"test_72":{"methods":[{"sl":42}],"name":"testStopAtNonOptionLong","pass":true,"statements":[{"sl":45}]},"test_78":{"methods":[{"sl":42}],"name":"testArgumentStartingWithHyphen","pass":true,"statements":[{"sl":45}]},"test_99":{"methods":[{"sl":42}],"name":"testNegativeArgument","pass":true,"statements":[{"sl":45}]}}
+
+// JSON: { lines : [{tests : [testid1, testid2, testid3, ...]}, ...]};
+clover.srcFileLines = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [57, 103, 143, 175, 99, 72, 177, 78, 68, 131, 30, 40, 42, 110], [], [], [57, 103, 143, 175, 99, 72, 177, 78, 68, 131, 30, 40, 42, 110], [], []]

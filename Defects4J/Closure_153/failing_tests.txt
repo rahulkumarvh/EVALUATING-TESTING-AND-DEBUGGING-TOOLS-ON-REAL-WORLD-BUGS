@@ -1,0 +1,12 @@
+test.com.google.javascript.jscomp.EvosuiteIRFactory_ESTest
+test.com.google.javascript.jscomp.EvosuiteIRFactory_ESTest_scaffolding
+test.com.google.javascript.jscomp.EvosuiteNameAnalyzer_ESTest
+test.com.google.javascript.jscomp.EvosuiteNameAnalyzer_ESTest_scaffolding
+test.com.google.javascript.jscomp.EvosuiteNormalize_ESTest
+test.com.google.javascript.jscomp.EvosuiteNormalize_ESTest_scaffolding
+test.com.google.javascript.jscomp.EvosuiteSyntacticScopeCreator_ESTest
+test.com.google.javascript.jscomp.EvosuiteSyntacticScopeCreator_ESTest_scaffolding
+test.com.google.javascript.jscomp.RandoopErrorTest
+test.com.google.javascript.jscomp.RandoopErrorTest0
+test.com.google.javascript.jscomp.RandoopRegressionTest
+test.com.google.javascript.jscomp.RandoopRegressionTest0

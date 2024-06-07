@@ -1,0 +1,6 @@
+[MASTER] 21:20:50.444 [main] ERROR ExternalProcessHandler - Class org.traccar.protocol.MeitrackProtocolDecoder. Clients have not finished yet, although a timeout occurred.
+ClientNode: INLINING
+
+[MASTER] 21:20:50.575 [main] ERROR SearchStatistics - No obtained value for output variable: LineCoverage
+[MASTER] 21:20:51.595 [main] ERROR SearchStatistics - Not going to write down statistics data, as some are missing
+[MASTER] 21:20:51.702 [main] ERROR TestGeneration - failed to write statistics data

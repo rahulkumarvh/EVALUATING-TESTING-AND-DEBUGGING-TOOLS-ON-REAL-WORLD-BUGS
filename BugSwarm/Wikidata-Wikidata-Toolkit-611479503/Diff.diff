@@ -1,0 +1,137 @@
+diff --git a/wdtk-wikibaseapi/src/main/java/org/wikidata/wdtk/wikibaseapi/ApiConnection.java b/wdtk-wikibaseapi/src/main/java/org/wikidata/wdtk/wikibaseapi/ApiConnection.java
+index 9cabe908..74d204b2 100644
+--- a/wdtk-wikibaseapi/src/main/java/org/wikidata/wdtk/wikibaseapi/ApiConnection.java
++++ b/wdtk-wikibaseapi/src/main/java/org/wikidata/wdtk/wikibaseapi/ApiConnection.java
+@@ -355,18 +355,15 @@ public class ApiConnection {
+ 	 * Logs the current user out.
+ 	 *
+ 	 * @throws IOException
++	 * @throws MediaWikiApiErrorException 
+ 	 */
+-	public void logout() throws IOException {
++	public void logout() throws IOException, MediaWikiApiErrorException {
+ 		if (this.loggedIn) {
+ 			Map<String, String> params = new HashMap<>();
+ 			params.put("action", "logout");
+ 			params.put("format", "json"); // reduce the output
+ 			params.put("token", getOrFetchToken("csrf"));
+-			try {
+-				sendJsonRequest("POST", params);
+-			} catch (MediaWikiApiErrorException e) {
+-				throw new IOException(e.getMessage(), e); //TODO: we should throw a better exception
+-			}
++			sendJsonRequest("POST", params);
+ 
+ 			this.loggedIn = false;
+ 			this.username = "";
+@@ -378,8 +375,9 @@ public class ApiConnection {
+ 	 * Clears the set of cookies. This will cause a logout.
+ 	 *
+ 	 * @throws IOException
++	 * @throws MediaWikiApiErrorException 
+ 	 */
+-	public void clearCookies() throws IOException {
++	public void clearCookies() throws IOException, MediaWikiApiErrorException {
+ 		logout();
+ 		this.cookies.clear();
+ 		this.tokens.clear();
+@@ -388,9 +386,13 @@ public class ApiConnection {
+ 	/**
+ 	 * Return a token of given type.
+ 	 * @param tokenType The kind of token to retrieve like "csrf" or "login"
+-	 * @return can return null if token can not be retrieved
++	 * @return a token
++	 * @throws MediaWikiApiErrorException 
++	 *     if MediaWiki returned an error
++	 * @throws IOException
++	 *     if a network error occurred
+ 	 */
+-	String getOrFetchToken(String tokenType) throws IOException {
++	String getOrFetchToken(String tokenType) throws IOException, MediaWikiApiErrorException {
+ 		if (tokens.containsKey(tokenType)) {
+ 			return tokens.get(tokenType);
+ 		}
+@@ -416,20 +418,19 @@ public class ApiConnection {
+ 	 *
+ 	 * @param tokenType The kind of token to retrieve like "csrf" or "login"
+ 	 * @return newly retrieved token
+-	 * @throws IOException if no token could be retrieved
++	 * @throws IOException 
++	 *     if a network error occurred
++	 * @throws MediaWikiApiErrorException
++	 *     if MediaWiki returned an error when fetching the token 
+ 	 */
+-	private String fetchToken(String tokenType) throws IOException {
++	private String fetchToken(String tokenType) throws IOException, MediaWikiApiErrorException {
+ 		Map<String, String> params = new HashMap<>();
+ 		params.put(ApiConnection.PARAM_ACTION, "query");
+ 		params.put("meta", "tokens");
+ 		params.put("type", tokenType);
+ 
+-		try {
+-			JsonNode root = this.sendJsonRequest("POST", params);
+-			return root.path("query").path("tokens").path(tokenType + "token").textValue();
+-		} catch (MediaWikiApiErrorException e) {
+-			throw new IOException("Error when trying to fetch token: " + e.toString());
+-		}
++		JsonNode root = this.sendJsonRequest("POST", params);
++		return root.path("query").path("tokens").path(tokenType + "token").textValue();
+ 	}
+ 
+ 	/**
+diff --git a/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/BasicApiConnectionTest.java b/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/BasicApiConnectionTest.java
+index 490a0b5c..aed31bbb 100644
+--- a/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/BasicApiConnectionTest.java
++++ b/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/BasicApiConnectionTest.java
+@@ -135,18 +135,18 @@ public class BasicApiConnectionTest {
+ 	}
+ 
+ 	@Test
+-	public void testGetToken() throws LoginFailedException, IOException {
++	public void testGetToken() throws LoginFailedException, IOException, MediaWikiApiErrorException {
+ 		this.con.login("username", "password");
+ 		assertNotNull(this.con.getOrFetchToken("csrf"));
+ 	}
+ 
+ 	@Test(expected = IOException.class)
+-	public void testGetTokenWithoutLogin() throws IOException {
++	public void testGetTokenWithoutLogin() throws IOException, MediaWikiApiErrorException {
+ 		this.con.getOrFetchToken("csrf");
+ 	}
+ 
+ 	@Test
+-	public void testGetLoginToken() throws IOException {
++	public void testGetLoginToken() throws IOException, MediaWikiApiErrorException {
+ 		assertNotNull(this.con.getOrFetchToken("login"));
+ 	}
+ 
+@@ -192,7 +192,7 @@ public class BasicApiConnectionTest {
+ 	}
+ 
+ 	@Test
+-	public void testLogout() throws IOException, LoginFailedException {
++	public void testLogout() throws IOException, LoginFailedException, MediaWikiApiErrorException {
+ 		this.con.login("username", "password");
+ 		this.con.logout();
+ 		assertEquals("", this.con.username);
+@@ -290,7 +290,7 @@ public class BasicApiConnectionTest {
+ 	}
+ 
+ 	@Test
+-	public void testClearCookies() throws IOException {
++	public void testClearCookies() throws IOException, MediaWikiApiErrorException {
+ 		con.cookies.put("Content", "some content");
+ 		con.clearCookies();
+ 		assertTrue(con.cookies.keySet().isEmpty());
+diff --git a/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/WbEditingActionTest.java b/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/WbEditingActionTest.java
+index 9f2dd44a..ee79525a 100644
+--- a/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/WbEditingActionTest.java
++++ b/wdtk-wikibaseapi/src/test/java/org/wikidata/wdtk/wikibaseapi/WbEditingActionTest.java
+@@ -85,6 +85,7 @@ public class WbEditingActionTest {
+ 		params.put("action", "query");
+ 		params.put("meta", "tokens");
+ 		params.put("format", "json");
++		params.put("type", "csrf");
+ 		// This error makes no sense for this action, but that does not matter
+ 		// here:
+ 		con.setWebResource(params, "{}");

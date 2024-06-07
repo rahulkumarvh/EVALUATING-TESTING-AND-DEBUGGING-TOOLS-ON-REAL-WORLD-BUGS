@@ -1,0 +1,493 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairRunService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairRunService (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairRunService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/149)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSegment;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.jmx.JmxProxy;
+&nbsp;import io.cassandrareaper.service.RingRange;
+&nbsp;import io.cassandrareaper.service.SegmentGenerator;
+&nbsp;
+&nbsp;import java.math.BigInteger;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Map.Entry;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.concurrent.ConcurrentHashMap;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;
+&nbsp;import com.google.common.annotations.VisibleForTesting;
+&nbsp;import com.google.common.base.CharMatcher;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import com.google.common.base.Splitter;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import com.google.common.collect.Maps;
+&nbsp;import com.google.common.collect.Sets;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import static com.google.common.base.Preconditions.checkNotNull;
+&nbsp;
+&nbsp;public final class RepairRunService {
+&nbsp;
+<b class="nc">&nbsp;  public static final Splitter COMMA_SEPARATED_LIST_SPLITTER</b>
+<b class="nc">&nbsp;      = Splitter.on(&#39;,&#39;).trimResults(CharMatcher.anyOf(&quot; ()[]\&quot;&#39;&quot;)).omitEmptyStrings();</b>
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(RepairRunService.class);</b>
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;
+<b class="nc">&nbsp;  private RepairRunService(AppContext context) {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static RepairRunService create(AppContext context) {
+<b class="nc">&nbsp;    return new RepairRunService(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Creates a repair run but does not start it immediately.
+&nbsp;   *
+&nbsp;   * &lt;p&gt;Creating a repair run involves: 1) split token range into segments 2) create a RepairRun
+&nbsp;   * instance 3) create RepairSegment instances linked to RepairRun.
+&nbsp;   *
+&nbsp;   * @throws ReaperException if repair run fails to be stored into Reaper&#39;s storage.
+&nbsp;   */
+&nbsp;  public RepairRun registerRepairRun(
+&nbsp;      Cluster cluster,
+&nbsp;      RepairUnit repairUnit,
+&nbsp;      Optional&lt;String&gt; cause,
+&nbsp;      String owner,
+&nbsp;      int segments,
+&nbsp;      int segmentsPerNode,
+&nbsp;      RepairParallelism repairParallelism,
+&nbsp;      Double intensity)
+&nbsp;      throws ReaperException {
+&nbsp;
+&nbsp;    // preparing a repair run involves several steps
+&nbsp;    // the first step is to generate token segments
+<b class="nc">&nbsp;    List&lt;RingRange&gt; tokenSegments =</b>
+<b class="nc">&nbsp;        repairUnit.getIncrementalRepair()</b>
+<b class="nc">&nbsp;            ? Lists.newArrayList()</b>
+<b class="nc">&nbsp;            : generateSegments(cluster, segments, segmentsPerNode, repairUnit);</b>
+&nbsp;
+<b class="nc">&nbsp;    checkNotNull(tokenSegments, &quot;failed generating repair segments&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;    Map&lt;String, RingRange&gt; nodes = getClusterNodes(cluster, repairUnit);</b>
+&nbsp;    // the next step is to prepare a repair run objec
+<b class="nc">&nbsp;    segments = repairUnit.getIncrementalRepair() ? nodes.keySet().size() : tokenSegments.size();</b>
+&nbsp;
+<b class="nc">&nbsp;    RepairRun.Builder runBuilder</b>
+<b class="nc">&nbsp;        = createNewRepairRun(cluster, repairUnit, cause, owner, segments, repairParallelism, intensity);</b>
+&nbsp;
+&nbsp;    // the last preparation step is to generate actual repair segments
+<b class="nc">&nbsp;    List&lt;RepairSegment.Builder&gt; segmentBuilders = repairUnit.getIncrementalRepair()</b>
+<b class="nc">&nbsp;        ? createRepairSegmentsForIncrementalRepair(nodes, repairUnit)</b>
+<b class="nc">&nbsp;        : createRepairSegments(tokenSegments, repairUnit);</b>
+&nbsp;
+<b class="nc">&nbsp;    RepairRun repairRun = context.storage.addRepairRun(runBuilder, segmentBuilders);</b>
+&nbsp;
+<b class="nc">&nbsp;    if (null == repairRun) {</b>
+<b class="nc">&nbsp;      String errMsg = String.format(</b>
+<b class="nc">&nbsp;          &quot;failed storing repair run for cluster \&quot;%s\&quot;, keyspace \&quot;%s\&quot;, and column families: %s&quot;,</b>
+<b class="nc">&nbsp;          cluster.getName(), repairUnit.getKeyspaceName(), repairUnit.getColumnFamilies());</b>
+&nbsp;
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(errMsg);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return repairRun;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Splits a token range for given table into segments
+&nbsp;   *
+&nbsp;   * @return the created segments
+&nbsp;   * @throws ReaperException when fails to discover seeds for the cluster or fails to connect to any
+&nbsp;   *     of the nodes in the Cluster.
+&nbsp;   */
+&nbsp;  private List&lt;RingRange&gt; generateSegments(
+&nbsp;      Cluster targetCluster,
+&nbsp;      int segmentCount,
+&nbsp;      int segmentCountPerNode,
+&nbsp;      RepairUnit repairUnit)
+&nbsp;      throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    List&lt;RingRange&gt; segments = Lists.newArrayList();</b>
+&nbsp;
+<b class="nc">&nbsp;    Preconditions.checkNotNull(</b>
+<b class="nc">&nbsp;        targetCluster.getPartitioner(),</b>
+<b class="nc">&nbsp;        &quot;no partitioner for cluster: &quot; + targetCluster.getName());</b>
+&nbsp;
+<b class="nc">&nbsp;    SegmentGenerator sg = new SegmentGenerator(targetCluster.getPartitioner());</b>
+<b class="nc">&nbsp;    Set&lt;String&gt; seedHosts = targetCluster.getSeedHosts();</b>
+<b class="nc">&nbsp;    if (seedHosts.isEmpty()) {</b>
+<b class="nc">&nbsp;      String errMsg = String.format(&quot;didn&#39;t get any seed hosts for cluster \&quot;%s\&quot;&quot;, targetCluster.getName());</b>
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(errMsg);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    try (JmxProxy jmxProxy = context.jmxConnectionFactory</b>
+<b class="nc">&nbsp;        .connectAny(Optional.absent(), seedHosts, context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;      List&lt;BigInteger&gt; tokens = jmxProxy.getTokens();</b>
+<b class="nc">&nbsp;      Map&lt;List&lt;String&gt;, List&lt;String&gt;&gt; rangeToEndpoint = jmxProxy.getRangeToEndpointMap(repairUnit.getKeyspaceName());</b>
+<b class="nc">&nbsp;      Map&lt;String, List&lt;RingRange&gt;&gt; endpointToRange = buildEndpointToRangeMap(rangeToEndpoint);</b>
+&nbsp;
+<b class="nc">&nbsp;      int globalSegmentCount = segmentCount;</b>
+<b class="nc">&nbsp;      if (globalSegmentCount == 0) {</b>
+<b class="nc">&nbsp;        globalSegmentCount = computeGlobalSegmentCount(segmentCountPerNode, rangeToEndpoint, endpointToRange);</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      segments = filterSegmentsByNodes(</b>
+<b class="nc">&nbsp;              sg.generateSegments(globalSegmentCount, tokens, repairUnit.getIncrementalRepair()),</b>
+<b class="nc">&nbsp;              repairUnit,</b>
+<b class="nc">&nbsp;              endpointToRange);</b>
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;couldn&#39;t connect to any host: {}, life sucks...&quot;, seedHosts, e);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (segments.isEmpty() &amp;&amp; !repairUnit.getIncrementalRepair()) {</b>
+<b class="nc">&nbsp;      String errMsg = String.format(&quot;failed to generate repair segments for cluster \&quot;%s\&quot;&quot;, targetCluster.getName());</b>
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(errMsg);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return segments;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  static int computeGlobalSegmentCount(
+&nbsp;      int segmentCountPerNode,
+&nbsp;      Map&lt;List&lt;String&gt;, List&lt;String&gt;&gt; rangeToEndpoint,
+&nbsp;      Map&lt;String, List&lt;RingRange&gt;&gt; endpointToRange) {
+&nbsp;
+<b class="nc">&nbsp;    int nodeCount = Math.max(1, endpointToRange.keySet().size());</b>
+<b class="nc">&nbsp;    int tokenRangeCount = rangeToEndpoint.keySet().size();</b>
+&nbsp;
+<b class="nc">&nbsp;    if (segmentCountPerNode &lt; (tokenRangeCount / nodeCount) &amp;&amp; segmentCountPerNode &gt; 0) {</b>
+<b class="nc">&nbsp;      return tokenRangeCount;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (segmentCountPerNode == 0) {</b>
+<b class="nc">&nbsp;      return Math.max(16 * nodeCount, tokenRangeCount);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    return segmentCountPerNode * nodeCount;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  static List&lt;RingRange&gt; filterSegmentsByNodes(
+&nbsp;      List&lt;RingRange&gt; segments,
+&nbsp;      RepairUnit repairUnit,
+&nbsp;      Map&lt;String, List&lt;RingRange&gt;&gt; endpointToRange)
+&nbsp;      throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    if (repairUnit.getNodes().isEmpty()) {</b>
+<b class="nc">&nbsp;      return segments;</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      return segments</b>
+<b class="nc">&nbsp;          .stream()</b>
+<b class="nc">&nbsp;          .filter(</b>
+<b class="nc">&nbsp;              segment -&gt; {</b>
+<b class="nc">&nbsp;                for (Entry&lt;String, List&lt;RingRange&gt;&gt; entry : endpointToRange.entrySet()) {</b>
+<b class="nc">&nbsp;                  if (repairUnit.getNodes().contains(entry.getKey())) {</b>
+<b class="nc">&nbsp;                    for (RingRange range : entry.getValue()) {</b>
+<b class="nc">&nbsp;                      if (range.encloses(segment)) {</b>
+<b class="nc">&nbsp;                        return true;</b>
+&nbsp;                      }
+&nbsp;                    }
+&nbsp;                  }
+&nbsp;                }
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;              })
+<b class="nc">&nbsp;          .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  @VisibleForTesting
+&nbsp;  static Map&lt;String, List&lt;RingRange&gt;&gt; buildEndpointToRangeMap(Map&lt;List&lt;String&gt;, List&lt;String&gt;&gt; rangeToEndpoint) {
+<b class="nc">&nbsp;    Map&lt;String, List&lt;RingRange&gt;&gt; endpointToRange = Maps.newHashMap();</b>
+&nbsp;
+<b class="nc">&nbsp;    for (Entry&lt;List&lt;String&gt;, List&lt;String&gt;&gt; entry : rangeToEndpoint.entrySet()) {</b>
+<b class="nc">&nbsp;      RingRange range = new RingRange(entry.getKey().toArray(new String[entry.getKey().size()]));</b>
+<b class="nc">&nbsp;      for (String endpoint : entry.getValue()) {</b>
+<b class="nc">&nbsp;        List&lt;RingRange&gt; ranges = endpointToRange.getOrDefault(endpoint, Lists.newArrayList());</b>
+<b class="nc">&nbsp;        ranges.add(range);</b>
+<b class="nc">&nbsp;        endpointToRange.put(endpoint, ranges);</b>
+&nbsp;      }
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    return endpointToRange;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Instantiates a RepairRun and stores it in the storage backend.
+&nbsp;   *
+&nbsp;   * @return the new, just stored RepairRun instance
+&nbsp;   * @throws ReaperException when fails to store the RepairRun.
+&nbsp;   */
+&nbsp;  private static RepairRun.Builder createNewRepairRun(
+&nbsp;      Cluster cluster,
+&nbsp;      RepairUnit repairUnit,
+&nbsp;      Optional&lt;String&gt; cause,
+&nbsp;      String owner,
+&nbsp;      int segments,
+&nbsp;      RepairParallelism repairParallelism,
+&nbsp;      Double intensity) throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    return new RepairRun.Builder(</b>
+<b class="nc">&nbsp;        cluster.getName(), repairUnit.getId(), DateTime.now(), intensity, segments, repairParallelism)</b>
+<b class="nc">&nbsp;        .cause(cause.or(&quot;no cause specified&quot;))</b>
+<b class="nc">&nbsp;        .owner(owner);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Creates the repair runs linked to given RepairRun and stores them directly in the storage backend.
+&nbsp;   */
+&nbsp;  private static List&lt;RepairSegment.Builder&gt; createRepairSegments(
+&nbsp;      List&lt;RingRange&gt; tokenSegments,
+&nbsp;      RepairUnit repairUnit) {
+&nbsp;
+<b class="nc">&nbsp;    List&lt;RepairSegment.Builder&gt; repairSegmentBuilders = Lists.newArrayList();</b>
+<b class="nc">&nbsp;    tokenSegments.forEach(range -&gt; repairSegmentBuilders.add(RepairSegment.builder(range, repairUnit.getId())));</b>
+<b class="nc">&nbsp;    return repairSegmentBuilders;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Creates the repair runs linked to given RepairRun and stores them directly in the storage backend in case of
+&nbsp;   * incrementalRepair
+&nbsp;   */
+&nbsp;  private static List&lt;RepairSegment.Builder&gt; createRepairSegmentsForIncrementalRepair(
+&nbsp;      Map&lt;String, RingRange&gt; nodes,
+&nbsp;      RepairUnit repairUnit) {
+&nbsp;
+<b class="nc">&nbsp;    List&lt;RepairSegment.Builder&gt; repairSegmentBuilders = Lists.newArrayList();</b>
+&nbsp;
+<b class="nc">&nbsp;    nodes</b>
+<b class="nc">&nbsp;        .entrySet()</b>
+<b class="nc">&nbsp;        .forEach(</b>
+<b class="nc">&nbsp;            range</b>
+<b class="nc">&nbsp;              -&gt; repairSegmentBuilders.add(</b>
+<b class="nc">&nbsp;                  RepairSegment.builder(range.getValue(), repairUnit.getId()).coordinatorHost(range.getKey())));</b>
+&nbsp;
+<b class="nc">&nbsp;    return repairSegmentBuilders;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private Map&lt;String,RingRange&gt; getClusterNodes(Cluster targetCluster, RepairUnit repairUnit) throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    ConcurrentHashMap&lt;String, RingRange&gt; nodesWithRanges = new ConcurrentHashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;    Set&lt;String&gt; seedHosts = targetCluster.getSeedHosts();</b>
+<b class="nc">&nbsp;    if (seedHosts.isEmpty()) {</b>
+<b class="nc">&nbsp;      String errMsg = String.format(&quot;didn&#39;t get any seed hosts for cluster \&quot;%s\&quot;&quot;, targetCluster.getName());</b>
+<b class="nc">&nbsp;      LOG.error(errMsg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(errMsg);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Map&lt;List&lt;String&gt;, List&lt;String&gt;&gt; rangeToEndpoint = Maps.newHashMap();</b>
+&nbsp;
+<b class="nc">&nbsp;    try (JmxProxy jmxProxy = context.jmxConnectionFactory</b>
+<b class="nc">&nbsp;        .connectAny(Optional.absent(), seedHosts, context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;      rangeToEndpoint = jmxProxy.getRangeToEndpointMap(repairUnit.getKeyspaceName());</b>
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      LOG.error(&quot;couldn&#39;t connect to any host: {}, will try next one&quot;, e);</b>
+<b class="nc">&nbsp;      throw new ReaperException(e);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    for (Entry&lt;List&lt;String&gt;, List&lt;String&gt;&gt; tokenRangeToEndpoint : rangeToEndpoint.entrySet()) {</b>
+<b class="nc">&nbsp;      String node = tokenRangeToEndpoint.getValue().get(0);</b>
+<b class="nc">&nbsp;      RingRange range = new RingRange(tokenRangeToEndpoint.getKey().get(0), tokenRangeToEndpoint.getKey().get(1));</b>
+<b class="nc">&nbsp;      nodesWithRanges.putIfAbsent(node, range);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    return nodesWithRanges;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public Set&lt;String&gt; getTableNamesBasedOnParam(
+&nbsp;      Cluster cluster,
+&nbsp;      String keyspace,
+&nbsp;      Optional&lt;String&gt; tableNamesParam) throws ReaperException {
+&nbsp;
+&nbsp;    Set&lt;String&gt; knownTables;
+<b class="nc">&nbsp;    try (JmxProxy jmxProxy = context.jmxConnectionFactory</b>
+<b class="nc">&nbsp;        .connectAny(cluster, context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;      knownTables = jmxProxy.getTableNamesForKeyspace(keyspace);</b>
+<b class="nc">&nbsp;      if (knownTables.isEmpty()) {</b>
+<b class="nc">&nbsp;        LOG.debug(&quot;no known tables for keyspace {} in cluster {}&quot;, keyspace, cluster.getName());</b>
+<b class="nc">&nbsp;        throw new IllegalArgumentException(&quot;no column families found for keyspace&quot;);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    Set&lt;String&gt; tableNames = Collections.emptySet();</b>
+<b class="nc">&nbsp;    if (tableNamesParam.isPresent() &amp;&amp; !tableNamesParam.get().isEmpty()) {</b>
+<b class="nc">&nbsp;      tableNames = Sets.newHashSet(COMMA_SEPARATED_LIST_SPLITTER.split(tableNamesParam.get()));</b>
+<b class="nc">&nbsp;      for (String name : tableNames) {</b>
+<b class="nc">&nbsp;        if (!knownTables.contains(name)) {</b>
+<b class="nc">&nbsp;          throw new IllegalArgumentException(&quot;keyspace doesn&#39;t contain a table named \&quot;&quot; + name + &quot;\&quot;&quot;);</b>
+&nbsp;        }
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return tableNames;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public Set&lt;String&gt; getNodesToRepairBasedOnParam(
+&nbsp;      Cluster cluster,
+&nbsp;      Optional&lt;String&gt; nodesToRepairParam) throws ReaperException {
+&nbsp;
+&nbsp;    Set&lt;String&gt; nodesInCluster;
+<b class="nc">&nbsp;    try (JmxProxy jmxProxy</b>
+<b class="nc">&nbsp;        = context.jmxConnectionFactory.connectAny(cluster, context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;      nodesInCluster = jmxProxy.getEndpointToHostId().keySet();</b>
+<b class="nc">&nbsp;      if (nodesInCluster.isEmpty()) {</b>
+<b class="nc">&nbsp;        LOG.debug(&quot;no nodes found in cluster {}&quot;, cluster.getName());</b>
+<b class="nc">&nbsp;        throw new IllegalArgumentException(&quot;no nodes found in cluster&quot;);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    Set&lt;String&gt; nodesToRepair = Collections.emptySet();</b>
+<b class="nc">&nbsp;    if (nodesToRepairParam.isPresent() &amp;&amp; !nodesToRepairParam.get().isEmpty()) {</b>
+<b class="nc">&nbsp;      nodesToRepair = Sets.newHashSet(COMMA_SEPARATED_LIST_SPLITTER.split(nodesToRepairParam.get()));</b>
+<b class="nc">&nbsp;      for (String node : nodesToRepair) {</b>
+<b class="nc">&nbsp;        if (!nodesInCluster.contains(node)) {</b>
+<b class="nc">&nbsp;          throw new IllegalArgumentException(</b>
+<b class="nc">&nbsp;              &quot;cluster \&quot;&quot; + cluster.getName() + &quot;\&quot; doesn&#39;t contain a node named \&quot;&quot; + node + &quot;\&quot;&quot;);</b>
+&nbsp;        }
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return nodesToRepair;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static Set&lt;String&gt; getDatacentersToRepairBasedOnParam(
+&nbsp;      Cluster cluster,
+&nbsp;      Optional&lt;String&gt; datacenters) throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    Set&lt;String&gt; datacentersToRepair = Collections.emptySet();</b>
+<b class="nc">&nbsp;    if (datacenters.isPresent() &amp;&amp; !datacenters.get().isEmpty()) {</b>
+<b class="nc">&nbsp;      datacentersToRepair = Sets.newHashSet(COMMA_SEPARATED_LIST_SPLITTER.split(datacenters.get()));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return datacentersToRepair;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

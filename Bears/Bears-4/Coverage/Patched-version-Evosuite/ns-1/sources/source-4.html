@@ -1,0 +1,680 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CreatorCollector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: CreatorCollector (com.fasterxml.jackson.databind.deser.impl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CreatorCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    4%
+  </span>
+  <span class="absValue">
+    (1/25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0.9%
+  </span>
+  <span class="absValue">
+    (1/112)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CreatorCollector$StdTypeConstructor</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CreatorCollector$Vanilla</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    1.9%
+  </span>
+  <span class="absValue">
+    (1/53)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0.6%
+  </span>
+  <span class="absValue">
+    (1/164)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser.impl;
+&nbsp;
+&nbsp;import java.lang.reflect.AnnotatedElement;
+&nbsp;import java.lang.reflect.Member;
+&nbsp;import java.lang.reflect.Type;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.cfg.MapperConfig;
+&nbsp;import com.fasterxml.jackson.databind.deser.CreatorProperty;
+&nbsp;import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
+&nbsp;import com.fasterxml.jackson.databind.deser.ValueInstantiator;
+&nbsp;import com.fasterxml.jackson.databind.deser.std.StdValueInstantiator;
+&nbsp;import com.fasterxml.jackson.databind.introspect.*;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;
+&nbsp;/**
+&nbsp; * Container class for storing information on creators (based on annotations,
+&nbsp; * visibility), to be able to build actual instantiator later on.
+&nbsp; */
+&nbsp;public class CreatorCollector {
+&nbsp;    // Since 2.5
+&nbsp;    protected final static int C_DEFAULT = 0;
+&nbsp;    protected final static int C_STRING = 1;
+&nbsp;    protected final static int C_INT = 2;
+&nbsp;    protected final static int C_LONG = 3;
+&nbsp;    protected final static int C_DOUBLE = 4;
+&nbsp;    protected final static int C_BOOLEAN = 5;
+&nbsp;    protected final static int C_DELEGATE = 6;
+&nbsp;    protected final static int C_PROPS = 7;
+&nbsp;    protected final static int C_ARRAY_DELEGATE = 8;
+&nbsp;
+<b class="fc">&nbsp;    protected final static String[] TYPE_DESCS = new String[] { &quot;default&quot;,</b>
+&nbsp;            &quot;from-String&quot;, &quot;from-int&quot;, &quot;from-long&quot;, &quot;from-double&quot;,
+&nbsp;            &quot;from-boolean&quot;, &quot;delegate&quot;, &quot;property-based&quot; };
+&nbsp;
+&nbsp;    /// Type of bean being created
+&nbsp;    final protected BeanDescription _beanDesc;
+&nbsp;
+&nbsp;    final protected boolean _canFixAccess;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.7
+&nbsp;     */
+&nbsp;    final protected boolean _forceAccess;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Set of creators we have collected so far
+&nbsp;     * 
+&nbsp;     * @since 2.5
+&nbsp;     */
+&nbsp;    protected final AnnotatedWithParams[] _creators = new AnnotatedWithParams[9];
+&nbsp;
+<b class="nc">&nbsp;    /**</b>
+&nbsp;     * Bitmask of creators that were explicitly marked as creators; false for
+&nbsp;     * auto-detected (ones included base on naming and/or visibility, not
+&nbsp;     * annotation)
+&nbsp;     * 
+&nbsp;     * @since 2.5
+&nbsp;     */
+&nbsp;    protected int _explicitCreators = 0;
+<b class="nc">&nbsp;</b>
+&nbsp;    protected boolean _hasNonDefaultCreator = false;
+<b class="nc">&nbsp;</b>
+&nbsp;    // when there are injectable values along with delegate:
+&nbsp;    protected SettableBeanProperty[] _delegateArgs;
+&nbsp;
+&nbsp;    protected SettableBeanProperty[] _arrayDelegateArgs;
+&nbsp;
+&nbsp;    protected SettableBeanProperty[] _propertyBasedArgs;
+&nbsp;
+&nbsp;    protected AnnotatedParameter _incompleteParameter;
+&nbsp;
+&nbsp;    /*
+&nbsp;     * /********************************************************** /* Life-cycle
+&nbsp;     * /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    public CreatorCollector(BeanDescription beanDesc, MapperConfig&lt;?&gt; config) {
+&nbsp;        _beanDesc = beanDesc;
+&nbsp;        _canFixAccess = config.canOverrideAccessModifiers();
+<b class="nc">&nbsp;        _forceAccess = config</b>
+<b class="nc">&nbsp;                .isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public ValueInstantiator constructValueInstantiator(</b>
+&nbsp;            DeserializationConfig config) {
+&nbsp;        final JavaType delegateType = _computeDelegateType(
+&nbsp;                _creators[C_DELEGATE], _delegateArgs);
+<b class="nc">&nbsp;        final JavaType arrayDelegateType = _computeDelegateType(</b>
+<b class="nc">&nbsp;                _creators[C_ARRAY_DELEGATE], _arrayDelegateArgs);</b>
+<b class="nc">&nbsp;        final JavaType type = _beanDesc.getType();</b>
+&nbsp;
+&nbsp;        // 11-Jul-2016, tatu: Earlier optimization by replacing the whole
+&nbsp;        // instantiator did not
+<b class="nc">&nbsp;        // work well, so let&#39;s replace by lower-level check:</b>
+&nbsp;        AnnotatedWithParams defaultCtor = StdTypeConstructor
+&nbsp;                .tryToOptimize(_creators[C_DEFAULT]);
+&nbsp;
+<b class="nc">&nbsp;        StdValueInstantiator inst = new StdValueInstantiator(config, type);</b>
+<b class="nc">&nbsp;        inst.configureFromObjectSettings(defaultCtor, _creators[C_DELEGATE],</b>
+<b class="nc">&nbsp;                delegateType, _delegateArgs, _creators[C_PROPS],</b>
+&nbsp;                _propertyBasedArgs);
+<b class="nc">&nbsp;        inst.configureFromArraySettings(_creators[C_ARRAY_DELEGATE],</b>
+<b class="nc">&nbsp;                arrayDelegateType, _arrayDelegateArgs);</b>
+&nbsp;        inst.configureFromStringCreator(_creators[C_STRING]);
+<b class="nc">&nbsp;        inst.configureFromIntCreator(_creators[C_INT]);</b>
+<b class="nc">&nbsp;        inst.configureFromLongCreator(_creators[C_LONG]);</b>
+&nbsp;        inst.configureFromDoubleCreator(_creators[C_DOUBLE]);
+&nbsp;        inst.configureFromBooleanCreator(_creators[C_BOOLEAN]);
+&nbsp;        inst.configureIncompleteParameter(_incompleteParameter);
+<b class="nc">&nbsp;        return inst;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /*
+<b class="nc">&nbsp;     * /********************************************************** /* Setters</b>
+<b class="nc">&nbsp;     * /**********************************************************</b>
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * Method called to indicate the default creator: no-arguments constructor</b>
+<b class="nc">&nbsp;     * or factory method that is called to instantiate a value before populating</b>
+<b class="nc">&nbsp;     * it with data. Default creator is only used if no other creators are</b>
+&nbsp;     * indicated.
+&nbsp;     * 
+&nbsp;     * @param creator
+&nbsp;     *            Creator method; no-arguments constructor or static factory
+&nbsp;     *            method.
+&nbsp;     */
+&nbsp;    public void setDefaultCreator(AnnotatedWithParams creator) {
+&nbsp;        _creators[C_DEFAULT] = _fixAccess(creator);
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addStringCreator(AnnotatedWithParams creator,
+&nbsp;            boolean explicit) {
+&nbsp;        verifyNonDup(creator, C_STRING, explicit);
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addIntCreator(AnnotatedWithParams creator, boolean explicit) {
+&nbsp;        verifyNonDup(creator, C_INT, explicit);
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public void addLongCreator(AnnotatedWithParams creator, boolean explicit) {</b>
+&nbsp;        verifyNonDup(creator, C_LONG, explicit);
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public void addDoubleCreator(AnnotatedWithParams creator,</b>
+&nbsp;            boolean explicit) {
+<b class="nc">&nbsp;        verifyNonDup(creator, C_DOUBLE, explicit);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void addBooleanCreator(AnnotatedWithParams creator,</b>
+<b class="nc">&nbsp;            boolean explicit) {</b>
+&nbsp;        verifyNonDup(creator, C_BOOLEAN, explicit);
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    public void addDelegatingCreator(AnnotatedWithParams creator,
+<b class="nc">&nbsp;            boolean explicit, SettableBeanProperty[] injectables) {</b>
+<b class="nc">&nbsp;        if (creator.getParameterType(0).isCollectionLikeType()) {</b>
+&nbsp;            verifyNonDup(creator, C_ARRAY_DELEGATE, explicit);
+&nbsp;            _arrayDelegateArgs = injectables;
+&nbsp;        } else {
+&nbsp;            verifyNonDup(creator, C_DELEGATE, explicit);
+<b class="nc">&nbsp;            _delegateArgs = injectables;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    public void addPropertyCreator(AnnotatedWithParams creator,
+<b class="nc">&nbsp;            boolean explicit, SettableBeanProperty[] properties) {</b>
+<b class="nc">&nbsp;        verifyNonDup(creator, C_PROPS, explicit);</b>
+&nbsp;        // Better ensure we have no duplicate names either...
+&nbsp;        if (properties.length &gt; 1) {
+<b class="nc">&nbsp;            HashMap&lt;String, Integer&gt; names = new HashMap&lt;String, Integer&gt;();</b>
+&nbsp;            for (int i = 0, len = properties.length; i &lt; len; ++i) {
+&nbsp;                String name = properties[i].getName();
+&nbsp;                // Need to consider Injectables, which may not have
+&nbsp;                // a name at all, and need to be skipped
+<b class="nc">&nbsp;                if (name.length() == 0</b>
+&nbsp;                        &amp;&amp; properties[i].getInjectableValueId() != null) {
+<b class="nc">&nbsp;                    continue;</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                Integer old = names.put(name, Integer.valueOf(i));</b>
+<b class="nc">&nbsp;                if (old != null) {</b>
+&nbsp;                    throw new IllegalArgumentException(String.format(
+&nbsp;                            &quot;Duplicate creator property \&quot;%s\&quot; (index %s vs %d)&quot;,
+&nbsp;                            name, old, i));
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        _propertyBasedArgs = properties;</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    public void addIncompeteParameter(AnnotatedParameter parameter) {
+&nbsp;        if (_incompleteParameter == null) {
+&nbsp;            _incompleteParameter = parameter;
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    // Bunch of methods deprecated in 2.5, to be removed from 2.6 or later
+&nbsp;
+<b class="nc">&nbsp;    @Deprecated // since 2.5</b>
+<b class="nc">&nbsp;    public void addStringCreator(AnnotatedWithParams creator) {</b>
+&nbsp;        addStringCreator(creator, false);
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Deprecated // since 2.5
+&nbsp;    public void addIntCreator(AnnotatedWithParams creator) {
+&nbsp;        addBooleanCreator(creator, false);
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Deprecated // since 2.5</b>
+&nbsp;    public void addLongCreator(AnnotatedWithParams creator) {
+&nbsp;        addBooleanCreator(creator, false);
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    @Deprecated // since 2.5
+&nbsp;    public void addDoubleCreator(AnnotatedWithParams creator) {
+<b class="nc">&nbsp;        addBooleanCreator(creator, false);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Deprecated // since 2.5
+<b class="nc">&nbsp;    public void addBooleanCreator(AnnotatedWithParams creator) {</b>
+<b class="nc">&nbsp;        addBooleanCreator(creator, false);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    @Deprecated // since 2.5</b>
+<b class="nc">&nbsp;    public void addDelegatingCreator(AnnotatedWithParams creator,</b>
+&nbsp;            CreatorProperty[] injectables) {
+&nbsp;        addDelegatingCreator(creator, false, injectables);
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Deprecated // since 2.5</b>
+&nbsp;    public void addPropertyCreator(AnnotatedWithParams creator,
+&nbsp;            CreatorProperty[] properties) {
+&nbsp;        addPropertyCreator(creator, false, properties);
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    /*
+&nbsp;     * /********************************************************** /* Accessors
+&nbsp;     * /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @since 2.1
+&nbsp;     */
+&nbsp;    public boolean hasDefaultCreator() {
+&nbsp;        return _creators[C_DEFAULT] != null;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    /**
+&nbsp;     * @since 2.6
+&nbsp;     */
+&nbsp;    public boolean hasDelegatingCreator() {
+&nbsp;        return _creators[C_DELEGATE] != null;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    /**
+&nbsp;     * @since 2.6
+&nbsp;     */
+&nbsp;    public boolean hasPropertyBasedCreator() {
+&nbsp;        return _creators[C_PROPS] != null;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    /*
+&nbsp;     * /********************************************************** /* Helper
+&nbsp;     * methods /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    private JavaType _computeDelegateType(AnnotatedWithParams creator,
+&nbsp;            SettableBeanProperty[] delegateArgs) {
+&nbsp;        if (!_hasNonDefaultCreator || (creator == null)) {
+&nbsp;            return null;
+&nbsp;        }
+&nbsp;        // need to find type...
+<b class="nc">&nbsp;        int ix = 0;</b>
+<b class="nc">&nbsp;        if (delegateArgs != null) {</b>
+&nbsp;            for (int i = 0, len = delegateArgs.length; i &lt; len; ++i) {
+&nbsp;                if (delegateArgs[i] == null) { // marker for delegate itself
+<b class="nc">&nbsp;                    ix = i;</b>
+<b class="nc">&nbsp;                    break;</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return creator.getParameterType(ix);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private &lt;T extends AnnotatedMember&gt; T _fixAccess(T member) {
+<b class="nc">&nbsp;        if (member != null &amp;&amp; _canFixAccess) {</b>
+&nbsp;            ClassUtil.checkAndFixAccess((Member) member.getAnnotated(),
+&nbsp;                    _forceAccess);
+&nbsp;        }
+&nbsp;        return member;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    protected void verifyNonDup(AnnotatedWithParams newOne, int typeIndex,
+<b class="nc">&nbsp;            boolean explicit) {</b>
+&nbsp;        final int mask = (1 &lt;&lt; typeIndex);
+&nbsp;        _hasNonDefaultCreator = true;
+&nbsp;        AnnotatedWithParams oldOne = _creators[typeIndex];
+&nbsp;        // already had an explicitly marked one?
+&nbsp;        if (oldOne != null) {
+&nbsp;            boolean verify;
+&nbsp;
+<b class="nc">&nbsp;            if ((_explicitCreators &amp; mask) != 0) { // already had explicitly</b>
+<b class="nc">&nbsp;                                                   // annotated, leave as-is</b>
+<b class="nc">&nbsp;                // but skip, if new one not annotated</b>
+&nbsp;                if (!explicit) {
+<b class="nc">&nbsp;                    return;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                // both explicit: verify</b>
+&nbsp;                verify = true;
+<b class="nc">&nbsp;            } else {</b>
+<b class="nc">&nbsp;                // otherwise only verify if neither explicitly annotated.</b>
+&nbsp;                verify = !explicit;
+&nbsp;            }
+<b class="nc">&nbsp;</b>
+&nbsp;            // one more thing: ok to override in sub-class
+&nbsp;            if (verify &amp;&amp; (oldOne.getClass() == newOne.getClass())) {
+<b class="nc">&nbsp;                // [databind#667]: avoid one particular class of bogus problems</b>
+&nbsp;                Class&lt;?&gt; oldType = oldOne.getRawParameterType(0);
+&nbsp;                Class&lt;?&gt; newType = newOne.getRawParameterType(0);
+&nbsp;
+<b class="nc">&nbsp;                if (oldType == newType) {</b>
+&nbsp;                    // 13-Jul-2016, tatu: One more thing to check; since Enum
+<b class="nc">&nbsp;                    // classes always have</b>
+<b class="nc">&nbsp;                    // implicitly created `valueOf()`, let&#39;s resolve in favor of</b>
+&nbsp;                    // other implicit
+<b class="nc">&nbsp;                    // creator (`fromString()`)</b>
+<b class="nc">&nbsp;                    if (_isEnumValueOf(newOne)) {</b>
+&nbsp;                        return; // ignore
+&nbsp;                    }
+&nbsp;                    if (_isEnumValueOf(oldOne)) {
+<b class="nc">&nbsp;                        ;</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        throw new IllegalArgumentException(String.format(</b>
+&nbsp;                                &quot;Conflicting %s creators: already had %s creator %s, encountered another: %s&quot;,
+&nbsp;                                TYPE_DESCS[typeIndex],
+&nbsp;                                explicit ? &quot;explicitly marked&quot;
+&nbsp;                                        : &quot;implicitly discovered&quot;,
+<b class="nc">&nbsp;                                oldOne, newOne));</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                }
+<b class="nc">&nbsp;                // otherwise, which one to choose?</b>
+<b class="nc">&nbsp;                else if (newType.isAssignableFrom(oldType)) {</b>
+&nbsp;                    // new type more generic, use old
+&nbsp;                    return;
+&nbsp;                }
+&nbsp;                // new type more specific, use it
+&nbsp;            }
+&nbsp;        }
+&nbsp;        if (explicit) {
+&nbsp;            _explicitCreators |= mask;
+&nbsp;        }
+&nbsp;        _creators[typeIndex] = _fixAccess(newOne);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method for recognizing `Enum.valueOf()` factory method
+&nbsp;     *
+&nbsp;     * @since 2.8.1
+&nbsp;     */
+&nbsp;    protected boolean _isEnumValueOf(AnnotatedWithParams creator) {
+&nbsp;        return creator.getDeclaringClass().isEnum()
+&nbsp;                &amp;&amp; &quot;valueOf&quot;.equals(creator.getName());
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    /*</b>
+&nbsp;     * /********************************************************** /* Helper
+&nbsp;     * class(es) /**********************************************************
+&nbsp;     */
+&nbsp;
+<b class="nc">&nbsp;    /**</b>
+<b class="nc">&nbsp;     * Replacement for default constructor to use for a small set of</b>
+<b class="nc">&nbsp;     * &quot;well-known&quot; types.</b>
+<b class="nc">&nbsp;     * &lt;p&gt;</b>
+&nbsp;     * Note: replaces earlier &lt;code&gt;Vanilla&lt;/code&gt;
+<b class="nc">&nbsp;     * &lt;code&gt;ValueInstantiator&lt;/code&gt; implementation</b>
+&nbsp;     *
+&nbsp;     * @since 2.8.1 (replacing earlier &lt;code&gt;Vanilla&lt;/code&gt; instantiator
+&nbsp;     */
+<b class="nc">&nbsp;    protected final static class StdTypeConstructor extends AnnotatedWithParams</b>
+&nbsp;            implements java.io.Serializable {
+&nbsp;        private static final long serialVersionUID = 1L;
+<b class="nc">&nbsp;</b>
+&nbsp;        public final static int TYPE_ARRAY_LIST = 1;
+&nbsp;        public final static int TYPE_HASH_MAP = 2;
+&nbsp;        public final static int TYPE_LINKED_HASH_MAP = 3;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        private final AnnotatedWithParams _base;</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        private final int _type;</b>
+&nbsp;
+<b class="nc">&nbsp;        public StdTypeConstructor(AnnotatedWithParams base, int t) {</b>
+&nbsp;            super(base, null);
+&nbsp;            _base = base;
+&nbsp;            _type = t;
+&nbsp;        }
+&nbsp;
+&nbsp;        public static AnnotatedWithParams tryToOptimize(
+<b class="nc">&nbsp;                AnnotatedWithParams src) {</b>
+<b class="nc">&nbsp;            if (src != null) {</b>
+<b class="nc">&nbsp;                final Class&lt;?&gt; rawType = src.getDeclaringClass();</b>
+&nbsp;                if (rawType == List.class || rawType == ArrayList.class) {
+&nbsp;                    return new StdTypeConstructor(src, TYPE_ARRAY_LIST);
+&nbsp;                }
+&nbsp;                if (rawType == LinkedHashMap.class) {
+<b class="nc">&nbsp;                    return new StdTypeConstructor(src, TYPE_LINKED_HASH_MAP);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                if (rawType == HashMap.class) {</b>
+<b class="nc">&nbsp;                    return new StdTypeConstructor(src, TYPE_HASH_MAP);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            return src;</b>
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        protected final Object _construct() {</b>
+&nbsp;            switch (_type) {
+&nbsp;            case TYPE_ARRAY_LIST:
+<b class="nc">&nbsp;                return new ArrayList&lt;Object&gt;();</b>
+&nbsp;            case TYPE_LINKED_HASH_MAP:
+&nbsp;                return new LinkedHashMap&lt;String, Object&gt;();
+&nbsp;            case TYPE_HASH_MAP:
+<b class="nc">&nbsp;                return new HashMap&lt;String, Object&gt;();</b>
+&nbsp;            }
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Unknown type &quot; + _type);</b>
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+&nbsp;        @Override
+<b class="nc">&nbsp;        public int getParameterCount() {</b>
+&nbsp;            return _base.getParameterCount();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Class&lt;?&gt; getRawParameterType(int index) {
+&nbsp;            return _base.getRawParameterType(index);
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public JavaType getParameterType(int index) {
+&nbsp;            return _base.getParameterType(index);
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @Deprecated
+&nbsp;        public Type getGenericParameterType(int index) {
+<b class="nc">&nbsp;            return _base.getGenericParameterType(index);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Object call() throws Exception {
+&nbsp;            return _construct();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Object call(Object[] args) throws Exception {
+&nbsp;            return _construct();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Object call1(Object arg) throws Exception {
+&nbsp;            return _construct();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Class&lt;?&gt; getDeclaringClass() {
+&nbsp;            return _base.getDeclaringClass();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Member getMember() {
+&nbsp;            return _base.getMember();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void setValue(Object pojo, Object value)
+&nbsp;                throws UnsupportedOperationException, IllegalArgumentException {
+<b class="nc">&nbsp;            throw new UnsupportedOperationException();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Object getValue(Object pojo)
+&nbsp;                throws UnsupportedOperationException, IllegalArgumentException {
+<b class="nc">&nbsp;            throw new UnsupportedOperationException();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Annotated withAnnotations(AnnotationMap fallback) {
+&nbsp;            throw new UnsupportedOperationException();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public AnnotatedElement getAnnotated() {
+&nbsp;            return _base.getAnnotated();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        protected int getModifiers() {
+&nbsp;            return _base.getMember().getModifiers();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public String getName() {
+&nbsp;            return _base.getName();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public JavaType getType() {
+&nbsp;            return _base.getType();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Class&lt;?&gt; getRawType() {
+&nbsp;            return _base.getRawType();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean equals(Object o) {
+&nbsp;            return (o == this);
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public int hashCode() {
+&nbsp;            return _base.hashCode();
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public String toString() {
+&nbsp;            return _base.toString();
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:46</div>
+</div>
+</body>
+</html>

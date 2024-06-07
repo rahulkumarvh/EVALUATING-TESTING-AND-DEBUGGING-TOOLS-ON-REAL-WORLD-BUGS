@@ -1,0 +1,7 @@
+src.test.java.org.apache.commons.collections4.EvosuiteIteratorUtils_ESTest
+src.test.java.org.apache.commons.collections4.EvosuiteIteratorUtils_ESTest_scaffolding
+src.test.java.org.apache.commons.collections4.EvosuiteMultiKey_ESTest
+src.test.java.org.apache.commons.collections4.EvosuiteMultiKey_ESTest_scaffolding
+src.test.java.org.apache.commons.collections4.RandoopRegressionTest
+src.test.java.org.apache.commons.collections4.RandoopRegressionTest0
+src.test.java.org.apache.commons.collections4.RandoopRegressionTest1

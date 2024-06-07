@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > JmxProxy</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.jmx</a>
+</div>
+
+<h1>Coverage Summary for Class: JmxProxy (io.cassandrareaper.jmx)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JmxProxy</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.jmx;
+&nbsp;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.service.RingRange;
+&nbsp;
+&nbsp;import java.math.BigInteger;
+&nbsp;import java.time.Duration;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;import javax.management.AttributeNotFoundException;
+&nbsp;import javax.management.MBeanException;
+&nbsp;import javax.management.NotificationListener;
+&nbsp;import javax.management.ReflectionException;
+&nbsp;import javax.validation.constraints.NotNull;
+&nbsp;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;
+&nbsp;
+&nbsp;public interface JmxProxy extends AutoCloseable, NotificationListener {
+&nbsp;
+<b class="nc">&nbsp;  Duration DEFAULT_JMX_CONNECTION_TIMEOUT = Duration.ofSeconds(5);</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Terminates all ongoing repairs on the node this proxy is connected to
+&nbsp;   */
+&nbsp;  void cancelAllRepairs();
+&nbsp;
+&nbsp;  void clearSnapshot(String repairId, String keyspaceName) throws ReaperException;
+&nbsp;
+&nbsp;  String getAllEndpointsState();
+&nbsp;
+&nbsp;  String getCassandraVersion();
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return Cassandra cluster name.
+&nbsp;   */
+&nbsp;  String getClusterName();
+&nbsp;
+&nbsp;  String getDataCenter();
+&nbsp;
+&nbsp;  String getDataCenter(String host);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return all hosts in the ring with their host id
+&nbsp;   */
+&nbsp;  @NotNull
+&nbsp;  Map&lt;String, String&gt; getEndpointToHostId();
+&nbsp;
+&nbsp;  String getHost();
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return list of available keyspaces
+&nbsp;   */
+&nbsp;  List&lt;String&gt; getKeyspaces();
+&nbsp;
+&nbsp;  List&lt;String&gt; getLiveNodes() throws ReaperException;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return full class name of Cassandra&#39;s partitioner.
+&nbsp;   */
+&nbsp;  String getPartitioner();
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return number of pending compactions on the node this proxy is connected to
+&nbsp;   */
+&nbsp;  int getPendingCompactions() throws MBeanException, AttributeNotFoundException, ReflectionException;
+&nbsp;
+&nbsp;  Map&lt;List&lt;String&gt;, List&lt;String&gt;&gt; getRangeToEndpointMap(String keyspace) throws ReaperException;
+&nbsp;
+&nbsp;  List&lt;RingRange&gt; getRangesForLocalEndpoint(String keyspace) throws ReaperException;
+&nbsp;
+&nbsp;  Map&lt;String, String&gt; getSimpleStates();
+&nbsp;
+&nbsp;  Set&lt;String&gt; getTableNamesForKeyspace(String keyspace) throws ReaperException;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return list of tokens in the cluster
+&nbsp;   */
+&nbsp;  List&lt;BigInteger&gt; getTokens();
+&nbsp;
+&nbsp;  boolean isConnectionAlive();
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return true if any repairs are running on the node.
+&nbsp;   */
+&nbsp;  boolean isRepairRunning() throws MBeanException, AttributeNotFoundException, ReflectionException;
+&nbsp;
+&nbsp;  /** Checks if table exists in the cluster by instantiating a MBean for that table. */
+&nbsp;  Map&lt;String, List&lt;String&gt;&gt; listTablesByKeyspace();
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @return all hosts owning a range of tokens
+&nbsp;   */
+&nbsp;  @NotNull
+&nbsp;  List&lt;String&gt; tokenRangeToEndpoint(String keyspace, RingRange tokenRange);
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Triggers a repair of range (beginToken, endToken] for given keyspace and column family. The repair is triggered by
+&nbsp;   * {@link org.apache.cassandra.service.StorageServiceMBean#forceRepairRangeAsync} For time being, we don&#39;t allow local
+&nbsp;   * nor snapshot repairs.
+&nbsp;   *
+&nbsp;   * @return Repair command number, or 0 if nothing to repair
+&nbsp;   */
+&nbsp;  int triggerRepair(
+&nbsp;      BigInteger beginToken,
+&nbsp;      BigInteger endToken,
+&nbsp;      String keyspace,
+&nbsp;      RepairParallelism repairParallelism,
+&nbsp;      Collection&lt;String&gt; columnFamilies,
+&nbsp;      boolean fullRepair,
+&nbsp;      Collection&lt;String&gt; datacenters) throws ReaperException;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  void close();
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:53</div>
+</div>
+</body>
+</html>

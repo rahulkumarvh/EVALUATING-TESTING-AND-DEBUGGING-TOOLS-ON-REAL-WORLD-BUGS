@@ -1,0 +1,9 @@
+src.test.org.apache.commons.cli.EvosuiteOptions_ESTest
+src.test.org.apache.commons.cli.EvosuiteOptions_ESTest_scaffolding
+src.test.org.apache.commons.cli.EvosuitePosixParser_ESTest
+src.test.org.apache.commons.cli.EvosuitePosixParser_ESTest_scaffolding
+src.test.org.apache.commons.cli.RandoopErrorTest
+src.test.org.apache.commons.cli.RandoopErrorTest0
+src.test.org.apache.commons.cli.RandoopRegressionTest
+src.test.org.apache.commons.cli.RandoopRegressionTest0
+src.test.org.apache.commons.cli.RandoopRegressionTest1

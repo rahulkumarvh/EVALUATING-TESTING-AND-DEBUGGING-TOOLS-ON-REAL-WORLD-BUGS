@@ -1,0 +1,331 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnotatedMethodCollector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnotatedMethodCollector (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnotatedMethodCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (59/59)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AnnotatedMethodCollector$MethodBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (66/66)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.lang.annotation.Annotation;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.lang.reflect.Modifier;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.JavaType;
+&nbsp;import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
+&nbsp;import com.fasterxml.jackson.databind.type.TypeFactory;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;
+&nbsp;public class AnnotatedMethodCollector
+&nbsp;    extends CollectorBase
+&nbsp;{
+&nbsp;    private final MixInResolver _mixInResolver;
+&nbsp;
+&nbsp;    AnnotatedMethodCollector(AnnotationIntrospector intr,
+&nbsp;            MixInResolver mixins)
+&nbsp;    {
+<b class="fc">&nbsp;        super(intr);</b>
+<b class="fc">&nbsp;        _mixInResolver = (intr == null) ? null : mixins;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static AnnotatedMethodMap collectMethods(AnnotationIntrospector intr,
+&nbsp;            TypeResolutionContext tc,
+&nbsp;            MixInResolver mixins, TypeFactory types,
+&nbsp;            JavaType type, List&lt;JavaType&gt; superTypes, Class&lt;?&gt; primaryMixIn)
+&nbsp;    {
+&nbsp;        // Constructor also always members of resolved class, parent == resolution context
+<b class="fc">&nbsp;        return new AnnotatedMethodCollector(intr, mixins)</b>
+<b class="fc">&nbsp;                .collect(types, tc, type, superTypes, primaryMixIn);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    AnnotatedMethodMap collect(TypeFactory typeFactory, TypeResolutionContext tc,
+&nbsp;            JavaType mainType, List&lt;JavaType&gt; superTypes, Class&lt;?&gt; primaryMixIn)
+&nbsp;    {
+<b class="fc">&nbsp;        Map&lt;MemberKey,MethodBuilder&gt; methods = new LinkedHashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // first: methods from the class itself
+<b class="fc">&nbsp;        _addMemberMethods(tc, mainType.getRawClass(), methods, primaryMixIn);</b>
+&nbsp;
+&nbsp;        // and then augment these with annotations from super-types:
+<b class="fc">&nbsp;        for (JavaType type : superTypes) {</b>
+<b class="fc">&nbsp;            Class&lt;?&gt; mixin = (_mixInResolver == null) ? null : _mixInResolver.findMixInClassFor(type.getRawClass());</b>
+<b class="fc">&nbsp;            _addMemberMethods(</b>
+<b class="fc">&nbsp;                    new TypeResolutionContext.Basic(typeFactory, type.getBindings()),</b>
+<b class="fc">&nbsp;                    type.getRawClass(), methods, mixin);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        // Special case: mix-ins for Object.class? (to apply to ALL classes)
+&nbsp;        /*
+&nbsp;        if (_mixInResolver != null) {
+&nbsp;            Class&lt;?&gt; mixin = _mixInResolver.findMixInClassFor(Object.class);
+&nbsp;            if (mixin != null) {
+&nbsp;                _addMethodMixIns(tc, mainType.getRawClass(), memberMethods, mixin, mixins);
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        // Any unmatched mix-ins? Most likely error cases (not matching any method);
+&nbsp;        // but there is one possible real use case: exposing Object#hashCode
+&nbsp;        // (alas, Object#getClass can NOT be exposed)
+&nbsp;        if (_intr != null) {
+&nbsp;            if (!mixins.isEmpty()) {
+&nbsp;                Iterator&lt;AnnotatedMethod&gt; it = mixins.iterator();
+&nbsp;                while (it.hasNext()) {
+&nbsp;                    AnnotatedMethod mixIn = it.next();
+&nbsp;                    try {
+&nbsp;                        Method m = Object.class.getDeclaredMethod(mixIn.getName(), mixIn.getRawParameterTypes());
+&nbsp;                        if (m != null) {
+&nbsp;                            // Since it&#39;s from java.lang.Object, no generics, no need for real type context:
+&nbsp;                            AnnotatedMethod am = _constructMethod(tc, m);
+&nbsp;                            _addMixOvers(mixIn.getAnnotated(), am, false);
+&nbsp;                            memberMethods.add(am);
+&nbsp;                        }
+&nbsp;                    } catch (Exception e) { }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;        */
+&nbsp;
+&nbsp;        // And then let&#39;s 
+<b class="fc">&nbsp;        if (methods.isEmpty()) {</b>
+<b class="fc">&nbsp;            return new AnnotatedMethodMap();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Map&lt;MemberKey,AnnotatedMethod&gt; actual = new LinkedHashMap&lt;&gt;(methods.size());</b>
+<b class="fc">&nbsp;        for (Map.Entry&lt;MemberKey,MethodBuilder&gt; entry : methods.entrySet()) {</b>
+<b class="fc">&nbsp;            AnnotatedMethod am = entry.getValue().build();</b>
+<b class="fc">&nbsp;            if (am != null) {</b>
+<b class="fc">&nbsp;                actual.put(entry.getKey(), am);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return new AnnotatedMethodMap(actual);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void _addMemberMethods(TypeResolutionContext tc,
+&nbsp;            Class&lt;?&gt; cls, Map&lt;MemberKey,MethodBuilder&gt; methods, Class&lt;?&gt; mixInCls)
+&nbsp;    {
+&nbsp;        // first, mixIns, since they have higher priority then class methods
+<b class="fc">&nbsp;        if (mixInCls != null) {</b>
+<b class="fc">&nbsp;            _addMethodMixIns(tc, cls, methods, mixInCls);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cls == null) { // just so caller need not check when passing super-class</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;        // then methods from the class itself
+<b class="fc">&nbsp;        for (Method m : ClassUtil.getClassMethods(cls)) {</b>
+<b class="fc">&nbsp;            if (!_isIncludableMemberMethod(m)) {</b>
+<b class="fc">&nbsp;                continue;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            final MemberKey key = new MemberKey(m);</b>
+<b class="fc">&nbsp;            MethodBuilder b = methods.get(key);</b>
+<b class="fc">&nbsp;            if (b == null) {</b>
+<b class="fc">&nbsp;                AnnotationCollector c = (_intr == null) ? AnnotationCollector.emptyCollector()</b>
+<b class="fc">&nbsp;                        : collectAnnotations(m.getDeclaredAnnotations());</b>
+<b class="fc">&nbsp;                methods.put(key, new MethodBuilder(tc, m, c));</b>
+<b class="fc">&nbsp;            } else {</b>
+<b class="fc">&nbsp;                if (_intr != null) {</b>
+<b class="fc">&nbsp;                    b.annotations = collectDefaultAnnotations(b.annotations, m.getDeclaredAnnotations());</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Method old = b.method;</b>
+<b class="fc">&nbsp;                if (old == null) { // had &quot;mix-over&quot;, replace</b>
+<b class="fc">&nbsp;                    b.method = m;</b>
+&nbsp;//                } else if (old.getDeclaringClass().isInterface() &amp;&amp; !m.getDeclaringClass().isInterface()) {
+<b class="fc">&nbsp;                } else if (Modifier.isAbstract(old.getModifiers())</b>
+<b class="fc">&nbsp;                        &amp;&amp; !Modifier.isAbstract(m.getModifiers())) {</b>
+&nbsp;                    // 06-Jan-2010, tatu: Except that if method we saw first is
+&nbsp;                    // from an interface, and we now find a non-interface definition, we should
+&nbsp;                    //   use this method, but with combination of annotations.
+&nbsp;                    //   This helps (or rather, is essential) with JAXB annotations and
+&nbsp;                    //   may also result in faster method calls (interface calls are slightly
+&nbsp;                    //   costlier than regular method calls)
+<b class="fc">&nbsp;                    b.method = m;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    protected void _addMethodMixIns(TypeResolutionContext tc, Class&lt;?&gt; targetClass,
+&nbsp;            Map&lt;MemberKey,MethodBuilder&gt; methods, Class&lt;?&gt; mixInCls)
+&nbsp;    {
+<b class="fc">&nbsp;        if (_intr == null) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        for (Class&lt;?&gt; mixin : ClassUtil.findRawSuperTypes(mixInCls, targetClass, true)) {</b>
+<b class="fc">&nbsp;            for (Method m : ClassUtil.getDeclaredMethods(mixin)) {</b>
+<b class="fc">&nbsp;                if (!_isIncludableMemberMethod(m)) {</b>
+<b class="fc">&nbsp;                    continue;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                final MemberKey key = new MemberKey(m);</b>
+<b class="fc">&nbsp;                MethodBuilder b = methods.get(key);</b>
+<b class="fc">&nbsp;                Annotation[] anns = m.getDeclaredAnnotations();</b>
+<b class="fc">&nbsp;                if (b == null) {</b>
+&nbsp;                    // nothing yet; add but do NOT specify method -- this marks it
+&nbsp;                    // as &quot;mix-over&quot;, floating mix-in
+<b class="fc">&nbsp;                    methods.put(key, new MethodBuilder(tc, null, collectAnnotations(anns)));</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    b.annotations = collectDefaultAnnotations(b.annotations, anns);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean _isIncludableMemberMethod(Method m)
+&nbsp;    {
+<b class="fc">&nbsp;        if (Modifier.isStatic(m.getModifiers())</b>
+&nbsp;                // Looks like generics can introduce hidden bridge and/or synthetic methods.
+&nbsp;                // I don&#39;t think we want to consider those...
+<b class="fc">&nbsp;                || m.isSynthetic() || m.isBridge()) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;        // also, for now we have no use for methods with more than 2 arguments:
+&nbsp;        // (2 argument methods for &quot;any setter&quot;, fwtw)
+<b class="fc">&nbsp;        int pcount = m.getParameterTypes().length;</b>
+<b class="fc">&nbsp;        return (pcount &lt;= 2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private final static class MethodBuilder {
+&nbsp;        public final TypeResolutionContext typeContext;
+&nbsp;
+&nbsp;        // Method left empty for &quot;floating&quot; mix-in, filled in as need be
+&nbsp;        public Method method;
+&nbsp;        public AnnotationCollector annotations;
+&nbsp;
+&nbsp;        public MethodBuilder(TypeResolutionContext tc, Method m,
+<b class="fc">&nbsp;                AnnotationCollector ann) {</b>
+<b class="fc">&nbsp;            typeContext = tc;</b>
+<b class="fc">&nbsp;            method = m;</b>
+<b class="fc">&nbsp;            annotations = ann;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        public AnnotatedMethod build() {
+<b class="fc">&nbsp;            if (method == null) {</b>
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;            // 12-Apr-2017, tatu: Note that parameter annotations are NOT collected -- we could
+&nbsp;            //   collect them if that&#39;d make sense but...
+<b class="fc">&nbsp;            return new AnnotatedMethod(typeContext, method, annotations.asAnnotationMap(), null);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:39</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,342 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GalileoProtocolDecoder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.traccar.protocol</a>
+</div>
+
+<h1>Coverage Summary for Class: GalileoProtocolDecoder (org.traccar.protocol)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GalileoProtocolDecoder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/123)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2013 - 2016 Anton Tananaev (anton@traccar.org)
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package org.traccar.protocol;
+&nbsp;
+&nbsp;import org.jboss.netty.buffer.ChannelBuffer;
+&nbsp;import org.jboss.netty.buffer.ChannelBuffers;
+&nbsp;import org.jboss.netty.channel.Channel;
+&nbsp;import org.traccar.BaseProtocolDecoder;
+&nbsp;import org.traccar.DeviceSession;
+&nbsp;import org.traccar.model.Position;
+&nbsp;
+&nbsp;import java.net.SocketAddress;
+&nbsp;import java.nio.ByteOrder;
+&nbsp;import java.nio.charset.StandardCharsets;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;public class GalileoProtocolDecoder extends BaseProtocolDecoder {
+&nbsp;
+&nbsp;    public GalileoProtocolDecoder(GalileoProtocol protocol) {
+<b class="nc">&nbsp;        super(protocol);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private static final int TAG_IMEI = 0x03;</b>
+&nbsp;    private static final int TAG_DATE = 0x20;
+&nbsp;    private static final int TAG_COORDINATES = 0x30;
+<b class="nc">&nbsp;    private static final int TAG_SPEED_COURSE = 0x33;</b>
+&nbsp;    private static final int TAG_ALTITUDE = 0x34;
+&nbsp;    private static final int TAG_STATUS = 0x40;
+&nbsp;    private static final int TAG_POWER = 0x41;
+&nbsp;    private static final int TAG_BATTERY = 0x42;
+&nbsp;    private static final int TAG_ODOMETER = 0xd4;
+&nbsp;    private static final int TAG_REFRIGERATOR = 0x5b;
+<b class="nc">&nbsp;    private static final int TAG_PRESSURE = 0x5c;</b>
+&nbsp;    private static final int TAG_CAN = 0xc1;
+&nbsp;    private static final int TAG_ADC0 = 0x50;
+&nbsp;    private static final int TAG_ADC1 = 0x51;
+&nbsp;    private static final int TAG_ADC2 = 0x52;
+&nbsp;    private static final int TAG_ADC3 = 0x53;
+&nbsp;
+<b class="nc">&nbsp;    private static final Map&lt;Integer, Integer&gt; TAG_LENGTH_MAP = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;    static {
+&nbsp;        int[] l1 = {
+<b class="nc">&nbsp;            0x01, 0x02, 0x35, 0x43, 0xc4, 0xc5, 0xc6, 0xc7,</b>
+&nbsp;            0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf,
+&nbsp;            0xd0, 0xd1, 0xd2, 0xd5, 0x88, 0x8a, 0x8b, 0x8c,
+&nbsp;            0xa0, 0xaf, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6,
+&nbsp;            0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae
+&nbsp;        };
+<b class="nc">&nbsp;        int[] l2 = {</b>
+<b class="nc">&nbsp;            0x04, 0x10, 0x34, 0x40, 0x41, 0x42, 0x45, 0x46,</b>
+&nbsp;            0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x60, 0x61,
+<b class="nc">&nbsp;            0x62, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76,</b>
+<b class="nc">&nbsp;            0x77, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4, 0xb5, 0xb6,</b>
+&nbsp;            0xb7, 0xb8, 0xb9, 0xd6, 0xd7, 0xd8, 0xd9, 0xda
+<b class="nc">&nbsp;        };</b>
+<b class="nc">&nbsp;        int[] l3 = {</b>
+&nbsp;            0x63, 0x64, 0x6f, 0x5d, 0x65, 0x66, 0x67, 0x68,
+<b class="nc">&nbsp;            0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e</b>
+<b class="nc">&nbsp;        };</b>
+&nbsp;        int[] l4 = {
+<b class="nc">&nbsp;            0x20, 0x33, 0x44, 0x90, 0xc0, 0xc2, 0xc3, 0xd3,</b>
+<b class="nc">&nbsp;            0xd4, 0xdb, 0xdc, 0xdd, 0xde, 0xdf, 0xf0, 0xf9,</b>
+&nbsp;            0x5a, 0x47, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6,
+&nbsp;            0xf7, 0xf8
+&nbsp;        };
+<b class="nc">&nbsp;        for (int i : l1) {</b>
+<b class="nc">&nbsp;            TAG_LENGTH_MAP.put(i, 1);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        for (int i : l2) {
+<b class="nc">&nbsp;            TAG_LENGTH_MAP.put(i, 2);</b>
+&nbsp;        }
+&nbsp;        for (int i : l3) {
+&nbsp;            TAG_LENGTH_MAP.put(i, 3);
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        for (int i : l4) {</b>
+<b class="nc">&nbsp;            TAG_LENGTH_MAP.put(i, 4);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        TAG_LENGTH_MAP.put(TAG_COORDINATES, 9);</b>
+&nbsp;        TAG_LENGTH_MAP.put(TAG_IMEI, 15);
+&nbsp;        TAG_LENGTH_MAP.put(TAG_REFRIGERATOR, 7); // variable length
+&nbsp;        TAG_LENGTH_MAP.put(TAG_PRESSURE, 68);
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    private static int getTagLength(int tag) {
+<b class="nc">&nbsp;        return TAG_LENGTH_MAP.get(tag);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    private void sendReply(Channel channel, int checksum) {</b>
+<b class="nc">&nbsp;        ChannelBuffer reply = ChannelBuffers.directBuffer(ByteOrder.LITTLE_ENDIAN, 3);</b>
+&nbsp;        reply.writeByte(0x02);
+<b class="nc">&nbsp;        reply.writeShort((short) checksum);</b>
+<b class="nc">&nbsp;        if (channel != null) {</b>
+&nbsp;            channel.write(reply);
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    protected Object decode(</b>
+&nbsp;            Channel channel, SocketAddress remoteAddress, Object msg) throws Exception {
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        ChannelBuffer buf = (ChannelBuffer) msg;</b>
+<b class="nc">&nbsp;</b>
+&nbsp;        buf.readUnsignedByte(); // header
+<b class="nc">&nbsp;        int length = (buf.readUnsignedShort() &amp; 0x7fff) + 3;</b>
+<b class="nc">&nbsp;</b>
+&nbsp;        List&lt;Position&gt; positions = new LinkedList&lt;&gt;();
+<b class="nc">&nbsp;        Set&lt;Integer&gt; tags = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;        boolean hasLocation = false;</b>
+&nbsp;
+<b class="nc">&nbsp;        Position position = new Position();</b>
+<b class="nc">&nbsp;</b>
+&nbsp;        while (buf.readerIndex() &lt; length) {
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            // Check if new message started</b>
+&nbsp;            int tag = buf.readUnsignedByte();
+<b class="nc">&nbsp;            if (tags.contains(tag)) {</b>
+<b class="nc">&nbsp;                if (hasLocation &amp;&amp; position.getFixTime() != null) {</b>
+&nbsp;                    positions.add(position);
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                tags.clear();</b>
+&nbsp;                hasLocation = false;
+<b class="nc">&nbsp;                position = new Position();</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            tags.add(tag);
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            switch (tag) {</b>
+&nbsp;
+&nbsp;                case TAG_IMEI:
+&nbsp;                    getDeviceSession(channel, remoteAddress, buf.readBytes(15).toString(StandardCharsets.US_ASCII));
+&nbsp;                    break;
+&nbsp;
+&nbsp;                case TAG_DATE:
+&nbsp;                    position.setTime(new Date(buf.readUnsignedInt() * 1000));
+&nbsp;                    break;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;                case TAG_COORDINATES:</b>
+&nbsp;                    hasLocation = true;
+<b class="nc">&nbsp;                    position.setValid((buf.readUnsignedByte() &amp; 0xf0) == 0x00);</b>
+<b class="nc">&nbsp;                    position.setLatitude(buf.readInt() / 1000000.0);</b>
+&nbsp;                    position.setLongitude(buf.readInt() / 1000000.0);
+<b class="nc">&nbsp;                    break;</b>
+<b class="nc">&nbsp;</b>
+&nbsp;                case TAG_SPEED_COURSE:
+<b class="nc">&nbsp;                    position.setSpeed(buf.readUnsignedShort() * 0.0539957);</b>
+<b class="nc">&nbsp;                    position.setCourse(buf.readUnsignedShort() * 0.1);</b>
+&nbsp;                    break;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;                case TAG_ALTITUDE:</b>
+<b class="nc">&nbsp;                    position.setAltitude(buf.readShort());</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;
+<b class="nc">&nbsp;                case TAG_STATUS:</b>
+<b class="nc">&nbsp;                    position.set(Position.KEY_STATUS, buf.readUnsignedShort());</b>
+&nbsp;                    break;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;                case TAG_POWER:</b>
+&nbsp;                    position.set(Position.KEY_POWER, buf.readUnsignedShort());
+&nbsp;                    break;
+&nbsp;
+&nbsp;                case TAG_BATTERY:
+&nbsp;                    position.set(Position.KEY_BATTERY, buf.readUnsignedShort());
+&nbsp;                    break;
+&nbsp;
+&nbsp;                case TAG_ODOMETER:
+&nbsp;                    position.set(Position.KEY_ODOMETER, buf.readUnsignedInt());
+&nbsp;                    break;
+&nbsp;
+&nbsp;                case TAG_CAN:
+&nbsp;                    position.set(Position.KEY_FUEL, buf.readUnsignedByte() * 0.4);
+&nbsp;                    position.set(Position.PREFIX_TEMP + 1, buf.readUnsignedByte() - 40);
+&nbsp;                    position.set(Position.KEY_RPM, buf.readUnsignedShort() * 0.125);
+<b class="nc">&nbsp;                    break;</b>
+<b class="nc">&nbsp;</b>
+&nbsp;                case TAG_ADC0:
+&nbsp;                    position.set(Position.PREFIX_ADC + 0, buf.readUnsignedShort());
+&nbsp;                    break;
+&nbsp;
+&nbsp;                case TAG_ADC1:
+<b class="nc">&nbsp;                    position.set(Position.PREFIX_ADC + 1, buf.readUnsignedShort());</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;
+&nbsp;                case TAG_ADC2:
+&nbsp;                    position.set(Position.PREFIX_ADC + 2, buf.readUnsignedShort());
+&nbsp;                    break;
+&nbsp;
+<b class="nc">&nbsp;                case TAG_ADC3:</b>
+<b class="nc">&nbsp;                    position.set(Position.PREFIX_ADC + 3, buf.readUnsignedShort());</b>
+&nbsp;                    break;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;                default:</b>
+&nbsp;                    buf.skipBytes(getTagLength(tag));
+&nbsp;                    break;
+&nbsp;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        if (hasLocation &amp;&amp; position.getFixTime() != null) {
+&nbsp;            positions.add(position);
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        DeviceSession deviceSession = getDeviceSession(channel, remoteAddress);</b>
+&nbsp;        if (deviceSession == null) {
+<b class="nc">&nbsp;            return null;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        sendReply(channel, buf.readUnsignedShort());</b>
+&nbsp;
+&nbsp;        for (Position p : positions) {
+&nbsp;            p.setProtocol(getProtocolName());
+&nbsp;            p.setDeviceId(deviceSession.getDeviceId());
+&nbsp;        }
+&nbsp;
+&nbsp;        if (positions.isEmpty()) {
+&nbsp;            return null;
+<b class="nc">&nbsp;        }</b>
+&nbsp;        return positions;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 23:51</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+AlematicsProtocolDecoderTest
+At2000ProtocolDecoderTest
+CarscopProtocolDecoderTest
+GnxProtocolDecoderTest

@@ -1,0 +1,8 @@
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RandoopRegressionTestBUCKETSORTBuggy0.class, RandoopRegressionTestBUCKETSORTBuggy1.class, RandoopRegressionTestBUCKETSORTBuggy2.class, RandoopRegressionTestBUCKETSORTBuggy3.class, RandoopRegressionTestBUCKETSORTBuggy4.class, RandoopRegressionTestBUCKETSORTBuggy5.class, RandoopRegressionTestBUCKETSORTBuggy6.class, RandoopRegressionTestBUCKETSORTBuggy7.class, RandoopRegressionTestBUCKETSORTBuggy8.class, RandoopRegressionTestBUCKETSORTBuggy9.class, RandoopRegressionTestBUCKETSORTBuggy10.class, RandoopRegressionTestBUCKETSORTBuggy11.class, RandoopRegressionTestBUCKETSORTBuggy12.class, RandoopRegressionTestBUCKETSORTBuggy13.class, RandoopRegressionTestBUCKETSORTBuggy14.class, RandoopRegressionTestBUCKETSORTBuggy15.class })
+public class RandoopRegressionTestBUCKETSORTBuggy {
+}
+

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.mockito.release.util.InputOutputTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-04T00:06:37" hostname="wirelessprv-10-195-155-5.near.illinois.edu" time="0.019">
+  <properties/>
+  <testcase name="closes streams" classname="org.mockito.release.util.InputOutputTest" time="0.019"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

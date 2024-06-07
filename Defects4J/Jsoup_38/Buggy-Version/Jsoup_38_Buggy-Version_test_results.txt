@@ -1,0 +1,5 @@
+Failing tests: 2
+  - org.jsoup.nodes.ErrorTest
+  - org.jsoup.parser.HtmlParserTest::convertsImageToImg
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

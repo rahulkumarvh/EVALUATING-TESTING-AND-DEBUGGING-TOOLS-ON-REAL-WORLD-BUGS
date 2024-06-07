@@ -1,0 +1,114 @@
+* Starting client
+* Connecting to master process on port 19112
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-17/patched/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-17/patched/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.9.0.pr3/jackson-annotations-2.9.0.pr3.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.9.0.pr3/jackson-core-2.9.0.pr3.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 15:03:11.752 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-17/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-17/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver.seed
+* Total number of test goals: 
+  - Line 126
+  - Branch 87
+  - Exception 0
+  - MutationFactory 95
+  - Output 10
+  - Method 10
+  - MethodNoException 10
+  - CBranchFitnessFactory 87
+* Using seed 1712001785498
+* Starting evolution
+[MASTER] 15:03:31.144 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:31.298 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.SerializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:31.325 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:31.494 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotationCollector$OneAnnotation due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<java.lang.Class<java.lang.Object>> canUseFunctionalMocks=false, canBeMocked: false
+[MASTER] 15:03:31.645 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedParameter due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<java.lang.Integer> canUseFunctionalMocks=true, canBeMocked: false
+[MASTER] 15:03:32.172 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<com.fasterxml.jackson.databind.JavaType> canUseFunctionalMocks=true, canBeMocked: false
+[MASTER] 15:03:32.231 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Have no generator for class com.fasterxml.jackson.databind.introspect.AnnotatedClass canUseFunctionalMocks=false, canBeMocked: true
+[MASTER] 15:03:32.338 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:32.594 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Have no generator for class com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder canUseFunctionalMocks=false, canBeMocked: true
+[MASTER] 15:03:32.765 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.jsontype.impl.AsExternalTypeDeserializer due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.ser.BeanPropertyWriter due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotationCollector$TwoAnnotations due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:32.849 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.ObjectIdInfo due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.DefaultDeserializationContext$Impl due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.BeanDeserializerFactory due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:32.956 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:32.967 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.ObjectIdInfo due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:33.010 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.cfg.BaseSettings due to org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+[MASTER] 15:03:33.086 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedMethod due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:33.261 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.BeanProperty$Std due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.BeanProperty$Std due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:33.368 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:33.852 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.ser.BeanPropertyWriter due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:33.904 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.ObjectIdInfo due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.ser.BeanPropertyWriter due to org.evosuite.ga.ConstructionFailedException: Have no generator for class com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder canUseFunctionalMocks=false, canBeMocked: true
+[MASTER] 15:03:33.969 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.BeanProperty$Std due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.BeanProperty$Std due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:34.013 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Have no generator for class com.fasterxml.jackson.databind.introspect.AnnotationMap canUseFunctionalMocks=false, canBeMocked: true
+[MASTER] 15:03:34.194 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<java.time.chrono.HijrahEra> canUseFunctionalMocks=true, canBeMocked: false
+[MASTER] 15:03:34.301 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.SerializationConfig due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.SimpleMixInResolver due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.DeserializationConfig due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:34.302 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotationCollector$TwoAnnotations due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.ser.BeanPropertyWriter due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:03:34.728 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<java.lang.Object> canUseFunctionalMocks=false, canBeMocked: false
+[MASTER] 15:03:35.151 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotationCollector$OneAnnotation due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<java.lang.Integer> canUseFunctionalMocks=true, canBeMocked: false
+[MASTER] 15:03:35.509 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.ObjectIdInfo due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.ser.BeanPropertyWriter due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<com.fasterxml.jackson.databind.jsontype.NamedType> canUseFunctionalMocks=true, canBeMocked: false
+[MASTER] 15:03:36.900 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Have no generator for class com.fasterxml.jackson.databind.deser.CreatorProperty canUseFunctionalMocks=false, canBeMocked: true
+[MASTER] 15:03:38.895 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.jsontype.impl.AsArrayTypeDeserializer due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.BeanProperty$Std due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedField due to org.evosuite.ga.ConstructionFailedException: Max recursion depth reached
+[MASTER] 15:04:09.205 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.deser.CreatorProperty due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.BeanProperty$Std due to org.evosuite.ga.ConstructionFailedException: Failed to add constructor for com.fasterxml.jackson.databind.introspect.AnnotatedConstructor due to org.evosuite.ga.ConstructionFailedException: Have no generator for java.lang.reflect.Constructor<java.lang.annotation.Annotation> canUseFunctionalMocks=true, canBeMocked: false
+* Search finished after 67s and 318 generations, 199115 statements, best individual has fitness: 404.1144736842105
+* Writing sequences to pool
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 25%
+* Total number of goals: 126
+* Number of covered goals: 32
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 18%
+* Total number of goals: 87
+* Number of covered goals: 16
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 7
+* Number of covered goals: 7
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 32%
+* Total number of goals: 95
+* Number of covered goals: 30
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 0%
+* Total number of goals: 10
+* Number of covered goals: 0
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 80%
+* Total number of goals: 10
+* Number of covered goals: 8
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 40%
+* Total number of goals: 10
+* Number of covered goals: 4
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 18%
+* Total number of goals: 87
+* Number of covered goals: 16
+* Generated 12 tests with total length 125
+* Resulting test suite's coverage: 39% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 16%
+* Compiling and checking tests
+* Writing JUnit test case 'StdSubtypeResolver_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-17/patched/.evosuite/tmp_2024_04_01_15_03_03/tests
+* Done!
+

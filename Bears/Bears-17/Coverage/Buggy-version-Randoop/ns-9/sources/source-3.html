@@ -1,0 +1,318 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnotatedClassResolver</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnotatedClassResolver (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnotatedClassResolver</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/78)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.lang.annotation.Annotation;
+&nbsp;import java.lang.annotation.Retention;
+&nbsp;import java.lang.annotation.Target;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.JavaType;
+&nbsp;import com.fasterxml.jackson.databind.cfg.MapperConfig;
+&nbsp;import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
+&nbsp;import com.fasterxml.jackson.databind.type.TypeBindings;
+&nbsp;import com.fasterxml.jackson.databind.util.Annotations;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;
+&nbsp;/**
+&nbsp; * Helper class that contains logic for resolving annotations to construct
+&nbsp; * {@link AnnotatedClass} instances.
+&nbsp; *
+&nbsp; * @since 2.9
+&nbsp; */
+&nbsp;public class AnnotatedClassResolver
+&nbsp;{
+<b class="nc">&nbsp;    private final static Annotations NO_ANNOTATIONS = AnnotationCollector.emptyAnnotations();</b>
+&nbsp;
+&nbsp;    private final MapperConfig&lt;?&gt; _config;
+&nbsp;    private final AnnotationIntrospector _intr;
+&nbsp;    private final MixInResolver _mixInResolver;
+&nbsp;    private final TypeBindings _bindings;
+&nbsp;
+&nbsp;    private final JavaType _type;
+&nbsp;    private final Class&lt;?&gt; _class;
+&nbsp;    private final Class&lt;?&gt; _primaryMixin;
+&nbsp;
+<b class="nc">&nbsp;    AnnotatedClassResolver(MapperConfig&lt;?&gt; config, JavaType type, MixInResolver r) {</b>
+<b class="nc">&nbsp;        _config = config;</b>
+<b class="nc">&nbsp;        _type = type;</b>
+<b class="nc">&nbsp;        _class = type.getRawClass();</b>
+<b class="nc">&nbsp;        _mixInResolver = r;</b>
+<b class="nc">&nbsp;        _bindings = type.getBindings();</b>
+<b class="nc">&nbsp;        _intr = config.isAnnotationProcessingEnabled()</b>
+<b class="nc">&nbsp;                ? config.getAnnotationIntrospector() : null;</b>
+<b class="nc">&nbsp;        _primaryMixin = _config.findMixInClassFor(_class);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    AnnotatedClassResolver(MapperConfig&lt;?&gt; config, Class&lt;?&gt; cls, MixInResolver r) {</b>
+<b class="nc">&nbsp;        _config = config;</b>
+<b class="nc">&nbsp;        _type = null;</b>
+<b class="nc">&nbsp;        _class = cls;</b>
+<b class="nc">&nbsp;        _mixInResolver = r;</b>
+<b class="nc">&nbsp;        _bindings = TypeBindings.emptyBindings();</b>
+<b class="nc">&nbsp;        if (config == null) {</b>
+<b class="nc">&nbsp;            _intr = null;</b>
+<b class="nc">&nbsp;            _primaryMixin = null;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            _intr = config.isAnnotationProcessingEnabled()</b>
+<b class="nc">&nbsp;                    ? config.getAnnotationIntrospector() : null;</b>
+<b class="nc">&nbsp;            _primaryMixin = _config.findMixInClassFor(_class);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static AnnotatedClass resolve(MapperConfig&lt;?&gt; config, JavaType forType,
+&nbsp;            MixInResolver r)
+&nbsp;    {
+<b class="nc">&nbsp;        return new AnnotatedClassResolver(config, forType, r).resolveFully();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static AnnotatedClass resolveWithoutSuperTypes(MapperConfig&lt;?&gt; config, JavaType forType,
+&nbsp;            MixInResolver r)
+&nbsp;    {
+<b class="nc">&nbsp;        return new AnnotatedClassResolver(config, forType, r).resolveWithoutSuperTypes();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static AnnotatedClass resolveWithoutSuperTypes(MapperConfig&lt;?&gt; config, Class&lt;?&gt; forType) {
+<b class="nc">&nbsp;        return resolveWithoutSuperTypes(config, forType, config);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static AnnotatedClass resolveWithoutSuperTypes(MapperConfig&lt;?&gt; config, Class&lt;?&gt; forType,
+&nbsp;            MixInResolver r)
+&nbsp;    {
+<b class="nc">&nbsp;        return new AnnotatedClassResolver(config, forType, r).resolveWithoutSuperTypes();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Internal helper class used for resolving a small set of &quot;primordial&quot; types for which
+&nbsp;     * we do not accept any annotation information or overrides. 
+&nbsp;     */
+&nbsp;    static AnnotatedClass createPrimordial(Class&lt;?&gt; raw) {
+<b class="nc">&nbsp;        Annotations noClassAnn = new AnnotationMap();</b>
+<b class="nc">&nbsp;        List&lt;JavaType&gt; superTypes = Collections.emptyList();</b>
+<b class="nc">&nbsp;        return new AnnotatedClass(null, raw, superTypes, null, noClassAnn,</b>
+<b class="nc">&nbsp;                TypeBindings.emptyBindings(), null, null, null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    AnnotatedClass resolveFully() {
+<b class="nc">&nbsp;        List&lt;JavaType&gt; superTypes = ClassUtil.findSuperTypes(_type, null, false);</b>
+<b class="nc">&nbsp;        Annotations classAnn = resolveClassAnnotations(superTypes);</b>
+<b class="nc">&nbsp;        return new AnnotatedClass(_type, _class, superTypes, _primaryMixin, classAnn, _bindings,</b>
+<b class="nc">&nbsp;                _intr, _mixInResolver, _config.getTypeFactory());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    AnnotatedClass resolveWithoutSuperTypes() {
+<b class="nc">&nbsp;        List&lt;JavaType&gt; superTypes = Collections.&lt;JavaType&gt;emptyList();</b>
+<b class="nc">&nbsp;        Annotations classAnn = resolveClassAnnotations(superTypes);</b>
+<b class="nc">&nbsp;        return new AnnotatedClass(null, _class, superTypes, _primaryMixin, classAnn,</b>
+<b class="nc">&nbsp;                _bindings, _intr, _config, _config.getTypeFactory());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Class annotation resolution
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialization method that will recursively collect Jackson
+&nbsp;     * annotations for this class and all super classes and
+&nbsp;     * interfaces.
+&nbsp;     */
+&nbsp;    private Annotations resolveClassAnnotations(List&lt;JavaType&gt; superTypes)
+&nbsp;    {
+&nbsp;        // Should skip processing if annotation processing disabled
+<b class="nc">&nbsp;        if (_intr == null) {</b>
+<b class="nc">&nbsp;            return NO_ANNOTATIONS;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        AnnotationCollector resolvedCA = AnnotationCollector.emptyCollector();</b>
+&nbsp;        // add mix-in annotations first (overrides)
+<b class="nc">&nbsp;        if (_primaryMixin != null) {</b>
+<b class="nc">&nbsp;            resolvedCA = _addClassMixIns(resolvedCA, _class, _primaryMixin);</b>
+&nbsp;        }
+&nbsp;        // then annotations from the class itself:
+<b class="nc">&nbsp;        resolvedCA = _addAnnotationsIfNotPresent(resolvedCA,</b>
+<b class="nc">&nbsp;                ClassUtil.findClassAnnotations(_class));</b>
+&nbsp;
+&nbsp;        // and then from super types
+<b class="nc">&nbsp;        for (JavaType type : superTypes) {</b>
+&nbsp;            // and mix mix-in annotations in-between
+<b class="nc">&nbsp;            if (_mixInResolver != null) {</b>
+<b class="nc">&nbsp;                Class&lt;?&gt; cls = type.getRawClass();</b>
+<b class="nc">&nbsp;                resolvedCA = _addClassMixIns(resolvedCA, cls,</b>
+<b class="nc">&nbsp;                        _mixInResolver.findMixInClassFor(cls));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            resolvedCA = _addAnnotationsIfNotPresent(resolvedCA,</b>
+<b class="nc">&nbsp;                    ClassUtil.findClassAnnotations(type.getRawClass()));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        /* and finally... any annotations there might be for plain
+&nbsp;         * old Object.class: separate because for all other purposes
+&nbsp;         * it is just ignored (not included in super types)
+&nbsp;         */
+&nbsp;        // 12-Jul-2009, tatu: Should this be done for interfaces too?
+&nbsp;        //  For now, yes, seems useful for some cases, and not harmful for any?
+<b class="nc">&nbsp;        if (_mixInResolver != null) {</b>
+<b class="nc">&nbsp;            resolvedCA = _addClassMixIns(resolvedCA, Object.class,</b>
+<b class="nc">&nbsp;                    _mixInResolver.findMixInClassFor(Object.class));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return resolvedCA.asAnnotations();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private AnnotationCollector _addClassMixIns(AnnotationCollector annotations,
+&nbsp;            Class&lt;?&gt; target, Class&lt;?&gt; mixin)
+&nbsp;    {
+<b class="nc">&nbsp;        if (mixin != null) {</b>
+&nbsp;            // Ok, first: annotations from mix-in class itself:
+<b class="nc">&nbsp;            annotations = _addAnnotationsIfNotPresent(annotations, ClassUtil.findClassAnnotations(mixin));</b>
+&nbsp;    
+&nbsp;            // And then from its supertypes, if any. But note that we will only consider
+&nbsp;            // super-types up until reaching the masked class (if found); this because
+&nbsp;            // often mix-in class is a sub-class (for convenience reasons).
+&nbsp;            // And if so, we absolutely must NOT include super types of masked class,
+&nbsp;            // as that would inverse precedence of annotations.
+<b class="nc">&nbsp;            for (Class&lt;?&gt; parent : ClassUtil.findSuperClasses(mixin, target, false)) {</b>
+<b class="nc">&nbsp;                annotations = _addAnnotationsIfNotPresent(annotations, ClassUtil.findClassAnnotations(parent));</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return annotations;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private AnnotationCollector _addAnnotationsIfNotPresent(AnnotationCollector c,
+&nbsp;            Annotation[] anns)
+&nbsp;    {
+<b class="nc">&nbsp;        if (anns != null) {</b>
+<b class="nc">&nbsp;            for (Annotation ann : anns) { // first: direct annotations</b>
+&nbsp;                // note: we will NOT filter out non-Jackson annotations any more
+<b class="nc">&nbsp;                if (!c.isPresent(ann)) {</b>
+<b class="nc">&nbsp;                    c = c.addOrOverride(ann);</b>
+<b class="nc">&nbsp;                    if (_intr.isAnnotationBundle(ann)) {</b>
+<b class="nc">&nbsp;                        c = _addFromBundleIfNotPresent(c, ann);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return c;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private AnnotationCollector _addFromBundleIfNotPresent(AnnotationCollector c,
+&nbsp;            Annotation bundle)
+&nbsp;    {
+<b class="nc">&nbsp;        for (Annotation ann : ClassUtil.findClassAnnotations(bundle.annotationType())) {</b>
+&nbsp;            // minor optimization: by-pass 2 common JDK meta-annotations
+<b class="nc">&nbsp;            if ((ann instanceof Target) || (ann instanceof Retention)) {</b>
+<b class="nc">&nbsp;                continue;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (!c.isPresent(ann)) {</b>
+<b class="nc">&nbsp;                c = c.addOrOverride(ann);</b>
+<b class="nc">&nbsp;                if (_intr.isAnnotationBundle(ann)) {</b>
+<b class="nc">&nbsp;                    c = _addFromBundleIfNotPresent(c, ann);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return c;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:52</div>
+</div>
+</body>
+</html>

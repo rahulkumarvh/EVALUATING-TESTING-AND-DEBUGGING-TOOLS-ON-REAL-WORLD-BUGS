@@ -1,0 +1,8 @@
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RandoopRegressionTestKHEAPSORTPatched0.class, RandoopRegressionTestKHEAPSORTPatched1.class, RandoopRegressionTestKHEAPSORTPatched2.class, RandoopRegressionTestKHEAPSORTPatched3.class, RandoopRegressionTestKHEAPSORTPatched4.class, RandoopRegressionTestKHEAPSORTPatched5.class, RandoopRegressionTestKHEAPSORTPatched6.class, RandoopRegressionTestKHEAPSORTPatched7.class, RandoopRegressionTestKHEAPSORTPatched8.class, RandoopRegressionTestKHEAPSORTPatched9.class, RandoopRegressionTestKHEAPSORTPatched10.class, RandoopRegressionTestKHEAPSORTPatched11.class, RandoopRegressionTestKHEAPSORTPatched12.class, RandoopRegressionTestKHEAPSORTPatched13.class, RandoopRegressionTestKHEAPSORTPatched14.class, RandoopRegressionTestKHEAPSORTPatched15.class, RandoopRegressionTestKHEAPSORTPatched16.class, RandoopRegressionTestKHEAPSORTPatched17.class, RandoopRegressionTestKHEAPSORTPatched18.class, RandoopRegressionTestKHEAPSORTPatched19.class })
+public class RandoopRegressionTestKHEAPSORTPatched {
+}
+

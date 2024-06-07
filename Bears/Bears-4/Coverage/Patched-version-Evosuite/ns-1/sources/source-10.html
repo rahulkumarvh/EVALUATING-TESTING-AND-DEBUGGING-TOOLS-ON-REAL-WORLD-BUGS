@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > NullsConstantProvider</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: NullsConstantProvider (com.fasterxml.jackson.databind.deser.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NullsConstantProvider</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;//
+&nbsp;// Source code recreated from a .class file by IntelliJ IDEA
+&nbsp;// (powered by FernFlower decompiler)
+&nbsp;//
+&nbsp;
+&nbsp;package com.fasterxml.jackson.databind.deser.impl;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.DeserializationContext;
+&nbsp;import com.fasterxml.jackson.databind.deser.NullValueProvider;
+&nbsp;import com.fasterxml.jackson.databind.util.AccessPattern;
+&nbsp;import java.io.Serializable;
+&nbsp;
+&nbsp;public class NullsConstantProvider implements NullValueProvider, Serializable {
+&nbsp;    private static final long serialVersionUID = 1L;
+&nbsp;    private static final NullsConstantProvider SKIPPER = new NullsConstantProvider((Object)null);
+&nbsp;    private static final NullsConstantProvider NULLER = new NullsConstantProvider((Object)null);
+<b class="nc">&nbsp;    protected final Object _nullValue;</b>
+&nbsp;    protected final AccessPattern _access;
+<b class="nc">&nbsp;</b>
+&nbsp;    protected NullsConstantProvider(Object nvl) {
+&nbsp;        this._nullValue = nvl;
+&nbsp;        this._access = this._nullValue == null ? AccessPattern.ALWAYS_NULL : AccessPattern.CONSTANT;
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public static NullsConstantProvider skipper() {</b>
+<b class="nc">&nbsp;        return SKIPPER;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    public static NullsConstantProvider nuller() {
+&nbsp;        return NULLER;
+&nbsp;    }
+&nbsp;
+&nbsp;    public static NullsConstantProvider forValue(Object nvl) {
+&nbsp;        return nvl == null ? NULLER : new NullsConstantProvider(nvl);
+&nbsp;    }
+&nbsp;
+&nbsp;    public static boolean isSkipper(NullValueProvider p) {
+<b class="nc">&nbsp;        return p == SKIPPER;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static boolean isNuller(NullValueProvider p) {
+<b class="nc">&nbsp;        return p == NULLER;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public AccessPattern getNullAccessPattern() {
+<b class="nc">&nbsp;        return this._access;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    public Object getNullValue(DeserializationContext ctxt) {</b>
+&nbsp;        return this._nullValue;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:46</div>
+</div>
+</body>
+</html>

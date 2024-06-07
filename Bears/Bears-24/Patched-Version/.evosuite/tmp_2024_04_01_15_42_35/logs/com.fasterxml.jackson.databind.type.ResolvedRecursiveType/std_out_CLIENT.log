@@ -1,0 +1,86 @@
+* Starting client
+* Connecting to master process on port 21755
+* Analyzing classpath: 
+  - /Users/SakshilVerma/Downloads/bears/bears-24/patched/target/test-classes
+  - /Users/SakshilVerma/Downloads/bears/bears-24/patched/target/classes
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar
+  - /Users/SakshilVerma/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.8.9/jackson-core-2.8.9.jar
+  - /Users/SakshilVerma/.m2/repository/junit/junit/4.12/junit-4.12.jar
+  - /Users/SakshilVerma/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  - /Users/SakshilVerma/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar
+  - /Users/SakshilVerma/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+  - /Users/SakshilVerma/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+  - /Users/SakshilVerma/.m2/repository/javax/measure/jsr-275/0.9.1/jsr-275-0.9.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+  - /Users/SakshilVerma/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+* Finished analyzing classpath
+* Generating tests for class com.fasterxml.jackson.databind.type.ResolvedRecursiveType
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 15:42:43.238 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: /Users/SakshilVerma/Downloads/bears/bears-24/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.type.ResolvedRecursiveType.seed
+* Loaded 0 tests from /Users/SakshilVerma/Downloads/bears/bears-24/patched/.evosuite/evosuite-seeds/com.fasterxml.jackson.databind.type.ResolvedRecursiveType.seed
+* Total number of test goals: 
+  - Line 32
+  - Branch 25
+  - Exception 0
+  - MutationFactory 33
+  - Output 301
+  - Method 17
+  - MethodNoException 17
+  - CBranchFitnessFactory 25
+* Using seed 1712004157476
+* Starting evolution
+[MASTER] 15:43:06.186 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Invalid generic instance
+* Search finished after 67s and 74 generations, 35248 statements, best individual has fitness: 130.16666666666666
+* Writing sequences to pool
+* Minimizing test suite
+[MASTER] 15:44:00.775 [pool-2-thread-1] WARN  TestSuiteMinimizer - Minimization timeout. Roll back to original test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 100%
+* Total number of goals: 32
+* Number of covered goals: 32
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 100%
+* Total number of goals: 25
+* Number of covered goals: 25
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 5
+* Number of covered goals: 5
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 100%
+* Total number of goals: 33
+* Number of covered goals: 33
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 57%
+* Total number of goals: 301
+* Number of covered goals: 171
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 100%
+* Total number of goals: 17
+* Number of covered goals: 17
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 100%
+* Total number of goals: 17
+* Number of covered goals: 17
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 100%
+* Total number of goals: 25
+* Number of covered goals: 25
+* Generated 59 tests with total length 913
+* Resulting test suite's coverage: 95% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 64%
+* Compiling and checking tests
+* Writing JUnit test case 'ResolvedRecursiveType_ESTest' to /Users/SakshilVerma/Downloads/bears/bears-24/patched/.evosuite/tmp_2024_04_01_15_42_35/tests
+* Done!
+

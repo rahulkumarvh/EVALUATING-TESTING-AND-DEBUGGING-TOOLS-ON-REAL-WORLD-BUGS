@@ -1,0 +1,527 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnotationCollector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnotationCollector (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnotationCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AnnotationCollector$EmptyCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AnnotationCollector$NCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AnnotationCollector$NoAnnotations</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AnnotationCollector$OneAnnotation</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AnnotationCollector$OneCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AnnotationCollector$TwoAnnotations</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/75)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.lang.annotation.Annotation;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Iterator;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.util.Annotations;
+&nbsp;
+&nbsp;/**
+&nbsp; * Helper class used to collect annotations to be stored as
+&nbsp; * {@link com.fasterxml.jackson.databind.util.Annotations} (like {@link AnnotationMap}).
+&nbsp; *
+&nbsp; * @since 2.9
+&nbsp; */
+&nbsp;public abstract class AnnotationCollector
+&nbsp;{
+<b class="nc">&nbsp;    protected final static Annotations NO_ANNOTATIONS = new NoAnnotations();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Optional data to carry along
+&nbsp;     */
+&nbsp;    protected final Object _data;
+&nbsp;
+<b class="nc">&nbsp;    protected AnnotationCollector(Object d) {</b>
+<b class="nc">&nbsp;        _data = d;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public static Annotations emptyAnnotations() { return NO_ANNOTATIONS; }</b>
+&nbsp;
+&nbsp;    public static AnnotationCollector emptyCollector() {
+<b class="nc">&nbsp;        return EmptyCollector.instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static AnnotationCollector emptyCollector(Object data) {
+<b class="nc">&nbsp;        return new EmptyCollector(data);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public abstract Annotations asAnnotations();
+&nbsp;    public abstract AnnotationMap asAnnotationMap();
+&nbsp;
+&nbsp;    public Object getData() {
+<b class="nc">&nbsp;        return _data;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* API
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    public abstract boolean isPresent(Annotation ann);
+&nbsp;
+&nbsp;    public abstract AnnotationCollector addOrOverride(Annotation ann);
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Collector implementations
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    static class EmptyCollector extends AnnotationCollector
+&nbsp;    {
+<b class="nc">&nbsp;        public final static EmptyCollector instance = new EmptyCollector(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        EmptyCollector(Object data) { super(data); }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Annotations asAnnotations() {
+<b class="nc">&nbsp;            return NO_ANNOTATIONS;</b>
+&nbsp;        }
+&nbsp; 
+&nbsp;        @Override
+&nbsp;        public AnnotationMap asAnnotationMap() {
+<b class="nc">&nbsp;            return new AnnotationMap();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+<b class="nc">&nbsp;        public boolean isPresent(Annotation ann) { return false; }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public AnnotationCollector addOrOverride(Annotation ann) {
+<b class="nc">&nbsp;            return new OneCollector(_data, ann.annotationType(), ann);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    static class OneCollector extends AnnotationCollector
+&nbsp;    {
+&nbsp;        private Class&lt;?&gt; _type;
+&nbsp;        private Annotation _value;
+&nbsp;
+&nbsp;        public OneCollector(Object data,
+&nbsp;                Class&lt;?&gt; type, Annotation value) {
+<b class="nc">&nbsp;            super(data);</b>
+<b class="nc">&nbsp;            _type = type;</b>
+<b class="nc">&nbsp;            _value = value;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Annotations asAnnotations() {
+<b class="nc">&nbsp;            return new OneAnnotation(_type, _value);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public AnnotationMap asAnnotationMap() {
+<b class="nc">&nbsp;            return AnnotationMap.of(_type, _value);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean isPresent(Annotation ann) {
+<b class="nc">&nbsp;            return ann.annotationType() == _type;</b>
+&nbsp;        }
+&nbsp;        
+&nbsp;        @Override
+&nbsp;        public AnnotationCollector addOrOverride(Annotation ann) {
+<b class="nc">&nbsp;            final Class&lt;?&gt; type = ann.annotationType();</b>
+&nbsp;            // true override? Just replace in-place, return
+<b class="nc">&nbsp;            if (_type == type) {</b>
+<b class="nc">&nbsp;                _value = ann;</b>
+<b class="nc">&nbsp;                return this;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return new NCollector(_data, _type, _value, type, ann);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    static class NCollector extends AnnotationCollector
+&nbsp;    {
+&nbsp;        protected final HashMap&lt;Class&lt;?&gt;,Annotation&gt; _annotations;
+&nbsp;
+&nbsp;        public NCollector(Object data,
+&nbsp;                Class&lt;?&gt; type1, Annotation value1,
+&nbsp;                Class&lt;?&gt; type2, Annotation value2) {
+<b class="nc">&nbsp;            super(data);</b>
+<b class="nc">&nbsp;            _annotations = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;            _annotations.put(type1, value1);</b>
+<b class="nc">&nbsp;            _annotations.put(type2, value2);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public Annotations asAnnotations() {
+<b class="nc">&nbsp;            if (_annotations.size() == 2) {</b>
+<b class="nc">&nbsp;                Iterator&lt;Map.Entry&lt;Class&lt;?&gt;,Annotation&gt;&gt; it = _annotations.entrySet().iterator();</b>
+<b class="nc">&nbsp;                Map.Entry&lt;Class&lt;?&gt;,Annotation&gt; en1 = it.next(), en2 = it.next();</b>
+<b class="nc">&nbsp;                return new TwoAnnotations(en1.getKey(), en1.getValue(),</b>
+<b class="nc">&nbsp;                        en2.getKey(), en2.getValue());</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return new AnnotationMap(_annotations);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public AnnotationMap asAnnotationMap() {
+<b class="nc">&nbsp;            AnnotationMap result = new AnnotationMap();</b>
+<b class="nc">&nbsp;            for (Annotation ann : _annotations.values()) {</b>
+<b class="nc">&nbsp;                result.add(ann);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            return result;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean isPresent(Annotation ann) {
+<b class="nc">&nbsp;            return _annotations.containsKey(ann.annotationType());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public AnnotationCollector addOrOverride(Annotation ann) {
+<b class="nc">&nbsp;            _annotations.put(ann.annotationType(), ann);</b>
+<b class="nc">&nbsp;            return this;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Annotations implementations
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Immutable implementation for case where no annotations are associated with
+&nbsp;     * an annotatable entity.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    public static class NoAnnotations
+&nbsp;        implements Annotations, java.io.Serializable
+&nbsp;    {
+&nbsp;        private static final long serialVersionUID = 1L;
+&nbsp;
+<b class="nc">&nbsp;        NoAnnotations() { }</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public &lt;A extends Annotation&gt; A get(Class&lt;A&gt; cls) {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean has(Class&lt;?&gt; cls) {
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean hasOneOf(Class&lt;? extends Annotation&gt;[] annoClasses) {
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public int size() {
+<b class="nc">&nbsp;            return 0;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static class OneAnnotation
+&nbsp;        implements Annotations, java.io.Serializable
+&nbsp;    {
+&nbsp;        private static final long serialVersionUID = 1L;
+&nbsp;
+&nbsp;        private final Class&lt;?&gt; _type;
+&nbsp;        private final Annotation _value;
+&nbsp;
+<b class="nc">&nbsp;        public OneAnnotation(Class&lt;?&gt; type, Annotation value) {</b>
+<b class="nc">&nbsp;            _type = type;</b>
+<b class="nc">&nbsp;            _value = value;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;        @Override
+&nbsp;        public &lt;A extends Annotation&gt; A get(Class&lt;A&gt; cls) {
+<b class="nc">&nbsp;            if (_type == cls) {</b>
+<b class="nc">&nbsp;                return (A) _value;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean has(Class&lt;?&gt; cls) {
+<b class="nc">&nbsp;            return (_type == cls);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean hasOneOf(Class&lt;? extends Annotation&gt;[] annoClasses) {
+<b class="nc">&nbsp;            for (Class&lt;?&gt; cls : annoClasses) {</b>
+<b class="nc">&nbsp;                if (cls == _type) {</b>
+<b class="nc">&nbsp;                    return true;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public int size() {
+<b class="nc">&nbsp;            return 1;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static class TwoAnnotations
+&nbsp;        implements Annotations, java.io.Serializable
+&nbsp;    {
+&nbsp;        private static final long serialVersionUID = 1L;
+&nbsp;    
+&nbsp;        private final Class&lt;?&gt; _type1, _type2;
+&nbsp;        private final Annotation _value1, _value2;
+&nbsp;    
+&nbsp;        public TwoAnnotations(Class&lt;?&gt; type1, Annotation value1,
+<b class="nc">&nbsp;                Class&lt;?&gt; type2, Annotation value2) {</b>
+<b class="nc">&nbsp;            _type1 = type1;</b>
+<b class="nc">&nbsp;            _value1 = value1;</b>
+<b class="nc">&nbsp;            _type2 = type2;</b>
+<b class="nc">&nbsp;            _value2 = value2;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;        @Override
+&nbsp;        public &lt;A extends Annotation&gt; A get(Class&lt;A&gt; cls) {
+<b class="nc">&nbsp;            if (_type1 == cls) {</b>
+<b class="nc">&nbsp;                return (A) _value1;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (_type2 == cls) {</b>
+<b class="nc">&nbsp;                return (A) _value2;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean has(Class&lt;?&gt; cls) {
+<b class="nc">&nbsp;            return (_type1 == cls) || (_type2 == cls);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean hasOneOf(Class&lt;? extends Annotation&gt;[] annoClasses) {
+<b class="nc">&nbsp;            for (Class&lt;?&gt; cls : annoClasses) {</b>
+<b class="nc">&nbsp;                if ((cls == _type1) || (cls == _type2)) {</b>
+<b class="nc">&nbsp;                    return true;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public int size() {
+<b class="nc">&nbsp;            return 2;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:05</div>
+</div>
+</body>
+</html>

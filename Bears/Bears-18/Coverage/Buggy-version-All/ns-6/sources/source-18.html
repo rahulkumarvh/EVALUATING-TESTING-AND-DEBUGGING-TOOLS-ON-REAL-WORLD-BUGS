@@ -1,0 +1,346 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ReferenceTypeDeserializer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.std</a>
+</div>
+
+<h1>Coverage Summary for Class: ReferenceTypeDeserializer (com.fasterxml.jackson.databind.deser.std)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReferenceTypeDeserializer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    45.5%
+  </span>
+  <span class="absValue">
+    (5/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60.4%
+  </span>
+  <span class="absValue">
+    (29/48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser.std;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.JsonParser;
+&nbsp;import com.fasterxml.jackson.core.JsonToken;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+&nbsp;import com.fasterxml.jackson.databind.deser.ValueInstantiator;
+&nbsp;import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+&nbsp;import com.fasterxml.jackson.databind.type.ReferenceType;
+&nbsp;import com.fasterxml.jackson.databind.util.AccessPattern;
+&nbsp;
+&nbsp;/**
+&nbsp; * Base deserializer implementation for properties {@link ReferenceType} values.
+&nbsp; * Implements most of functionality, only leaving couple of abstract
+&nbsp; * methods for sub-classes to implement
+&nbsp; *
+&nbsp; * @since 2.8
+&nbsp; */
+&nbsp;public abstract class ReferenceTypeDeserializer&lt;T&gt;
+&nbsp;    extends StdDeserializer&lt;T&gt;
+&nbsp;    implements ContextualDeserializer
+&nbsp;{
+&nbsp;    private static final long serialVersionUID = 2L; // 2.9
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Full type of property (or root value) for which this deserializer
+&nbsp;     * has been constructed and contextualized.
+&nbsp;     */
+&nbsp;    protected final JavaType _fullType;
+&nbsp;
+&nbsp;    protected final ValueInstantiator _valueInstantiator;
+&nbsp;
+&nbsp;    protected final TypeDeserializer _valueTypeDeserializer;
+&nbsp;    protected final JsonDeserializer&lt;Object&gt; _valueDeserializer;
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Life-cycle
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public ReferenceTypeDeserializer(JavaType fullType, ValueInstantiator vi,
+&nbsp;            TypeDeserializer typeDeser, JsonDeserializer&lt;?&gt; deser)
+&nbsp;    {
+<b class="fc">&nbsp;        super(fullType);</b>
+<b class="fc">&nbsp;        _valueInstantiator = vi;</b>
+<b class="fc">&nbsp;        _fullType = fullType;</b>
+<b class="fc">&nbsp;        _valueDeserializer = (JsonDeserializer&lt;Object&gt;) deser;</b>
+<b class="fc">&nbsp;        _valueTypeDeserializer = typeDeser;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Deprecated // since 2.9
+&nbsp;    public ReferenceTypeDeserializer(JavaType fullType,
+&nbsp;            TypeDeserializer typeDeser, JsonDeserializer&lt;?&gt; deser)
+&nbsp;    {
+<b class="nc">&nbsp;        this(fullType, null, typeDeser, deser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public JsonDeserializer&lt;?&gt; createContextual(DeserializationContext ctxt, BeanProperty property)
+&nbsp;            throws JsonMappingException
+&nbsp;    {
+<b class="fc">&nbsp;        JsonDeserializer&lt;?&gt; deser = _valueDeserializer;</b>
+<b class="fc">&nbsp;        if (deser == null) {</b>
+<b class="fc">&nbsp;            deser = ctxt.findContextualValueDeserializer(_fullType.getReferencedType(), property);</b>
+&nbsp;        } else { // otherwise directly assigned, probably not contextual yet:
+<b class="fc">&nbsp;            deser = ctxt.handleSecondaryContextualization(deser, property, _fullType.getReferencedType());            </b>
+&nbsp;        }
+<b class="fc">&nbsp;        TypeDeserializer typeDeser = _valueTypeDeserializer;</b>
+<b class="fc">&nbsp;        if (typeDeser != null) {</b>
+<b class="fc">&nbsp;            typeDeser = typeDeser.forProperty(property);</b>
+&nbsp;        }
+&nbsp;        // !!! 23-Oct-2016, tatu: TODO: full support for configurable ValueInstantiators?
+<b class="fc">&nbsp;        if ((deser == _valueDeserializer) &amp;&amp; (typeDeser == _valueTypeDeserializer)) {</b>
+<b class="fc">&nbsp;            return this;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return withResolved(typeDeser, deser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Partial NullValueProvider impl
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Null value varies dynamically (unlike with scalar types),
+&nbsp;     * so let&#39;s indicate this.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public AccessPattern getNullAccessPattern() {
+<b class="nc">&nbsp;        return AccessPattern.DYNAMIC;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AccessPattern getEmptyAccessPattern() {
+<b class="nc">&nbsp;        return AccessPattern.DYNAMIC;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Abstract methods for sub-classes to implement
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Mutant factory method called when changes are needed; should construct
+&nbsp;     * newly configured instance with new values as indicated.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * NOTE: caller has verified that there are changes, so implementations
+&nbsp;     * need NOT check if a new instance is needed.
+&nbsp;     */
+&nbsp;    protected abstract ReferenceTypeDeserializer&lt;T&gt; withResolved(TypeDeserializer typeDeser,
+&nbsp;            JsonDeserializer&lt;?&gt; valueDeser);
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public abstract T getNullValue(DeserializationContext ctxt);
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Object getEmptyValue(DeserializationContext ctxt) {
+<b class="nc">&nbsp;        return getNullValue(ctxt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public abstract T referenceValue(Object contents);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called in case of &quot;merging update&quot;, in which we should try
+&nbsp;     * update reference instead of creating a new one. If this does not
+&nbsp;     * succeed, should just create a new instance.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    public abstract T updateReference(T reference, Object contents);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that may be called to find contents of specified reference,
+&nbsp;     * if any; or `null` if none. Note that method should never fail, so
+&nbsp;     * for types that use concept of &quot;absence&quot; vs &quot;presence&quot;, `null` is
+&nbsp;     * to be returned for both &quot;absent&quot; and &quot;reference to `null`&quot; cases.
+&nbsp;     *
+&nbsp;     * @since 2.9
+&nbsp;     */
+&nbsp;    public abstract Object getReferenced(T reference);
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Overridden accessors
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public JavaType getValueType() { return _fullType; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * By default we assume that updateability mostly relies on value
+&nbsp;     * deserializer; if it supports updates, typically that&#39;s what
+&nbsp;     * matters. So let&#39;s just delegate.
+&nbsp;     */
+&nbsp;    @Override // since 2.9
+&nbsp;    public Boolean supportsUpdate(DeserializationConfig config) {
+<b class="nc">&nbsp;        return (_valueDeserializer == null) ? null</b>
+<b class="nc">&nbsp;                : _valueDeserializer.supportsUpdate(config);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Deserialization
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+&nbsp;        // 23-Oct-2016, tatu: ValueInstantiator only defined for non-vanilla instances,
+&nbsp;        //    but do check... might work
+<b class="fc">&nbsp;        if (_valueInstantiator != null) {</b>
+&nbsp;            @SuppressWarnings(&quot;unchecked&quot;)
+<b class="nc">&nbsp;            T value = (T) _valueInstantiator.createUsingDefault(ctxt);</b>
+<b class="nc">&nbsp;            return deserialize(p, ctxt, value);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Object contents = (_valueTypeDeserializer == null)</b>
+<b class="fc">&nbsp;                ? _valueDeserializer.deserialize(p, ctxt)</b>
+<b class="fc">&nbsp;                : _valueDeserializer.deserializeWithType(p, ctxt, _valueTypeDeserializer);</b>
+<b class="fc">&nbsp;        return referenceValue(contents);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public T deserialize(JsonParser p, DeserializationContext ctxt, T reference) throws IOException
+&nbsp;    {
+&nbsp;        Object contents;
+&nbsp;        // 26-Oct-2016, tatu: first things first; see if we should be able to merge:
+<b class="fc">&nbsp;        Boolean B = _valueDeserializer.supportsUpdate(ctxt.getConfig());</b>
+&nbsp;        // if explicitly stated that merge won&#39;t work...
+<b class="fc">&nbsp;        if (B.equals(Boolean.FALSE) ||  (_valueTypeDeserializer != null)) {</b>
+<b class="fc">&nbsp;            contents = (_valueTypeDeserializer == null)</b>
+<b class="fc">&nbsp;                    ? _valueDeserializer.deserialize(p, ctxt)</b>
+<b class="nc">&nbsp;                    : _valueDeserializer.deserializeWithType(p, ctxt, _valueTypeDeserializer);</b>
+&nbsp;        } else {
+&nbsp;            // Otherwise, see if we can merge the value
+<b class="nc">&nbsp;            contents = getReferenced(reference);</b>
+&nbsp;            // Whether to error or not... for now, just go back to default then
+<b class="nc">&nbsp;            if (contents == null) {</b>
+<b class="nc">&nbsp;                contents = (_valueTypeDeserializer == null)</b>
+<b class="nc">&nbsp;                        ? _valueDeserializer.deserialize(p, ctxt)</b>
+<b class="nc">&nbsp;                        : _valueDeserializer.deserializeWithType(p, ctxt, _valueTypeDeserializer);</b>
+<b class="nc">&nbsp;                return referenceValue(contents);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                contents = _valueDeserializer.deserialize(p, ctxt, contents);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return updateReference(reference, contents);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+&nbsp;            TypeDeserializer typeDeserializer) throws IOException
+&nbsp;    {
+<b class="fc">&nbsp;        final JsonToken t = p.getCurrentToken();</b>
+<b class="fc">&nbsp;        if (t == JsonToken.VALUE_NULL) { // can this actually happen?</b>
+<b class="nc">&nbsp;            return getNullValue(ctxt);</b>
+&nbsp;        }
+&nbsp;        // 22-Oct-2015, tatu: This handling is probably not needed (or is wrong), but
+&nbsp;        //   could be result of older (pre-2.7) Jackson trying to serialize natural types.
+&nbsp;        //  Because of this, let&#39;s allow for now, unless proven problematic
+&nbsp;        /*
+&nbsp;        if ((t != null) &amp;&amp; t.isScalarValue()) {
+&nbsp;            return deserialize(p, ctxt);
+&nbsp;        }
+&nbsp;        */
+&nbsp;        // 19-Apr-2016, tatu: Alas, due to there typically really being anything for Reference wrapper
+&nbsp;        //   itself, need to just ignore `typeDeser`, use TypeDeserializer we do have for contents
+&nbsp;        //   and it might just work.
+&nbsp;
+<b class="fc">&nbsp;        if (_valueTypeDeserializer == null) {</b>
+<b class="nc">&nbsp;            return deserialize(p, ctxt);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return referenceValue(_valueTypeDeserializer.deserializeTypedFromAny(p, ctxt));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:37</div>
+</div>
+</body>
+</html>

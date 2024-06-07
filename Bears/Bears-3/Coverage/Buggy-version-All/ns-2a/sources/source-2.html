@@ -1,0 +1,358 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DefaultSubscriberFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.pubsub.support</a>
+</div>
+
+<h1>Coverage Summary for Class: DefaultSubscriberFactory (org.springframework.cloud.gcp.pubsub.support)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultSubscriberFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/59)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017-2018 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.pubsub.support;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;import com.google.api.core.ApiClock;
+&nbsp;import com.google.api.gax.batching.FlowControlSettings;
+&nbsp;import com.google.api.gax.core.CredentialsProvider;
+&nbsp;import com.google.api.gax.core.ExecutorProvider;
+&nbsp;import com.google.api.gax.retrying.RetrySettings;
+&nbsp;import com.google.api.gax.rpc.HeaderProvider;
+&nbsp;import com.google.api.gax.rpc.TransportChannelProvider;
+&nbsp;import com.google.cloud.pubsub.v1.MessageReceiver;
+&nbsp;import com.google.cloud.pubsub.v1.Subscriber;
+&nbsp;import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
+&nbsp;import com.google.cloud.pubsub.v1.stub.GrpcSubscriberStub;
+&nbsp;import com.google.cloud.pubsub.v1.stub.SubscriberStub;
+&nbsp;import com.google.pubsub.v1.PullRequest;
+&nbsp;import com.google.pubsub.v1.SubscriptionName;
+&nbsp;import org.threeten.bp.Duration;
+&nbsp;
+&nbsp;import org.springframework.cloud.gcp.core.GcpProjectIdProvider;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * The default {@link SubscriberFactory} implementation.
+&nbsp; *
+&nbsp; * @author João André Martins
+&nbsp; * @author Mike Eltsufin
+&nbsp; */
+&nbsp;public class DefaultSubscriberFactory implements SubscriberFactory {
+&nbsp;
+&nbsp;	private final String projectId;
+&nbsp;
+&nbsp;	private ExecutorProvider executorProvider;
+&nbsp;
+&nbsp;	private TransportChannelProvider channelProvider;
+&nbsp;
+&nbsp;	private CredentialsProvider credentialsProvider;
+&nbsp;
+&nbsp;	private HeaderProvider headerProvider;
+&nbsp;
+&nbsp;	private ExecutorProvider systemExecutorProvider;
+&nbsp;
+&nbsp;	private FlowControlSettings flowControlSettings;
+&nbsp;
+&nbsp;	private Duration maxAckDurationPeriod;
+&nbsp;
+&nbsp;	private Integer parallelPullCount;
+&nbsp;
+&nbsp;	private String pullEndpoint;
+&nbsp;
+&nbsp;	private ApiClock apiClock;
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Default {@link DefaultSubscriberFactory} constructor.
+&nbsp;	 *
+&nbsp;	 * @param projectIdProvider provides the GCP project ID
+&nbsp;	 */
+<b class="nc">&nbsp;	public DefaultSubscriberFactory(GcpProjectIdProvider projectIdProvider) {</b>
+<b class="nc">&nbsp;		Assert.notNull(projectIdProvider, &quot;The project ID provider can&#39;t be null.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		this.projectId = projectIdProvider.getProjectId();</b>
+<b class="nc">&nbsp;		Assert.hasText(this.projectId, &quot;The project ID can&#39;t be null or empty.&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the subscribers&#39; executor. Useful to specify the number of threads to be used by each
+&nbsp;	 * executor.
+&nbsp;	 */
+&nbsp;	public void setExecutorProvider(ExecutorProvider executorProvider) {
+<b class="nc">&nbsp;		this.executorProvider = executorProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the subscribers&#39; transport channel.
+&nbsp;	 */
+&nbsp;	public void setChannelProvider(TransportChannelProvider channelProvider) {
+<b class="nc">&nbsp;		this.channelProvider = channelProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the GCP credentials to be used by the subscribers&#39; API calls.
+&nbsp;	 */
+&nbsp;	public void setCredentialsProvider(CredentialsProvider credentialsProvider) {
+<b class="nc">&nbsp;		this.credentialsProvider = credentialsProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the HTTP headers to be added to the subscribers&#39; REST API calls.
+&nbsp;	 */
+&nbsp;	public void setHeaderProvider(HeaderProvider headerProvider) {
+<b class="nc">&nbsp;		this.headerProvider = headerProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the provider for the system executor, to poll and manage lease extensions.
+&nbsp;	 */
+&nbsp;	public void setSystemExecutorProvider(ExecutorProvider systemExecutorProvider) {
+<b class="nc">&nbsp;		this.systemExecutorProvider = systemExecutorProvider;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the flow control for the subscribers, including the behaviour for when the flow limits are hit.
+&nbsp;	 */
+&nbsp;	public void setFlowControlSettings(FlowControlSettings flowControlSettings) {
+<b class="nc">&nbsp;		this.flowControlSettings = flowControlSettings;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the maximum period the ack timeout is extended by.
+&nbsp;	 */
+&nbsp;	public void setMaxAckDurationPeriod(Duration maxAckDurationPeriod) {
+<b class="nc">&nbsp;		this.maxAckDurationPeriod = maxAckDurationPeriod;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Set the number of pull workers.
+&nbsp;	 */
+&nbsp;	public void setParallelPullCount(Integer parallelPullCount) {
+<b class="nc">&nbsp;		this.parallelPullCount = parallelPullCount;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Sets the endpoint for synchronous pulling messages.
+&nbsp;	 */
+&nbsp;	public void setPullEndpoint(String pullEndpoint) {
+<b class="nc">&nbsp;		this.pullEndpoint = pullEndpoint;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Sets the clock to use for the retry logic in synchronous pulling.
+&nbsp;	 */
+&nbsp;	public void setApiClock(ApiClock apiClock) {
+<b class="nc">&nbsp;		this.apiClock = apiClock;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public Subscriber createSubscriber(String subscriptionName, MessageReceiver receiver) {
+<b class="nc">&nbsp;		Subscriber.Builder subscriberBuilder = Subscriber.newBuilder(</b>
+<b class="nc">&nbsp;				SubscriptionName.of(this.projectId, subscriptionName), receiver);</b>
+&nbsp;
+<b class="nc">&nbsp;		if (this.channelProvider != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setChannelProvider(this.channelProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.executorProvider != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setExecutorProvider(this.executorProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.credentialsProvider != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setCredentialsProvider(this.credentialsProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.headerProvider != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setHeaderProvider(this.headerProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.systemExecutorProvider != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setSystemExecutorProvider(this.systemExecutorProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.flowControlSettings != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setFlowControlSettings(this.flowControlSettings);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.maxAckDurationPeriod != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setMaxAckExtensionPeriod(this.maxAckDurationPeriod);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.parallelPullCount != null) {</b>
+<b class="nc">&nbsp;			subscriberBuilder.setParallelPullCount(this.parallelPullCount);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		return subscriberBuilder.build();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public PullRequest createPullRequest(String subscriptionName, Integer maxMessages,
+&nbsp;			Boolean returnImmediately) {
+<b class="nc">&nbsp;		Assert.hasLength(subscriptionName, &quot;The subscription name must be provided.&quot;);</b>
+&nbsp;
+&nbsp;		PullRequest.Builder pullRequestBuilder =
+<b class="nc">&nbsp;				PullRequest.newBuilder().setSubscriptionWithSubscriptionName(</b>
+<b class="nc">&nbsp;						SubscriptionName.of(this.projectId, subscriptionName));</b>
+&nbsp;
+<b class="nc">&nbsp;		if (maxMessages != null) {</b>
+<b class="nc">&nbsp;			pullRequestBuilder.setMaxMessages(maxMessages);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (returnImmediately != null) {</b>
+<b class="nc">&nbsp;			pullRequestBuilder.setReturnImmediately(returnImmediately);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		return pullRequestBuilder.build();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public SubscriberStub createSubscriberStub(RetrySettings retrySettings) {
+&nbsp;		SubscriptionAdminSettings.Builder subscriptionAdminSettingsBuilder =
+<b class="nc">&nbsp;				SubscriptionAdminSettings.newBuilder();</b>
+&nbsp;
+<b class="nc">&nbsp;		if (this.credentialsProvider != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.setCredentialsProvider(this.credentialsProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.pullEndpoint != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.setEndpoint(this.pullEndpoint);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.executorProvider != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.setExecutorProvider(this.executorProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.headerProvider != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.setHeaderProvider(this.headerProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.channelProvider != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.setTransportChannelProvider(this.channelProvider);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (this.apiClock != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.setClock(this.apiClock);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (retrySettings != null) {</b>
+<b class="nc">&nbsp;			subscriptionAdminSettingsBuilder.pullSettings().setRetrySettings(retrySettings);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			return GrpcSubscriberStub.create(subscriptionAdminSettingsBuilder.build());</b>
+&nbsp;		}
+<b class="nc">&nbsp;		catch (IOException e) {</b>
+<b class="nc">&nbsp;			throw new RuntimeException(&quot;Error creating the SubscriberStub&quot;, e);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

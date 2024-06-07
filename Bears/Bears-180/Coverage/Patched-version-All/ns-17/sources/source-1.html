@@ -1,0 +1,228 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PubSubInboundChannelAdapter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.integration.gcp.pubsub.inbound</a>
+</div>
+
+<h1>Coverage Summary for Class: PubSubInboundChannelAdapter (org.springframework.integration.gcp.pubsub.inbound)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PubSubInboundChannelAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.integration.gcp.pubsub.inbound;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import com.google.cloud.pubsub.v1.AckReplyConsumer;
+&nbsp;import com.google.cloud.pubsub.v1.Subscriber;
+&nbsp;import com.google.pubsub.v1.PubsubMessage;
+&nbsp;
+&nbsp;import org.springframework.cloud.gcp.pubsub.core.PubSubOperations;
+&nbsp;import org.springframework.cloud.gcp.pubsub.support.GcpHeaders;
+&nbsp;import org.springframework.integration.endpoint.MessageProducerSupport;
+&nbsp;import org.springframework.integration.gcp.pubsub.AckMode;
+&nbsp;import org.springframework.messaging.MessageHeaders;
+&nbsp;import org.springframework.messaging.converter.MessageConverter;
+&nbsp;import org.springframework.messaging.converter.StringMessageConverter;
+&nbsp;import org.springframework.util.Assert;
+&nbsp;
+&nbsp;/**
+&nbsp; * Converts from GCP Pub/Sub message to Spring message and sends the Spring message to the
+&nbsp; * attached channels.
+&nbsp; *
+&nbsp; * @author João André Martins
+&nbsp; */
+&nbsp;public class PubSubInboundChannelAdapter extends MessageProducerSupport {
+&nbsp;
+&nbsp;	private final String subscriptionName;
+&nbsp;
+&nbsp;	private final PubSubOperations pubSubTemplate;
+&nbsp;
+&nbsp;	private Subscriber subscriber;
+&nbsp;
+<b class="nc">&nbsp;	private AckMode ackMode = AckMode.AUTO;</b>
+&nbsp;
+&nbsp;	private MessageConverter messageConverter;
+&nbsp;
+<b class="nc">&nbsp;	public PubSubInboundChannelAdapter(PubSubOperations pubSubTemplate, String subscriptionName) {</b>
+<b class="nc">&nbsp;		this.pubSubTemplate = pubSubTemplate;</b>
+<b class="nc">&nbsp;		this.subscriptionName = subscriptionName;</b>
+&nbsp;
+<b class="nc">&nbsp;		StringMessageConverter stringMessageConverter = new StringMessageConverter();</b>
+<b class="nc">&nbsp;		stringMessageConverter.setSerializedPayloadClass(String.class);</b>
+<b class="nc">&nbsp;		this.messageConverter = stringMessageConverter;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	protected void doStart() {
+<b class="nc">&nbsp;		super.doStart();</b>
+&nbsp;
+<b class="nc">&nbsp;		this.subscriber =</b>
+<b class="nc">&nbsp;				this.pubSubTemplate.subscribe(this.subscriptionName, this::receiveMessage);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private void receiveMessage(PubsubMessage message, AckReplyConsumer consumer) {
+<b class="nc">&nbsp;		Map&lt;String, Object&gt; messageHeaders = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;		message.getAttributesMap().forEach(messageHeaders::put);</b>
+&nbsp;
+<b class="nc">&nbsp;		if (this.ackMode == AckMode.MANUAL) {</b>
+&nbsp;			// Send the consumer downstream so user decides on when to ack/nack.
+<b class="nc">&nbsp;			messageHeaders.put(GcpHeaders.ACKNOWLEDGEMENT, consumer);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			sendMessage(this.messageConverter.toMessage(</b>
+<b class="nc">&nbsp;					message.getData().toStringUtf8(),</b>
+&nbsp;					new MessageHeaders(messageHeaders)));
+&nbsp;		}
+<b class="nc">&nbsp;		catch (RuntimeException re) {</b>
+<b class="nc">&nbsp;			if (this.ackMode == AckMode.AUTO) {</b>
+<b class="nc">&nbsp;				consumer.nack();</b>
+&nbsp;			}
+<b class="nc">&nbsp;			throw re;</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		if (this.ackMode == AckMode.AUTO) {</b>
+<b class="nc">&nbsp;			consumer.ack();</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	protected void doStop() {
+<b class="nc">&nbsp;		if (this.subscriber != null) {</b>
+<b class="nc">&nbsp;			this.subscriber.stopAsync();</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		super.doStop();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public AckMode getAckMode() {
+<b class="nc">&nbsp;		return this.ackMode;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setAckMode(AckMode ackMode) {
+<b class="nc">&nbsp;		Assert.notNull(ackMode, &quot;The acknowledgement mode can&#39;t be null.&quot;);</b>
+<b class="nc">&nbsp;		this.ackMode = ackMode;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMessageConverter(MessageConverter messageConverter) {
+<b class="nc">&nbsp;		Assert.notNull(messageConverter,</b>
+&nbsp;				&quot;The specified message converter can&#39;t be null.&quot;);
+<b class="nc">&nbsp;		this.messageConverter = messageConverter;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public MessageConverter getMessageConverter() {
+<b class="nc">&nbsp;		return this.messageConverter;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 23:17</div>
+</div>
+</body>
+</html>

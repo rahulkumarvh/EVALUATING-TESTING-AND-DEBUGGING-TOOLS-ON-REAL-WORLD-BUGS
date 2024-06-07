@@ -1,0 +1,13 @@
+######  Start test generation  /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/gen_tests.pl: 2024-04-30 22:13:16  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Cli
+ -v 30b
+ -n 1
+ -b 100
+ -c /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/Cli/modified_classes/30.src
+ -s 77
+Created test suite archive: Cli-30b-evosuite.1.tar.bz2
+Moved test suite archive to output directory: ./gen_test/Cli/evosuite/1
+######  End test generation  /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/gen_tests.pl: 2024-04-30 22:14:26  ######

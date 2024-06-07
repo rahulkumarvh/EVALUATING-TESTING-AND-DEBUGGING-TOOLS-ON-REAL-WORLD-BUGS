@@ -1,0 +1,4 @@
+src.test.java.com.fasterxml.jackson.dataformat.xml.deser.EvosuiteFromXmlParser_ESTest
+src.test.java.com.fasterxml.jackson.dataformat.xml.deser.EvosuiteFromXmlParser_ESTest_scaffolding
+src.test.java.com.fasterxml.jackson.dataformat.xml.deser.RandoopRegressionTest
+src.test.java.com.fasterxml.jackson.dataformat.xml.deser.RandoopRegressionTest0

@@ -1,0 +1,4 @@
+Failing tests: 1
+  - org.apache.commons.jxpath.ri.model.beans.RegressionTest
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

@@ -1,0 +1,315 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AutoFonProtocolDecoder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.traccar.protocol</a>
+</div>
+
+<h1>Coverage Summary for Class: AutoFonProtocolDecoder (org.traccar.protocol)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AutoFonProtocolDecoder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/101)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2015 - 2016 Anton Tananaev (anton@traccar.org)
+&nbsp; * Copyright 2015 Vitaly Litvak (vitavaque@gmail.com)
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package org.traccar.protocol;
+&nbsp;
+&nbsp;import org.jboss.netty.buffer.ChannelBuffer;
+&nbsp;import org.jboss.netty.buffer.ChannelBuffers;
+&nbsp;import org.jboss.netty.channel.Channel;
+&nbsp;import org.traccar.BaseProtocolDecoder;
+&nbsp;import org.traccar.DeviceSession;
+&nbsp;import org.traccar.helper.BitUtil;
+&nbsp;import org.traccar.helper.DateBuilder;
+&nbsp;import org.traccar.model.Position;
+&nbsp;
+&nbsp;import java.net.SocketAddress;
+&nbsp;import java.nio.charset.StandardCharsets;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class AutoFonProtocolDecoder extends BaseProtocolDecoder {
+&nbsp;
+&nbsp;    public AutoFonProtocolDecoder(AutoFonProtocol protocol) {
+&nbsp;        super(protocol);
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    public static final int MSG_LOGIN = 0x10;
+&nbsp;    public static final int MSG_LOCATION = 0x11;
+&nbsp;    public static final int MSG_HISTORY = 0x12;
+&nbsp;
+&nbsp;    public static final int MSG_45_LOGIN = 0x41;
+&nbsp;    public static final int MSG_45_LOCATION = 0x02;
+&nbsp;
+&nbsp;    private static double convertCoordinate(int raw) {
+&nbsp;        int degrees = raw / 1000000;
+&nbsp;        double minutes = (raw % 1000000) / 10000.0;
+<b class="nc">&nbsp;        return degrees + minutes / 60;</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    private static double convertCoordinate(short degrees, int minutes) {
+&nbsp;        double value = degrees + BitUtil.from(minutes, 4) / 600000.0;
+&nbsp;        if (BitUtil.check(minutes, 0)) {
+<b class="nc">&nbsp;            return value;</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            return -value;</b>
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    private Position decodePosition(DeviceSession deviceSession, ChannelBuffer buf, boolean history) {
+&nbsp;
+&nbsp;        Position position = new Position();
+&nbsp;        position.setProtocol(getProtocolName());
+<b class="nc">&nbsp;        position.setDeviceId(deviceSession.getDeviceId());</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        if (!history) {</b>
+&nbsp;            buf.readUnsignedByte(); // interval
+<b class="nc">&nbsp;            buf.skipBytes(8); // settings</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        buf.readUnsignedByte(); // status</b>
+&nbsp;        if (!history) {
+<b class="nc">&nbsp;            buf.readUnsignedShort();</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        position.set(Position.KEY_BATTERY, buf.readUnsignedByte());</b>
+&nbsp;        buf.skipBytes(6); // time
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        if (!history) {</b>
+&nbsp;            for (int i = 0; i &lt; 2; i++) {
+<b class="nc">&nbsp;                buf.skipBytes(5); // time</b>
+<b class="nc">&nbsp;                buf.readUnsignedShort(); // interval</b>
+<b class="nc">&nbsp;                buf.skipBytes(5); // mode</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        position.set(Position.PREFIX_TEMP + 1, buf.readByte());
+&nbsp;        position.set(Position.KEY_RSSI, buf.readUnsignedByte());
+<b class="nc">&nbsp;        buf.readUnsignedShort(); // mcc</b>
+&nbsp;        buf.readUnsignedShort(); // mnc
+<b class="nc">&nbsp;        buf.readUnsignedShort(); // lac</b>
+<b class="nc">&nbsp;        buf.readUnsignedShort(); // cid</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        int valid = buf.readUnsignedByte();</b>
+<b class="nc">&nbsp;        position.setValid((valid &amp; 0xc0) != 0);</b>
+&nbsp;        position.set(Position.KEY_SATELLITES, valid &amp; 0x3f);
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        DateBuilder dateBuilder = new DateBuilder()</b>
+<b class="nc">&nbsp;                .setDateReverse(buf.readUnsignedByte(), buf.readUnsignedByte(), buf.readUnsignedByte())</b>
+&nbsp;                .setTime(buf.readUnsignedByte(), buf.readUnsignedByte(), buf.readUnsignedByte());
+<b class="nc">&nbsp;        position.setTime(dateBuilder.getDate());</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        position.setLatitude(convertCoordinate(buf.readInt()));</b>
+<b class="nc">&nbsp;        position.setLongitude(convertCoordinate(buf.readInt()));</b>
+&nbsp;        position.setAltitude(buf.readShort());
+<b class="nc">&nbsp;        position.setSpeed(buf.readUnsignedByte());</b>
+<b class="nc">&nbsp;        position.setCourse(buf.readUnsignedByte() * 2.0);</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        position.set(Position.KEY_HDOP, buf.readUnsignedShort());</b>
+<b class="nc">&nbsp;</b>
+&nbsp;        buf.readUnsignedShort(); // reserved
+<b class="nc">&nbsp;        buf.readUnsignedByte(); // checksum</b>
+&nbsp;        return position;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    protected Object decode(
+&nbsp;            Channel channel, SocketAddress remoteAddress, Object msg) throws Exception {
+&nbsp;
+&nbsp;        ChannelBuffer buf = (ChannelBuffer) msg;
+&nbsp;
+&nbsp;        int type = buf.readUnsignedByte();
+<b class="nc">&nbsp;</b>
+&nbsp;        if (type == MSG_LOGIN || type == MSG_45_LOGIN) {
+<b class="nc">&nbsp;</b>
+&nbsp;            if (type == MSG_LOGIN) {
+<b class="nc">&nbsp;                buf.readUnsignedByte(); // hardware version</b>
+&nbsp;                buf.readUnsignedByte(); // software version
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            String imei = ChannelBuffers.hexDump(buf.readBytes(8)).substring(1);</b>
+&nbsp;            DeviceSession deviceSession = getDeviceSession(channel, remoteAddress, imei);
+&nbsp;
+<b class="nc">&nbsp;            if (deviceSession != null &amp;&amp; channel != null) {</b>
+<b class="nc">&nbsp;                ChannelBuffer response = ChannelBuffers.dynamicBuffer();</b>
+&nbsp;                response.writeBytes(&quot;resp_crc=&quot;.getBytes(StandardCharsets.US_ASCII));
+<b class="nc">&nbsp;                response.writeByte(buf.getByte(buf.writerIndex() - 1));</b>
+<b class="nc">&nbsp;                channel.write(response);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+&nbsp;        DeviceSession deviceSession = getDeviceSession(channel, remoteAddress);
+&nbsp;        if (deviceSession == null) {
+&nbsp;            return null;
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        if (type == MSG_LOCATION) {</b>
+&nbsp;
+&nbsp;            return decodePosition(deviceSession, buf, false);
+<b class="nc">&nbsp;</b>
+&nbsp;        } else if (type == MSG_HISTORY) {
+<b class="nc">&nbsp;</b>
+&nbsp;            int count = buf.readUnsignedByte() &amp; 0x0f;
+<b class="nc">&nbsp;            buf.readUnsignedShort(); // total count</b>
+&nbsp;            List&lt;Position&gt; positions = new LinkedList&lt;&gt;();
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; count; i++) {</b>
+<b class="nc">&nbsp;                positions.add(decodePosition(deviceSession, buf, true));</b>
+&nbsp;            }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            return positions;</b>
+&nbsp;
+&nbsp;        } else if (type == MSG_45_LOCATION) {
+<b class="nc">&nbsp;</b>
+&nbsp;            Position position = new Position();
+<b class="nc">&nbsp;            position.setProtocol(getProtocolName());</b>
+&nbsp;            position.setDeviceId(deviceSession.getDeviceId());
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            short status = buf.readUnsignedByte();</b>
+<b class="nc">&nbsp;            if (BitUtil.check(status, 7)) {</b>
+&nbsp;                position.set(Position.KEY_ALARM, Position.ALARM_GENERAL);
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            position.set(Position.KEY_BATTERY, BitUtil.to(status, 7));</b>
+<b class="nc">&nbsp;</b>
+&nbsp;            buf.skipBytes(2); // remaining time
+<b class="nc">&nbsp;</b>
+&nbsp;            position.set(Position.PREFIX_TEMP + 1, buf.readByte());
+<b class="nc">&nbsp;</b>
+&nbsp;            buf.skipBytes(2); // timer (interval and units)
+<b class="nc">&nbsp;            buf.readByte(); // mode</b>
+&nbsp;            buf.readByte(); // gprs sending interval
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            buf.skipBytes(6); // mcc, mnc, lac, cid</b>
+<b class="nc">&nbsp;</b>
+&nbsp;            int valid = buf.readUnsignedByte();
+<b class="nc">&nbsp;            position.setValid(BitUtil.from(valid, 6) != 0);</b>
+&nbsp;            position.set(Position.KEY_SATELLITES, BitUtil.from(valid, 6));
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            int time = buf.readUnsignedMedium();</b>
+<b class="nc">&nbsp;            int date = buf.readUnsignedMedium();</b>
+&nbsp;
+<b class="nc">&nbsp;            DateBuilder dateBuilder = new DateBuilder()</b>
+<b class="nc">&nbsp;                    .setTime(time / 10000, time / 100 % 100, time % 100)</b>
+&nbsp;                    .setDateReverse(date / 10000, date / 100 % 100, date % 100);
+<b class="nc">&nbsp;            position.setTime(dateBuilder.getDate());</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            position.setLatitude(convertCoordinate(buf.readUnsignedByte(), buf.readUnsignedMedium()));</b>
+<b class="nc">&nbsp;            position.setLongitude(convertCoordinate(buf.readUnsignedByte(), buf.readUnsignedMedium()));</b>
+&nbsp;            position.setSpeed(buf.readUnsignedByte());
+<b class="nc">&nbsp;            position.setCourse(buf.readUnsignedShort());</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            return position;</b>
+<b class="nc">&nbsp;</b>
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+&nbsp;        return null;
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;}</b>
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

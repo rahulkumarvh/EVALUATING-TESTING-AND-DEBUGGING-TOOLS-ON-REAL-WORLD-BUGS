@@ -1,0 +1,655 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairRunner</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairRunner (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairRunner</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/231)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RepairRunner$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RepairRunner$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/238)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSegment;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.jmx.JmxProxy;
+&nbsp;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.concurrent.ThreadLocalRandom;
+&nbsp;import java.util.concurrent.atomic.AtomicReferenceArray;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import com.codahale.metrics.Gauge;
+&nbsp;import com.codahale.metrics.MetricRegistry;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import com.google.common.collect.Collections2;
+&nbsp;import com.google.common.collect.Lists;
+&nbsp;import com.google.common.util.concurrent.FutureCallback;
+&nbsp;import com.google.common.util.concurrent.Futures;
+&nbsp;import com.google.common.util.concurrent.ListenableFuture;
+&nbsp;import org.apache.cassandra.repair.RepairParallelism;
+&nbsp;import org.apache.commons.lang3.tuple.Pair;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+<b class="nc">&nbsp;final class RepairRunner implements Runnable {</b>
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(RepairRunner.class);</b>
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;  private final UUID repairRunId;
+&nbsp;  private final String clusterName;
+&nbsp;  private JmxProxy jmxConnection;
+&nbsp;  private final AtomicReferenceArray&lt;UUID&gt; currentlyRunningSegments;
+&nbsp;  private final List&lt;RingRange&gt; parallelRanges;
+&nbsp;  private final String metricNameForMillisSinceLastRepair;
+&nbsp;  private float repairProgress;
+&nbsp;
+<b class="nc">&nbsp;  RepairRunner(AppContext context, UUID repairRunId) throws ReaperException {</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;Creating RepairRunner for run with ID {}&quot;, repairRunId);</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+<b class="nc">&nbsp;    this.repairRunId = repairRunId;</b>
+<b class="nc">&nbsp;    Optional&lt;RepairRun&gt; repairRun = context.storage.getRepairRun(repairRunId);</b>
+<b class="nc">&nbsp;    assert repairRun.isPresent() : &quot;No RepairRun with ID &quot; + repairRunId + &quot; found from storage&quot;;</b>
+<b class="nc">&nbsp;    Optional&lt;Cluster&gt; cluster = context.storage.getCluster(repairRun.get().getClusterName());</b>
+<b class="nc">&nbsp;    assert cluster.isPresent() : &quot;No Cluster with name &quot; + repairRun.get().getClusterName() + &quot; found from storage&quot;;</b>
+<b class="nc">&nbsp;    Optional&lt;RepairUnit&gt; repairUnitOpt = context.storage.getRepairUnit(repairRun.get().getRepairUnitId());</b>
+<b class="nc">&nbsp;    assert repairUnitOpt.isPresent() : &quot;No RepairUnit with id &quot; + repairRun.get().getRepairUnitId()</b>
+&nbsp;        + &quot; found in storage&quot;;
+<b class="nc">&nbsp;    this.clusterName = cluster.get().getName();</b>
+&nbsp;
+<b class="nc">&nbsp;    JmxProxy jmx = this.context.jmxConnectionFactory</b>
+<b class="nc">&nbsp;        .connectAny(cluster.get(), context.config.getJmxConnectionTimeoutInSeconds());</b>
+&nbsp;
+<b class="nc">&nbsp;    String keyspace = repairUnitOpt.get().getKeyspaceName();</b>
+<b class="nc">&nbsp;    int parallelRepairs</b>
+<b class="nc">&nbsp;        = getPossibleParallelRepairsCount(jmx.getRangeToEndpointMap(keyspace), jmx.getEndpointToHostId());</b>
+&nbsp;
+<b class="nc">&nbsp;    if ((repairUnitOpt.isPresent() &amp;&amp; repairUnitOpt.get().getIncrementalRepair())) {</b>
+&nbsp;      // with incremental repair, can&#39;t have more parallel repairs than nodes
+&nbsp;      // Same goes for local mode
+<b class="nc">&nbsp;      parallelRepairs = 1;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    currentlyRunningSegments = new AtomicReferenceArray(parallelRepairs);</b>
+<b class="nc">&nbsp;    for (int i = 0; i &lt; parallelRepairs; i++) {</b>
+<b class="nc">&nbsp;      currentlyRunningSegments.set(i, null);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Collection&lt;RepairSegment&gt; repairSegments = context.storage.getRepairSegmentsForRun(repairRunId);</b>
+&nbsp;
+<b class="nc">&nbsp;    parallelRanges = getParallelRanges(</b>
+&nbsp;        parallelRepairs,
+<b class="nc">&nbsp;        Lists.newArrayList(Collections2.transform(repairSegments, segment -&gt; segment.getTokenRange())));</b>
+&nbsp;
+<b class="nc">&nbsp;    String repairUnitClusterName = repairUnitOpt.get().getClusterName();</b>
+<b class="nc">&nbsp;    String metricNameForRepairProgress = metricName(&quot;repairProgress&quot;,  repairUnitClusterName, repairRunId);</b>
+<b class="nc">&nbsp;    context.metricRegistry.register(metricNameForRepairProgress, (Gauge&lt;Float&gt;) ()  -&gt; repairProgress);</b>
+<b class="nc">&nbsp;    metricNameForMillisSinceLastRepair = metricName(&quot;millisSinceLastRepair&quot;, repairUnitClusterName, repairRunId);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  UUID getRepairRunId() {
+<b class="nc">&nbsp;    return repairRunId;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  static int getPossibleParallelRepairsCount(
+&nbsp;      Map&lt;List&lt;String&gt;, List&lt;String&gt;&gt; ranges,
+&nbsp;      Map&lt;String, String&gt; hostsInRing) throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    if (ranges.isEmpty()) {</b>
+<b class="nc">&nbsp;      String msg = &quot;Repairing 0-sized cluster.&quot;;</b>
+<b class="nc">&nbsp;      LOG.error(msg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(msg);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    return Math.min(</b>
+<b class="nc">&nbsp;        ranges.size() / ranges.values().iterator().next().size(),</b>
+<b class="nc">&nbsp;        Math.max(1, hostsInRing.keySet().size() / ranges.values().iterator().next().size()));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  static List&lt;RingRange&gt; getParallelRanges(int parallelRepairs, List&lt;RingRange&gt; segments)
+&nbsp;      throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;    if (parallelRepairs == 0) {</b>
+<b class="nc">&nbsp;      String msg = &quot;Can&#39;t repair anything with 0 threads&quot;;</b>
+<b class="nc">&nbsp;      LOG.error(msg);</b>
+<b class="nc">&nbsp;      throw new ReaperException(msg);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Collections.sort(segments, RingRange.START_COMPARATOR);</b>
+&nbsp;
+<b class="nc">&nbsp;    List&lt;RingRange&gt; parallelRanges = Lists.newArrayList();</b>
+<b class="nc">&nbsp;    for (int i = 0; i &lt; parallelRepairs - 1; i++) {</b>
+<b class="nc">&nbsp;      parallelRanges.add(</b>
+&nbsp;          new RingRange(
+<b class="nc">&nbsp;              segments.get(i * segments.size() / parallelRepairs).getStart(),</b>
+<b class="nc">&nbsp;              segments.get((i + 1) * segments.size() / parallelRepairs).getStart()));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    parallelRanges.add(</b>
+&nbsp;        new RingRange(
+<b class="nc">&nbsp;            segments.get((parallelRepairs - 1) * segments.size() / parallelRepairs).getStart(),</b>
+<b class="nc">&nbsp;            segments.get(0).getStart()));</b>
+&nbsp;
+<b class="nc">&nbsp;    return parallelRanges;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Starts/resumes a repair run that is supposed to run.
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void run() {
+<b class="nc">&nbsp;    Thread.currentThread().setName(clusterName + &quot;:&quot; + repairRunId);</b>
+&nbsp;
+&nbsp;    try {
+<b class="nc">&nbsp;      Optional&lt;RepairRun&gt; repairRun = context.storage.getRepairRun(repairRunId);</b>
+<b class="nc">&nbsp;      if ((!repairRun.isPresent() || repairRun.get().getRunState().isTerminated())) {</b>
+&nbsp;        // this might happen if a run is deleted while paused etc.
+<b class="nc">&nbsp;        LOG.warn(&quot;RepairRun \&quot;{}\&quot; does not exist. Killing RepairRunner for this run instance.&quot;, repairRunId);</b>
+<b class="nc">&nbsp;        killAndCleanupRunner();</b>
+&nbsp;        return;
+&nbsp;      }
+<b class="nc">&nbsp;      RepairRun.RunState state = repairRun.get().getRunState();</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;run() called for repair run #{} with run state {}&quot;, repairRunId, state);</b>
+<b class="nc">&nbsp;      switch (state) {</b>
+&nbsp;        case NOT_STARTED:
+<b class="nc">&nbsp;          start();</b>
+<b class="nc">&nbsp;          break;</b>
+&nbsp;        case RUNNING:
+<b class="nc">&nbsp;          startNextSegment();</b>
+<b class="nc">&nbsp;          break;</b>
+&nbsp;        case PAUSED:
+<b class="nc">&nbsp;          context.repairManager.scheduleRetry(this);</b>
+<b class="nc">&nbsp;          break;</b>
+&nbsp;        default:
+<b class="nc">&nbsp;          throw new IllegalStateException(&quot;un-known/implemented state &quot; + state);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    } catch (RuntimeException | ReaperException | InterruptedException e) {</b>
+<b class="nc">&nbsp;      LOG.error(&quot;RepairRun FAILURE, scheduling retry&quot;, e);</b>
+<b class="nc">&nbsp;      context.repairManager.scheduleRetry(this);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;    // Adding this here to catch a deadlock
+<b class="nc">&nbsp;    LOG.debug(&quot;run() exiting for repair run #{}&quot;, repairRunId);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Starts the repair run.
+&nbsp;   */
+&nbsp;  private void start() throws ReaperException, InterruptedException {
+<b class="nc">&nbsp;    LOG.info(&quot;Repairs for repair run #{} starting&quot;, repairRunId);</b>
+<b class="nc">&nbsp;    synchronized (this) {</b>
+<b class="nc">&nbsp;      RepairRun repairRun = context.storage.getRepairRun(repairRunId).get();</b>
+<b class="nc">&nbsp;      context.storage.updateRepairRun(</b>
+<b class="nc">&nbsp;          repairRun.with().runState(RepairRun.RunState.RUNNING).startTime(DateTime.now()).build(repairRun.getId()));</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    startNextSegment();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void endRepairRun() {
+<b class="nc">&nbsp;    LOG.info(&quot;Repairs for repair run #{} done&quot;, repairRunId);</b>
+<b class="nc">&nbsp;    synchronized (this) {</b>
+<b class="nc">&nbsp;      RepairRun repairRun = context.storage.getRepairRun(repairRunId).get();</b>
+<b class="nc">&nbsp;      DateTime repairRunCompleted = DateTime.now();</b>
+<b class="nc">&nbsp;      context.storage.updateRepairRun(</b>
+&nbsp;          repairRun
+<b class="nc">&nbsp;              .with()</b>
+<b class="nc">&nbsp;              .runState(RepairRun.RunState.DONE)</b>
+<b class="nc">&nbsp;              .endTime(repairRunCompleted)</b>
+<b class="nc">&nbsp;              .lastEvent(&quot;All done&quot;)</b>
+<b class="nc">&nbsp;              .build(repairRun.getId()));</b>
+<b class="nc">&nbsp;      killAndCleanupRunner();</b>
+&nbsp;
+<b class="nc">&nbsp;      context.metricRegistry.remove(metricNameForMillisSinceLastRepair);</b>
+<b class="nc">&nbsp;      context.metricRegistry.register(</b>
+&nbsp;          metricNameForMillisSinceLastRepair,
+<b class="nc">&nbsp;          (Gauge&lt;Long&gt;) () -&gt; DateTime.now().getMillis() - repairRunCompleted.toInstant().getMillis());</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void confirmJmxConnectionIsOpen() throws ReaperException {
+<b class="nc">&nbsp;    if (jmxConnection == null || !jmxConnection.isConnectionAlive()) {</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;connecting JMX proxy for repair runner on run id: {}&quot;, repairRunId);</b>
+<b class="nc">&nbsp;      Cluster cluster = context.storage.getCluster(this.clusterName).get();</b>
+<b class="nc">&nbsp;      jmxConnection</b>
+<b class="nc">&nbsp;          = context.jmxConnectionFactory.connectAny(cluster, context.config.getJmxConnectionTimeoutInSeconds());</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;successfully reestablished JMX proxy for repair runner&quot;);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Get the next segment and repair it. If there is none, we&#39;re done.
+&nbsp;   */
+&nbsp;  private void startNextSegment() throws ReaperException, InterruptedException {
+<b class="nc">&nbsp;    boolean scheduleRetry = true;</b>
+<b class="nc">&nbsp;    boolean anythingRunningStill = false;</b>
+&nbsp;
+<b class="nc">&nbsp;    confirmJmxConnectionIsOpen();</b>
+&nbsp;
+&nbsp;    // We want to know whether a repair was started,
+&nbsp;    // so that a rescheduling of this runner will happen.
+<b class="nc">&nbsp;    boolean repairStarted = false;</b>
+&nbsp;
+<b class="nc">&nbsp;    for (int rangeIndex = 0; rangeIndex &lt; currentlyRunningSegments.length(); rangeIndex++) {</b>
+&nbsp;
+<b class="nc">&nbsp;      if (currentlyRunningSegments.get(rangeIndex) != null) {</b>
+<b class="nc">&nbsp;        anythingRunningStill = true;</b>
+&nbsp;
+&nbsp;        // Just checking that no currently running segment runner is stuck.
+<b class="nc">&nbsp;        RepairSegment supposedlyRunningSegment</b>
+<b class="nc">&nbsp;            = context.storage.getRepairSegment(repairRunId, currentlyRunningSegments.get(rangeIndex)).get();</b>
+<b class="nc">&nbsp;        DateTime startTime = supposedlyRunningSegment.getStartTime();</b>
+<b class="nc">&nbsp;        if (startTime != null &amp;&amp; startTime.isBefore(DateTime.now().minusDays(1))) {</b>
+<b class="nc">&nbsp;          LOG.warn(</b>
+&nbsp;              &quot;Looks like segment #{} has been running more than a day. Start time: {}&quot;,
+<b class="nc">&nbsp;              supposedlyRunningSegment.getId(),</b>
+<b class="nc">&nbsp;              supposedlyRunningSegment.getStartTime());</b>
+<b class="nc">&nbsp;        } else if (startTime != null &amp;&amp; startTime.isBefore(DateTime.now().minusHours(1))) {</b>
+<b class="nc">&nbsp;          LOG.info(</b>
+&nbsp;              &quot;Looks like segment #{} has been running more than an hour. Start time: {}&quot;,
+<b class="nc">&nbsp;              supposedlyRunningSegment.getId(),</b>
+<b class="nc">&nbsp;              supposedlyRunningSegment.getStartTime());</b>
+<b class="nc">&nbsp;        } else if (startTime != null &amp;&amp; startTime.isBefore(DateTime.now().minusMinutes(2))) {</b>
+<b class="nc">&nbsp;          LOG.debug(</b>
+&nbsp;              &quot;Looks like segment #{} has been running more than two minutes. Start time: {}&quot;,
+<b class="nc">&nbsp;              supposedlyRunningSegment.getId(),</b>
+<b class="nc">&nbsp;              supposedlyRunningSegment.getStartTime());</b>
+&nbsp;        }
+&nbsp;        // No need to try starting new repair for already active slot.
+&nbsp;        continue;
+&nbsp;      }
+&nbsp;
+&nbsp;      // We have an empty slot, so let&#39;s start new segment runner if possible.
+<b class="nc">&nbsp;      LOG.info(&quot;Running segment for range {}&quot;, parallelRanges.get(rangeIndex));</b>
+<b class="nc">&nbsp;      Optional&lt;RepairSegment&gt; nextRepairSegment</b>
+<b class="nc">&nbsp;          = context.storage.getNextFreeSegmentInRange(repairRunId, Optional.of(parallelRanges.get(rangeIndex)));</b>
+&nbsp;
+<b class="nc">&nbsp;      if (!nextRepairSegment.isPresent()) {</b>
+<b class="nc">&nbsp;        LOG.debug(&quot;No repair segment available for range {}&quot;, parallelRanges.get(rangeIndex));</b>
+&nbsp;
+&nbsp;      } else {
+<b class="nc">&nbsp;        LOG.info(&quot;Next segment to run : {}&quot;, nextRepairSegment.get().getId());</b>
+<b class="nc">&nbsp;        UUID segmentId = nextRepairSegment.get().getId();</b>
+<b class="nc">&nbsp;        boolean wasSet = currentlyRunningSegments.compareAndSet(rangeIndex, null, segmentId);</b>
+<b class="nc">&nbsp;        if (!wasSet) {</b>
+<b class="nc">&nbsp;          LOG.debug(&quot;Didn&#39;t set segment id `{}` to slot {} because it was busy&quot;, segmentId, rangeIndex);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;          LOG.debug(&quot;Did set segment id `{}` to slot {}&quot;, segmentId, rangeIndex);</b>
+<b class="nc">&nbsp;          scheduleRetry</b>
+<b class="nc">&nbsp;              = repairSegment(rangeIndex, nextRepairSegment.get().getId(), nextRepairSegment.get().getTokenRange());</b>
+<b class="nc">&nbsp;          if (!scheduleRetry) {</b>
+<b class="nc">&nbsp;            break;</b>
+&nbsp;          }
+<b class="nc">&nbsp;          repairStarted = true;</b>
+&nbsp;        }
+&nbsp;      }
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (!repairStarted &amp;&amp; !anythingRunningStill) {</b>
+<b class="nc">&nbsp;      int segmentsDone = context.storage.getSegmentAmountForRepairRunWithState(repairRunId, RepairSegment.State.DONE);</b>
+<b class="nc">&nbsp;      int segmentsTotal = context.storage.getSegmentAmountForRepairRun(repairRunId);</b>
+&nbsp;
+<b class="nc">&nbsp;      LOG.info(&quot;Repair amount done {}&quot;, segmentsDone);</b>
+<b class="nc">&nbsp;      repairProgress = (float) segmentsDone / segmentsTotal;</b>
+&nbsp;
+<b class="nc">&nbsp;      if (segmentsDone == segmentsTotal) {</b>
+<b class="nc">&nbsp;        endRepairRun();</b>
+<b class="nc">&nbsp;        scheduleRetry = false;</b>
+&nbsp;      }
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (scheduleRetry) {</b>
+<b class="nc">&nbsp;      context.repairManager.scheduleRetry(this);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Start the repair of a segment.
+&nbsp;   *
+&nbsp;   * @param segmentId id of the segment to repair.
+&nbsp;   * @param tokenRange token range of the segment to repair.
+&nbsp;   * @return Boolean indicating whether rescheduling next run is needed.
+&nbsp;   */
+&nbsp;  private boolean repairSegment(final int rangeIndex, final UUID segmentId, RingRange tokenRange)
+&nbsp;      throws InterruptedException {
+&nbsp;
+&nbsp;    final UUID unitId;
+&nbsp;    final double intensity;
+&nbsp;    final RepairParallelism validationParallelism;
+&nbsp;    {
+<b class="nc">&nbsp;      RepairRun repairRun = context.storage.getRepairRun(repairRunId).get();</b>
+<b class="nc">&nbsp;      unitId = repairRun.getRepairUnitId();</b>
+<b class="nc">&nbsp;      intensity = repairRun.getIntensity();</b>
+<b class="nc">&nbsp;      validationParallelism = repairRun.getRepairParallelism();</b>
+&nbsp;
+<b class="nc">&nbsp;      int amountDone = context.storage.getSegmentAmountForRepairRunWithState(repairRunId, RepairSegment.State.DONE);</b>
+<b class="nc">&nbsp;      repairProgress = (float) amountDone / repairRun.getSegmentCount();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    RepairUnit repairUnit = context.storage.getRepairUnit(unitId).get();</b>
+<b class="nc">&nbsp;    String keyspace = repairUnit.getKeyspaceName();</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;preparing to repair segment {} on run with id {}&quot;, segmentId, repairRunId);</b>
+&nbsp;
+&nbsp;    try {
+<b class="nc">&nbsp;      confirmJmxConnectionIsOpen();</b>
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;Failed to reestablish JMX connection in runner {}, retrying&quot;, repairRunId, e);</b>
+<b class="nc">&nbsp;      currentlyRunningSegments.set(rangeIndex, null);</b>
+<b class="nc">&nbsp;      return true;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    List&lt;String&gt; potentialCoordinators;
+<b class="nc">&nbsp;    if (!repairUnit.getIncrementalRepair()) {</b>
+&nbsp;      // full repair
+&nbsp;      try {
+<b class="nc">&nbsp;        potentialCoordinators = filterPotentialCoordinatorsByDatacenters(</b>
+<b class="nc">&nbsp;            repairUnit.getDatacenters(), jmxConnection.tokenRangeToEndpoint(keyspace, tokenRange), jmxConnection);</b>
+<b class="nc">&nbsp;      } catch (RuntimeException e) {</b>
+<b class="nc">&nbsp;        LOG.warn(&quot;Couldn&#39;t get token ranges from coordinator: #{}&quot;, e);</b>
+<b class="nc">&nbsp;        return true;</b>
+<b class="nc">&nbsp;      }</b>
+<b class="nc">&nbsp;      if (potentialCoordinators.isEmpty()) {</b>
+<b class="nc">&nbsp;        LOG.warn(&quot;Segment #{} is faulty, no potential coordinators for range: {}&quot;, segmentId, tokenRange.toString());</b>
+&nbsp;        // This segment has a faulty token range. Abort the entire repair run.
+<b class="nc">&nbsp;        synchronized (this) {</b>
+<b class="nc">&nbsp;          RepairRun repairRun = context.storage.getRepairRun(repairRunId).get();</b>
+<b class="nc">&nbsp;          context.storage.updateRepairRun(</b>
+&nbsp;              repairRun
+<b class="nc">&nbsp;                  .with()</b>
+<b class="nc">&nbsp;                  .runState(RepairRun.RunState.ERROR)</b>
+<b class="nc">&nbsp;                  .lastEvent(String.format(&quot;No coordinators for range %s&quot;, tokenRange))</b>
+<b class="nc">&nbsp;                  .endTime(DateTime.now())</b>
+<b class="nc">&nbsp;                  .build(repairRunId));</b>
+<b class="nc">&nbsp;          killAndCleanupRunner();</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;      }
+&nbsp;    } else {
+&nbsp;      // Add random sleep time to avoid one Reaper instance locking all others during multi DC incremental repairs
+<b class="nc">&nbsp;      Thread.sleep(ThreadLocalRandom.current().nextInt(0, 10 + 1) * 1000);</b>
+<b class="nc">&nbsp;      potentialCoordinators</b>
+<b class="nc">&nbsp;          = Arrays.asList(context.storage.getRepairSegment(repairRunId, segmentId).get().getCoordinatorHost());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    try {
+<b class="nc">&nbsp;      SegmentRunner segmentRunner = new SegmentRunner(</b>
+&nbsp;          context,
+&nbsp;          segmentId,
+&nbsp;          potentialCoordinators,
+<b class="nc">&nbsp;          context.repairManager.getRepairTimeoutMillis(),</b>
+&nbsp;          intensity,
+&nbsp;          validationParallelism,
+&nbsp;          clusterName,
+&nbsp;          repairUnit,
+&nbsp;          this);
+&nbsp;
+<b class="nc">&nbsp;      ListenableFuture&lt;?&gt; segmentResult = context.repairManager.submitSegment(segmentRunner);</b>
+<b class="nc">&nbsp;      Futures.addCallback(</b>
+&nbsp;          segmentResult,
+<b class="nc">&nbsp;          new FutureCallback&lt;Object&gt;() {</b>
+&nbsp;            @Override
+&nbsp;            public void onSuccess(Object ignored) {
+<b class="nc">&nbsp;              currentlyRunningSegments.set(rangeIndex, null);</b>
+<b class="nc">&nbsp;              handleResult(segmentId);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void onFailure(Throwable throwable) {
+<b class="nc">&nbsp;              currentlyRunningSegments.set(rangeIndex, null);</b>
+<b class="nc">&nbsp;              LOG.error(&quot;Executing SegmentRunner failed&quot;, throwable);</b>
+&nbsp;            }
+&nbsp;          });
+<b class="nc">&nbsp;    } catch (ReaperException ex) {</b>
+<b class="nc">&nbsp;      LOG.error(&quot;Executing SegmentRunner failed&quot;, ex);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    return true;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static List&lt;String&gt; filterPotentialCoordinatorsByDatacenters(
+&nbsp;      Collection&lt;String&gt; datacenters,
+&nbsp;      List&lt;String&gt; potentialCoordinators,
+&nbsp;      JmxProxy jmxProxy) {
+&nbsp;
+<b class="nc">&nbsp;    List&lt;String&gt; coordinators = potentialCoordinators</b>
+<b class="nc">&nbsp;        .stream()</b>
+<b class="nc">&nbsp;        .map(coord -&gt; getNodeDatacenterPair(coord, jmxProxy))</b>
+<b class="nc">&nbsp;        .filter(node -&gt; datacenters.contains(node.getRight()) || datacenters.isEmpty())</b>
+<b class="nc">&nbsp;        .map(nodeTuple -&gt; nodeTuple.getLeft())</b>
+<b class="nc">&nbsp;        .collect(Collectors.toList());</b>
+&nbsp;
+<b class="nc">&nbsp;    LOG.debug(</b>
+&nbsp;        &quot;[filterPotentialCoordinatorsByDatacenters] coordinators filtered by dc {}. Before : {} / After : {}&quot;,
+&nbsp;        datacenters,
+&nbsp;        potentialCoordinators,
+&nbsp;        coordinators);
+&nbsp;
+<b class="nc">&nbsp;    return coordinators;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static Pair&lt;String, String&gt; getNodeDatacenterPair(String node, JmxProxy jmxProxy) {
+<b class="nc">&nbsp;    Pair&lt;String, String&gt; result = Pair.of(node, jmxProxy.getDataCenter(node));</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;[getNodeDatacenterPair] node/datacenter association {}&quot;, result);</b>
+<b class="nc">&nbsp;    return result;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void handleResult(UUID segmentId) {
+<b class="nc">&nbsp;    Optional&lt;RepairSegment&gt; segment = context.storage.getRepairSegment(repairRunId, segmentId);</b>
+&nbsp;
+&nbsp;    // Don&#39;t do rescheduling here, not to spawn uncontrolled amount of threads
+<b class="nc">&nbsp;    if (segment.isPresent()) {</b>
+<b class="nc">&nbsp;      RepairSegment.State state = segment.get().getState();</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;In repair run #{}, triggerRepair on segment {} ended with state {}&quot;, repairRunId, segmentId, state);</b>
+<b class="nc">&nbsp;      switch (state) {</b>
+&nbsp;        case NOT_STARTED:
+&nbsp;          // Unsuccessful repair
+<b class="nc">&nbsp;          break;</b>
+&nbsp;
+&nbsp;        case DONE:
+&nbsp;          // Successful repair
+<b class="nc">&nbsp;          break;</b>
+&nbsp;
+&nbsp;        default:
+&nbsp;          // Another thread has started a new repair on this segment already
+&nbsp;          // Or maybe the same repair segment id should never be re-run in which case this is an error
+<b class="nc">&nbsp;          String msg = &quot;handleResult called with a segment state (&quot;</b>
+&nbsp;              + state
+&nbsp;              + &quot;) that it &quot;
+&nbsp;              + &quot;should not have after segmentRunner has tried a repair&quot;;
+<b class="nc">&nbsp;          LOG.error(msg);</b>
+<b class="nc">&nbsp;          throw new AssertionError(msg);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    } else {</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;In repair run #{}, triggerRepair on segment {} ended, but run is missing&quot;, repairRunId, segmentId);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  void updateLastEvent(String newEvent) {
+<b class="nc">&nbsp;    synchronized (this) {</b>
+<b class="nc">&nbsp;      RepairRun repairRun = context.storage.getRepairRun(repairRunId).get();</b>
+<b class="nc">&nbsp;      if (repairRun.getRunState().isTerminated()) {</b>
+<b class="nc">&nbsp;        LOG.warn(</b>
+&nbsp;            &quot;Will not update lastEvent of run that has already terminated. The message was: &quot; + &quot;\&quot;{}\&quot;&quot;,
+&nbsp;            newEvent);
+&nbsp;      } else {
+<b class="nc">&nbsp;        context.storage.updateRepairRun(repairRun.with().lastEvent(newEvent).build(repairRunId));</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  void killAndCleanupRunner() {
+<b class="nc">&nbsp;    context.repairManager.removeRunner(this);</b>
+<b class="nc">&nbsp;    if (jmxConnection != null) {</b>
+<b class="nc">&nbsp;      jmxConnection.close();</b>
+<b class="nc">&nbsp;      jmxConnection = null;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    Thread.currentThread().interrupt();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private String metricName(String metric, String clusterName, UUID repairRunId) {
+<b class="nc">&nbsp;    String cleanClusterName = clusterName.replaceAll(&quot;[^A-Za-z0-9]&quot;, &quot;&quot;);</b>
+<b class="nc">&nbsp;    String cleanRepairRunId = repairRunId.toString().replaceAll(&quot;-&quot;, &quot;&quot;);</b>
+<b class="nc">&nbsp;    return MetricRegistry.name(RepairRunner.class, metric, cleanClusterName, cleanRepairRunId);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

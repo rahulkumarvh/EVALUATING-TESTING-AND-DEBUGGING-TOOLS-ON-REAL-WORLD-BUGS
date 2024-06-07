@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SHORTEST_PATH_LENGTH_TEST.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">java_testcases.junit.crt_program</a> &gt; <span class="el_source">SHORTEST_PATH_LENGTH_TEST.java</span></div><h1>SHORTEST_PATH_LENGTH_TEST.java</h1><pre class="source lang-java linenums">package java_testcases.junit.crt_program;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.junit.Test;
+import correct_java_programs.SHORTEST_PATH_LENGTH;
+import java_programs.Node;
+
+<span class="nc" id="L14">public class SHORTEST_PATH_LENGTH_TEST {</span>
+
+<span class="nc" id="L16">    static Map&lt;List&lt;Node&gt;, Integer&gt; length_by_edge = new HashMap&lt;List&lt;Node&gt;, Integer&gt;();</span>
+    static Node node1;
+    static Node node2;
+    static Node node3;
+    static Node node4;
+    static Node node5;
+    static Node node0;
+
+    static {
+<span class="nc" id="L25">        node1 = new Node(&quot;1&quot;);</span>
+<span class="nc" id="L26">        node5 = new Node(&quot;5&quot;);</span>
+<span class="nc" id="L27">        node4 = new Node(&quot;4&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node5)));</span>
+<span class="nc" id="L28">        node3 = new Node(&quot;3&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node4)));</span>
+<span class="nc" id="L29">        node2 = new Node(&quot;2&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node1, node3, node4)));</span>
+<span class="nc" id="L30">        node0 = new Node(&quot;0&quot;, new ArrayList&lt;Node&gt;(Arrays.asList(node2, node5)));</span>
+<span class="nc" id="L31">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node0, node2)), 3);</span>
+<span class="nc" id="L32">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node0, node5)), 10);</span>
+<span class="nc" id="L33">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node2, node1)), 1);</span>
+<span class="nc" id="L34">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node2, node3)), 2);</span>
+<span class="nc" id="L35">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node2, node4)), 4);</span>
+<span class="nc" id="L36">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node3, node4)), 1);</span>
+<span class="nc" id="L37">        length_by_edge.put(new ArrayList&lt;Node&gt;(Arrays.asList(node4, node5)), 1);</span>
+
+<span class="nc" id="L39">    }</span>
+
+    /**
+     * Case 1: One path Output: 4
+     */
+    @Test
+    public void test1() {
+<span class="nc" id="L46">        int result = SHORTEST_PATH_LENGTH.shortest_path_length(length_by_edge, node0, node1);</span>
+<span class="nc" id="L47">        assertEquals(4, result);</span>
+<span class="nc" id="L48">    }</span>
+
+    /**
+     * Case 2: Multiple path Output: 7
+     */
+    @Test
+    public void test2() {
+<span class="nc" id="L55">        int result = SHORTEST_PATH_LENGTH.shortest_path_length(length_by_edge, node0, node5);</span>
+<span class="nc" id="L56">        assertEquals(7, result);</span>
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * Case 3: Start point is same as end point Output: 0
+     */
+    @Test
+    public void test3() {
+<span class="nc" id="L64">        int result = SHORTEST_PATH_LENGTH.shortest_path_length(length_by_edge, node2, node2);</span>
+<span class="nc" id="L65">        assertEquals(0, result);</span>
+<span class="nc" id="L66">    }</span>
+
+    /**
+     * Case 4: Unreachable path Output: INT_MAX
+     */
+    @Test
+    public void test4() {
+<span class="nc" id="L73">        int result = SHORTEST_PATH_LENGTH.shortest_path_length(length_by_edge, node1, node5);</span>
+<span class="nc" id="L74">        assertEquals(2147483647, result);</span>
+<span class="nc" id="L75">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

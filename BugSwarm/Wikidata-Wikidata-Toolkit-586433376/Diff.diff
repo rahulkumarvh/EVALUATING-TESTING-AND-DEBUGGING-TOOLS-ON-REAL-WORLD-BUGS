@@ -1,0 +1,13 @@
+diff --git a/wdtk-datamodel/src/test/java/org/wikidata/wdtk/datamodel/helpers/ItemDocumentBuilderTest.java b/wdtk-datamodel/src/test/java/org/wikidata/wdtk/datamodel/helpers/ItemDocumentBuilderTest.java
+index e49590e1..05533dbb 100644
+--- a/wdtk-datamodel/src/test/java/org/wikidata/wdtk/datamodel/helpers/ItemDocumentBuilderTest.java
++++ b/wdtk-datamodel/src/test/java/org/wikidata/wdtk/datamodel/helpers/ItemDocumentBuilderTest.java
+@@ -132,7 +132,7 @@ public class ItemDocumentBuilderTest {
+ 		ItemDocument copy = ItemDocumentBuilder.fromItemDocument(initial).withEntityId(ItemIdValue.NULL).build();
+ 		
+ 		assertEquals(ItemIdValue.NULL, copy.getEntityId());
+-		assertEquals(label, copy.findLabel("fr"));
++		assertEquals("pleutre", copy.findLabel("fr"));
+ 	}
+ 	
+ 	@Test(expected = IllegalArgumentException.class)

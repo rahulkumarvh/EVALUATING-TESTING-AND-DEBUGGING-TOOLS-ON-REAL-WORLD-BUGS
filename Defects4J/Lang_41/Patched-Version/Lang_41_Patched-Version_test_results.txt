@@ -1,0 +1,4 @@
+Failing tests: 1
+  - java.org.apache.commons.lang3.math.ErrorTest
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

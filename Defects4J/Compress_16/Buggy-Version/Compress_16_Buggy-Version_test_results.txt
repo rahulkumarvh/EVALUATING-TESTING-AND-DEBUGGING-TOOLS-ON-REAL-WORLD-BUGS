@@ -1,0 +1,5 @@
+Failing tests: 2
+  - org.apache.commons.compress.RegressionTest
+  - org.apache.commons.compress.archivers.ArchiveStreamFactoryTest::aiffFilesAreNoTARs
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

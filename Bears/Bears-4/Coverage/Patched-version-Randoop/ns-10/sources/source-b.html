@@ -1,0 +1,467 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PropertyBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.ser</a>
+</div>
+
+<h1>Coverage Summary for Class: PropertyBuilder (com.fasterxml.jackson.databind.ser)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PropertyBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/94)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PropertyBuilder$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/95)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.ser;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonInclude;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+&nbsp;import com.fasterxml.jackson.databind.introspect.*;
+&nbsp;import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+&nbsp;import com.fasterxml.jackson.databind.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Helper class for {@link BeanSerializerFactory} that is used to
+&nbsp; * construct {@link BeanPropertyWriter} instances. Can be sub-classed
+&nbsp; * to change behavior.
+&nbsp; */
+&nbsp;public class PropertyBuilder
+&nbsp;{
+&nbsp;    // @since 2.7
+<b class="nc">&nbsp;    private final static Object NO_DEFAULT_MARKER = Boolean.FALSE;</b>
+&nbsp;    
+&nbsp;    final protected SerializationConfig _config;
+&nbsp;    final protected BeanDescription _beanDesc;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Default inclusion mode for properties of the POJO for which
+&nbsp;     * properties are collected; possibly overridden on
+&nbsp;     * per-property basis.
+&nbsp;     */
+&nbsp;    final protected JsonInclude.Value _defaultInclusion;
+&nbsp;
+&nbsp;    final protected AnnotationIntrospector _annotationIntrospector;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * If a property has serialization inclusion value of
+&nbsp;     * {@link com.fasterxml.jackson.annotation.JsonInclude.Include#NON_DEFAULT},
+&nbsp;     * we may need to know the default value of the bean, to know if property value
+&nbsp;     * equals default one.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * NOTE: only used if enclosing class defines NON_DEFAULT, but NOT if it is the
+&nbsp;     * global default OR per-property override.
+&nbsp;     */
+&nbsp;    protected Object _defaultBean;
+&nbsp;
+&nbsp;    public PropertyBuilder(SerializationConfig config, BeanDescription beanDesc)
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        _config = config;</b>
+<b class="nc">&nbsp;        _beanDesc = beanDesc;</b>
+<b class="nc">&nbsp;        _defaultInclusion = beanDesc.findPropertyInclusion(config.getDefaultPropertyInclusion());</b>
+<b class="nc">&nbsp;        _annotationIntrospector = _config.getAnnotationIntrospector();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Public API
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    public Annotations getClassAnnotations() {
+<b class="nc">&nbsp;        return _beanDesc.getClassAnnotations();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param contentTypeSer Optional explicit type information serializer
+&nbsp;     *    to use for contained values (only used for properties that are
+&nbsp;     *    of container type)
+&nbsp;     */
+&nbsp;    protected BeanPropertyWriter buildWriter(SerializerProvider prov,
+&nbsp;            BeanPropertyDefinition propDef, JavaType declaredType, JsonSerializer&lt;?&gt; ser,
+&nbsp;            TypeSerializer typeSer, TypeSerializer contentTypeSer,
+&nbsp;            AnnotatedMember am, boolean defaultUseStaticTyping)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+&nbsp;        // do we have annotation that forces type to use (to declared type or its super type)?
+<b class="nc">&nbsp;        JavaType serializationType = findSerializationType(am, defaultUseStaticTyping, declaredType);</b>
+&nbsp;
+&nbsp;        // Container types can have separate type serializers for content (value / element) type
+<b class="nc">&nbsp;        if (contentTypeSer != null) {</b>
+&nbsp;            /* 04-Feb-2010, tatu: Let&#39;s force static typing for collection, if there is
+&nbsp;             *    type information for contents. Should work well (for JAXB case); can be
+&nbsp;             *    revisited if this causes problems.
+&nbsp;             */
+<b class="nc">&nbsp;            if (serializationType == null) {</b>
+&nbsp;//                serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+<b class="nc">&nbsp;                serializationType = declaredType;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            JavaType ct = serializationType.getContentType();</b>
+&nbsp;            // Not exactly sure why, but this used to occur; better check explicitly:
+<b class="nc">&nbsp;            if (ct == null) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Problem trying to create BeanPropertyWriter for property &#39;&quot;</b>
+<b class="nc">&nbsp;                        +propDef.getName()+&quot;&#39; (of type &quot;+_beanDesc.getType()+&quot;); serialization type &quot;+serializationType+&quot; has no content&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            serializationType = serializationType.withContentTypeHandler(contentTypeSer);</b>
+<b class="nc">&nbsp;            ct = serializationType.getContentType();</b>
+&nbsp;        }
+&nbsp;        
+<b class="nc">&nbsp;        Object valueToSuppress = null;</b>
+<b class="nc">&nbsp;        boolean suppressNulls = false;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonInclude.Value inclV = _defaultInclusion.withOverrides(propDef.findInclusion());</b>
+<b class="nc">&nbsp;        JsonInclude.Include inclusion = inclV.getValueInclusion();</b>
+<b class="nc">&nbsp;        if (inclusion == JsonInclude.Include.USE_DEFAULTS) { // should not occur but...</b>
+<b class="nc">&nbsp;            inclusion = JsonInclude.Include.ALWAYS;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /*
+&nbsp;        JsonInclude.Include inclusion = propDef.findInclusion().getValueInclusion();
+&nbsp;        if (inclusion == JsonInclude.Include.USE_DEFAULTS) { // since 2.6
+&nbsp;            inclusion = _defaultInclusion;
+&nbsp;            if (inclusion == null) {
+&nbsp;                inclusion = JsonInclude.Include.ALWAYS;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        */
+&nbsp;
+<b class="nc">&nbsp;        switch (inclusion) {</b>
+&nbsp;        case NON_DEFAULT:
+&nbsp;            // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
+&nbsp;            //    so that if enclosing class has this, we may need to values of property,
+&nbsp;            //    whereas for global defaults OR per-property overrides, we have more
+&nbsp;            //    static definition. Sigh.
+&nbsp;            // First: case of class specifying it; try to find POJO property defaults
+<b class="nc">&nbsp;            JavaType t = (serializationType == null) ? declaredType : serializationType;</b>
+<b class="nc">&nbsp;            if (_defaultInclusion.getValueInclusion() == JsonInclude.Include.NON_DEFAULT) {</b>
+<b class="nc">&nbsp;                valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, t);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                valueToSuppress = getDefaultValue(t);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (valueToSuppress == null) {</b>
+<b class="nc">&nbsp;                suppressNulls = true;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                if (valueToSuppress.getClass().isArray()) {</b>
+<b class="nc">&nbsp;                    valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            break;
+&nbsp;        case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals
+&nbsp;            // always suppress nulls
+<b class="nc">&nbsp;            suppressNulls = true;</b>
+&nbsp;            // and for referential types, also &quot;empty&quot;, which in their case means &quot;absent&quot;
+<b class="nc">&nbsp;            if (declaredType.isReferenceType()) {</b>
+<b class="nc">&nbsp;                valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        case NON_EMPTY:
+&nbsp;            // always suppress nulls
+<b class="nc">&nbsp;            suppressNulls = true;</b>
+&nbsp;            // but possibly also &#39;empty&#39; values:
+<b class="nc">&nbsp;            valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;</b>
+<b class="nc">&nbsp;            break;</b>
+&nbsp;        case NON_NULL:
+<b class="nc">&nbsp;            suppressNulls = true;</b>
+&nbsp;            // fall through
+&nbsp;        case ALWAYS: // default
+&nbsp;        default:
+&nbsp;            // we may still want to suppress empty collections, as per [JACKSON-254]:
+<b class="nc">&nbsp;            if (declaredType.isContainerType()</b>
+<b class="nc">&nbsp;                    &amp;&amp; !_config.isEnabled(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)) {</b>
+<b class="nc">&nbsp;                valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;</b>
+&nbsp;            }
+&nbsp;            break;
+&nbsp;        }
+<b class="nc">&nbsp;        BeanPropertyWriter bpw = new BeanPropertyWriter(propDef,</b>
+<b class="nc">&nbsp;                am, _beanDesc.getClassAnnotations(), declaredType,</b>
+&nbsp;                ser, typeSer, serializationType, suppressNulls, valueToSuppress);
+&nbsp;
+&nbsp;        // How about custom null serializer?
+<b class="nc">&nbsp;        Object serDef = _annotationIntrospector.findNullSerializer(am);</b>
+<b class="nc">&nbsp;        if (serDef != null) {</b>
+<b class="nc">&nbsp;            bpw.assignNullSerializer(prov.serializerInstance(am, serDef));</b>
+&nbsp;        }
+&nbsp;        // And then, handling of unwrapping
+<b class="nc">&nbsp;        NameTransformer unwrapper = _annotationIntrospector.findUnwrappingNameTransformer(am);</b>
+<b class="nc">&nbsp;        if (unwrapper != null) {</b>
+<b class="nc">&nbsp;            bpw = bpw.unwrappingWriter(unwrapper);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return bpw;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods; annotation access
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that will try to determine statically defined type of property
+&nbsp;     * being serialized, based on annotations (for overrides), and alternatively
+&nbsp;     * declared type (if static typing for serialization is enabled).
+&nbsp;     * If neither can be used (no annotations, dynamic typing), returns null.
+&nbsp;     */
+&nbsp;    protected JavaType findSerializationType(Annotated a, boolean useStaticTyping, JavaType declaredType)
+&nbsp;        throws JsonMappingException
+&nbsp;    {
+<b class="nc">&nbsp;        JavaType secondary = _annotationIntrospector.refineSerializationType(_config, a, declaredType);</b>
+&nbsp;        // 11-Oct-2015, tatu: As of 2.7, not 100% sure following checks are needed. But keeping
+&nbsp;        //    for now, just in case
+<b class="nc">&nbsp;        if (secondary != declaredType) {</b>
+<b class="nc">&nbsp;            Class&lt;?&gt; serClass = secondary.getRawClass();</b>
+&nbsp;            // Must be a super type to be usable
+<b class="nc">&nbsp;            Class&lt;?&gt; rawDeclared = declaredType.getRawClass();</b>
+<b class="nc">&nbsp;            if (serClass.isAssignableFrom(rawDeclared)) {</b>
+&nbsp;                ; // fine as is
+&nbsp;            } else {
+&nbsp;                /* 18-Nov-2010, tatu: Related to fixing [JACKSON-416], an issue with such
+&nbsp;                 *   check is that for deserialization more specific type makes sense;
+&nbsp;                 *   and for serialization more generic. But alas JAXB uses but a single
+&nbsp;                 *   annotation to do both... Hence, we must just discard type, as long as
+&nbsp;                 *   types are related
+&nbsp;                 */
+<b class="nc">&nbsp;                if (!rawDeclared.isAssignableFrom(serClass)) {</b>
+<b class="nc">&nbsp;                    throw new IllegalArgumentException(&quot;Illegal concrete-type annotation for method &#39;&quot;+a.getName()+&quot;&#39;: class &quot;+serClass.getName()+&quot; not a super-type of (declared) class &quot;+rawDeclared.getName());</b>
+&nbsp;                }
+&nbsp;                /* 03-Dec-2010, tatu: Actually, ugh, we may need to further relax this
+&nbsp;                 *   and actually accept subtypes too for serialization. Bit dangerous in theory
+&nbsp;                 *   but need to trust user here...
+&nbsp;                 */
+&nbsp;            }
+<b class="nc">&nbsp;            useStaticTyping = true;</b>
+<b class="nc">&nbsp;            declaredType = secondary;</b>
+&nbsp;        }
+&nbsp;        // If using static typing, declared type is known to be the type...
+<b class="nc">&nbsp;        JsonSerialize.Typing typing = _annotationIntrospector.findSerializationTyping(a);</b>
+<b class="nc">&nbsp;        if ((typing != null) &amp;&amp; (typing != JsonSerialize.Typing.DEFAULT_TYPING)) {</b>
+<b class="nc">&nbsp;            useStaticTyping = (typing == JsonSerialize.Typing.STATIC);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (useStaticTyping) {</b>
+&nbsp;            // 11-Oct-2015, tatu: Make sure JavaType also &quot;knows&quot; static-ness...
+<b class="nc">&nbsp;            return declaredType.withStaticTyping();</b>
+&nbsp;            
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for default value handling
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    protected Object getDefaultBean()
+&nbsp;    {
+<b class="nc">&nbsp;        Object def = _defaultBean;</b>
+<b class="nc">&nbsp;        if (def == null) {</b>
+&nbsp;            /* If we can fix access rights, we should; otherwise non-public
+&nbsp;             * classes or default constructor will prevent instantiation
+&nbsp;             */
+<b class="nc">&nbsp;            def = _beanDesc.instantiateBean(_config.canOverrideAccessModifiers());</b>
+<b class="nc">&nbsp;            if (def == null) {</b>
+&nbsp;                // 06-Nov-2015, tatu: As per [databind#998], do not fail.
+&nbsp;                /*
+&nbsp;                Class&lt;?&gt; cls = _beanDesc.getClassInfo().getAnnotated();
+&nbsp;                throw new IllegalArgumentException(&quot;Class &quot;+cls.getName()+&quot; has no default constructor; can not instantiate default bean value to support &#39;properties=JsonSerialize.Inclusion.NON_DEFAULT&#39; annotation&quot;);
+&nbsp;                 */
+&nbsp;
+&nbsp;                // And use a marker
+<b class="nc">&nbsp;                def = NO_DEFAULT_MARKER;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            _defaultBean = def;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return (def == NO_DEFAULT_MARKER) ? null : _defaultBean;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Accessor used to find out &quot;default value&quot; for given property, to use for
+&nbsp;     * comparing values to serialize, to determine whether to exclude value from serialization with
+&nbsp;     * inclusion type of {@link com.fasterxml.jackson.annotation.JsonInclude.Include#NON_EMPTY}.
+&nbsp;     * This method is called when we specifically want to know default value within context
+&nbsp;     * of a POJO, when annotation is within containing class, and not for property or
+&nbsp;     * defined as global baseline.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * Note that returning of pseudo-type 
+&nbsp;     *
+&nbsp;     * @since 2.7
+&nbsp;     */
+&nbsp;    protected Object getPropertyDefaultValue(String name, AnnotatedMember member,
+&nbsp;            JavaType type)
+&nbsp;    {
+<b class="nc">&nbsp;        Object defaultBean = getDefaultBean();</b>
+<b class="nc">&nbsp;        if (defaultBean == null) {</b>
+<b class="nc">&nbsp;            return getDefaultValue(type);</b>
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            return member.getValue(defaultBean);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            return _throwWrapped(e, name, defaultBean);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Accessor used to find out &quot;default value&quot; to use for comparing values to
+&nbsp;     * serialize, to determine whether to exclude value from serialization with
+&nbsp;     * inclusion type of {@link com.fasterxml.jackson.annotation.JsonInclude.Include#NON_DEFAULT}.
+&nbsp;     *&lt;p&gt;
+&nbsp;     * Default logic is such that for primitives and wrapper types for primitives, expected
+&nbsp;     * defaults (0 for `int` and `java.lang.Integer`) are returned; for Strings, empty String,
+&nbsp;     * and for structured (Maps, Collections, arrays) and reference types, criteria
+&nbsp;     * {@link com.fasterxml.jackson.annotation.JsonInclude.Include#NON_DEFAULT}
+&nbsp;     * is used.
+&nbsp;     *
+&nbsp;     * @since 2.7
+&nbsp;     */
+&nbsp;    protected Object getDefaultValue(JavaType type)
+&nbsp;    {
+&nbsp;        // 06-Nov-2015, tatu: Returning null is fine for Object types; but need special
+&nbsp;        //   handling for primitives since they are never passed as nulls.
+<b class="nc">&nbsp;        Class&lt;?&gt; cls = type.getRawClass();</b>
+&nbsp;
+<b class="nc">&nbsp;        Class&lt;?&gt; prim = ClassUtil.primitiveType(cls);</b>
+<b class="nc">&nbsp;        if (prim != null) {</b>
+<b class="nc">&nbsp;            return ClassUtil.defaultValue(prim);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (type.isContainerType() || type.isReferenceType()) {</b>
+<b class="nc">&nbsp;            return JsonInclude.Include.NON_EMPTY;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (cls == String.class) {</b>
+<b class="nc">&nbsp;            return &quot;&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods for exception handling
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    protected Object _throwWrapped(Exception e, String propName, Object defaultBean)
+&nbsp;    {
+<b class="nc">&nbsp;        Throwable t = e;</b>
+<b class="nc">&nbsp;        while (t.getCause() != null) {</b>
+<b class="nc">&nbsp;            t = t.getCause();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (t instanceof Error) throw (Error) t;</b>
+<b class="nc">&nbsp;        if (t instanceof RuntimeException) throw (RuntimeException) t;</b>
+<b class="nc">&nbsp;        throw new IllegalArgumentException(&quot;Failed to get property &#39;&quot;+propName+&quot;&#39; of default &quot;+defaultBean.getClass().getName()+&quot; instance&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 19:56</div>
+</div>
+</body>
+</html>

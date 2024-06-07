@@ -1,0 +1,11 @@
+Failing tests: 8
+  - com.google.javascript.jscomp.LooseTypeCheckTest::testMethodInference7
+  - com.google.javascript.jscomp.TypeCheckTest::testMethodInference7
+  - com.google.javascript.rhino.jstype.ErrorTest0::test1
+  - com.google.javascript.rhino.jstype.ErrorTest0::test2
+  - com.google.javascript.rhino.jstype.ErrorTest0::test3
+  - com.google.javascript.rhino.jstype.ErrorTest0::test4
+  - com.google.javascript.rhino.jstype.ErrorTest0::test5
+  - com.google.javascript.rhino.jstype.FunctionTypeTest::testSupAndInfOfReturnTypesWithNumOfParams
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

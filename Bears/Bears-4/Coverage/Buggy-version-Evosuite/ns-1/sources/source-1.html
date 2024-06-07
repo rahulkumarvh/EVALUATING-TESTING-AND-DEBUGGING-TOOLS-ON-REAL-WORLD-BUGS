@@ -1,0 +1,466 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > BeanAsArrayBuilderDeserializer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.deser.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: BeanAsArrayBuilderDeserializer (com.fasterxml.jackson.databind.deser.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BeanAsArrayBuilderDeserializer</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/145)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.deser.impl;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.*;
+&nbsp;import com.fasterxml.jackson.databind.*;
+&nbsp;import com.fasterxml.jackson.databind.deser.*;
+&nbsp;import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
+&nbsp;import com.fasterxml.jackson.databind.util.NameTransformer;
+&nbsp;
+&nbsp;public class BeanAsArrayBuilderDeserializer
+&nbsp;    extends BeanDeserializerBase
+&nbsp;{
+&nbsp;    private static final long serialVersionUID = 1L;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deserializer we delegate operations that we can not handle.
+&nbsp;     */
+&nbsp;    final protected BeanDeserializerBase _delegate;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Properties in order expected to be found in JSON array.
+&nbsp;     */
+&nbsp;    final protected SettableBeanProperty[] _orderedProperties;
+&nbsp;
+&nbsp;    final protected AnnotatedMethod _buildMethod;
+&nbsp;        
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Life-cycle, construction, initialization
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Main constructor used both for creating new instances (by
+&nbsp;     * {@link BeanDeserializer#asArrayDeserializer}) and for
+&nbsp;     * creating copies with different delegate.
+&nbsp;     */
+&nbsp;    public BeanAsArrayBuilderDeserializer(BeanDeserializerBase delegate,
+&nbsp;            SettableBeanProperty[] ordered,
+&nbsp;            AnnotatedMethod buildMethod)
+&nbsp;    {
+&nbsp;        super(delegate);
+<b class="nc">&nbsp;        _delegate = delegate;</b>
+<b class="nc">&nbsp;        _orderedProperties = ordered;</b>
+<b class="nc">&nbsp;        _buildMethod = buildMethod;</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    </b>
+&nbsp;    @Override
+&nbsp;    public JsonDeserializer&lt;Object&gt; unwrappingDeserializer(NameTransformer unwrapper)
+&nbsp;    {
+&nbsp;        /* We can&#39;t do much about this; could either replace _delegate
+&nbsp;         * with unwrapping instance, or just replace this one. Latter seems
+&nbsp;         * more sensible.
+&nbsp;         */
+&nbsp;        return _delegate.unwrappingDeserializer(unwrapper);
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public BeanDeserializerBase withObjectIdReader(ObjectIdReader oir) {
+&nbsp;        return new BeanAsArrayBuilderDeserializer(_delegate.withObjectIdReader(oir),
+<b class="nc">&nbsp;                _orderedProperties, _buildMethod);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public BeanDeserializerBase withIgnorableProperties(Set&lt;String&gt; ignorableProps) {
+&nbsp;        return new BeanAsArrayBuilderDeserializer(_delegate.withIgnorableProperties(ignorableProps),
+<b class="nc">&nbsp;                _orderedProperties, _buildMethod);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public BeanDeserializerBase withBeanProperties(BeanPropertyMap props) {
+&nbsp;        return new BeanAsArrayBuilderDeserializer(_delegate.withBeanProperties(props),
+<b class="nc">&nbsp;                _orderedProperties, _buildMethod);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected BeanDeserializerBase asArrayDeserializer() {
+&nbsp;        return this;
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* JsonDeserializer implementation
+&nbsp;    /**********************************************************
+&nbsp;     */
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    protected final Object finishBuild(DeserializationContext ctxt, Object builder)</b>
+<b class="nc">&nbsp;        throws IOException</b>
+<b class="nc">&nbsp;    {</b>
+&nbsp;        try {
+&nbsp;            return _buildMethod.getMember().invoke(builder);
+&nbsp;        } catch (Exception e) {
+&nbsp;            return wrapInstantiationProblem(e, ctxt);
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public Object deserialize(JsonParser p, DeserializationContext ctxt)</b>
+<b class="nc">&nbsp;        throws IOException</b>
+&nbsp;    {
+<b class="nc">&nbsp;        // Let&#39;s delegate just in case we got a JSON Object (could error out, alternatively?)</b>
+<b class="nc">&nbsp;        if (!p.isExpectedStartArrayToken()) {</b>
+&nbsp;            return finishBuild(ctxt, _deserializeFromNonArray(p, ctxt));
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if (!_vanillaProcessing) {</b>
+<b class="nc">&nbsp;            return finishBuild(ctxt, _deserializeNonVanilla(p, ctxt));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        Object builder = _valueInstantiator.createUsingDefault(ctxt);
+<b class="nc">&nbsp;        final SettableBeanProperty[] props = _orderedProperties;</b>
+<b class="nc">&nbsp;        int i = 0;</b>
+&nbsp;        final int propCount = props.length;
+<b class="nc">&nbsp;        while (true) {</b>
+<b class="nc">&nbsp;            if (p.nextToken() == JsonToken.END_ARRAY) {</b>
+&nbsp;                return finishBuild(ctxt, builder);
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            if (i == propCount) {</b>
+&nbsp;                break;
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            SettableBeanProperty prop = props[i];</b>
+<b class="nc">&nbsp;            if (prop != null) { // normal case</b>
+<b class="nc">&nbsp;                try {</b>
+&nbsp;                    builder = prop.deserializeSetAndReturn(p, ctxt, builder);
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+&nbsp;                    wrapAndThrow(e, builder, prop.getName(), ctxt);
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            } else { // just skip?</b>
+&nbsp;                p.skipChildren();
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            ++i;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        // Ok; extra fields? Let&#39;s fail, unless ignoring extra props is fine
+&nbsp;        if (!_ignoreAllUnknown) {
+<b class="nc">&nbsp;            ctxt.reportMappingException(&quot;Unexpected JSON values; expected at most %d properties (in JSON Array)&quot;,</b>
+<b class="nc">&nbsp;                    propCount);</b>
+&nbsp;            // fall through
+<b class="nc">&nbsp;        }</b>
+&nbsp;        // otherwise, skip until end
+&nbsp;        while (p.nextToken() != JsonToken.END_ARRAY) {
+&nbsp;            p.skipChildren();
+&nbsp;        }
+&nbsp;        return finishBuild(ctxt, builder);
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Object deserialize(JsonParser p, DeserializationContext ctxt, Object builder)
+<b class="nc">&nbsp;        throws IOException</b>
+<b class="nc">&nbsp;    {</b>
+&nbsp;        /* No good way to verify that we have an array... although could I guess
+<b class="nc">&nbsp;         * check via JsonParser. So let&#39;s assume everything is working fine, for now.</b>
+<b class="nc">&nbsp;         */</b>
+<b class="nc">&nbsp;        if (_injectables != null) {</b>
+&nbsp;            injectValues(ctxt, builder);
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        final SettableBeanProperty[] props = _orderedProperties;</b>
+&nbsp;        int i = 0;
+<b class="nc">&nbsp;        final int propCount = props.length;</b>
+<b class="nc">&nbsp;        while (true) {</b>
+&nbsp;            if (p.nextToken() == JsonToken.END_ARRAY) {
+<b class="nc">&nbsp;                return finishBuild(ctxt, builder);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            if (i == propCount) {
+<b class="nc">&nbsp;                break;</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            SettableBeanProperty prop = props[i];</b>
+<b class="nc">&nbsp;            if (prop != null) { // normal case</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    builder = prop.deserializeSetAndReturn(p, ctxt, builder);</b>
+&nbsp;                } catch (Exception e) {
+<b class="nc">&nbsp;                    wrapAndThrow(e, builder, prop.getName(), ctxt);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            } else { // just skip?
+&nbsp;                p.skipChildren();
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            ++i;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        
+&nbsp;        // Ok; extra fields? Let&#39;s fail, unless ignoring extra props is fine
+<b class="nc">&nbsp;        if (!_ignoreAllUnknown) {</b>
+<b class="nc">&nbsp;            ctxt.reportWrongTokenException(p, JsonToken.END_ARRAY,</b>
+&nbsp;                    &quot;Unexpected JSON values; expected at most %d properties (in JSON Array)&quot;,
+<b class="nc">&nbsp;                    propCount);</b>
+&nbsp;            // never gets here
+&nbsp;        }
+&nbsp;        // otherwise, skip until end
+&nbsp;        do {
+&nbsp;            p.skipChildren();
+&nbsp;        } while (p.nextToken() != JsonToken.END_ARRAY);
+<b class="nc">&nbsp;        return finishBuild(ctxt, builder);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // needed since 2.1
+&nbsp;    @Override
+&nbsp;    public Object deserializeFromObject(JsonParser p, DeserializationContext ctxt) throws IOException
+&nbsp;    {
+&nbsp;        return _deserializeFromNonArray(p, ctxt);
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Helper methods, non-standard creation
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Alternate deserialization method that has to check many more configuration
+&nbsp;     * aspects than the &quot;vanilla&quot; processing.
+<b class="nc">&nbsp;     * Note: should NOT resolve builder; caller will do that</b>
+<b class="nc">&nbsp;     * </b>
+&nbsp;     * @return Builder object in use.
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;    protected Object _deserializeNonVanilla(JsonParser p, DeserializationContext ctxt)</b>
+<b class="nc">&nbsp;        throws IOException</b>
+&nbsp;    {
+<b class="nc">&nbsp;        if (_nonStandardCreation) {</b>
+<b class="nc">&nbsp;            return deserializeFromObjectUsingNonDefault(p, ctxt);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        Object builder = _valueInstantiator.createUsingDefault(ctxt);</b>
+&nbsp;        if (_injectables != null) {
+<b class="nc">&nbsp;            injectValues(ctxt, builder);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        Class&lt;?&gt; activeView = _needViewProcesing ? ctxt.getActiveView() : null;
+<b class="nc">&nbsp;        final SettableBeanProperty[] props = _orderedProperties;</b>
+<b class="nc">&nbsp;        int i = 0;</b>
+&nbsp;        final int propCount = props.length;
+<b class="nc">&nbsp;        while (true) {</b>
+<b class="nc">&nbsp;            if (p.nextToken() == JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;                return builder;</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            if (i == propCount) {
+<b class="nc">&nbsp;                break;</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            SettableBeanProperty prop = props[i];</b>
+<b class="nc">&nbsp;            ++i;</b>
+<b class="nc">&nbsp;            if (prop != null) { // normal case</b>
+&nbsp;                if (activeView == null || prop.visibleInView(activeView)) {
+&nbsp;                    try {
+&nbsp;                        prop.deserializeSetAndReturn(p, ctxt, builder);
+<b class="nc">&nbsp;                    } catch (Exception e) {</b>
+<b class="nc">&nbsp;                        wrapAndThrow(e, builder, prop.getName(), ctxt);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    continue;</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            // otherwise, skip it (view-filtered, no prop etc)
+&nbsp;            p.skipChildren();
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        // Ok; extra fields? Let&#39;s fail, unless ignoring extra props is fine</b>
+&nbsp;        if (!_ignoreAllUnknown) {
+<b class="nc">&nbsp;            ctxt.reportWrongTokenException(p, JsonToken.END_ARRAY,</b>
+&nbsp;                    &quot;Unexpected JSON value(s); expected at most %d properties (in JSON Array)&quot;,
+&nbsp;                    propCount);
+&nbsp;            // will never reach here as exception has been thrown
+&nbsp;        }
+&nbsp;        // otherwise, skip until end
+<b class="nc">&nbsp;        while (p.nextToken() != JsonToken.END_ARRAY) {</b>
+<b class="nc">&nbsp;            p.skipChildren();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        return builder;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    /**
+&nbsp;     * Method called to deserialize bean using &quot;property-based creator&quot;:
+<b class="nc">&nbsp;     * this means that a non-default constructor or factory method is</b>
+<b class="nc">&nbsp;     * called, and then possibly other setters. The trick is that</b>
+&nbsp;     * values for creator method need to be buffered, first; and 
+&nbsp;     * due to non-guaranteed ordering possibly some other properties
+<b class="nc">&nbsp;     * as well.</b>
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected final Object _deserializeUsingPropertyBased(final JsonParser p,
+&nbsp;            final DeserializationContext ctxt)
+&nbsp;        throws IOException
+&nbsp;    {
+&nbsp;        final PropertyBasedCreator creator = _propertyBasedCreator;
+&nbsp;        PropertyValueBuffer buffer = creator.startBuilding(p, ctxt, _objectIdReader);
+&nbsp;
+&nbsp;        final SettableBeanProperty[] props = _orderedProperties;
+&nbsp;        final int propCount = props.length;
+&nbsp;        int i = 0;
+&nbsp;        Object builder = null;
+&nbsp;        
+&nbsp;        for (; p.nextToken() != JsonToken.END_ARRAY; ++i) {
+&nbsp;            SettableBeanProperty prop = (i &lt; propCount) ? props[i] : null;
+<b class="nc">&nbsp;            if (prop == null) { // we get null if there are extra elements; maybe otherwise too?</b>
+<b class="nc">&nbsp;                p.skipChildren();</b>
+&nbsp;                continue;
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            // if we have already constructed POJO, things are simple:</b>
+<b class="nc">&nbsp;            if (builder != null) {</b>
+<b class="nc">&nbsp;                try {</b>
+&nbsp;                    builder = prop.deserializeSetAndReturn(p, ctxt, builder);
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    wrapAndThrow(e, builder, prop.getName(), ctxt);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                continue;</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            final String propName = prop.getName();
+&nbsp;            // if not yet, maybe we got a creator property?
+<b class="nc">&nbsp;            SettableBeanProperty creatorProp = creator.findCreatorProperty(propName);</b>
+&nbsp;            if (creatorProp != null) {
+<b class="nc">&nbsp;                // Last creator property to set?</b>
+<b class="nc">&nbsp;                if (buffer.assignParameter(creatorProp, creatorProp.deserialize(p, ctxt))) {</b>
+<b class="nc">&nbsp;                    try {</b>
+<b class="nc">&nbsp;                        builder = creator.build(ctxt, buffer);</b>
+<b class="nc">&nbsp;                    } catch (Exception e) {</b>
+&nbsp;                        wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+<b class="nc">&nbsp;                        continue; // never gets here</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    //  polymorphic?</b>
+<b class="nc">&nbsp;                    if (builder.getClass() != _beanType.getRawClass()) {</b>
+&nbsp;                        /* 23-Jul-2012, tatu: Not sure if these could ever be properly
+<b class="nc">&nbsp;                         *   supported (since ordering of elements may not be guaranteed);</b>
+&nbsp;                         *   but make explicitly non-supported for now.
+<b class="nc">&nbsp;                         */</b>
+<b class="nc">&nbsp;                        ctxt.reportMappingException(&quot;Can not support implicit polymorphic deserialization for POJOs-as-Arrays style: &quot;</b>
+<b class="nc">&nbsp;                                +&quot;nominal type %s, actual type %s&quot;,</b>
+<b class="nc">&nbsp;                                _beanType.getRawClass().getName(), builder.getClass().getName());</b>
+<b class="nc">&nbsp;                        return null;</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+&nbsp;                continue;
+&nbsp;            }
+&nbsp;            // Object Id property?
+&nbsp;            if (buffer.readIdProperty(propName)) {
+<b class="nc">&nbsp;                continue;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            // regular property? needs buffering</b>
+&nbsp;            buffer.bufferProperty(prop, prop.deserialize(p, ctxt));
+&nbsp;        }
+&nbsp;
+&nbsp;        // In case we didn&#39;t quite get all the creator properties, we may have to do this:
+&nbsp;        if (builder == null) {
+<b class="nc">&nbsp;            try {</b>
+<b class="nc">&nbsp;                builder = creator.build(ctxt, buffer);</b>
+&nbsp;            } catch (Exception e) {
+&nbsp;                return wrapInstantiationProblem(e, ctxt);
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;        return builder;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+&nbsp;    /*
+<b class="nc">&nbsp;    /**********************************************************</b>
+<b class="nc">&nbsp;    /* Helper methods, error reporting</b>
+<b class="nc">&nbsp;    /**********************************************************</b>
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    protected Object _deserializeFromNonArray(JsonParser p, DeserializationContext ctxt)
+<b class="nc">&nbsp;        throws IOException</b>
+&nbsp;    {
+&nbsp;        // Let&#39;s start with failure
+&nbsp;        return ctxt.handleUnexpectedToken(handledType(), p.getCurrentToken(), p,
+&nbsp;                &quot;Can not deserialize a POJO (of type %s) from non-Array representation (token: %s): &quot;
+&nbsp;                +&quot;type/property designed to be serialized as JSON Array&quot;,
+&nbsp;                _beanType.getRawClass().getName(),
+&nbsp;                p.getCurrentToken());
+&nbsp;        // in future, may allow use of &quot;standard&quot; POJO serialization as well; if so, do:
+&nbsp;        //return _delegate.deserialize(p, ctxt);
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:42</div>
+</div>
+</body>
+</html>

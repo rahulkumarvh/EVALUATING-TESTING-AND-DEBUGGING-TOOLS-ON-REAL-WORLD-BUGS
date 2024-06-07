@@ -1,0 +1,11 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store.helper,CanalEventUtils,62,122,14,4,12,29,10,4,2,3
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store.memory,MemoryEventStoreWithBuffer,435,1101,80,94,86,240,85,51,20,28
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store.memory,MemoryEventStoreWithBuffer.OP,0,21,0,0,0,2,0,1,0,1
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store,CanalStoreException,40,0,0,0,10,0,5,0,5,0
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store,StoreInfo,17,0,0,0,7,0,5,0,5,0
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store,AbstractCanalGroupStore,26,0,0,0,8,0,3,0,3,0
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store,AbstractCanalStoreScavenge,132,15,18,0,39,5,19,1,10,1
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store.model,BatchMode,0,29,0,4,0,5,0,5,0,3
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store.model,Events,8,23,0,0,3,7,2,4,2,4
+canal store module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.store.model,Event,79,113,6,4,31,33,19,14,14,14

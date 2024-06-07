@@ -1,0 +1,290 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TextNode</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.node</a>
+</div>
+
+<h1>Coverage Summary for Class: TextNode (com.fasterxml.jackson.databind.node)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TextNode</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98%
+  </span>
+  <span class="absValue">
+    (48/49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.node;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.*;
+&nbsp;import com.fasterxml.jackson.core.io.CharTypes;
+&nbsp;import com.fasterxml.jackson.core.io.NumberInput;
+&nbsp;import com.fasterxml.jackson.core.util.ByteArrayBuilder;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.SerializerProvider;
+&nbsp;import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+&nbsp;
+&nbsp;/**
+&nbsp; * Value node that contains a text value.
+&nbsp; */
+&nbsp;public class TextNode
+&nbsp;    extends ValueNode
+&nbsp;{
+<b class="fc">&nbsp;    final static TextNode EMPTY_STRING_NODE = new TextNode(&quot;&quot;);</b>
+&nbsp;
+&nbsp;    protected final String _value;
+&nbsp;
+<b class="fc">&nbsp;    public TextNode(String v) { _value = v; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Factory method that should be used to construct instances.
+&nbsp;     * For some common cases, can reuse canonical instances: currently
+&nbsp;     * this is the case for empty Strings, in future possible for
+&nbsp;     * others as well. If null is passed, will return null.
+&nbsp;     *
+&nbsp;     * @return Resulting {@link TextNode} object, if &lt;b&gt;v&lt;/b&gt;
+&nbsp;     *   is NOT null; null if it is.
+&nbsp;     */
+&nbsp;    public static TextNode valueOf(String v)
+&nbsp;    {
+<b class="fc">&nbsp;        if (v == null) {</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (v.length() == 0) {</b>
+<b class="fc">&nbsp;            return EMPTY_STRING_NODE;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return new TextNode(v);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public JsonNodeType getNodeType() {
+<b class="fc">&nbsp;        return JsonNodeType.STRING;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    @Override public JsonToken asToken() { return JsonToken.VALUE_STRING; }</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String textValue() {
+<b class="fc">&nbsp;        return _value;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method for accessing textual contents assuming they were
+&nbsp;     * base64 encoded; if so, they are decoded and resulting binary
+&nbsp;     * data is returned.
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;resource&quot;)
+&nbsp;    public byte[] getBinaryValue(Base64Variant b64variant) throws IOException
+&nbsp;    {
+<b class="fc">&nbsp;        final String str = _value.trim();</b>
+<b class="fc">&nbsp;        ByteArrayBuilder builder = new ByteArrayBuilder(4 + ((str.length() * 3) &lt;&lt; 2));</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            b64variant.decode(str, builder);</b>
+<b class="fc">&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;            throw InvalidFormatException.from(null,</b>
+<b class="fc">&nbsp;                    String.format(</b>
+&nbsp;&quot;Can not access contents of TextNode as binary due to broken Base64 encoding: %s&quot;,
+<b class="fc">&nbsp;e.getMessage()),</b>
+&nbsp;                    str, byte[].class);
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return builder.toByteArray();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public byte[] binaryValue() throws IOException {
+<b class="fc">&nbsp;        return getBinaryValue(Base64Variants.getDefaultVariant());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /* 
+&nbsp;    /**********************************************************
+&nbsp;    /* General type coercions
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String asText() {
+<b class="fc">&nbsp;        return _value;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String asText(String defaultValue) {
+<b class="fc">&nbsp;        return (_value == null) ? defaultValue : _value;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    // note: neither fast nor elegant, but these work for now:
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean asBoolean(boolean defaultValue) {
+<b class="fc">&nbsp;        if (_value != null) {</b>
+<b class="fc">&nbsp;            String v = _value.trim();</b>
+<b class="fc">&nbsp;            if (&quot;true&quot;.equals(v)) {</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            if (&quot;false&quot;.equals(v)) {</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return defaultValue;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Override
+&nbsp;    public int asInt(int defaultValue) {
+<b class="fc">&nbsp;        return NumberInput.parseAsInt(_value, defaultValue);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public long asLong(long defaultValue) {
+<b class="fc">&nbsp;        return NumberInput.parseAsLong(_value, defaultValue);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Override
+&nbsp;    public double asDouble(double defaultValue) {
+<b class="fc">&nbsp;        return NumberInput.parseAsDouble(_value, defaultValue);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /* 
+&nbsp;    /**********************************************************
+&nbsp;    /* Serialization
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    @Override
+&nbsp;    public final void serialize(JsonGenerator g, SerializerProvider provider) throws IOException
+&nbsp;    {
+<b class="fc">&nbsp;        if (_value == null) {</b>
+<b class="nc">&nbsp;            g.writeNull();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            g.writeString(_value);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Overridden standard methods
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;    
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object o)
+&nbsp;    {
+<b class="fc">&nbsp;        if (o == this) return true;</b>
+<b class="fc">&nbsp;        if (o == null) return false;</b>
+<b class="fc">&nbsp;        if (o instanceof TextNode) {</b>
+<b class="fc">&nbsp;            return ((TextNode) o)._value.equals(_value);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Override
+<b class="fc">&nbsp;    public int hashCode() { return _value.hashCode(); }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Different from other values, Strings need quoting
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString()
+&nbsp;    {
+<b class="fc">&nbsp;        int len = _value.length();</b>
+<b class="fc">&nbsp;        len = len + 2 + (len &gt;&gt; 4);</b>
+<b class="fc">&nbsp;        StringBuilder sb = new StringBuilder(len);</b>
+<b class="fc">&nbsp;        appendQuoted(sb, _value);</b>
+<b class="fc">&nbsp;        return sb.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected static void appendQuoted(StringBuilder sb, String content)
+&nbsp;    {
+<b class="fc">&nbsp;        sb.append(&#39;&quot;&#39;);</b>
+<b class="fc">&nbsp;        CharTypes.appendQuoted(sb, content);</b>
+<b class="fc">&nbsp;        sb.append(&#39;&quot;&#39;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:24</div>
+</div>
+</body>
+</html>

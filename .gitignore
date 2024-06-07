@@ -1,0 +1,21 @@
+# Folder view configuration files
+*.DS_Store
+.DS_Store?
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+# IDE
+*.idea
+*.iml
+
+# automatic backup files
+*.swp
+
+**/.gradle/

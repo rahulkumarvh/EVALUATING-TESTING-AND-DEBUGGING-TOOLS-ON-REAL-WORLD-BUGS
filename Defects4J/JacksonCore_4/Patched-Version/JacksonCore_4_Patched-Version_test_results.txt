@@ -1,0 +1,17 @@
+Failing tests: 14
+  - com.fasterxml.jackson.core.util.ErrorTest0::test01
+  - com.fasterxml.jackson.core.util.ErrorTest0::test02
+  - com.fasterxml.jackson.core.util.ErrorTest0::test03
+  - com.fasterxml.jackson.core.util.ErrorTest0::test04
+  - com.fasterxml.jackson.core.util.ErrorTest0::test05
+  - com.fasterxml.jackson.core.util.ErrorTest0::test06
+  - com.fasterxml.jackson.core.util.ErrorTest0::test07
+  - com.fasterxml.jackson.core.util.ErrorTest0::test08
+  - com.fasterxml.jackson.core.util.ErrorTest0::test09
+  - com.fasterxml.jackson.core.util.ErrorTest0::test10
+  - com.fasterxml.jackson.core.util.ErrorTest0::test11
+  - com.fasterxml.jackson.core.util.ErrorTest0::test12
+  - com.fasterxml.jackson.core.util.ErrorTest0::test13
+  - com.fasterxml.jackson.core.util.ErrorTest0::test14
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

@@ -1,0 +1,54 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.handler,HandshakeInitializationHandler,53,0,2,0,16,0,4,0,3,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.handler,SessionHandler,311,0,38,0,87,0,31,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.handler,ClientAuthenticationHandler.1.new IdleStateAwareChannelHandler() {...},16,0,0,0,5,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.handler,HandshakeInitializationHandler.new ChannelFutureListener() {...},35,0,0,0,7,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.handler,ClientAuthenticationHandler.new ChannelFutureListener() {...},84,0,4,0,17,0,4,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.handler,ClientAuthenticationHandler,102,0,4,0,27,0,8,0,6,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.exception,CanalServerException,40,0,0,0,10,0,5,0,5,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.listener,ChannelFutureAggregator,71,0,4,0,21,0,7,0,5,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.listener,ChannelFutureAggregator.ClientRequestResult.Builder,83,0,0,0,27,0,11,0,11,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.listener,ChannelFutureAggregator.ClientRequestResult,63,0,0,0,18,0,9,0,9,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,FixedHeaderFrameDecoder,8,0,0,0,2,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,ClientAuthenticationHandler.1.new IdleStateAwareChannelHandler() {...},16,0,0,0,5,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,ClientAuthenticationHandler,146,0,12,0,38,0,12,0,6,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,HandshakeInitializationHandler,53,0,2,0,16,0,4,0,3,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,HandshakeInitializationHandler.new ChannelFutureListener() {...},32,0,0,0,6,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,SessionHandler,840,0,76,0,202,0,52,0,9,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty.handler,ClientAuthenticationHandler.new ChannelFutureListener() {...},84,0,4,0,17,0,4,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server,CanalMQStarter.new Thread() {...},31,0,0,0,9,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server,CanalMQStarter.new CanalMQProducer.Callback() {...},31,0,0,0,5,0,3,0,3,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server,CanalMQStarter.CanalMQRunnable,28,0,0,0,8,0,3,0,3,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server,CanalMQStarter,369,0,40,0,98,0,27,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.kafka,MessageSerializer,19,0,0,0,7,0,4,0,4,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.kafka,CanalKafkaProducer,520,0,56,0,122,0,35,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.rocketmq,CanalRocketMQProducer.new MessageQueueSelector() {...},29,0,2,0,4,0,3,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.rocketmq,CanalRocketMQProducer,470,0,50,0,124,0,32,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded,1011,0,82,0,228,0,71,0,30,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded.new Function() {...},9,0,0,0,2,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded.new Function() {...},9,0,0,0,2,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded.new Function() {...},9,0,0,0,2,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded.new Function() {...},12,0,0,0,2,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded.new Function() {...},9,0,0,0,2,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.embedded,CanalServerWithEmbedded.SingletonHolder,5,0,0,0,1,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.netty,CanalAdminWithNetty.SingletonHolder,6,0,0,0,1,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.netty,CanalAdminWithNetty,117,0,8,0,31,0,11,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.netty,CanalAdminWithNetty.new ChannelPipelineFactory() {...},49,0,0,0,10,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.admin.netty,AdminNettyUtils,130,0,2,0,28,0,9,0,8,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.spi,NopCanalMetricsService,12,0,0,0,7,0,7,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQProperties.CanalDestination,45,0,0,0,19,0,13,0,13,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQMessageUtils.new Function() {...},62,0,6,0,12,0,5,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQMessageUtils.HashMode,12,0,0,0,4,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQMessageUtils.new Function() {...},89,0,8,0,19,0,6,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQMessageUtils.DynamicTopicData,3,0,0,0,1,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQMessageUtils,1345,0,190,0,306,0,107,0,12,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQProperties,382,0,0,0,94,0,48,0,48,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,MQMessageUtils.PartitionData,8,0,0,0,2,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.common,CanalMessageSerializer,182,0,22,0,43,0,13,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,CanalServerWithNetty.SingletonHolder,6,0,0,0,1,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,NettyUtils,175,0,6,0,50,0,11,0,8,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,CanalServerWithNettyProfiler.SingletonHolder,6,0,0,0,1,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,CanalServerWithNetty.new ChannelPipelineFactory() {...},49,0,0,0,10,0,2,0,2,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,CanalServerWithNettyProfiler.DefaultClientInstanceProfiler,1,0,0,0,1,0,1,0,1,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,CanalServerWithNetty,134,0,12,0,36,0,13,0,7,0
+canal server module for otter 1.1.4-SNAPSHOT,com.alibaba.otter.canal.server.netty,CanalServerWithNettyProfiler,23,0,0,0,9,0,5,0,5,0

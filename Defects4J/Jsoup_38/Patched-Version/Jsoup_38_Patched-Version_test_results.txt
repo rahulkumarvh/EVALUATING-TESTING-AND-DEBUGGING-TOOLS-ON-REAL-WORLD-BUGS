@@ -1,0 +1,4 @@
+Failing tests: 1
+  - org.jsoup.nodes.ErrorTest
+Running ant (compile.tests)................................................ OK
+Running ant (run.dev.tests)................................................ OK

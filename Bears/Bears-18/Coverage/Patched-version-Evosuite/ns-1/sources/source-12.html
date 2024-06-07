@@ -1,0 +1,379 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > BasicClassIntrospector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: BasicClassIntrospector (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BasicClassIntrospector</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.2%
+  </span>
+  <span class="absValue">
+    (1/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    9.5%
+  </span>
+  <span class="absValue">
+    (8/84)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.DeserializationConfig;
+&nbsp;import com.fasterxml.jackson.databind.JavaType;
+&nbsp;import com.fasterxml.jackson.databind.SerializationConfig;
+&nbsp;import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+&nbsp;import com.fasterxml.jackson.databind.cfg.MapperConfig;
+&nbsp;import com.fasterxml.jackson.databind.type.SimpleType;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;import com.fasterxml.jackson.databind.util.LRUMap;
+&nbsp;
+&nbsp;public class BasicClassIntrospector
+&nbsp;    extends ClassIntrospector
+&nbsp;    implements java.io.Serializable
+&nbsp;{
+&nbsp;    private static final long serialVersionUID = 1L;
+&nbsp;
+&nbsp;    /* We keep a small set of pre-constructed descriptions to use for
+&nbsp;     * common non-structured values, such as Numbers and Strings.
+&nbsp;     * This is strictly performance optimization to reduce what is
+&nbsp;     * usually one-time cost, but seems useful for some cases considering
+&nbsp;     * simplicity.
+&nbsp;     * 
+&nbsp;     * @since 2.4
+&nbsp;     */
+&nbsp;    
+&nbsp;    protected final static BasicBeanDescription STRING_DESC;
+<b class="fc">&nbsp;    static {</b>
+<b class="fc">&nbsp;        AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(String.class, null);</b>
+&nbsp;        STRING_DESC = BasicBeanDescription.forOtherUse(null, SimpleType.constructUnsafe(String.class), ac);
+&nbsp;    }
+&nbsp;    protected final static BasicBeanDescription BOOLEAN_DESC;
+<b class="fc">&nbsp;    static {</b>
+<b class="fc">&nbsp;        AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(Boolean.TYPE, null);</b>
+&nbsp;        BOOLEAN_DESC = BasicBeanDescription.forOtherUse(null, SimpleType.constructUnsafe(Boolean.TYPE), ac);
+&nbsp;    }
+&nbsp;    protected final static BasicBeanDescription INT_DESC;
+<b class="fc">&nbsp;    static {</b>
+<b class="fc">&nbsp;        AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(Integer.TYPE, null);</b>
+&nbsp;        INT_DESC = BasicBeanDescription.forOtherUse(null, SimpleType.constructUnsafe(Integer.TYPE), ac);
+&nbsp;    }
+&nbsp;    protected final static BasicBeanDescription LONG_DESC;
+<b class="fc">&nbsp;    static {</b>
+<b class="fc">&nbsp;        AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(Long.TYPE, null);</b>
+&nbsp;        LONG_DESC = BasicBeanDescription.forOtherUse(null, SimpleType.constructUnsafe(Long.TYPE), ac);
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Life cycle
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Deprecated // since 2.5: construct instance directly
+&nbsp;    public final static BasicClassIntrospector instance = new BasicClassIntrospector();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Looks like &#39;forClassAnnotations()&#39; gets called so frequently that we
+&nbsp;     * should consider caching to avoid some of the lookups.
+&nbsp;     * 
+<b class="nc">&nbsp;     * @since 2.5</b>
+&nbsp;     */
+<b class="nc">&nbsp;    protected final LRUMap&lt;JavaType,BasicBeanDescription&gt; _cachedFCA;</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    public BasicClassIntrospector() {
+&nbsp;        // a small cache should go a long way here
+&nbsp;        _cachedFCA = new LRUMap&lt;JavaType,BasicBeanDescription&gt;(16, 64);
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Factory method impls
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public BasicBeanDescription forSerialization(SerializationConfig cfg,</b>
+<b class="nc">&nbsp;            JavaType type, MixInResolver r)</b>
+&nbsp;    {
+&nbsp;        // minor optimization: for some JDK types do minimal introspection
+<b class="nc">&nbsp;        BasicBeanDescription desc = _findStdTypeDesc(type);</b>
+<b class="nc">&nbsp;        if (desc == null) {</b>
+<b class="nc">&nbsp;            // As per [Databind#550], skip full introspection for some of standard</b>
+&nbsp;            // structured types as well
+&nbsp;            desc = _findStdJdkCollectionDesc(cfg, type);
+&nbsp;            if (desc == null) {
+<b class="nc">&nbsp;                desc = BasicBeanDescription.forSerialization(collectProperties(cfg,</b>
+&nbsp;                        type, r, true, &quot;set&quot;));
+<b class="nc">&nbsp;            }</b>
+&nbsp;            // Also: this is a superset of &quot;forClassAnnotations&quot;, so may optimize by optional add:
+&nbsp;            _cachedFCA.putIfAbsent(type, desc);
+&nbsp;        }
+&nbsp;        return desc;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public BasicBeanDescription forDeserialization(DeserializationConfig cfg,</b>
+<b class="nc">&nbsp;            JavaType type, MixInResolver r)</b>
+&nbsp;    {
+&nbsp;        // minor optimization: for some JDK types do minimal introspection
+<b class="nc">&nbsp;        BasicBeanDescription desc = _findStdTypeDesc(type);</b>
+<b class="nc">&nbsp;        if (desc == null) {</b>
+<b class="nc">&nbsp;            // As per [Databind#550], skip full introspection for some of standard</b>
+&nbsp;            // structured types as well
+&nbsp;            desc = _findStdJdkCollectionDesc(cfg, type);
+&nbsp;            if (desc == null) {
+<b class="nc">&nbsp;                desc = BasicBeanDescription.forDeserialization(collectProperties(cfg,</b>
+&nbsp;                        		type, r, false, &quot;set&quot;));
+<b class="nc">&nbsp;            }</b>
+&nbsp;            // Also: this is a superset of &quot;forClassAnnotations&quot;, so may optimize by optional add:
+&nbsp;            _cachedFCA.putIfAbsent(type, desc);
+&nbsp;        }
+&nbsp;        return desc;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public BasicBeanDescription forDeserializationWithBuilder(DeserializationConfig cfg,
+<b class="nc">&nbsp;            JavaType type, MixInResolver r)</b>
+&nbsp;    {
+&nbsp;        // no std JDK types with Builders, so:
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        BasicBeanDescription desc = BasicBeanDescription.forDeserialization(collectPropertiesWithBuilder(cfg,</b>
+&nbsp;                type, r, false));
+&nbsp;        // this is still a superset of &quot;forClassAnnotations&quot;, so may optimize by optional add:
+&nbsp;        _cachedFCA.putIfAbsent(type, desc);
+&nbsp;        return desc;
+&nbsp;    }
+&nbsp;    
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public BasicBeanDescription forCreation(DeserializationConfig cfg,</b>
+&nbsp;            JavaType type, MixInResolver r)
+&nbsp;    {
+&nbsp;        BasicBeanDescription desc = _findStdTypeDesc(type);
+<b class="nc">&nbsp;        if (desc == null) {</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;            // As per [Databind#550], skip full introspection for some of standard</b>
+<b class="nc">&nbsp;            // structured types as well</b>
+&nbsp;            desc = _findStdJdkCollectionDesc(cfg, type);
+&nbsp;            if (desc == null) {
+&nbsp;                desc = BasicBeanDescription.forDeserialization(
+<b class="nc">&nbsp;            		collectProperties(cfg, type, r, false, &quot;set&quot;));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        // should this be cached for FCA?
+&nbsp;        return desc;
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public BasicBeanDescription forClassAnnotations(MapperConfig&lt;?&gt; config,</b>
+<b class="nc">&nbsp;            JavaType type, MixInResolver r)</b>
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        BasicBeanDescription desc = _findStdTypeDesc(type);</b>
+<b class="nc">&nbsp;        if (desc == null) {</b>
+<b class="nc">&nbsp;            desc = _cachedFCA.get(type);</b>
+&nbsp;            if (desc == null) {
+&nbsp;                AnnotatedClass ac = AnnotatedClass.construct(type, config, r);
+<b class="nc">&nbsp;                desc = BasicBeanDescription.forOtherUse(config, type, ac);</b>
+&nbsp;                _cachedFCA.put(type, desc);
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return desc;
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public BasicBeanDescription forDirectClassAnnotations(MapperConfig&lt;?&gt; config,</b>
+<b class="nc">&nbsp;            JavaType type, MixInResolver r)</b>
+<b class="nc">&nbsp;    {</b>
+&nbsp;        BasicBeanDescription desc = _findStdTypeDesc(type);
+<b class="nc">&nbsp;        if (desc == null) {</b>
+&nbsp;            AnnotatedClass ac = AnnotatedClass.constructWithoutSuperTypes(type.getRawClass(), config, r);
+&nbsp;            desc = BasicBeanDescription.forOtherUse(config, type, ac);
+&nbsp;        }
+&nbsp;        return desc;
+&nbsp;    }
+&nbsp;    
+&nbsp;    /*
+&nbsp;    /**********************************************************
+&nbsp;    /* Overridable helper methods
+&nbsp;    /**********************************************************
+&nbsp;     */
+&nbsp;
+<b class="nc">&nbsp;    protected POJOPropertiesCollector collectProperties(MapperConfig&lt;?&gt; config,</b>
+<b class="nc">&nbsp;            JavaType type, MixInResolver r, boolean forSerialization,</b>
+&nbsp;            String mutatorPrefix)
+&nbsp;    {
+&nbsp;        AnnotatedClass ac = AnnotatedClass.construct(type, config, r);
+&nbsp;        return constructPropertyCollector(config, ac, type, forSerialization, mutatorPrefix);
+&nbsp;    }
+&nbsp;    
+<b class="nc">&nbsp;    protected POJOPropertiesCollector collectPropertiesWithBuilder(MapperConfig&lt;?&gt; config,</b>
+<b class="nc">&nbsp;            JavaType type, MixInResolver r, boolean forSerialization)</b>
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        boolean useAnnotations = config.isAnnotationProcessingEnabled();</b>
+<b class="nc">&nbsp;        AnnotationIntrospector ai = useAnnotations ? config.getAnnotationIntrospector() : null;</b>
+&nbsp;        AnnotatedClass ac = AnnotatedClass.construct(type, config, r);
+&nbsp;        JsonPOJOBuilder.Value builderConfig = (ai == null) ? null : ai.findPOJOBuilderConfig(ac);
+&nbsp;        String mutatorPrefix = (builderConfig == null) ? &quot;with&quot; : builderConfig.withPrefix;
+&nbsp;        return constructPropertyCollector(config, ac, type, forSerialization, mutatorPrefix);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Overridable method called for creating {@link POJOPropertiesCollector} instance
+&nbsp;     * to use; override is needed if a custom sub-class is to be used.
+<b class="nc">&nbsp;     */</b>
+&nbsp;    protected POJOPropertiesCollector constructPropertyCollector(MapperConfig&lt;?&gt; config,
+&nbsp;            AnnotatedClass ac, JavaType type, boolean forSerialization, String mutatorPrefix)
+&nbsp;    {
+&nbsp;        return new POJOPropertiesCollector(config, forSerialization, type, ac, mutatorPrefix);
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Method called to see if type is one of core JDK types
+<b class="nc">&nbsp;     * that we have cached for efficiency.</b>
+<b class="nc">&nbsp;     */</b>
+<b class="nc">&nbsp;    protected BasicBeanDescription _findStdTypeDesc(JavaType type)</b>
+<b class="nc">&nbsp;    {</b>
+&nbsp;        Class&lt;?&gt; cls = type.getRawClass();
+<b class="nc">&nbsp;        if (cls.isPrimitive()) {</b>
+<b class="nc">&nbsp;            if (cls == Boolean.TYPE) {</b>
+&nbsp;                return BOOLEAN_DESC;
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            if (cls == Integer.TYPE) {</b>
+&nbsp;                return INT_DESC;
+&nbsp;            }
+<b class="nc">&nbsp;            if (cls == Long.TYPE) {</b>
+<b class="nc">&nbsp;                return LONG_DESC;</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (cls == String.class) {</b>
+&nbsp;                return STRING_DESC;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return null;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method used to decide whether we can omit introspection
+&nbsp;     * for members (methods, fields, constructors); we may do so for
+<b class="nc">&nbsp;     * a limited number of container types JDK provides.</b>
+<b class="nc">&nbsp;     */</b>
+&nbsp;    protected boolean _isStdJDKCollection(JavaType type)
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        if (!type.isContainerType() || type.isArrayType()) {</b>
+<b class="nc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        Class&lt;?&gt; raw = type.getRawClass();</b>
+&nbsp;        String pkgName = ClassUtil.getPackageName(raw);
+&nbsp;        if (pkgName != null) {
+&nbsp;            if (pkgName.startsWith(&quot;java.lang&quot;)
+<b class="nc">&nbsp;                    || pkgName.startsWith(&quot;java.util&quot;)) {</b>
+<b class="nc">&nbsp;                /* 23-Sep-2014, tatu: Should we be conservative here (minimal number</b>
+<b class="nc">&nbsp;                 *    of matches), or ambitious? Let&#39;s do latter for now.</b>
+&nbsp;                 */
+&nbsp;                if (Collection.class.isAssignableFrom(raw)
+&nbsp;                        || Map.class.isAssignableFrom(raw)) {
+<b class="nc">&nbsp;                    return true;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;        return false;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    protected BasicBeanDescription _findStdJdkCollectionDesc(MapperConfig&lt;?&gt; cfg, JavaType type)</b>
+&nbsp;    {
+<b class="nc">&nbsp;        if (_isStdJDKCollection(type)) {</b>
+&nbsp;            AnnotatedClass ac = AnnotatedClass.construct(type, cfg);
+&nbsp;            return BasicBeanDescription.forOtherUse(cfg, type, ac);
+&nbsp;        }
+&nbsp;        return null;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 23:25</div>
+</div>
+</body>
+</html>

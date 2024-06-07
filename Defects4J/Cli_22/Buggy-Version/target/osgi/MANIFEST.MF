@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-Description: Commons CLI provides a simple API for presenting, 
+ processing and validating a command line interface.
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.commons.cli
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1714402861563
+Bundle-DocURL: http://commons.apache.org/cli/
+Bundle-Vendor: The Apache Software Foundation
+Import-Package: com_atlassian_clover,org.apache.commons.cli;version="1
+ .2.0.SNAPSHOT"
+Tool: Bnd-0.0.238
+Export-Package: org.apache.commons.cli;version="1.2.0.SNAPSHOT"
+Bundle-Version: 1.2.0.SNAPSHOT
+Bundle-Name: Commons CLI
+Private-Package: groverconfig6730442291367733192;version="1.2-SNAPSHOT
+ "
+Created-By: 1.8.0_181 (Oracle Corporation)
+

@@ -1,0 +1,231 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CollectorBase</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: CollectorBase (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CollectorBase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3.7%
+  </span>
+  <span class="absValue">
+    (2/54)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;//
+&nbsp;// Source code recreated from a .class file by IntelliJ IDEA
+&nbsp;// (powered by FernFlower decompiler)
+&nbsp;//
+&nbsp;
+&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;import java.lang.annotation.Annotation;
+&nbsp;import java.lang.annotation.Retention;
+&nbsp;import java.lang.annotation.Target;
+<b class="fc">&nbsp;</b>
+<b class="fc">&nbsp;class CollectorBase {</b>
+&nbsp;    protected static final AnnotationMap[] NO_ANNOTATION_MAPS = new AnnotationMap[0];
+&nbsp;    protected static final Annotation[] NO_ANNOTATIONS = new Annotation[0];
+&nbsp;    protected final AnnotationIntrospector _intr;
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    protected CollectorBase(AnnotationIntrospector intr) {</b>
+<b class="nc">&nbsp;        this._intr = intr;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected final AnnotationCollector collectAnnotations(Annotation[] anns) {
+&nbsp;        AnnotationCollector c = AnnotationCollector.emptyCollector();
+<b class="nc">&nbsp;        int i = 0;</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        for(int end = anns.length; i &lt; end; ++i) {</b>
+<b class="nc">&nbsp;            Annotation ann = anns[i];</b>
+<b class="nc">&nbsp;            c = c.addOrOverride(ann);</b>
+<b class="nc">&nbsp;            if (this._intr.isAnnotationBundle(ann)) {</b>
+&nbsp;                c = this.collectFromBundle(c, ann);
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        return c;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    protected final AnnotationCollector collectAnnotations(AnnotationCollector c, Annotation[] anns) {</b>
+<b class="nc">&nbsp;        int i = 0;</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        for(int end = anns.length; i &lt; end; ++i) {</b>
+&nbsp;            Annotation ann = anns[i];
+&nbsp;            c = c.addOrOverride(ann);
+<b class="nc">&nbsp;            if (this._intr.isAnnotationBundle(ann)) {</b>
+&nbsp;                c = this.collectFromBundle(c, ann);
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        return c;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    protected final AnnotationCollector collectFromBundle(AnnotationCollector c, Annotation bundle) {</b>
+<b class="nc">&nbsp;        Annotation[] anns = ClassUtil.findClassAnnotations(bundle.annotationType());</b>
+&nbsp;        int i = 0;
+<b class="nc">&nbsp;</b>
+&nbsp;        for(int end = anns.length; i &lt; end; ++i) {
+<b class="nc">&nbsp;            Annotation ann = anns[i];</b>
+<b class="nc">&nbsp;            if (!_ignorableAnnotation(ann)) {</b>
+<b class="nc">&nbsp;                if (this._intr.isAnnotationBundle(ann)) {</b>
+&nbsp;                    if (!c.isPresent(ann)) {
+&nbsp;                        c = c.addOrOverride(ann);
+<b class="nc">&nbsp;                        c = this.collectFromBundle(c, ann);</b>
+&nbsp;                    }
+&nbsp;                } else {
+<b class="nc">&nbsp;                    c = c.addOrOverride(ann);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        return c;
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    protected final AnnotationCollector collectDefaultAnnotations(AnnotationCollector c, Annotation[] anns) {</b>
+<b class="nc">&nbsp;        int i = 0;</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        for(int end = anns.length; i &lt; end; ++i) {</b>
+<b class="nc">&nbsp;            Annotation ann = anns[i];</b>
+&nbsp;            if (!c.isPresent(ann)) {
+&nbsp;                c = c.addOrOverride(ann);
+&nbsp;                if (this._intr.isAnnotationBundle(ann)) {
+<b class="nc">&nbsp;                    c = this.collectDefaultFromBundle(c, ann);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        return c;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    protected final AnnotationCollector collectDefaultFromBundle(AnnotationCollector c, Annotation bundle) {</b>
+<b class="nc">&nbsp;        Annotation[] anns = ClassUtil.findClassAnnotations(bundle.annotationType());</b>
+&nbsp;        int i = 0;
+&nbsp;
+<b class="nc">&nbsp;        for(int end = anns.length; i &lt; end; ++i) {</b>
+<b class="nc">&nbsp;            Annotation ann = anns[i];</b>
+<b class="nc">&nbsp;            if (!_ignorableAnnotation(ann) &amp;&amp; !c.isPresent(ann)) {</b>
+<b class="nc">&nbsp;                c = c.addOrOverride(ann);</b>
+&nbsp;                if (this._intr.isAnnotationBundle(ann)) {
+&nbsp;                    c = this.collectFromBundle(c, ann);
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        return c;
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    protected static final boolean _ignorableAnnotation(Annotation a) {
+&nbsp;        return a instanceof Target || a instanceof Retention;
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    static AnnotationMap _emptyAnnotationMap() {
+&nbsp;        return new AnnotationMap();
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;    static AnnotationMap[] _emptyAnnotationMaps(int count) {
+<b class="nc">&nbsp;        if (count == 0) {</b>
+<b class="nc">&nbsp;            return NO_ANNOTATION_MAPS;</b>
+<b class="nc">&nbsp;        } else {</b>
+&nbsp;            AnnotationMap[] maps = new AnnotationMap[count];
+<b class="nc">&nbsp;</b>
+&nbsp;            for(int i = 0; i &lt; count; ++i) {
+&nbsp;                maps[i] = _emptyAnnotationMap();
+&nbsp;            }
+&nbsp;
+&nbsp;            return maps;
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 23:25</div>
+</div>
+</body>
+</html>

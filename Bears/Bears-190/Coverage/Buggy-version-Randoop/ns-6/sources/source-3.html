@@ -1,0 +1,283 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Heart</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: Heart (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Heart</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/80)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperApplicationConfiguration;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.NodeMetrics;
+&nbsp;import io.cassandrareaper.jmx.JmxProxy;
+&nbsp;import io.cassandrareaper.storage.IDistributedStorage;
+&nbsp;
+&nbsp;import java.util.concurrent.ExecutionException;
+&nbsp;import java.util.concurrent.ForkJoinPool;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;import java.util.concurrent.atomic.AtomicBoolean;
+&nbsp;import java.util.concurrent.atomic.AtomicLong;
+&nbsp;import javax.management.JMException;
+&nbsp;
+&nbsp;import com.codahale.metrics.Gauge;
+&nbsp;import com.codahale.metrics.MetricRegistry;
+&nbsp;import com.codahale.metrics.Timer;
+&nbsp;import com.google.common.annotations.VisibleForTesting;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;final class Heart implements AutoCloseable {</b>
+&nbsp;
+<b class="nc">&nbsp;  private static final AtomicBoolean GAUGES_REGISTERED = new AtomicBoolean(false);</b>
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(Heart.class);</b>
+<b class="nc">&nbsp;  private static final long DEFAULT_MAX_FREQUENCY = TimeUnit.SECONDS.toMillis(10);</b>
+&nbsp;
+<b class="nc">&nbsp;  private final AtomicLong lastBeat = new AtomicLong(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(1));</b>
+<b class="nc">&nbsp;  private final ForkJoinPool forkJoinPool = new ForkJoinPool(64);</b>
+&nbsp;  private final AppContext context;
+&nbsp;  private final long maxBeatFrequencyMillis;
+<b class="nc">&nbsp;  private final AtomicBoolean updatingNodeMetrics = new AtomicBoolean(false);</b>
+&nbsp;
+<b class="nc">&nbsp;  private Heart(AppContext context, long maxBeatFrequency) {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+<b class="nc">&nbsp;    this.maxBeatFrequencyMillis = maxBeatFrequency;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  static Heart create(AppContext context) {
+<b class="nc">&nbsp;    return new Heart(context, DEFAULT_MAX_FREQUENCY);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @VisibleForTesting
+&nbsp;  static Heart create(AppContext context, long maxBeatFrequencyMillis) {
+<b class="nc">&nbsp;    return new Heart(context, maxBeatFrequencyMillis);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  synchronized void beat() {
+<b class="nc">&nbsp;    if (context.storage instanceof IDistributedStorage</b>
+<b class="nc">&nbsp;        &amp;&amp; lastBeat.get() + maxBeatFrequencyMillis &lt; System.currentTimeMillis()) {</b>
+&nbsp;
+<b class="nc">&nbsp;      lastBeat.set(System.currentTimeMillis());</b>
+<b class="nc">&nbsp;      ((IDistributedStorage) context.storage).saveHeartbeat();</b>
+&nbsp;
+<b class="nc">&nbsp;      if (ReaperApplicationConfiguration.DatacenterAvailability.EACH == context.config.getDatacenterAvailability()) {</b>
+<b class="nc">&nbsp;        updateRequestedNodeMetrics();</b>
+&nbsp;      }
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  AtomicBoolean isCurrentlyUpdatingNodeMetrics() {
+<b class="nc">&nbsp;    return new AtomicBoolean(updatingNodeMetrics.get());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void close() {
+&nbsp;    try {
+<b class="nc">&nbsp;      forkJoinPool.shutdown();</b>
+<b class="nc">&nbsp;      forkJoinPool.awaitTermination(10, TimeUnit.SECONDS);</b>
+<b class="nc">&nbsp;    } catch (InterruptedException ignore) {</b>
+&nbsp;    } finally {
+<b class="nc">&nbsp;      forkJoinPool.shutdownNow();</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void updateRequestedNodeMetrics() {
+<b class="nc">&nbsp;    Preconditions.checkArgument(context.storage instanceof IDistributedStorage);</b>
+<b class="nc">&nbsp;    IDistributedStorage storage = ((IDistributedStorage) context.storage);</b>
+<b class="nc">&nbsp;    registerGauges();</b>
+&nbsp;
+<b class="nc">&nbsp;    if (!updatingNodeMetrics.getAndSet(true)) {</b>
+<b class="nc">&nbsp;      int jmxTimeoutSeconds = context.config.getJmxConnectionTimeoutInSeconds();</b>
+&nbsp;
+<b class="nc">&nbsp;      forkJoinPool.submit(() -&gt; {</b>
+<b class="nc">&nbsp;        try (Timer.Context t0 = timer(context, &quot;updatingNodeMetrics&quot;)) {</b>
+&nbsp;
+<b class="nc">&nbsp;          forkJoinPool.submit(() -&gt; {</b>
+<b class="nc">&nbsp;            context.repairManager.repairRunners.keySet()</b>
+<b class="nc">&nbsp;                .parallelStream()</b>
+<b class="nc">&nbsp;                .forEach(runId -&gt; {</b>
+&nbsp;
+<b class="nc">&nbsp;                  storage.getNodeMetrics(runId)</b>
+<b class="nc">&nbsp;                      .parallelStream()</b>
+<b class="nc">&nbsp;                      .filter(nodeMetrics -&gt; nodeMetrics.isRequested())</b>
+<b class="nc">&nbsp;                      .forEach(req -&gt; {</b>
+&nbsp;
+<b class="nc">&nbsp;                        LOG.info(&quot;Got metric request for node {} in {}&quot;, req.getNode(), req.getCluster());</b>
+<b class="nc">&nbsp;                        try (Timer.Context t1 = timer(context, req.getCluster(), req.getNode())) {</b>
+&nbsp;
+<b class="nc">&nbsp;                          try (JmxProxy nodeProxy</b>
+<b class="nc">&nbsp;                              = context.jmxConnectionFactory.connect(req.getNode(), jmxTimeoutSeconds)) {</b>
+&nbsp;
+<b class="nc">&nbsp;                            storage.storeNodeMetrics(</b>
+&nbsp;                                runId,
+<b class="nc">&nbsp;                                NodeMetrics.builder()</b>
+<b class="nc">&nbsp;                                    .withNode(req.getNode())</b>
+<b class="nc">&nbsp;                                    .withCluster(req.getCluster())</b>
+<b class="nc">&nbsp;                                    .withDatacenter(req.getDatacenter())</b>
+<b class="nc">&nbsp;                                    .withPendingCompactions(nodeProxy.getPendingCompactions())</b>
+<b class="nc">&nbsp;                                    .withHasRepairRunning(nodeProxy.isRepairRunning())</b>
+<b class="nc">&nbsp;                                    .withActiveAnticompactions(0) // for future use</b>
+<b class="nc">&nbsp;                                    .build());</b>
+&nbsp;
+<b class="nc">&nbsp;                            LOG.info(&quot;Responded to metric request for node {}&quot;, req.getNode());</b>
+<b class="nc">&nbsp;                          } catch (ReaperException | RuntimeException | InterruptedException ex) {</b>
+<b class="nc">&nbsp;                            LOG.debug(&quot;failed seed connection in cluster &quot; + req.getCluster(), ex);</b>
+<b class="nc">&nbsp;                          } catch (JMException e) {</b>
+<b class="nc">&nbsp;                            LOG.warn(</b>
+&nbsp;                                &quot;failed querying JMX MBean for metrics on node {} of cluster {} due to {}&quot;,
+<b class="nc">&nbsp;                                req.getNode(), req.getCluster(), e.getMessage());</b>
+<b class="nc">&nbsp;                          }</b>
+<b class="nc">&nbsp;                        }</b>
+&nbsp;                      });
+&nbsp;                });
+<b class="nc">&nbsp;          }).get();</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (ExecutionException | InterruptedException | RuntimeException ex) {</b>
+<b class="nc">&nbsp;          LOG.warn(&quot;failed updateAllReachableNodeMetrics submission&quot;, ex);</b>
+&nbsp;        } finally {
+<b class="nc">&nbsp;          assert updatingNodeMetrics.get();</b>
+<b class="nc">&nbsp;          updatingNodeMetrics.set(false);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;      });
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  private static Timer.Context timer(AppContext context, String... names) {
+<b class="nc">&nbsp;    return context.metricRegistry.timer(MetricRegistry.name(Heart.class, names)).time();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void registerGauges() throws IllegalArgumentException {
+<b class="nc">&nbsp;    if (!GAUGES_REGISTERED.getAndSet(true)) {</b>
+&nbsp;
+<b class="nc">&nbsp;      context.metricRegistry.register(</b>
+<b class="nc">&nbsp;          MetricRegistry.name(Heart.class, &quot;runningThreadCount&quot;),</b>
+<b class="nc">&nbsp;          (Gauge&lt;Integer&gt;) () -&gt; forkJoinPool.getRunningThreadCount());</b>
+&nbsp;
+<b class="nc">&nbsp;      context.metricRegistry.register(</b>
+<b class="nc">&nbsp;          MetricRegistry.name(Heart.class, &quot;activeThreadCount&quot;),</b>
+<b class="nc">&nbsp;          (Gauge&lt;Integer&gt;) () -&gt; forkJoinPool.getActiveThreadCount());</b>
+&nbsp;
+<b class="nc">&nbsp;      context.metricRegistry.register(</b>
+<b class="nc">&nbsp;          MetricRegistry.name(Heart.class, &quot;queuedTaskCount&quot;),</b>
+<b class="nc">&nbsp;          (Gauge&lt;Long&gt;) () -&gt; forkJoinPool.getQueuedTaskCount());</b>
+&nbsp;
+<b class="nc">&nbsp;      context.metricRegistry.register(</b>
+<b class="nc">&nbsp;          MetricRegistry.name(Heart.class, &quot;queuedSubmissionCount&quot;),</b>
+<b class="nc">&nbsp;          (Gauge&lt;Integer&gt;) () -&gt; forkJoinPool.getQueuedSubmissionCount());</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

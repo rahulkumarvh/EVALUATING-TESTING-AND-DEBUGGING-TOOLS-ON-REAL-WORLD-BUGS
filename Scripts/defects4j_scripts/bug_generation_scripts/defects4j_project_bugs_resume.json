@@ -1,0 +1,104 @@
+[
+    {
+        "project": "Collections",
+        "id": "28",
+        "original": "Collections_28", 
+        "test_dir": "src/test/java/org/apache/commons/collections4"
+    },
+    {
+        "project": "Csv",
+        "id": "7",
+        "original": "Csv_7",
+        "test_dir": "src/test/java/org/apache/commons/csv"
+    },
+    {
+        "project": "JacksonCore",
+        "id": "19",
+        "original": "JacksonCore_19",
+        "test_dir": "src/test/java/com/fasterxml/jackson/core/util"
+    },
+    {
+        "project": "JacksonXml",
+        "id": "1",
+        "original": "JacksonXml_1",
+        "test_dir": "src/test/java/com/fasterxml/jackson/dataformat/xml/deser"
+    },
+    {
+        "project": "Jsoup",
+        "id": "7",
+        "original": "Jsoup_7",
+        "test_dir": "src/test/java/org/jsoup/nodes"
+    },
+    {
+        "project": "Lang",
+        "id": "7",
+        "original": "Lang_7",
+        "test_dir" : "src/test/java/org/apache/commons/lang3/math"
+    },
+    {
+        "project": "Mockito",
+        "id": "24",
+        "original": "Mockito_24",
+        "test_dir": "test/org/mockito/internal/util/reflection"
+    },
+    {
+        "project": "Time",
+        "id": "6",
+        "original": "Time_6",
+        "test_dir": "src/test/java/org/joda/time/field"
+    },
+    {
+        "project": "Cli",
+        "id": "25",
+        "original": "Cli_25",
+        "test_dir": "src/test/org/apache/commons/cli"
+    },
+    {
+        "project": "Codec",
+        "id": "15",
+        "original": "Codec_15",
+        "test_dir": "src/test/org/apache/commons/codec"
+    },
+    {
+        "project": "Compress",
+        "id": "1",
+        "original": "Compress_1",
+        "test_dir": "src/test/java/org/apache/commons/compress"
+    },
+    {
+        "project": "Csv",
+        "id": "8",
+        "original": "Csv_8",
+        "test_dir": "src/test/java/org/apache/commons/csv"
+    },
+    {
+        "project": "JacksonCore",
+        "id": "20",
+        "original": "JacksonCore_20",
+        "test_dir": "src/test/java/com/fasterxml/jackson/core/util"
+    },
+    {
+        "project": "JacksonXml",
+        "id": "2",
+        "original": "JacksonXml_2",
+        "test_dir": "src/test/java/com/fasterxml/jackson/dataformat/xml/deser"
+    },
+    {
+        "project": "JxPath",
+        "id": "16",
+        "original": "JxPath_16",
+        "test_dir": "src/test/org/apache/commons/jxpath/ri/model/beans"
+    },
+    {
+        "project": "Lang",
+        "id": "9",
+        "original": "Lang_9",
+        "test_dir" : "src/test/java/org/apache/commons/lang3/math"
+    },
+    {
+        "project": "Mockito",
+        "id": "7",
+        "original": "Mockito_7",
+        "test_dir": "test/org/mockito/internal/util/reflection"
+    }
+]

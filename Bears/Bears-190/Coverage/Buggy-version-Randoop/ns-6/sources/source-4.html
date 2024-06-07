@@ -1,0 +1,452 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RepairManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: RepairManager (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepairManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/138)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RepairManager$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/139)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.RepairRun;
+&nbsp;import io.cassandrareaper.core.RepairSegment;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.jmx.JmxProxy;
+&nbsp;import io.cassandrareaper.storage.IDistributedStorage;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.concurrent.Executors;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import com.codahale.metrics.MetricRegistry;
+&nbsp;import com.codahale.metrics.Timer;
+&nbsp;import com.google.common.annotations.VisibleForTesting;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import com.google.common.collect.Maps;
+&nbsp;import com.google.common.util.concurrent.ListenableFuture;
+&nbsp;import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+&nbsp;import com.google.common.util.concurrent.MoreExecutors;
+&nbsp;import org.apache.cassandra.concurrent.NamedThreadFactory;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+<b class="nc">&nbsp;public final class RepairManager {</b>
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(RepairManager.class);</b>
+&nbsp;
+&nbsp;  // Caching all active RepairRunners.
+<b class="nc">&nbsp;  final Map&lt;UUID, RepairRunner&gt; repairRunners = Maps.newConcurrentMap();</b>
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;  private final Heart heart;
+&nbsp;  private ListeningScheduledExecutorService executor;
+&nbsp;  private long repairTimeoutMillis;
+&nbsp;  private long retryDelayMillis;
+&nbsp;
+<b class="nc">&nbsp;  private RepairManager(AppContext context)  {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+<b class="nc">&nbsp;    this.heart = Heart.create(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static RepairManager create(AppContext context)  {
+<b class="nc">&nbsp;    return new RepairManager(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  long getRepairTimeoutMillis() {
+<b class="nc">&nbsp;    return repairTimeoutMillis;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @VisibleForTesting
+&nbsp;  public void initializeThreadPool(
+&nbsp;      int threadAmount,
+&nbsp;      long repairTimeout,
+&nbsp;      TimeUnit repairTimeoutTimeUnit,
+&nbsp;      long retryDelay,
+&nbsp;      TimeUnit retryDelayTimeUnit) {
+&nbsp;
+<b class="nc">&nbsp;    executor = MoreExecutors.listeningDecorator(</b>
+<b class="nc">&nbsp;        Executors.newScheduledThreadPool(threadAmount, new NamedThreadFactory(&quot;RepairRunner&quot;)));</b>
+&nbsp;
+<b class="nc">&nbsp;    repairTimeoutMillis = repairTimeoutTimeUnit.toMillis(repairTimeout);</b>
+<b class="nc">&nbsp;    retryDelayMillis = retryDelayTimeUnit.toMillis(retryDelay);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Consult storage to see if any repairs are running, and resume those repair runs.
+&nbsp;   *
+&nbsp;   * @param context Reaper&#39;s application context.
+&nbsp;   */
+&nbsp;  public void resumeRunningRepairRuns() throws ReaperException {
+<b class="nc">&nbsp;    heart.beat();</b>
+<b class="nc">&nbsp;    Collection&lt;RepairRun&gt; running = context.storage.getRepairRunsWithState(RepairRun.RunState.RUNNING);</b>
+<b class="nc">&nbsp;    for (RepairRun repairRun : running) {</b>
+&nbsp;
+<b class="nc">&nbsp;      Collection&lt;RepairSegment&gt; runningSegments</b>
+<b class="nc">&nbsp;          = context.storage.getSegmentsWithState(repairRun.getId(), RepairSegment.State.RUNNING);</b>
+&nbsp;
+<b class="nc">&nbsp;      abortSegmentsWithNoLeader(repairRun, runningSegments);</b>
+&nbsp;
+<b class="nc">&nbsp;      if (!repairRunners.containsKey(repairRun.getId())) {</b>
+<b class="nc">&nbsp;        LOG.info(&quot;Restarting run id {} that has no runner&quot;, repairRun.getId());</b>
+<b class="nc">&nbsp;        startRepairRun(repairRun);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    Collection&lt;RepairRun&gt; paused = context.storage.getRepairRunsWithState(RepairRun.RunState.PAUSED);</b>
+<b class="nc">&nbsp;    for (RepairRun pausedRepairRun : paused) {</b>
+<b class="nc">&nbsp;      if (repairRunners.containsKey(pausedRepairRun.getId())) {</b>
+&nbsp;        // Abort all running segments for paused repair runs
+<b class="nc">&nbsp;        Collection&lt;RepairSegment&gt; runningSegments</b>
+<b class="nc">&nbsp;            = context.storage.getSegmentsWithState(pausedRepairRun.getId(), RepairSegment.State.RUNNING);</b>
+&nbsp;
+<b class="nc">&nbsp;        abortSegments(runningSegments, pausedRepairRun);</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      if (!repairRunners.containsKey(pausedRepairRun.getId())) {</b>
+<b class="nc">&nbsp;        startRunner(pausedRepairRun.getId());</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void abortSegmentsWithNoLeader(RepairRun repairRun, Collection&lt;RepairSegment&gt; runningSegments) {
+&nbsp;
+<b class="nc">&nbsp;    if (context.storage instanceof IDistributedStorage || !repairRunners.containsKey(repairRun.getId())) {</b>
+&nbsp;      // When multiple Reapers are in use, we can get stuck segments when one instance is rebooted
+&nbsp;      // Any segment in RUNNING state but with no leader should be killed
+<b class="nc">&nbsp;      List&lt;UUID&gt; activeLeaders =</b>
+&nbsp;          context.storage instanceof IDistributedStorage
+<b class="nc">&nbsp;              ? ((IDistributedStorage) context.storage).getLeaders()</b>
+<b class="nc">&nbsp;              : Collections.emptyList();</b>
+&nbsp;
+<b class="nc">&nbsp;      abortSegments(</b>
+&nbsp;          runningSegments
+<b class="nc">&nbsp;              .stream()</b>
+<b class="nc">&nbsp;              .filter(segment -&gt; !activeLeaders.contains(segment.getId()))</b>
+<b class="nc">&nbsp;              .collect(Collectors.toSet()),</b>
+&nbsp;          repairRun);
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  void abortSegments(Collection&lt;RepairSegment&gt; runningSegments, RepairRun repairRun) {
+&nbsp;
+<b class="nc">&nbsp;    RepairUnit repairUnit = context.storage.getRepairUnit(repairRun.getRepairUnitId()).get();</b>
+<b class="nc">&nbsp;    for (RepairSegment segment : runningSegments) {</b>
+<b class="nc">&nbsp;      UUID leaderElectionId = repairUnit.getIncrementalRepair() ? repairRun.getId() : segment.getId();</b>
+<b class="nc">&nbsp;      if (takeLead(context, leaderElectionId) || renewLead(context, leaderElectionId)) {</b>
+&nbsp;        // refresh segment once we&#39;re inside leader-election
+<b class="nc">&nbsp;        segment = context.storage.getRepairSegment(repairRun.getId(), segment.getId()).get();</b>
+<b class="nc">&nbsp;        if (RepairSegment.State.RUNNING == segment.getState()) {</b>
+<b class="nc">&nbsp;          try (JmxProxy jmxProxy = context.jmxConnectionFactory.connect(</b>
+<b class="nc">&nbsp;              segment.getCoordinatorHost(), context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;            SegmentRunner.abort(context, segment, jmxProxy);</b>
+<b class="nc">&nbsp;          } catch (ReaperException | NumberFormatException | InterruptedException e) {</b>
+<b class="nc">&nbsp;            LOG.debug(</b>
+&nbsp;                &quot;Tried to abort repair on segment {} marked as RUNNING, &quot;
+&nbsp;                    + &quot;but the host was down  (so abortion won&#39;t be needed)&quot;,
+<b class="nc">&nbsp;                segment.getId(),</b>
+&nbsp;                e);
+&nbsp;          } finally {
+&nbsp;            // if someone else does hold the lease, ie renewLead(..) was true,
+&nbsp;            // then their writes to repair_run table and any call to releaseLead(..) will throw an exception
+<b class="nc">&nbsp;            releaseLead(context, leaderElectionId);</b>
+<b class="nc">&nbsp;          }</b>
+&nbsp;        }
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairRun startRepairRun(RepairRun runToBeStarted) throws ReaperException {
+<b class="nc">&nbsp;    assert null != executor : &quot;you need to initialize the thread pool first&quot;;</b>
+<b class="nc">&nbsp;    UUID runId = runToBeStarted.getId();</b>
+<b class="nc">&nbsp;    LOG.info(&quot;Starting a run with id #{} with current state &#39;{}&#39;&quot;, runId, runToBeStarted.getRunState());</b>
+<b class="nc">&nbsp;    switch (runToBeStarted.getRunState()) {</b>
+&nbsp;      case NOT_STARTED: {
+<b class="nc">&nbsp;        RepairRun updatedRun = runToBeStarted</b>
+<b class="nc">&nbsp;            .with()</b>
+<b class="nc">&nbsp;            .runState(RepairRun.RunState.RUNNING)</b>
+<b class="nc">&nbsp;            .startTime(DateTime.now())</b>
+<b class="nc">&nbsp;            .build(runToBeStarted.getId());</b>
+<b class="nc">&nbsp;        if (!context.storage.updateRepairRun(updatedRun)) {</b>
+<b class="nc">&nbsp;          throw new ReaperException(&quot;failed updating repair run &quot; + updatedRun.getId());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        startRunner(runId);</b>
+<b class="nc">&nbsp;        return updatedRun;</b>
+&nbsp;      }
+&nbsp;      case PAUSED: {
+<b class="nc">&nbsp;        RepairRun updatedRun = runToBeStarted.with()</b>
+<b class="nc">&nbsp;            .runState(RepairRun.RunState.RUNNING)</b>
+<b class="nc">&nbsp;            .pauseTime(null)</b>
+<b class="nc">&nbsp;            .build(runToBeStarted.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!context.storage.updateRepairRun(updatedRun)) {</b>
+<b class="nc">&nbsp;          throw new ReaperException(&quot;failed updating repair run &quot; + updatedRun.getId());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return updatedRun;</b>
+&nbsp;      }
+&nbsp;      case RUNNING:
+<b class="nc">&nbsp;        Preconditions.checkState(</b>
+<b class="nc">&nbsp;            !repairRunners.containsKey(runId), &quot;trying to re-trigger run that is already running, with id &quot; + runId);</b>
+<b class="nc">&nbsp;        LOG.info(&quot;re-trigger a running run after restart, with id {}&quot;, runId);</b>
+<b class="nc">&nbsp;        startRunner(runId);</b>
+<b class="nc">&nbsp;        return runToBeStarted;</b>
+&nbsp;      case ERROR: {
+<b class="nc">&nbsp;        RepairRun updatedRun</b>
+<b class="nc">&nbsp;            = runToBeStarted.with().runState(RepairRun.RunState.RUNNING).endTime(null).build(runToBeStarted.getId());</b>
+<b class="nc">&nbsp;        if (!context.storage.updateRepairRun(updatedRun)) {</b>
+<b class="nc">&nbsp;          throw new ReaperException(&quot;failed updating repair run &quot; + updatedRun.getId());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        startRunner(runId);</b>
+<b class="nc">&nbsp;        return updatedRun;</b>
+&nbsp;      }
+&nbsp;      default:
+<b class="nc">&nbsp;        throw new ReaperException(&quot;cannot start run with state: &quot; + runToBeStarted.getRunState());</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairRun updateRepairRunIntensity(RepairRun repairRun, Double intensity) throws ReaperException {
+<b class="nc">&nbsp;    RepairRun updatedRun = repairRun.with().intensity(intensity).build(repairRun.getId());</b>
+<b class="nc">&nbsp;    if (!context.storage.updateRepairRun(updatedRun)) {</b>
+<b class="nc">&nbsp;      throw new ReaperException(&quot;failed updating repair run &quot; + updatedRun.getId());</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return updatedRun;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void startRunner(UUID runId) {
+<b class="nc">&nbsp;    if (!repairRunners.containsKey(runId)) {</b>
+<b class="nc">&nbsp;      LOG.info(&quot;scheduling repair for repair run #{}&quot;, runId);</b>
+&nbsp;      try {
+<b class="nc">&nbsp;        RepairRunner newRunner = new RepairRunner(context, runId);</b>
+<b class="nc">&nbsp;        repairRunners.put(runId, newRunner);</b>
+<b class="nc">&nbsp;        executor.submit(newRunner);</b>
+<b class="nc">&nbsp;      } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;        LOG.warn(&quot;Failed to schedule repair for repair run #{}&quot;, runId, e);</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      LOG.error(</b>
+&nbsp;          &quot;there is already a repair runner for run with id {}, so not starting new runner. This &quot;
+&nbsp;          + &quot;should not happen.&quot;,
+&nbsp;          runId);
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairRun pauseRepairRun(RepairRun runToBePaused) throws ReaperException {
+<b class="nc">&nbsp;    RepairRun updatedRun = runToBePaused.with()</b>
+<b class="nc">&nbsp;        .runState(RepairRun.RunState.PAUSED)</b>
+<b class="nc">&nbsp;        .pauseTime(DateTime.now())</b>
+<b class="nc">&nbsp;        .build(runToBePaused.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;    if (!context.storage.updateRepairRun(updatedRun)) {</b>
+<b class="nc">&nbsp;      throw new ReaperException(&quot;failed updating repair run &quot; + updatedRun.getId());</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return updatedRun;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public RepairRun abortRepairRun(RepairRun runToBeAborted) throws ReaperException {
+<b class="nc">&nbsp;    RepairRun updatedRun = runToBeAborted</b>
+<b class="nc">&nbsp;        .with()</b>
+<b class="nc">&nbsp;        .runState(RepairRun.RunState.ABORTED)</b>
+<b class="nc">&nbsp;        .pauseTime(DateTime.now())</b>
+<b class="nc">&nbsp;        .build(runToBeAborted.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;    if (!context.storage.updateRepairRun(updatedRun)) {</b>
+<b class="nc">&nbsp;      throw new ReaperException(&quot;failed updating repair run &quot; + updatedRun.getId());</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return updatedRun;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  void scheduleRetry(RepairRunner runner) {
+<b class="nc">&nbsp;    executor.schedule(runner, retryDelayMillis, TimeUnit.MILLISECONDS);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  ListenableFuture&lt;?&gt; submitSegment(SegmentRunner runner) {
+<b class="nc">&nbsp;    return executor.submit(runner);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  void removeRunner(RepairRunner runner) {
+<b class="nc">&nbsp;    repairRunners.remove(runner.getRepairRunId());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static boolean takeLead(AppContext context, UUID leaderElectionId) {
+<b class="nc">&nbsp;    try (Timer.Context cx</b>
+<b class="nc">&nbsp;        = context.metricRegistry.timer(MetricRegistry.name(RepairManager.class, &quot;takeLead&quot;)).time()) {</b>
+&nbsp;
+<b class="nc">&nbsp;      boolean result = context.storage instanceof IDistributedStorage</b>
+<b class="nc">&nbsp;          ? ((IDistributedStorage) context.storage).takeLead(leaderElectionId)</b>
+&nbsp;          : true;
+&nbsp;
+<b class="nc">&nbsp;      if (!result) {</b>
+<b class="nc">&nbsp;        context.metricRegistry.counter(MetricRegistry.name(RepairManager.class, &quot;takeLead&quot;, &quot;failed&quot;)).inc();</b>
+&nbsp;      }
+<b class="nc">&nbsp;      return result;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static boolean renewLead(AppContext context, UUID leaderElectionId) {
+<b class="nc">&nbsp;    try (Timer.Context cx</b>
+<b class="nc">&nbsp;        = context.metricRegistry.timer(MetricRegistry.name(RepairManager.class, &quot;renewLead&quot;)).time()) {</b>
+&nbsp;
+<b class="nc">&nbsp;      boolean result = context.storage instanceof IDistributedStorage</b>
+<b class="nc">&nbsp;          ? ((IDistributedStorage) context.storage).renewLead(leaderElectionId)</b>
+&nbsp;          : true;
+&nbsp;
+<b class="nc">&nbsp;      if (!result) {</b>
+<b class="nc">&nbsp;        context.metricRegistry.counter(MetricRegistry.name(RepairManager.class, &quot;renewLead&quot;, &quot;failed&quot;)).inc();</b>
+&nbsp;      }
+<b class="nc">&nbsp;      return result;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private static void releaseLead(AppContext context, UUID leaderElectionId) {
+<b class="nc">&nbsp;    try (Timer.Context cx</b>
+<b class="nc">&nbsp;        = context.metricRegistry.timer(MetricRegistry.name(RepairManager.class, &quot;releaseLead&quot;)).time()) {</b>
+<b class="nc">&nbsp;      if (context.storage instanceof IDistributedStorage) {</b>
+<b class="nc">&nbsp;        ((IDistributedStorage) context.storage).releaseLead(leaderElectionId);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

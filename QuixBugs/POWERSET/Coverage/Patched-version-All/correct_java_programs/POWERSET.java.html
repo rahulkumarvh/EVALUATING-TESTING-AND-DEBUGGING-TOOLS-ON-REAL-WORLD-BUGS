@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>POWERSET.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patched-Version</a> &gt; <a href="index.source.html" class="el_package">correct_java_programs</a> &gt; <span class="el_source">POWERSET.java</span></div><h1>POWERSET.java</h1><pre class="source lang-java linenums">package correct_java_programs;
+
+import java.util.*;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author derricklin
+ */
+<span class="fc" id="L14">public class POWERSET {</span>
+    public static ArrayList&lt;ArrayList&gt; powerset(ArrayList arr) {
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (!arr.isEmpty()) {</span>
+<span class="fc" id="L17">            Object first = arr.get(0);</span>
+<span class="fc" id="L18">            arr.remove(0);</span>
+<span class="fc" id="L19">            ArrayList rest = arr;</span>
+<span class="fc" id="L20">            ArrayList&lt;ArrayList&gt; rest_subsets = powerset(rest);</span>
+
+<span class="fc" id="L22">            ArrayList&lt;ArrayList&gt; output = new ArrayList&lt;ArrayList&gt;(100);</span>
+<span class="fc" id="L23">            ArrayList to_add = new ArrayList(100);</span>
+
+<span class="fc bfc" id="L25" title="All 2 branches covered.">            for (ArrayList subset : rest_subsets) {</span>
+<span class="fc" id="L26">                ArrayList r = new ArrayList();</span>
+<span class="fc" id="L27">                r.add(first);</span>
+<span class="fc" id="L28">                r.addAll(subset);</span>
+<span class="fc" id="L29">                to_add.add(r);</span>
+<span class="fc" id="L30">            }</span>
+
+<span class="fc" id="L32">            output.addAll(to_add);</span>
+<span class="fc" id="L33">            rest_subsets.addAll(output);</span>
+
+<span class="fc" id="L35">            return rest_subsets;</span>
+        } else {
+<span class="fc" id="L37">            ArrayList empty_set = new ArrayList&lt;ArrayList&gt;();</span>
+<span class="fc" id="L38">            empty_set.add(new ArrayList());</span>
+<span class="fc" id="L39">            return empty_set;</span>
+        }
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

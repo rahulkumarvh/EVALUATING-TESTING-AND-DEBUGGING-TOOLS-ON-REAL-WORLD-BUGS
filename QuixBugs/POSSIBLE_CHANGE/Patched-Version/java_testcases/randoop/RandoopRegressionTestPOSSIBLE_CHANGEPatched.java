@@ -1,0 +1,8 @@
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RandoopRegressionTestPOSSIBLE_CHANGEPatched0.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched1.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched2.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched3.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched4.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched5.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched6.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched7.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched8.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched9.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched10.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched11.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched12.class, RandoopRegressionTestPOSSIBLE_CHANGEPatched13.class })
+public class RandoopRegressionTestPOSSIBLE_CHANGEPatched {
+}
+

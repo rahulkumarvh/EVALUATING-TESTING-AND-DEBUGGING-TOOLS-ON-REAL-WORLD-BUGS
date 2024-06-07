@@ -1,0 +1,279 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnotatedFieldCollector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.fasterxml.jackson.databind.introspect</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnotatedFieldCollector (com.fasterxml.jackson.databind.introspect)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnotatedFieldCollector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/47)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AnnotatedFieldCollector$FieldBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/52)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.fasterxml.jackson.databind.introspect;
+&nbsp;
+&nbsp;import java.lang.reflect.Field;
+&nbsp;import java.lang.reflect.Modifier;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.AnnotationIntrospector;
+&nbsp;import com.fasterxml.jackson.databind.JavaType;
+&nbsp;import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
+&nbsp;import com.fasterxml.jackson.databind.type.TypeFactory;
+&nbsp;import com.fasterxml.jackson.databind.util.ClassUtil;
+&nbsp;
+&nbsp;public class AnnotatedFieldCollector
+&nbsp;    extends CollectorBase
+&nbsp;{
+&nbsp;    // // // Configuration
+&nbsp;
+&nbsp;    private final TypeFactory _typeFactory;
+&nbsp;    private final MixInResolver _mixInResolver;
+&nbsp;
+&nbsp;    // // // Collected state
+&nbsp;
+&nbsp;    AnnotatedFieldCollector(AnnotationIntrospector intr,
+&nbsp;            TypeFactory types, MixInResolver mixins)
+&nbsp;    {
+<b class="nc">&nbsp;        super(intr);</b>
+<b class="nc">&nbsp;        _typeFactory = types;</b>
+<b class="nc">&nbsp;        _mixInResolver = (intr == null) ? null : mixins;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static List&lt;AnnotatedField&gt; collectFields(AnnotationIntrospector intr,
+&nbsp;            TypeResolutionContext tc,
+&nbsp;            MixInResolver mixins, TypeFactory types,
+&nbsp;            JavaType type)
+&nbsp;    {
+<b class="nc">&nbsp;        return new AnnotatedFieldCollector(intr, types, mixins).collect(tc, type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    List&lt;AnnotatedField&gt; collect(TypeResolutionContext tc, JavaType type)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String,FieldBuilder&gt; foundFields = _findFields(tc, type, null);</b>
+<b class="nc">&nbsp;        if (foundFields == null) {</b>
+<b class="nc">&nbsp;            return Collections.emptyList();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        List&lt;AnnotatedField&gt; result = new ArrayList&lt;&gt;(foundFields.size());</b>
+<b class="nc">&nbsp;        for (FieldBuilder b : foundFields.values()) {</b>
+<b class="nc">&nbsp;            result.add(b.build());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Map&lt;String,FieldBuilder&gt; _findFields(TypeResolutionContext tc,
+&nbsp;            JavaType type, Map&lt;String,FieldBuilder&gt; fields)
+&nbsp;    {
+&nbsp;        // First, a quick test: we only care for regular classes (not interfaces,
+&nbsp;        //primitive types etc), except for Object.class. A simple check to rule out
+&nbsp;        // other cases is to see if there is a super class or not.
+<b class="nc">&nbsp;        JavaType parent = type.getSuperClass();</b>
+<b class="nc">&nbsp;        if (parent == null) {</b>
+<b class="nc">&nbsp;            return fields;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        final Class&lt;?&gt; cls = type.getRawClass();</b>
+&nbsp;        // Let&#39;s add super-class&#39; fields first, then ours.
+<b class="nc">&nbsp;        fields = _findFields(new TypeResolutionContext.Basic(_typeFactory, parent.getBindings()),</b>
+&nbsp;                parent, fields);
+<b class="nc">&nbsp;        for (Field f : ClassUtil.getDeclaredFields(cls)) {</b>
+&nbsp;            // static fields not included (transients are at this point, filtered out later)
+<b class="nc">&nbsp;            if (!_isIncludableField(f)) {</b>
+<b class="nc">&nbsp;                continue;</b>
+&nbsp;            }
+&nbsp;            // Ok now: we can (and need) not filter out ignorable fields at this point; partly
+&nbsp;            // because mix-ins haven&#39;t been added, and partly because logic can be done
+&nbsp;            // when determining get/settability of the field.
+<b class="nc">&nbsp;            if (fields == null) {</b>
+<b class="nc">&nbsp;                fields = new LinkedHashMap&lt;&gt;();</b>
+&nbsp;            }
+<b class="nc">&nbsp;            FieldBuilder b = new FieldBuilder(tc, f);</b>
+<b class="nc">&nbsp;            if (_intr != null) {</b>
+<b class="nc">&nbsp;                b.annotations = collectAnnotations(b.annotations, f.getDeclaredAnnotations());</b>
+&nbsp;            }
+<b class="nc">&nbsp;            fields.put(f.getName(), b);</b>
+&nbsp;        }
+&nbsp;        // And then... any mix-in overrides?
+<b class="nc">&nbsp;        if (_mixInResolver != null) {</b>
+<b class="nc">&nbsp;            Class&lt;?&gt; mixin = _mixInResolver.findMixInClassFor(cls);</b>
+<b class="nc">&nbsp;            if (mixin != null) {</b>
+<b class="nc">&nbsp;                _addFieldMixIns(mixin, cls, fields);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return fields;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called to add field mix-ins from given mix-in class (and its fields)
+&nbsp;     * into already collected actual fields (from introspected classes and their
+&nbsp;     * super-classes)
+&nbsp;     */
+&nbsp;    private void _addFieldMixIns(Class&lt;?&gt; mixInCls, Class&lt;?&gt; targetClass,
+&nbsp;            Map&lt;String,FieldBuilder&gt; fields)
+&nbsp;    {
+<b class="nc">&nbsp;        List&lt;Class&lt;?&gt;&gt; parents = ClassUtil.findSuperClasses(mixInCls, targetClass, true);</b>
+<b class="nc">&nbsp;        for (Class&lt;?&gt; mixin : parents) {</b>
+<b class="nc">&nbsp;            for (Field mixinField : ClassUtil.getDeclaredFields(mixin)) {</b>
+&nbsp;                // there are some dummy things (static, synthetic); better ignore
+<b class="nc">&nbsp;                if (!_isIncludableField(mixinField)) {</b>
+<b class="nc">&nbsp;                    continue;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                String name = mixinField.getName();</b>
+&nbsp;                // anything to mask? (if not, quietly ignore)
+<b class="nc">&nbsp;                FieldBuilder b = fields.get(name);</b>
+<b class="nc">&nbsp;                if (b != null) {</b>
+<b class="nc">&nbsp;                    b.annotations = collectAnnotations(b.annotations, mixinField.getDeclaredAnnotations());</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean _isIncludableField(Field f)
+&nbsp;    {
+&nbsp;        // Most likely synthetic fields, if any, are to be skipped similar to methods
+<b class="nc">&nbsp;        if (f.isSynthetic()) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;        // Static fields are never included. Transient are (since 2.6), for
+&nbsp;        // purpose of propagating removal
+<b class="nc">&nbsp;        int mods = f.getModifiers();</b>
+<b class="nc">&nbsp;        if (Modifier.isStatic(mods)) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private final static class FieldBuilder {
+&nbsp;        public final TypeResolutionContext typeContext;
+&nbsp;        public final Field field;
+&nbsp;
+&nbsp;        public AnnotationCollector annotations;
+&nbsp;
+<b class="nc">&nbsp;        public FieldBuilder(TypeResolutionContext tc, Field f) {</b>
+<b class="nc">&nbsp;            typeContext = tc;</b>
+<b class="nc">&nbsp;            field = f;</b>
+<b class="nc">&nbsp;            annotations = AnnotationCollector.emptyCollector();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        public AnnotatedField build() {
+<b class="nc">&nbsp;            return new AnnotatedField(typeContext, field, annotations.asAnnotationMap());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 21:12</div>
+</div>
+</body>
+</html>

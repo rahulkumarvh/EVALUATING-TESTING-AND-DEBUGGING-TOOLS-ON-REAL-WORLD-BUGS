@@ -1,0 +1,321 @@
+Running ant (compile.tests)................................................ FAIL
+Executed command:  cd /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version && /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/major/bin/ant -f /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml -Dd4j.home=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j -Dd4j.dir.projects=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects -Dbasedir=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version -Dbuild.compiler=javac1.7  compile.tests 2>&1
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=1G; support was removed in 8.0
+Buildfile: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml
+
+init:
+
+get-deps:
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/xerces/xerces/1.2.3/xerces-1.2.3.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/xerces-1.2.3.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/servletapi/servletapi/2.2/servletapi-2.2.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/servletapi-2.2.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/junit/junit/3.8/junit-3.8.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/junit-3.8.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/ant/ant-optional/1.5.1/ant-optional-1.5.1.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/ant-optional-1.5.1.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/xml-apis/xml-apis/2.0.2/xml-apis-2.0.2.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/xml-apis-2.0.2.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/jdom/jdom/1.0/jdom-1.0.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/jdom-1.0.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/commons-beanutils/commons-beanutils/1.4/commons-beanutils-1.4.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/commons-beanutils-1.4.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/commons-logging-1.0.4.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/commons-collections/commons-collections/2.0/commons-collections-2.0.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/commons-collections-2.0.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/junit/junit/3.8.1/junit-3.8.1.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/junit-3.8.1.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/ant/ant/1.5/ant-1.5.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/ant-1.5.jar
+      [get] Getting: file:/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/JxPath/lib/ant/ant-optional/1.5/ant-optional-1.5.jar
+      [get] To: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/lib/ant-optional-1.5.jar
+
+compile:
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/build.xml:36: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+
+compile.tests:
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/build.xml:110: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 2 source files to /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/target/test-classes
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Object.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Throwable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Class.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Object.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation': class file for jdk.Profile+Annotation not found
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Throwable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Class.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/AutoCloseable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/AutoCloseable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/System.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/System.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/PrintStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/PrintStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/String.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/String.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FilterOutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/FilterOutputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/OutputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/OutputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Locale.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Locale.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Long.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Long.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Number.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Number.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:17: error: cannot find symbol
+    [javac]         java.lang.String str3 = org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer.findEnclosingAttribute((java.lang.Object) 1L, "hi!", namespace2);
+    [javac]                                                                                        ^
+    [javac]   symbol:   method findEnclosingAttribute(Object,String,Namespace)
+    [javac]   location: class JDOMNodePointer
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/NullPointerException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/NullPointerException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/RuntimeException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/RuntimeException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Exception.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Exception.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/beans/PropertyDescriptor.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/beans/PropertyDescriptor.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/beans/FeatureDescriptor.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/beans/FeatureDescriptor.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/org/w3c/dom/Node.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/org/w3c/dom/Node.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Character.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Character.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Double.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Double.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:311: error: cannot find symbol
+    [javac]         int int0 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.VARIABLE_POINTER_FACTORY_ORDER;
+    [javac]                                                      ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Boolean.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Boolean.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Short.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Short.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Cloneable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Cloneable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Byte.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Byte.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Float.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Float.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Void.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Void.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/InputStream.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/InputStream.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Reader.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/io/Reader.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassCastException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassCastException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Error.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Error.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/UnsupportedOperationException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/UnsupportedOperationException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:1762: error: cannot find symbol
+    [javac]         java.lang.String str16 = jXPathContextReferenceImpl12.getPrefix("http://www.w3.org/2000/xmlns/");
+    [javac]                                                              ^
+    [javac]   symbol:   method getPrefix(String)
+    [javac]   location: variable jXPathContextReferenceImpl12 of type JXPathContextReferenceImpl
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:1900: error: package org.apache.commons.jxpath.ri.model.VariablePointerFactory does not exist
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper19 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl16);
+    [javac]                                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:1900: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper19 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl16);
+    [javac]                                                                                                                                                       ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:2322: error: constructor NamespaceResolver in class NamespaceResolver cannot be applied to given types;
+    [javac]         org.apache.commons.jxpath.ri.NamespaceResolver namespaceResolver0 = new org.apache.commons.jxpath.ri.NamespaceResolver();
+    [javac]                                                                             ^
+    [javac]   required: NamespaceResolver
+    [javac]   found: no arguments
+    [javac]   reason: actual and formal argument lists differ in length
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/net/URL.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/net/URL.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/List.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/List.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/IndexOutOfBoundsException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/IndexOutOfBoundsException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:3348: error: constructor NamespaceResolver in class NamespaceResolver cannot be applied to given types;
+    [javac]         org.apache.commons.jxpath.ri.NamespaceResolver namespaceResolver36 = new org.apache.commons.jxpath.ri.NamespaceResolver();
+    [javac]                                                                              ^
+    [javac]   required: NamespaceResolver
+    [javac]   found: no arguments
+    [javac]   reason: actual and formal argument lists differ in length
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Objects.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Objects.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Iterator.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Iterator.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:3957: error: package org.apache.commons.jxpath.ri.model.VariablePointerFactory does not exist
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:3957: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                                                                                                      ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassLoader.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassLoader.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:4424: error: cannot find symbol
+    [javac]             java.lang.Class class2 = org.apache.commons.jxpath.util.ClassLoaderUtil.getClass(classLoader0, "Empty expression context");
+    [javac]                                                                    ^
+    [javac]   symbol:   class ClassLoaderUtil
+    [javac]   location: package org.apache.commons.jxpath.util
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassNotFoundException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ClassNotFoundException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ReflectiveOperationException.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/lang/ReflectiveOperationException.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:4646: error: package org.apache.commons.jxpath.ri.model.VariablePointerFactory does not exist
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper30 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl27);
+    [javac]                                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:4646: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper30 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl27);
+    [javac]                                                                                                                                                       ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:4662: warning: [deprecation] getNodeValue() in NodePointer has been deprecated
+    [javac]         java.lang.Object obj53 = dynamicPointer48.getNodeValue();
+    [javac]                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:5181: error: cannot find symbol
+    [javac]         java.lang.String str37 = jXPathContextReferenceImpl33.getPrefix("http://www.w3.org/2000/xmlns/");
+    [javac]                                                              ^
+    [javac]   symbol:   method getPrefix(String)
+    [javac]   location: variable jXPathContextReferenceImpl33 of type JXPathContextReferenceImpl
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:5233: error: constructor NamespaceResolver in class NamespaceResolver cannot be applied to given types;
+    [javac]         org.apache.commons.jxpath.ri.NamespaceResolver namespaceResolver3 = new org.apache.commons.jxpath.ri.NamespaceResolver();
+    [javac]                                                                             ^
+    [javac]   required: NamespaceResolver
+    [javac]   found: no arguments
+    [javac]   reason: actual and formal argument lists differ in length
+    [javac] warning: /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Arrays.class): major version 52 is newer than 51, the highest major version supported by this compiler.
+    [javac]   It is recommended that the compiler be upgraded.
+    [javac] /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/ct.sym(META-INF/sym/rt.jar/java/util/Arrays.class): warning: Cannot find annotation method 'value()' in type 'Profile+Annotation'
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:5798: error: package org.apache.commons.jxpath.ri.model.VariablePointerFactory does not exist
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:5798: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                                                                                                      ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:6261: error: package org.apache.commons.jxpath.ri.model.VariablePointerFactory does not exist
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:6261: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                                                                                                      ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:6274: error: cannot find symbol
+    [javac]             org.apache.commons.jxpath.NodeSet nodeSet24 = jXPathContextReferenceImpl5.getNodeSetByKey("=", (java.lang.Object) boolean23);
+    [javac]                                                                                      ^
+    [javac]   symbol:   method getNodeSetByKey(String,Object)
+    [javac]   location: variable jXPathContextReferenceImpl5 of type JXPathContextReferenceImpl
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:6388: warning: [deprecation] getNodeValue() in NodePointer has been deprecated
+    [javac]         java.lang.Object obj55 = dynamicPointer50.getNodeValue();
+    [javac]                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:6425: warning: [deprecation] getNodeValue() in NodePointer has been deprecated
+    [javac]         java.lang.Object obj11 = dynamicPointer7.getNodeValue();
+    [javac]                                                 ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:6591: warning: [deprecation] getNodeValue() in NodePointer has been deprecated
+    [javac]         java.lang.Object obj76 = dynamicPointer72.getNodeValue();
+    [javac]                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:7848: error: cannot find symbol
+    [javac]             org.apache.commons.jxpath.NodeSet nodeSet22 = jXPathContextReferenceImpl12.getNodeSetByKey("", (java.lang.Object) 53);
+    [javac]                                                                                       ^
+    [javac]   symbol:   method getNodeSetByKey(String,Object)
+    [javac]   location: variable jXPathContextReferenceImpl12 of type JXPathContextReferenceImpl
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:8376: error: constructor NamespaceResolver in class NamespaceResolver cannot be applied to given types;
+    [javac]         org.apache.commons.jxpath.ri.NamespaceResolver namespaceResolver0 = new org.apache.commons.jxpath.ri.NamespaceResolver();
+    [javac]                                                                             ^
+    [javac]   required: NamespaceResolver
+    [javac]   found: no arguments
+    [javac]   reason: actual and formal argument lists differ in length
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:8645: error: package org.apache.commons.jxpath.ri.model.VariablePointerFactory does not exist
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                  ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:8645: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory.VariableContextWrapper variableContextWrapper8 = org.apache.commons.jxpath.ri.model.VariablePointerFactory.contextWrapper((org.apache.commons.jxpath.JXPathContext) jXPathContextReferenceImpl5);
+    [javac]                                                                                                                                                      ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:11547: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory variablePointerFactory0 = new org.apache.commons.jxpath.ri.model.VariablePointerFactory();
+    [javac]                                           ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/src/test/org/apache/commons/jxpath/ri/model/beans/RegressionTest0.java:11547: error: cannot find symbol
+    [javac]         org.apache.commons.jxpath.ri.model.VariablePointerFactory variablePointerFactory0 = new org.apache.commons.jxpath.ri.model.VariablePointerFactory();
+    [javac]                                                                                                                                   ^
+    [javac]   symbol:   class VariablePointerFactory
+    [javac]   location: package org.apache.commons.jxpath.ri.model
+    [javac] 25 errors
+    [javac] 100 warnings
+
+BUILD FAILED
+/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/JxPath_3/Buggy-Version/build.xml:110: Compile failed; see the compiler error output for details.
+
+Total time: 3 seconds
+Cannot compile test suite! at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/d4j/d4j-test line 134.
+Compilation failed in require at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/defects4j line 195.

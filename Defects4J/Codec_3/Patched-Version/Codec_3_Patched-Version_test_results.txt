@@ -1,0 +1,82 @@
+Running ant (compile.tests)................................................ FAIL
+Executed command:  cd /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version && /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/major/bin/ant -f /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml -Dd4j.home=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j -Dd4j.dir.projects=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects -Dbasedir=/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version -Dbuild.compiler=javac1.7  compile.tests 2>&1
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=1G; support was removed in 8.0
+Buildfile: /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/projects/defects4j.build.xml
+
+init:
+     [echo] -------- commons-codec 1.4-dev --------
+
+prepare:
+
+static:
+
+compile:
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/build.xml:56: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+
+compile.tests:
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/build.xml:189: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 33 source files to /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/target/tests
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.4
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/ErrorTest.java:6: error: annotations are not supported in -source 1.4
+    [javac] @RunWith(Suite.class)
+    [javac]  ^
+    [javac]   (use -source 5 or higher to enable annotations)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/ErrorTest0.java:7: error: annotations are not supported in -source 1.4
+    [javac] @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    [javac]  ^
+    [javac]   (use -source 5 or higher to enable annotations)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest.java:6: error: annotations are not supported in -source 1.4
+    [javac] @RunWith(Suite.class)
+    [javac]  ^
+    [javac]   (use -source 5 or higher to enable annotations)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest0.java:7: error: annotations are not supported in -source 1.4
+    [javac] @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    [javac]  ^
+    [javac]   (use -source 5 or higher to enable annotations)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest0.java:461: error: generics are not supported in -source 1.4
+    [javac]         java.lang.Class<?> wildcardClass11 = context7.getClass();
+    [javac]                        ^
+    [javac]   (use -source 5 or higher to enable generics)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest1.java:7: error: annotations are not supported in -source 1.4
+    [javac] @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    [javac]  ^
+    [javac]   (use -source 5 or higher to enable annotations)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest1.java:939: error: generics are not supported in -source 1.4
+    [javac]         java.lang.Class<?> wildcardClass15 = doubleMetaphone0.getClass();
+    [javac]                        ^
+    [javac]   (use -source 5 or higher to enable generics)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest2.java:7: error: annotations are not supported in -source 1.4
+    [javac] @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    [javac]  ^
+    [javac]   (use -source 5 or higher to enable annotations)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/RegressionTest2.java:696: error: generics are not supported in -source 1.4
+    [javac]         java.lang.Class<?> wildcardClass57 = doubleMetaphone45.getClass();
+    [javac]                        ^
+    [javac]   (use -source 5 or higher to enable generics)
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/binary/Base64Test.java:78: warning: unmappable character for encoding UTF8
+    [javac]         byte[] decode = b64.decode("SGVsbG{������}8gV29ybGQ=");
+    [javac]                                            ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/binary/Base64Test.java:78: warning: unmappable character for encoding UTF8
+    [javac]         byte[] decode = b64.decode("SGVsbG{������}8gV29ybGQ=");
+    [javac]                                             ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/binary/Base64Test.java:78: warning: unmappable character for encoding UTF8
+    [javac]         byte[] decode = b64.decode("SGVsbG{������}8gV29ybGQ=");
+    [javac]                                              ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/binary/Base64Test.java:78: warning: unmappable character for encoding UTF8
+    [javac]         byte[] decode = b64.decode("SGVsbG{������}8gV29ybGQ=");
+    [javac]                                               ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/binary/Base64Test.java:78: warning: unmappable character for encoding UTF8
+    [javac]         byte[] decode = b64.decode("SGVsbG{������}8gV29ybGQ=");
+    [javac]                                                ^
+    [javac] /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/src/test/org/apache/commons/codec/binary/Base64Test.java:78: warning: unmappable character for encoding UTF8
+    [javac]         byte[] decode = b64.decode("SGVsbG{������}8gV29ybGQ=");
+    [javac]                                                 ^
+    [javac] 9 errors
+    [javac] 7 warnings
+
+BUILD FAILED
+/Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone3/project_repo/defects4j/Codec_3/Patched-Version/build.xml:189: Compile failed; see the compiler error output for details.
+
+Total time: 1 second
+Cannot compile test suite! at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/d4j/d4j-test line 134.
+Compilation failed in require at /Users/sanjitkumar/personal_projects/CollegeIllinois/SoftwareEngineeringPrinciples/milestone1/defects4j/framework/bin/defects4j line 195.

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project>
+    <totalNumberOfTestableClasses>1</totalNumberOfTestableClasses>
+    <cut>
+        <fullNameOfTargetClass>org.traccar.protocol.Gl200ProtocolDecoder</fullNameOfTargetClass>
+        <fullNameOfTestSuite>org.traccar.protocol.Gl200ProtocolDecoder_ESTest</fullNameOfTestSuite>
+        <generation>
+            <id>0</id>
+            <failed>true</failed>
+            <modified>true</modified>
+            <timeBudgetInSeconds>120</timeBudgetInSeconds>
+            <memoryInMB>2000</memoryInMB>
+            <std_err_CLIENT>/Users/SakshilVerma/Downloads/bears/bears-101/buggy/.evosuite/tmp_2024_04_01_15_55_26/logs/org.traccar.protocol.Gl200ProtocolDecoder/std_err_CLIENT.log</std_err_CLIENT>
+            <std_out_CLIENT>/Users/SakshilVerma/Downloads/bears/bears-101/buggy/.evosuite/tmp_2024_04_01_15_55_26/logs/org.traccar.protocol.Gl200ProtocolDecoder/std_out_CLIENT.log</std_out_CLIENT>
+            <std_err_MASTER>/Users/SakshilVerma/Downloads/bears/bears-101/buggy/.evosuite/tmp_2024_04_01_15_55_26/logs/org.traccar.protocol.Gl200ProtocolDecoder/std_err_MASTER.log</std_err_MASTER>
+            <std_out_MASTER>/Users/SakshilVerma/Downloads/bears/bears-101/buggy/.evosuite/tmp_2024_04_01_15_55_26/logs/org.traccar.protocol.Gl200ProtocolDecoder/std_out_MASTER.log</std_out_MASTER>
+        </generation>
+    </cut>
+</Project>

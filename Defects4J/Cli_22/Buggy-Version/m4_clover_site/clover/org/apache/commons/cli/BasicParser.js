@@ -1,0 +1,10 @@
+var clover = new Object();
+
+// JSON: {classes : [{name, id, sl, el,  methods : [{sl, el}, ...]}, ...]}
+clover.pageData = {"classes":[{"el":47,"id":10,"methods":[{"el":46,"sc":5,"sl":42}],"name":"BasicParser","sl":27}]}
+
+// JSON: {test_ID : {"methods": [ID1, ID2, ID3...], "name" : "testXXX() void"}, ...};
+clover.testTargets = {"test_1":{"methods":[{"sl":42}],"name":"testDoubleDash","pass":true,"statements":[{"sl":45}]},"test_103":{"methods":[{"sl":42}],"name":"testStopAtExpectedArg","pass":true,"statements":[{"sl":45}]},"test_119":{"methods":[{"sl":42}],"name":"testMultiple","pass":true,"statements":[{"sl":45}]},"test_126":{"methods":[{"sl":42}],"name":"testArgumentStartingWithHyphen","pass":true,"statements":[{"sl":45}]},"test_135":{"methods":[{"sl":42}],"name":"testSimpleShort","pass":true,"statements":[{"sl":45}]},"test_151":{"methods":[{"sl":42}],"name":"testStopAtUnexpectedArg","pass":true,"statements":[{"sl":45}]},"test_172":{"methods":[{"sl":42}],"name":"testUnrecognizedOption","pass":true,"statements":[{"sl":45}]},"test_20":{"methods":[{"sl":42}],"name":"testSimpleLong","pass":true,"statements":[{"sl":45}]},"test_35":{"methods":[{"sl":42}],"name":"testMissingArg","pass":true,"statements":[{"sl":45}]},"test_50":{"methods":[{"sl":42}],"name":"testSingleDash","pass":true,"statements":[{"sl":45}]},"test_62":{"methods":[{"sl":42}],"name":"testNegativeArgument","pass":true,"statements":[{"sl":45}]},"test_77":{"methods":[{"sl":42}],"name":"testStopAtNonOptionLong","pass":true,"statements":[{"sl":45}]},"test_85":{"methods":[{"sl":42}],"name":"testMultipleWithLong","pass":true,"statements":[{"sl":45}]},"test_88":{"methods":[{"sl":42}],"name":"testStopAtNonOptionShort","pass":true,"statements":[{"sl":45}]}}
+
+// JSON: { lines : [{tests : [testid1, testid2, testid3, ...]}, ...]};
+clover.srcFileLines = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [119, 172, 88, 1, 35, 62, 20, 103, 50, 85, 151, 135, 77, 126], [], [], [119, 172, 88, 1, 35, 62, 20, 103, 50, 85, 151, 135, 77, 126], [], []]

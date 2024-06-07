@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    
+    
+    <link rel="SHORTCUT ICON" href="../../../../img/clover.ico" />
+
+    <link rel="stylesheet" href="../../../../aui/css/aui.min.css" media="all"/>
+    <link rel="stylesheet" href="../../../../aui/css/aui-experimental.min.css" media="all"/>
+    <!--[if IE 9]><link rel="stylesheet" href="../../../../aui/css/aui-ie9.min.css" media="all"/><![endif]-->
+
+    <style type="text/css" media="all">
+        @import url('../../../../style.css');
+        @import url('../../../../tree.css');
+        
+    </style>
+
+    <script src="../../../../jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="../../../../aui/js/aui.min.js" type="text/javascript"></script>
+    <script src="../../../../aui/js/aui-experimental.min.js" type="text/javascript"></script>
+    <script src="../../../../aui/js/aui-soy.min.js" type="text/javascript"></script>
+
+    <script src="../../../../package-nodes-tree.js" type="text/javascript"></script>
+    <script src="../../../../clover-tree.js" type="text/javascript"></script>
+    <script src="../../../../clover.js" type="text/javascript"></script>
+    <script src="../../../../clover-descriptions.js" type="text/javascript"></script>
+    <script src="../../../../cloud.js" type="text/javascript"></script>
+
+            <title>Commons CLI 1.2-SNAPSHOT</title>
+    </head>
+
+<body  onload="onLoad('Commons CLI 1.2-SNAPSHOT: org.apache.commons.cli.OptionValidator.java')">
+    <div id="page">
+        
+        
+
+
+<header id="header" role="banner">
+    <nav class="aui-header aui-dropdown2-trigger-group" role="navigation">
+        <div class="aui-header-inner">
+            <div class="aui-header-primary">
+                <h1 id="logo" class="aui-header-logo aui-header-logo-clover">
+                    <a href="https://openclover.org" title="Visit OpenClover home page"><span class="aui-header-logo-device">OpenClover</span></a>
+                </h1>
+                            </div>
+            <div class="aui-header-secondary">
+                <ul class="aui-nav">
+                    <li id="system-help-menu">
+                        <a class="aui-nav-link" title="Open online documentation" target="_blank"
+                           href="https://openclover.org/documentation">
+                            <span class="aui-icon aui-icon-small aui-iconfont-help">&#160;Help</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+        
+        <div class="aui-page-panel">
+            <div class="aui-page-panel-inner">
+                <div class="aui-page-panel-nav aui-page-panel-nav-clover">
+                    
+
+<div class="aui-page-header-inner" style="margin-bottom: 20px;">
+    <div class="aui-page-header-image">
+                    <a href="http://commons.apache.org/cli/" target="_top">
+                <div class="aui-avatar aui-avatar-large aui-avatar-project">
+            <div class="aui-avatar-inner">
+                                    <img src="../../../../img/clover_logo_large.png" alt="Clover icon"/>
+                            </div>
+        </div>
+                    </a>
+            </div>
+    <div class="aui-page-header-main" >
+        <h1>
+                            <a href="http://commons.apache.org/cli/" target="_top">
+                                        Commons CLI 1.2-SNAPSHOT
+                                        </a>
+                    </h1>
+    </div>
+</div>
+
+<nav class="aui-navgroup aui-navgroup-vertical">
+    <div class="aui-navgroup-inner">
+                                            <ul class="aui-nav">
+                <li class="">
+                    <a href="../../../../dashboard.html">Project overview</a>
+                </li>
+            </ul>
+        
+                <div class="aui-nav-heading packages-nav-heading">
+            <strong>Packages</strong>
+        </div>
+        <div class="aui-nav project-packages">
+            <form method="get" action="#" class="aui package-filter-container">
+                <input type="text" autocomplete="off" class="package-filter text"
+                       placeholder="Type to filter packages..." name="package-filter" id="package-filter"
+                       title="Start typing package name (or part of the name) to search through the tree. Use arrow keys and the Enter key to navigate."/>
+            </form>
+            <p class="package-filter-no-results-message hidden">
+                <small>No results found.</small>
+            </p>
+                                                <div class="packages-tree-wrapper" data-root-relative="../../../../" data-package-name="org.apache.commons.cli">
+                <div class="packages-tree-container"></div>
+                <div class="clover-packages-lozenges"></div>
+            </div>
+        </div>
+        
+            </div>
+</nav>                </div>
+                <section class="aui-page-panel-content">
+                    <div class="aui-page-panel-content-clover">
+
+                    
+                    <ol class="aui-nav aui-nav-breadcrumbs">
+            
+        <li><a href="../../../../dashboard.html">Project Clover database Mon Apr 29 2024 01:04:58 CDT</a></li> 
+        <li><a href="pkg-summary.html">        Package org.apache.commons.cli</a></li> 
+    </ol>
+    
+<h1 class="aui-h2-clover">
+            File OptionValidator.java
+    </h1>
+
+
+
+
+
+
+
+
+    
+<div class="aui-tabs horizontal-tabs" id="tabs-file">
+            <div class="tabs-pane aui-tabs-pane-100-pcnt active-pane" id="tabs-file-source">
+        <div>&#160;</div>
+
+        
+                <div style="display: table; width: 100%">
+                            <div class="clover-histogram-table-cell">
+                                <div class="dashboard-widget">
+            <header class="dashboard-widget-header">
+                <h3>Coverage histogram</h3>
+            </header>
+            <div class="dashboard-widget-content">
+                <div class="aui-item clover-aui-item-histogram">
+                    <img src="../../../../img/srcFileCovDistChart10.png" alt="../../../../img/srcFileCovDistChart10.png"
+                         usemap="#srcFileCovDistChart10.png" class="clover-histogram-img"/>
+                    <map id="srcFileCovDistChart10.png" name="srcFileCovDistChart10.png">
+<area shape="rect" coords="100,8,107,65" title="15 files have 91-100% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="91,51,98,66" title="4 files have 81-90% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="82,66,89,67" title="0 files have 71-80% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="73,66,80,67" title="0 files have 61-70% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="64,66,71,67" title="0 files have 51-60% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="56,66,63,67" title="0 files have 41-50% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="47,66,54,67" title="0 files have 31-40% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="38,66,45,67" title="0 files have 21-30% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="29,66,36,67" title="0 files have 11-20% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="20,66,27,67" title="0 files have 1-10% coverage" alt="" nohref="nohref"/>
+<area shape="rect" coords="11,63,18,66" title="1 file has 0% coverage" alt="" nohref="nohref"/>
+</map><br />
+                    <span class="subtle"><strong>0% </strong>of files have more coverage</span>
+                </div>
+            </div>
+        </div>
+                    </div>
+                        <div style="display: table-cell; width: 67%;">
+                    <div class="dashboard-widget">
+        <header class="dashboard-widget-header">
+            <h3>Code metrics</h3>
+        </header>
+        <div class="dashboard-widget-content">
+                        
+
+<div id="td-header-stats" class="aui-item" style="display: ">
+<div style="display: table">
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of branches in this file">Branches:</label></div>
+        <div class="stats-box-value">10</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of statements in this file">Statements:</label></div>
+        <div class="stats-box-value">12</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of methods in this file">Methods:</label></div>
+        <div class="stats-box-value">3</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of classes in this file">Classes:</label></div>
+        <div class="stats-box-value">1</div>
+    </div>
+            <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of lines of code in this file">LOC:</label></div>
+        <div class="stats-box-value">99</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of non-comment lines of code in this file">NCLOC:</label></div>
+        <div class="stats-box-value">37</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Cyclomatic complexity is the number of paths in this file">Total complexity:</label></div>
+        <div class="stats-box-value">8</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label">
+            <label title="Complexity density is the complexity divided by the number of statements in this file">Complexity density:</label>
+        </div>
+        <div class="stats-box-value">0.67</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Number of statements per method.">Statements/Method:</label></div>
+        <div class="stats-box-value">4</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Number of methods per class.">Methods/Class:</label></div>
+        <div class="stats-box-value">3</div>
+    </div>
+        <div class="stats-box">
+        <div class="stats-box-label"><label title="Complexity divided by the number of methods in this file">Average method complexity:</label></div>
+        <div class="stats-box-value">2.67</div>
+    </div>
+</div>
+
+</div>
+                        
+
+<div id="td-filtered-header-stats" class="aui-item" style="display: none">
+<div style="display: table">
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of branches in this file">Branches:</label></div>
+        <div class="stats-box-value">10</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of statements in this file">Statements:</label></div>
+        <div class="stats-box-value">12</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of methods in this file">Methods:</label></div>
+        <div class="stats-box-value">3</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of classes in this file">Classes:</label></div>
+        <div class="stats-box-value">1</div>
+    </div>
+            <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of lines of code in this file">LOC:</label></div>
+        <div class="stats-box-value">99</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Total number of non-comment lines of code in this file">NCLOC:</label></div>
+        <div class="stats-box-value">37</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Cyclomatic complexity is the number of paths in this file">Total complexity:</label></div>
+        <div class="stats-box-value">8</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label">
+            <label title="Complexity density is the complexity divided by the number of statements in this file">Complexity density:</label>
+        </div>
+        <div class="stats-box-value">0.67</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Number of statements per method.">Statements/Method:</label></div>
+        <div class="stats-box-value">4</div>
+    </div>
+    <div class="stats-box">
+        <div class="stats-box-label"><label title="Number of methods per class.">Methods/Class:</label></div>
+        <div class="stats-box-value">3</div>
+    </div>
+        <div class="stats-box">
+        <div class="stats-box-label"><label title="Complexity divided by the number of methods in this file">Average method complexity:</label></div>
+        <div class="stats-box-value">2.67</div>
+    </div>
+</div>
+
+</div>        </div>
+    </div>
+            </div>
+        </div>
+
+        
+        
+
+
+    <h2>Classes</h2>
+
+        <table class="aui aui-table-sortable">
+        <thead>
+                        <tr>     <th>Class</th>
+    <th>Line #</th>
+
+            
+        <th class="">
+            <label  title="The total number of statements.">Total Statements</label>
+        </th>
+        
+            
+        <th class="">
+            <label  title="The percentage of elements that have been filtered from this report.">% Filtered</label>
+        </th>
+        
+            
+        <th class="">
+            <label  title="Cyclomatic complexity is a measure of the number of paths in your code.">Complexity</label>
+        </th>
+        
+            
+        <th class="">
+            <label  title="The number of statements and branches that were not covered during testing.">Uncovered Elements</label>
+        </th>
+        
+            
+        <th class="">
+            <label  title="The amount of code that was hit at least once during testing.">TOTAL Coverage</label>
+        </th>
+        
+    
+            <th>Actions</th>
+    </tr>         </thead>
+        <tbody>
+                              <tr> <td id="OptionValidator">
+        <span><a href="#26" title="OptionValidator" onclick="closeDialogAndScrollTo('dialog-OptionValidator', '26');">OptionValidator</a></span>
+</td>
+<td>26<a name="sl-26"></a></td>
+    <td class="">12</td>
+    <td class="">0%</td>
+    <td class="">8</td>
+    <td class="">0</td>
+    <td class=""><div style="display: table; width: 100%">
+<div class="barGraphValue"><span class="sortValue">1.0</span>100%</div><div style="display: table-cell">
+ <div title="100% Covered"  style="min-width:200px;" class="barNegative contribBarNegative "><div class="barPositive contribBarPositive " style="width:100%"></div></div></div></div></td>
+    <td><button data-dialog-id="dialog-OptionValidator" class="aui-button aui-button-link dialog-show-button">Show methods</button></td>
+</tr>                      </tbody>
+    </table>
+
+    
+     
+        <section role="dialog" id="dialog-OptionValidator" class="aui-layer aui-dialog2 aui-dialog2-xlarge" aria-hidden="true">
+            
+            <header class="aui-dialog2-header">
+                <h1 class="aui-dialog2-header-main">Class OptionValidator</h1>
+                <div class="aui-dialog2-header-secondary">
+                    <input id="dialog-OptionValidator-method-filter" class="test-filter text" type="text" name="method-filter"
+                           placeholder="Type to filter methods..." autocomplete="off"
+                           onkeyup="filterMethods('dialog-OptionValidator-methods-body', 'dialog-OptionValidator-method-filter');"/>
+                </div>
+            </header>
+
+            
+            <div class="aui-dialog2-content">
+
+                
+
+                <table class="aui aui-table-sortable">
+                                                                                                                                                                                                                                                    
+                    <thead>
+                                                 <tr> <th id="OptionValidator">
+    Class<br/>    <span><a href="#26" title="OptionValidator" onclick="closeDialogAndScrollTo('dialog-OptionValidator', '26');">OptionValidator</a></span>
+</th>
+<th>Line #<br/>26<a name="sl-26"></a></th>
+    <th class=""><label  title="The total number of statements.">Total Statements</label><br/>12</th>
+    <th class=""><label  title="The percentage of elements that have been filtered from this report.">% Filtered</label><br/>0%</th>
+    <th class=""><label  title="Cyclomatic complexity is a measure of the number of paths in your code.">Complexity</label><br/>8</th>
+    <th class=""><label  title="The number of statements and branches that were not covered during testing.">Uncovered Elements</label><br/>0</th>
+    <th class=""><label  title="The amount of code that was hit at least once during testing.">TOTAL Coverage</label><br/><div style="display: table; width: 100%">
+<div class="barGraphValue"><span class="sortValue">1.0</span>100%</div><div style="display: table-cell">
+ <div title="100% Covered"  style="min-width:200px;" class="barNegative contribBarNegative "><div class="barPositive contribBarPositive " style="width:100%"></div></div></div></div></th>
+</tr>                     </thead>
+                    <tbody id="dialog-OptionValidator-methods-body">
+                                                                                                            <tr id="OptionValidator-1">
+<td id="summary-43-5">
+ <span class="sortValue">validateOption(String)&#160;:&#160;void</span>
+&#160;&#160;<a href="?line=29#43" title="validateOption(String)&#160;:&#160;void" name="sl-43" onclick="closeDialogAndScrollTo('dialog-OptionValidator', '43');">validateOption(String)&#160;:&#160;void</a>
+</td>
+<td align="right"><span class="sortValue">43</span>43</td>
+<td class="" align="right"><span class="sortValue">10.0</span>10</td>
+<td class="" align="right"><span class="sortValue">0.0</span>0%</td>
+<td class="" align="right"><span class="sortValue">6.0</span>6</td>
+<td class="" align="right"><span class="sortValue">0.0</span>0</td>
+<td class="" align="right"><span class="sortValue">1.0</span><div style="display: table; width: 100%">
+<div class="barGraphValue"><span class="sortValue">1.0</span>100%</div><div style="display: table-cell">
+ <div title="100% Covered"  style="min-width:200px;" class="barNegative contribBarNegative "><div class="barPositive contribBarPositive " style="width:100%"></div></div></div></div></td>
+ </tr>                                                                                                                <tr id="OptionValidator-2">
+<td id="summary-84-5">
+ <span class="sortValue">isValidOpt(char)&#160;:&#160;boolean</span>
+&#160;&#160;<a href="?line=29#84" title="isValidOpt(char)&#160;:&#160;boolean" name="sl-84" onclick="closeDialogAndScrollTo('dialog-OptionValidator', '84');">isValidOpt(char)&#160;:&#160;boolean</a>
+</td>
+<td align="right"><span class="sortValue">84</span>84</td>
+<td class="" align="right"><span class="sortValue">1.0</span>1</td>
+<td class="" align="right"><span class="sortValue">0.0</span>0%</td>
+<td class="" align="right"><span class="sortValue">1.0</span>1</td>
+<td class="" align="right"><span class="sortValue">0.0</span>0</td>
+<td class="" align="right"><span class="sortValue">1.0</span><div style="display: table; width: 100%">
+<div class="barGraphValue"><span class="sortValue">1.0</span>100%</div><div style="display: table-cell">
+ <div title="100% Covered"  style="min-width:200px;" class="barNegative contribBarNegative "><div class="barPositive contribBarPositive " style="width:100%"></div></div></div></div></td>
+ </tr>                                                                                                                <tr id="OptionValidator-3">
+<td id="summary-95-5">
+ <span class="sortValue">isValidChar(char)&#160;:&#160;boolean</span>
+&#160;&#160;<a href="?line=29#95" title="isValidChar(char)&#160;:&#160;boolean" name="sl-95" onclick="closeDialogAndScrollTo('dialog-OptionValidator', '95');">isValidChar(char)&#160;:&#160;boolean</a>
+</td>
+<td align="right"><span class="sortValue">95</span>95</td>
+<td class="" align="right"><span class="sortValue">1.0</span>1</td>
+<td class="" align="right"><span class="sortValue">0.0</span>0%</td>
+<td class="" align="right"><span class="sortValue">1.0</span>1</td>
+<td class="" align="right"><span class="sortValue">0.0</span>0</td>
+<td class="" align="right"><span class="sortValue">1.0</span><div style="display: table; width: 100%">
+<div class="barGraphValue"><span class="sortValue">1.0</span>100%</div><div style="display: table-cell">
+ <div title="100% Covered"  style="min-width:200px;" class="barNegative contribBarNegative "><div class="barPositive contribBarPositive " style="width:100%"></div></div></div></div></td>
+ </tr>                                                                         </tbody>
+                </table>
+
+                <div>&#160;</div>
+                
+
+            </div>
+
+            
+            <footer class="aui-dialog2-footer">
+                <div class="aui-dialog2-footer-actions">
+                    <button class="aui-button aui-button-primary dialog-close-button"
+                            data-dialog-id="dialog-OptionValidator">Close</button>
+                </div>
+                <div class="aui-dialog2-footer-hint">Click on a class or a method name to jump to source.</div>
+            </footer>
+        </section>
+
+     
+ 
+        
+        <div>&#160;</div>
+
+<h2>Contributing tests</h2>
+
+    <div>
+                This file is covered by 70 tests.
+        <button data-dialog-id="contr-tests-dialog" class="aui-button aui-button-link dialog-show-button">
+            Select tests to highlight the test coverage
+        </button>.
+    </div>
+
+<section role="dialog" id="contr-tests-dialog" class="aui-layer aui-dialog2 aui-dialog2-xlarge" aria-hidden="true">
+    
+    <header class="aui-dialog2-header">
+        <h1 class="aui-dialog2-header-main">Contributing tests</h1>
+        <div class="aui-dialog2-header-secondary">
+            <input id="test-filter" class="test-filter text" type="text" name="test-filter"
+                   placeholder="Type to filter tests..." autocomplete="off"
+                   onkeyup="filterTests('tests-body', 'test-filter', 3);"/>
+        </div>
+    </header>
+
+    
+    <div class="aui-dialog2-content">
+    
+
+        <p class="aui-buttons">
+            <button title="Selects all tests for this file, highlighting their coverage."
+                    class="aui-button" id="selectalltests">Select all</button>
+        </p>
+
+        <table class="aui aui-table-sortable">
+            <thead id="tests-head">
+            <tr id="testHeaderRow">
+                <th class="aui-table-column-unsortable"></th>
+                <th>
+                    <label title="The percentage of coverage contributed by each single test.">Test contribution</label>
+                </th>
+                <th>
+                    <label title="The test (or test iteration) which was executed.">Test</label>
+                </th>
+                <th>
+                    <label>Result</label>
+                </th>
+                <th class="aui-table-column-unsortable">
+                    <label>Actions</label>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="tests-body">
+
+<tr id="test-27">
+<td><a name="testA-27"></a><input type="checkbox" id="cb-27" value="27" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testIllegalOptions_r.html';">
+<span class="sortValue">0.88</span>
+<div>
+<div title="88% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:88%"></div></div></div></td>
+<td id="tc-27">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testIllegalOptions</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testIllegalOptions_r.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testIllegalOptions</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=110#src-110" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testIllegalOptions_r.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-135">
+<td><a name="testA-135"></a><input type="checkbox" id="cb-135" value="135" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/ApplicationTest_testAnt_3r.html';">
+<span class="sortValue">0.76</span>
+<div>
+<div title="76% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:76%"></div></div></div></td>
+<td id="tc-135">  <span class="sortValue">org.apache.commons.cli.ApplicationTest.testAnt</span><a href="../../../../org/apache/commons/cli/ApplicationTest_testAnt_3r.html" title="View Test Summary Page">org.apache.commons.cli.ApplicationTest.testAnt</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/ApplicationTest.html?line=65#src-65" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/ApplicationTest_testAnt_3r.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-36">
+<td><a name="testA-36"></a><input type="checkbox" id="cb-36" value="36" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/CommandLineTest_testGetOptionProperties_10.html';">
+<span class="sortValue">0.56</span>
+<div>
+<div title="56% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:56%"></div></div></div></td>
+<td id="tc-36">  <span class="sortValue">org.apache.commons.cli.CommandLineTest.testGetOptionProperties</span><a href="../../../../org/apache/commons/cli/CommandLineTest_testGetOptionProperties_10.html" title="View Test Summary Page">org.apache.commons.cli.CommandLineTest.testGetOptionProperties</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/CommandLineTest.html?line=30#src-30" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/CommandLineTest_testGetOptionProperties_10.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-86">
+<td><a name="testA-86"></a><input type="checkbox" id="cb-86" value="86" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/ApplicationTest_testLs_2e.html';">
+<span class="sortValue">0.56</span>
+<div>
+<div title="56% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:56%"></div></div></div></td>
+<td id="tc-86">  <span class="sortValue">org.apache.commons.cli.ApplicationTest.testLs</span><a href="../../../../org/apache/commons/cli/ApplicationTest_testLs_2e.html" title="View Test Summary Page">org.apache.commons.cli.ApplicationTest.testLs</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/ApplicationTest.html?line=39#src-39" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/ApplicationTest_testLs_2e.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-15">
+<td><a name="testA-15"></a><input type="checkbox" id="cb-15" value="15" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/bug/BugCLI18Test_testCLI18_f.html';">
+<span class="sortValue">0.56</span>
+<div>
+<div title="56% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:56%"></div></div></div></td>
+<td id="tc-15">  <span class="sortValue">org.apache.commons.cli.bug.BugCLI18Test.testCLI18</span><a href="../../../../org/apache/commons/cli/bug/BugCLI18Test_testCLI18_f.html" title="View Test Summary Page">org.apache.commons.cli.bug.BugCLI18Test.testCLI18</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/bug/BugCLI18Test.html?line=34#src-34" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/bug/BugCLI18Test_testCLI18_f.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-41">
+<td><a name="testA-41"></a><input type="checkbox" id="cb-41" value="41" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test19383_15.html';">
+<span class="sortValue">0.56</span>
+<div>
+<div title="56% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:56%"></div></div></div></td>
+<td id="tc-41">  <span class="sortValue">org.apache.commons.cli.BugsTest.test19383</span><a href="../../../../org/apache/commons/cli/BugsTest_test19383_15.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test19383</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=476#src-476" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test19383_15.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-0">
+<td><a name="testA-0"></a><input type="checkbox" id="cb-0" value="0" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PosixParserTest_testLongOptionWithShort_0.html';">
+<span class="sortValue">0.56</span>
+<div>
+<div title="56% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:56%"></div></div></div></td>
+<td id="tc-0">  <span class="sortValue">org.apache.commons.cli.PosixParserTest.testLongOptionWithShort</span><a href="../../../../org/apache/commons/cli/PosixParserTest_testLongOptionWithShort_0.html" title="View Test Summary Page">org.apache.commons.cli.PosixParserTest.testLongOptionWithShort</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PosixParserTest.html?line=226#src-226" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PosixParserTest_testLongOptionWithShort_0.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-105">
+<td><a name="testA-105"></a><input type="checkbox" id="cb-105" value="105" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testHelpOptions_2x.html';">
+<span class="sortValue">0.56</span>
+<div>
+<div title="56% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:56%"></div></div></div></td>
+<td id="tc-105">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testHelpOptions</span><a href="../../../../org/apache/commons/cli/OptionsTest_testHelpOptions_2x.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testHelpOptions</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=70#src-70" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testHelpOptions_2x.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-91">
+<td><a name="testA-91"></a><input type="checkbox" id="cb-91" value="91" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test12210_2j.html';">
+<span class="sortValue">0.52</span>
+<div>
+<div title="52% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:52%"></div></div></div></td>
+<td id="tc-91">  <span class="sortValue">org.apache.commons.cli.BugsTest.test12210</span><a href="../../../../org/apache/commons/cli/BugsTest_test12210_2j.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test12210</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=127#src-127" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test12210_2j.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-20">
+<td><a name="testA-20"></a><input type="checkbox" id="cb-20" value="20" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test14786_k.html';">
+<span class="sortValue">0.52</span>
+<div>
+<div title="52% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:52%"></div></div></div></td>
+<td id="tc-20">  <span class="sortValue">org.apache.commons.cli.BugsTest.test14786</span><a href="../../../../org/apache/commons/cli/BugsTest_test14786_k.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test14786</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=326#src-326" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test14786_k.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-21">
+<td><a name="testA-21"></a><input type="checkbox" id="cb-21" value="21" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionTest_testHasArgs_l.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-21">  <span class="sortValue">org.apache.commons.cli.OptionTest.testHasArgs</span><a href="../../../../org/apache/commons/cli/OptionTest_testHasArgs_l.html" title="View Test Summary Page">org.apache.commons.cli.OptionTest.testHasArgs</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionTest.html?line=106#src-106" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionTest_testHasArgs_l.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-54">
+<td><a name="testA-54"></a><input type="checkbox" id="cb-54" value="54" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testSpecialOptChars_1i.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-54">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testSpecialOptChars</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testSpecialOptChars_1i.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testSpecialOptChars</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=91#src-91" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testSpecialOptChars_1i.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-49">
+<td><a name="testA-49"></a><input type="checkbox" id="cb-49" value="49" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test11458_1d.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-49">  <span class="sortValue">org.apache.commons.cli.BugsTest.test11458</span><a href="../../../../org/apache/commons/cli/BugsTest_test11458_1d.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test11458</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=44#src-44" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test11458_1d.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-142">
+<td><a name="testA-142"></a><input type="checkbox" id="cb-142" value="142" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testToString_3y.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-142">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testToString</span><a href="../../../../org/apache/commons/cli/OptionsTest_testToString_3y.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testToString</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=132#src-132" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testToString_3y.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-97">
+<td><a name="testA-97"></a><input type="checkbox" id="cb-97" value="97" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptionWithEmptyArgNameUsage_2p.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-97">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintOptionWithEmptyArgNameUsage</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptionWithEmptyArgNameUsage_2p.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintOptionWithEmptyArgNameUsage</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=304#src-304" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptionWithEmptyArgNameUsage_2p.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-113">
+<td><a name="testA-113"></a><input type="checkbox" id="cb-113" value="113" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testLong_35.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-113">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testLong</span><a href="../../../../org/apache/commons/cli/OptionsTest_testLong_35.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testLong</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=51#src-51" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testLong_35.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-104">
+<td><a name="testA-104"></a><input type="checkbox" id="cb-104" value="104" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/GnuParserTest_testNegativeArgument_2w.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-104">  <span class="sortValue">org.apache.commons.cli.GnuParserTest.testNegativeArgument</span><a href="../../../../org/apache/commons/cli/GnuParserTest_testNegativeArgument_2w.html" title="View Test Summary Page">org.apache.commons.cli.GnuParserTest.testNegativeArgument</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/GnuParserTest.html?line=182#src-182" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/GnuParserTest_testNegativeArgument_2w.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-109">
+<td><a name="testA-109"></a><input type="checkbox" id="cb-109" value="109" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test15046_31.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-109">  <span class="sortValue">org.apache.commons.cli.BugsTest.test15046</span><a href="../../../../org/apache/commons/cli/BugsTest_test15046_31.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test15046</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=341#src-341" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test15046_31.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-74">
+<td><a name="testA-74"></a><input type="checkbox" id="cb-74" value="74" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/bug/BugCLI51Test_test_22.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-74">  <span class="sortValue">org.apache.commons.cli.bug.BugCLI51Test.test</span><a href="../../../../org/apache/commons/cli/bug/BugCLI51Test_test_22.html" title="View Test Summary Page">org.apache.commons.cli.bug.BugCLI51Test.test</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/bug/BugCLI51Test.html?line=34#src-34" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/bug/BugCLI51Test_test_22.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-11">
+<td><a name="testA-11"></a><input type="checkbox" id="cb-11" value="11" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testObjectPattern_b.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-11">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testObjectPattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testObjectPattern_b.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testObjectPattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=114#src-114" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testObjectPattern_b.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-17">
+<td><a name="testA-17"></a><input type="checkbox" id="cb-17" value="17" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintSortedUsage_h.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-17">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintSortedUsage</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintSortedUsage_h.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintSortedUsage</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=226#src-226" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintSortedUsage_h.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-143">
+<td><a name="testA-143"></a><input type="checkbox" id="cb-143" value="143" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionTest_testSubclass_3z.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-143">  <span class="sortValue">org.apache.commons.cli.OptionTest.testSubclass</span><a href="../../../../org/apache/commons/cli/OptionTest_testSubclass_3z.html" title="View Test Summary Page">org.apache.commons.cli.OptionTest.testSubclass</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionTest.html?line=84#src-84" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionTest_testSubclass_3z.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-141">
+<td><a name="testA-141"></a><input type="checkbox" id="cb-141" value="141" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testMissingOptionException_3x.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-141">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testMissingOptionException</span><a href="../../../../org/apache/commons/cli/OptionsTest_testMissingOptionException_3x.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testMissingOptionException</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=101#src-101" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testMissingOptionException_3x.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-111">
+<td><a name="testA-111"></a><input type="checkbox" id="cb-111" value="111" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test13935_33.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-111">  <span class="sortValue">org.apache.commons.cli.BugsTest.test13935</span><a href="../../../../org/apache/commons/cli/BugsTest_test13935_33.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test13935</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=249#src-249" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test13935_33.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-107">
+<td><a name="testA-107"></a><input type="checkbox" id="cb-107" value="107" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test11456_2z.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-107">  <span class="sortValue">org.apache.commons.cli.BugsTest.test11456</span><a href="../../../../org/apache/commons/cli/BugsTest_test11456_2z.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test11456</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=102#src-102" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test11456_2z.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-118">
+<td><a name="testA-118"></a><input type="checkbox" id="cb-118" value="118" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/GnuParserTest_testShortWithoutEqual_3a.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-118">  <span class="sortValue">org.apache.commons.cli.GnuParserTest.testShortWithoutEqual</span><a href="../../../../org/apache/commons/cli/GnuParserTest_testShortWithoutEqual_3a.html" title="View Test Summary Page">org.apache.commons.cli.GnuParserTest.testShortWithoutEqual</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/GnuParserTest.html?line=207#src-207" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/GnuParserTest_testShortWithoutEqual_3a.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-69">
+<td><a name="testA-69"></a><input type="checkbox" id="cb-69" value="69" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/bug/BugCLI148Test_testWorkaround1_1x.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-69">  <span class="sortValue">org.apache.commons.cli.bug.BugCLI148Test.testWorkaround1</span><a href="../../../../org/apache/commons/cli/bug/BugCLI148Test_testWorkaround1_1x.html" title="View Test Summary Page">org.apache.commons.cli.bug.BugCLI148Test.testWorkaround1</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/bug/BugCLI148Test.html?line=36#src-36" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/bug/BugCLI148Test_testWorkaround1_1x.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-26">
+<td><a name="testA-26"></a><input type="checkbox" id="cb-26" value="26" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test11680_q.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-26">  <span class="sortValue">org.apache.commons.cli.BugsTest.test11680</span><a href="../../../../org/apache/commons/cli/BugsTest_test11680_q.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test11680</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=87#src-87" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test11680_q.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-63">
+<td><a name="testA-63"></a><input type="checkbox" id="cb-63" value="63" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionTest_testClone_1r.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-63">  <span class="sortValue">org.apache.commons.cli.OptionTest.testClone</span><a href="../../../../org/apache/commons/cli/OptionTest_testClone_1r.html" title="View Test Summary Page">org.apache.commons.cli.OptionTest.testClone</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionTest.html?line=52#src-52" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionTest_testClone_1r.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-2">
+<td><a name="testA-2"></a><input type="checkbox" id="cb-2" value="2" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptionGroupUsage_2.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-2">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintOptionGroupUsage</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptionGroupUsage_2.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintOptionGroupUsage</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=267#src-267" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptionGroupUsage_2.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-140">
+<td><a name="testA-140"></a><input type="checkbox" id="cb-140" value="140" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testRequiredOption_3w.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-140">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testRequiredOption</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testRequiredOption_3w.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testRequiredOption</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=146#src-146" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testRequiredOption_3w.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-78">
+<td><a name="testA-78"></a><input type="checkbox" id="cb-78" value="78" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintSortedUsageWithNullComparator_26.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-78">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintSortedUsageWithNullComparator</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintSortedUsageWithNullComparator_26.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintSortedUsageWithNullComparator</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=251#src-251" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintSortedUsageWithNullComparator_26.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-8">
+<td><a name="testA-8"></a><input type="checkbox" id="cb-8" value="8" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testURLPattern_8.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-8">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testURLPattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testURLPattern_8.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testURLPattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=125#src-125" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testURLPattern_8.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-37">
+<td><a name="testA-37"></a><input type="checkbox" id="cb-37" value="37" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/ParseRequiredTest_testMissingRequiredOptions_11.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-37">  <span class="sortValue">org.apache.commons.cli.ParseRequiredTest.testMissingRequiredOptions</span><a href="../../../../org/apache/commons/cli/ParseRequiredTest_testMissingRequiredOptions_11.html" title="View Test Summary Page">org.apache.commons.cli.ParseRequiredTest.testMissingRequiredOptions</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/ParseRequiredTest.html?line=89#src-89" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/ParseRequiredTest_testMissingRequiredOptions_11.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-120">
+<td><a name="testA-120"></a><input type="checkbox" id="cb-120" value="120" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/bug/BugCLI13Test_testCLI13_3c.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-120">  <span class="sortValue">org.apache.commons.cli.bug.BugCLI13Test.testCLI13</span><a href="../../../../org/apache/commons/cli/bug/BugCLI13Test_testCLI13_3c.html" title="View Test Summary Page">org.apache.commons.cli.bug.BugCLI13Test.testCLI13</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/bug/BugCLI13Test.html?line=34#src-34" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/bug/BugCLI13Test_testCLI13_3c.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-24">
+<td><a name="testA-24"></a><input type="checkbox" id="cb-24" value="24" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testExistingFilePattern_o.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-24">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testExistingFilePattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testExistingFilePattern_o.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testExistingFilePattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=135#src-135" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testExistingFilePattern_o.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-114">
+<td><a name="testA-114"></a><input type="checkbox" id="cb-114" value="114" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testBaseOptionCharOpt_36.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-114">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testBaseOptionCharOpt</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testBaseOptionCharOpt_36.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testBaseOptionCharOpt</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=73#src-73" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testBaseOptionCharOpt_36.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-103">
+<td><a name="testA-103"></a><input type="checkbox" id="cb-103" value="103" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testTwoCompleteOptions_2v.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-103">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testTwoCompleteOptions</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testTwoCompleteOptions_2v.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testTwoCompleteOptions</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=42#src-42" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testTwoCompleteOptions_2v.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-19">
+<td><a name="testA-19"></a><input type="checkbox" id="cb-19" value="19" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintUsage_j.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-19">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintUsage</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintUsage_j.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintUsage</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=208#src-208" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintUsage_j.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-101">
+<td><a name="testA-101"></a><input type="checkbox" id="cb-101" value="101" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/GnuParserTest_testPropertiesOption_2t.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-101">  <span class="sortValue">org.apache.commons.cli.GnuParserTest.testPropertiesOption</span><a href="../../../../org/apache/commons/cli/GnuParserTest_testPropertiesOption_2t.html" title="View Test Summary Page">org.apache.commons.cli.GnuParserTest.testPropertiesOption</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/GnuParserTest.html?line=246#src-246" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/GnuParserTest_testPropertiesOption_2t.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-71">
+<td><a name="testA-71"></a><input type="checkbox" id="cb-71" value="71" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintRequiredOptionGroupUsage_1z.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-71">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintRequiredOptionGroupUsage</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintRequiredOptionGroupUsage_1z.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintRequiredOptionGroupUsage</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=285#src-285" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintRequiredOptionGroupUsage_1z.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-99">
+<td><a name="testA-99"></a><input type="checkbox" id="cb-99" value="99" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testClassPattern_2r.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-99">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testClassPattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testClassPattern_2r.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testClassPattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=104#src-104" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testClassPattern_2r.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-7">
+<td><a name="testA-7"></a><input type="checkbox" id="cb-7" value="7" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testOptionArgNumbers_7.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-7">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testOptionArgNumbers</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testOptionArgNumbers_7.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testOptionArgNumbers</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=102#src-102" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testOptionArgNumbers_7.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-55">
+<td><a name="testA-55"></a><input type="checkbox" id="cb-55" value="55" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testSimple_1j.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-55">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testSimple</span><a href="../../../../org/apache/commons/cli/OptionsTest_testSimple_1j.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testSimple</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=31#src-31" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testSimple_1j.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-115">
+<td><a name="testA-115"></a><input type="checkbox" id="cb-115" value="115" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/GnuParserTest_testShortWithEqual_37.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-115">  <span class="sortValue">org.apache.commons.cli.GnuParserTest.testShortWithEqual</span><a href="../../../../org/apache/commons/cli/GnuParserTest_testShortWithEqual_37.html" title="View Test Summary Page">org.apache.commons.cli.GnuParserTest.testShortWithEqual</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/GnuParserTest.html?line=194#src-194" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/GnuParserTest_testShortWithEqual_37.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-44">
+<td><a name="testA-44"></a><input type="checkbox" id="cb-44" value="44" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test13425_18.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-44">  <span class="sortValue">org.apache.commons.cli.BugsTest.test13425</span><a href="../../../../org/apache/commons/cli/BugsTest_test13425_18.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test13425</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=183#src-183" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test13425_18.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-127">
+<td><a name="testA-127"></a><input type="checkbox" id="cb-127" value="127" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test13666_3j.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-127">  <span class="sortValue">org.apache.commons.cli.BugsTest.test13666</span><a href="../../../../org/apache/commons/cli/BugsTest_test13666_3j.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test13666</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=219#src-219" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test13666_3j.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-13">
+<td><a name="testA-13"></a><input type="checkbox" id="cb-13" value="13" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/bug/BugCLI133Test_testOrder_d.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-13">  <span class="sortValue">org.apache.commons.cli.bug.BugCLI133Test.testOrder</span><a href="../../../../org/apache/commons/cli/bug/BugCLI133Test_testOrder_d.html" title="View Test Summary Page">org.apache.commons.cli.bug.BugCLI133Test.testOrder</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/bug/BugCLI133Test.html?line=32#src-32" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/bug/BugCLI133Test_testOrder_d.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-130">
+<td><a name="testA-130"></a><input type="checkbox" id="cb-130" value="130" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testAutomaticUsage_3m.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-130">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testAutomaticUsage</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testAutomaticUsage_3m.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testAutomaticUsage</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=183#src-183" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testAutomaticUsage_3m.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-42">
+<td><a name="testA-42"></a><input type="checkbox" id="cb-42" value="42" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testDuplicateSimple_16.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-42">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testDuplicateSimple</span><a href="../../../../org/apache/commons/cli/OptionsTest_testDuplicateSimple_16.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testDuplicateSimple</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=42#src-42" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testDuplicateSimple_16.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-79">
+<td><a name="testA-79"></a><input type="checkbox" id="cb-79" value="79" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/GnuParserTest_testLongWithEqual_27.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-79">  <span class="sortValue">org.apache.commons.cli.GnuParserTest.testLongWithEqual</span><a href="../../../../org/apache/commons/cli/GnuParserTest_testLongWithEqual_27.html" title="View Test Summary Page">org.apache.commons.cli.GnuParserTest.testLongWithEqual</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/GnuParserTest.html?line=220#src-220" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/GnuParserTest_testLongWithEqual_27.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-123">
+<td><a name="testA-123"></a><input type="checkbox" id="cb-123" value="123" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testDuplicateLong_3f.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-123">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testDuplicateLong</span><a href="../../../../org/apache/commons/cli/OptionsTest_testDuplicateLong_3f.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testDuplicateLong</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=62#src-62" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testDuplicateLong_3f.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-87">
+<td><a name="testA-87"></a><input type="checkbox" id="cb-87" value="87" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testSimplePattern_2f.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-87">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testSimplePattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testSimplePattern_2f.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testSimplePattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=35#src-35" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testSimplePattern_2f.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-62">
+<td><a name="testA-62"></a><input type="checkbox" id="cb-62" value="62" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PosixParserTest_testPropertiesOption_1q.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-62">  <span class="sortValue">org.apache.commons.cli.PosixParserTest.testPropertiesOption</span><a href="../../../../org/apache/commons/cli/PosixParserTest_testPropertiesOption_1q.html" title="View Test Summary Page">org.apache.commons.cli.PosixParserTest.testPropertiesOption</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PosixParserTest.html?line=290#src-290" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PosixParserTest_testPropertiesOption_1q.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-88">
+<td><a name="testA-88"></a><input type="checkbox" id="cb-88" value="88" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testNumberPattern_2g.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-88">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testNumberPattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testNumberPattern_2g.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testNumberPattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=89#src-89" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testNumberPattern_2g.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-14">
+<td><a name="testA-14"></a><input type="checkbox" id="cb-14" value="14" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptions_e.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-14">  <span class="sortValue">org.apache.commons.cli.HelpFormatterTest.testPrintOptions</span><a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptions_e.html" title="View Test Summary Page">org.apache.commons.cli.HelpFormatterTest.testPrintOptions</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/HelpFormatterTest.html?line=106#src-106" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/HelpFormatterTest_testPrintOptions_e.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-67">
+<td><a name="testA-67"></a><input type="checkbox" id="cb-67" value="67" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testBaseOptionStringOpt_1v.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-67">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testBaseOptionStringOpt</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testBaseOptionStringOpt_1v.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testBaseOptionStringOpt</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=82#src-82" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testBaseOptionStringOpt_1v.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-43">
+<td><a name="testA-43"></a><input type="checkbox" id="cb-43" value="43" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/bug/BugCLI148Test_testWorkaround2_17.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-43">  <span class="sortValue">org.apache.commons.cli.bug.BugCLI148Test.testWorkaround2</span><a href="../../../../org/apache/commons/cli/bug/BugCLI148Test_testWorkaround2_17.html" title="View Test Summary Page">org.apache.commons.cli.bug.BugCLI148Test.testWorkaround2</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/bug/BugCLI148Test.html?line=46#src-46" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/bug/BugCLI148Test_testWorkaround2_17.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-61">
+<td><a name="testA-61"></a><input type="checkbox" id="cb-61" value="61" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionBuilderTest_testCompleteOption_1p.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-61">  <span class="sortValue">org.apache.commons.cli.OptionBuilderTest.testCompleteOption</span><a href="../../../../org/apache/commons/cli/OptionBuilderTest_testCompleteOption_1p.html" title="View Test Summary Page">org.apache.commons.cli.OptionBuilderTest.testCompleteOption</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionBuilderTest.html?line=24#src-24" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionBuilderTest_testCompleteOption_1p.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-50">
+<td><a name="testA-50"></a><input type="checkbox" id="cb-50" value="50" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionsTest_testMissingOptionsException_1e.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-50">  <span class="sortValue">org.apache.commons.cli.OptionsTest.testMissingOptionsException</span><a href="../../../../org/apache/commons/cli/OptionsTest_testMissingOptionsException_1e.html" title="View Test Summary Page">org.apache.commons.cli.OptionsTest.testMissingOptionsException</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionsTest.html?line=116#src-116" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionsTest_testMissingOptionsException_1e.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-18">
+<td><a name="testA-18"></a><input type="checkbox" id="cb-18" value="18" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test31148_i.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-18">  <span class="sortValue">org.apache.commons.cli.BugsTest.test31148</span><a href="../../../../org/apache/commons/cli/BugsTest_test31148_i.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test31148</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=440#src-440" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test31148_i.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-29">
+<td><a name="testA-29"></a><input type="checkbox" id="cb-29" value="29" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/GnuParserTest_testLongWithEqualSingleDash_t.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-29">  <span class="sortValue">org.apache.commons.cli.GnuParserTest.testLongWithEqualSingleDash</span><a href="../../../../org/apache/commons/cli/GnuParserTest_testLongWithEqualSingleDash_t.html" title="View Test Summary Page">org.apache.commons.cli.GnuParserTest.testLongWithEqualSingleDash</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/GnuParserTest.html?line=233#src-233" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/GnuParserTest_testLongWithEqualSingleDash_t.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-117">
+<td><a name="testA-117"></a><input type="checkbox" id="cb-117" value="117" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionTest_testGetValue_39.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-117">  <span class="sortValue">org.apache.commons.cli.OptionTest.testGetValue</span><a href="../../../../org/apache/commons/cli/OptionTest_testGetValue_39.html" title="View Test Summary Page">org.apache.commons.cli.OptionTest.testGetValue</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionTest.html?line=126#src-126" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionTest_testGetValue_39.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-80">
+<td><a name="testA-80"></a><input type="checkbox" id="cb-80" value="80" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/ParseRequiredTest_testReuseOptionsTwice_28.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-80">  <span class="sortValue">org.apache.commons.cli.ParseRequiredTest.testReuseOptionsTwice</span><a href="../../../../org/apache/commons/cli/ParseRequiredTest_testReuseOptionsTwice_28.html" title="View Test Summary Page">org.apache.commons.cli.ParseRequiredTest.testReuseOptionsTwice</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/ParseRequiredTest.html?line=116#src-116" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/ParseRequiredTest_testReuseOptionsTwice_28.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-84">
+<td><a name="testA-84"></a><input type="checkbox" id="cb-84" value="84" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BasicParserTest_testParser_2c.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-84">  <span class="sortValue">org.apache.commons.cli.BasicParserTest.testParser</span><a href="../../../../org/apache/commons/cli/BasicParserTest_testParser_2c.html" title="View Test Summary Page">org.apache.commons.cli.BasicParserTest.testParser</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BasicParserTest.html?line=28#src-28" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BasicParserTest_testParser_2c.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-96">
+<td><a name="testA-96"></a><input type="checkbox" id="cb-96" value="96" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionTest_testClear_2o.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-96">  <span class="sortValue">org.apache.commons.cli.OptionTest.testClear</span><a href="../../../../org/apache/commons/cli/OptionTest_testClear_2o.html" title="View Test Summary Page">org.apache.commons.cli.OptionTest.testClear</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionTest.html?line=41#src-41" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionTest_testClear_2o.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-1">
+<td><a name="testA-1"></a><input type="checkbox" id="cb-1" value="1" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/PatternOptionBuilderTest_testUntypedPattern_1.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-1">  <span class="sortValue">org.apache.commons.cli.PatternOptionBuilderTest.testUntypedPattern</span><a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testUntypedPattern_1.html" title="View Test Summary Page">org.apache.commons.cli.PatternOptionBuilderTest.testUntypedPattern</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest.html?line=75#src-75" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/PatternOptionBuilderTest_testUntypedPattern_1.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-59">
+<td><a name="testA-59"></a><input type="checkbox" id="cb-59" value="59" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/OptionTest_testHasArgName_1n.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-59">  <span class="sortValue">org.apache.commons.cli.OptionTest.testHasArgName</span><a href="../../../../org/apache/commons/cli/OptionTest_testHasArgName_1n.html" title="View Test Summary Page">org.apache.commons.cli.OptionTest.testHasArgName</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/OptionTest.html?line=92#src-92" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/OptionTest_testHasArgName_1n.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-133">
+<td><a name="testA-133"></a><input type="checkbox" id="cb-133" value="133" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test15648_3p.html';">
+<span class="sortValue">0.48</span>
+<div>
+<div title="48% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:48%"></div></div></div></td>
+<td id="tc-133">  <span class="sortValue">org.apache.commons.cli.BugsTest.test15648</span><a href="../../../../org/apache/commons/cli/BugsTest_test15648_3p.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test15648</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=358#src-358" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test15648_3p.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+<tr id="test-119">
+<td><a name="testA-119"></a><input type="checkbox" id="cb-119" value="119" name="testMethod" autocomplete="off" title="Check to highlight coverage of this test in the source code"/></td>
+<td style="vertical-align: middle"  class="link" onclick="window.location.href='../../../../org/apache/commons/cli/BugsTest_test11457_3b.html';">
+<span class="sortValue">0.16</span>
+<div>
+<div title="16% Covered" style="min-width:40px;" class="barNegative contribBarNegative contribBarNegative"><div class="barPositive contribBarPositive contribBarPositive" style="width:16%"></div></div></div></td>
+<td id="tc-119">  <span class="sortValue">org.apache.commons.cli.BugsTest.test11457</span><a href="../../../../org/apache/commons/cli/BugsTest_test11457_3b.html" title="View Test Summary Page">org.apache.commons.cli.BugsTest.test11457</a>
+</td>
+<td>      <span class="sortValue">1</span><span class="aui-lozenge aui-lozenge-success">PASS</span>
+  </td>
+<td> <a href="../../../../org/apache/commons/cli/BugsTest.html?line=32#src-32" title="View Test Source">
+ <span class="aui-icon aui-icon-small aui-iconfont-file-txt aui-icon-medium-gray"></span>
+</a>
+<a href="../../../../org/apache/commons/cli/BugsTest_test11457_3b.html" title="View Test Summary Page"><span class="aui-icon aui-icon-small aui-iconfont-file-ppt aui-icon-medium-gray"></span></a>
+</td>
+</tr>
+
+            </tbody>
+        </table>
+
+        
+        <div>&#160;</div>
+
+    
+    </div>
+
+    
+    <footer class="aui-dialog2-footer">
+        <div class="aui-dialog2-footer-actions">
+            <button data-dialog-id="contr-tests-dialog" class="aui-button aui-button-primary dialog-close-button">Apply</button>
+        </div>
+        <div class="aui-dialog2-footer-hint">Select tests to highlight code covered by them in the source view.</div>
+    </footer>
+</section>
+
+ 
+        
+        
+
+
+
+
+
+<h2>Source view</h2>
+
+
+<div style="display: table; width: 100%;">
+    <div style="display: table-cell">
+        <button class="aui-button aui-button-link"
+                title="Toggles all methods in the source to be either expanded or collapsed."
+                onclick="toggleAllInlineMethods(this); return false;" id="method-expander">
+            Collapse all methods
+        </button>
+    </div>
+    <div style="display: table-cell">
+        <div style="text-align: right; margin-bottom: 10px">
+            <button class="aui-button aui-button-subtle" id="popupHelp">
+    <span class="aui-icon aui-icon-small aui-iconfont-help"></span>&#160;Show legend
+</button>
+<script>
+    AJS.InlineDialog(AJS.$("#popupHelp"), "helpDialog",
+            function(content, trigger, showPopup) {
+                content.css({"padding":"20px"}).html(SRC_FILE_LEGEND_TEXT);
+                showPopup();
+                return false;
+            },
+            {
+                width: 700, hideDelay: 60000
+            }
+    );
+</script>        </div>
+    </div>
+</div>
+
+<table cellspacing="0" cellpadding="0" class="srcView" width="100%">
+
+    
+<tbody> <tr id="l1">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=1#src-1">1</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-1" class="srcLine"><span class="comment">/**</span></span></td>
+</tr>
+ <tr id="l2">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=2#src-2">2</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-2" class="srcLine"><span class="comment"> * Licensed to the Apache Software Foundation (ASF) under one or more</span></span></td>
+</tr>
+ <tr id="l3">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=3#src-3">3</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-3" class="srcLine"><span class="comment"> * contributor license agreements.  See the NOTICE file distributed with</span></span></td>
+</tr>
+ <tr id="l4">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=4#src-4">4</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-4" class="srcLine"><span class="comment"> * this work for additional information regarding copyright ownership.</span></span></td>
+</tr>
+ <tr id="l5">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=5#src-5">5</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-5" class="srcLine"><span class="comment"> * The ASF licenses this file to You under the Apache License, Version 2.0</span></span></td>
+</tr>
+ <tr id="l6">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=6#src-6">6</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-6" class="srcLine"><span class="comment"> * (the &quot;License&quot;); you may not use this file except in compliance with</span></span></td>
+</tr>
+ <tr id="l7">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=7#src-7">7</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-7" class="srcLine"><span class="comment"> * the License.  You may obtain a copy of the License at</span></span></td>
+</tr>
+ <tr id="l8">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=8#src-8">8</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-8" class="srcLine"><span class="comment"> *</span></span></td>
+</tr>
+ <tr id="l9">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=9#src-9">9</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-9" class="srcLine"><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></span></td>
+</tr>
+ <tr id="l10">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=10#src-10">10</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-10" class="srcLine"><span class="comment"> *</span></span></td>
+</tr>
+ <tr id="l11">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=11#src-11">11</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-11" class="srcLine"><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></span></td>
+</tr>
+ <tr id="l12">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=12#src-12">12</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-12" class="srcLine"><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span></td>
+</tr>
+ <tr id="l13">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=13#src-13">13</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-13" class="srcLine"><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span></td>
+</tr>
+ <tr id="l14">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=14#src-14">14</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-14" class="srcLine"><span class="comment"> * See the License for the specific language governing permissions and</span></span></td>
+</tr>
+ <tr id="l15">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=15#src-15">15</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-15" class="srcLine"><span class="comment"> * limitations under the License.</span></span></td>
+</tr>
+ <tr id="l16">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=16#src-16">16</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-16" class="srcLine"><span class="comment"> */</span></span></td>
+</tr>
+ <tr id="l17">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=17#src-17">17</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-17" class="srcLine"></span></td>
+</tr>
+ <tr id="l18">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=18#src-18">18</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-18" class="srcLine"><span class="keyword">package</span> org.apache.commons.<a href="../cli/pkg-summary.html">cli</a>;</span></td>
+</tr>
+ <tr id="l19">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=19#src-19">19</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-19" class="srcLine"></span></td>
+</tr>
+ <tr id="l20">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=20#src-20">20</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-20" class="srcLine"><span class="comment">/**</span></span></td>
+</tr>
+ <tr id="l21">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=21#src-21">21</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-21" class="srcLine"><span class="comment"> * Validates an Option string.</span></span></td>
+</tr>
+ <tr id="l22">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=22#src-22">22</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-22" class="srcLine"><span class="comment"> *</span></span></td>
+</tr>
+ <tr id="l23">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=23#src-23">23</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-23" class="srcLine"><span class="comment"> * </span><span class="javadoc">@author</span><span class="comment"> John Keyes ( john at integralsource.com )</span></span></td>
+</tr>
+ <tr id="l24">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=24#src-24">24</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-24" class="srcLine"><span class="comment"> * </span><span class="javadoc">@since</span><span class="comment"> 1.1</span></span></td>
+</tr>
+ <tr id="l25">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=25#src-25">25</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-25" class="srcLine"><span class="comment"> */</span></span></td>
+</tr>
+<tr class="inlineStatsRow" align="right" valign="middle">
+<td class="coverageCount"><a name="26" class="nolink">&#160;</a></td>
+    <td class="coverageCount aui-icon aui-icon-small aui-iconfont-arrows-right" id='inlineStatsToggle-26' onclick="toggleInlineStats(this, 'inlinestats-26');"/>
+    <td align="center" valign="middle">
+        <table id="inlinestats-26" style="display:none;" class="inlineStats" width="100%" cellspacing="1px" cellpadding="1px">
+            <tr onclick="toggleInlineStats(document.getElementById('inlineStatsToggle-26'), 'inlinestats-26');return true;">
+                <td><div>
+<div title="100% Covered" style="min-width:40px;" class="barNegative contribBarNegative barNegative"><div class="barPositive contribBarPositive barPositive" style="width:100%"></div></div></div></td><td>100%</td>
+                <td class="inlineStat">Uncovered Elements: 0 (25)</td>
+                <td class="inlineStat">Complexity: 8</td>
+                <td class="inlineStat">Complexity Density: 0.67</td>
+                            </tr>
+        </table>
+    </td>
+</tr>
+<tr id="l26">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=26#src-26">26</a></td>
+<td align="right" class="coverageCount NoHilight "   onclick="return showTestsForLine(this, 26, 'Tests that hit OptionValidator');" >&#160;&#160;</td>
+<td class=" srcCell" id="id-26"><span class="spacer"></span><span id="src-26" class="srcLine"><span class="keyword">class</span> <a href="../../../../org/apache/commons/cli/OptionValidator.html#OptionValidator">OptionValidator</a> {</span></td>
+</tr>
+ <tr id="l27">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=27#src-27">27</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-27" class="srcLine"></span></td>
+</tr>
+ <tr id="l28">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=28#src-28">28</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-28" class="srcLine">    <span class="comment">/**</span></span></td>
+</tr>
+ <tr id="l29">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=29#src-29">29</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-29" class="srcLine"><span class="comment">     * &lt;p&gt;Validates whether &lt;code&gt;opt&lt;/code&gt; is a permissable Option</span></span></td>
+</tr>
+ <tr id="l30">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=30#src-30">30</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-30" class="srcLine"><span class="comment">     * shortOpt.  The rules that specify if the &lt;code&gt;opt&lt;/code&gt;</span></span></td>
+</tr>
+ <tr id="l31">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=31#src-31">31</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-31" class="srcLine"><span class="comment">     * is valid are:&lt;/p&gt;</span></span></td>
+</tr>
+ <tr id="l32">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=32#src-32">32</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-32" class="srcLine"><span class="comment">     * &lt;ul&gt;</span></span></td>
+</tr>
+ <tr id="l33">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=33#src-33">33</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-33" class="srcLine"><span class="comment">     *  &lt;li&gt;&lt;code&gt;opt&lt;/code&gt; is not NULL&lt;/li&gt;</span></span></td>
+</tr>
+ <tr id="l34">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=34#src-34">34</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-34" class="srcLine"><span class="comment">     *  &lt;li&gt;a single character &lt;code&gt;opt&lt;/code&gt; that is either</span></span></td>
+</tr>
+ <tr id="l35">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=35#src-35">35</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-35" class="srcLine"><span class="comment">     *  ' '(special case), '?', '@' or a letter&lt;/li&gt;</span></span></td>
+</tr>
+ <tr id="l36">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=36#src-36">36</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-36" class="srcLine"><span class="comment">     *  &lt;li&gt;a multi character &lt;code&gt;opt&lt;/code&gt; that only contains</span></span></td>
+</tr>
+ <tr id="l37">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=37#src-37">37</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-37" class="srcLine"><span class="comment">     *  letters.&lt;/li&gt;</span></span></td>
+</tr>
+ <tr id="l38">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=38#src-38">38</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-38" class="srcLine"><span class="comment">     * &lt;/ul&gt;</span></span></td>
+</tr>
+ <tr id="l39">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=39#src-39">39</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-39" class="srcLine"><span class="comment">     *</span></span></td>
+</tr>
+ <tr id="l40">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=40#src-40">40</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-40" class="srcLine"><span class="comment">     * </span><span class="javadoc">@param</span><span class="comment"> opt The option string to validate</span></span></td>
+</tr>
+ <tr id="l41">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=41#src-41">41</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-41" class="srcLine"><span class="comment">     * </span><span class="javadoc">@throws</span><span class="comment"> IllegalArgumentException if the Option is not valid.</span></span></td>
+</tr>
+ <tr id="l42">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=42#src-42">42</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-42" class="srcLine"><span class="comment">     */</span></span></td>
+</tr>
+<tr class="inlineStatsRow" align="right" valign="middle">
+<td class="coverageCount"><a name="43" class="nolink">&#160;</a></td>
+    <td class="coverageCount aui-icon aui-icon-small aui-iconfont-arrows-right" id='inlineStatsToggle-43' onclick="toggleInlineStats(this, 'inlinestats-43');"/>
+    <td align="center" valign="middle">
+        <table id="inlinestats-43" style="display:none;" class="inlineStats" width="100%" cellspacing="1px" cellpadding="1px">
+            <tr onclick="toggleInlineStats(document.getElementById('inlineStatsToggle-43'), 'inlinestats-43');return true;">
+                <td><div>
+<div title="100% Covered" style="min-width:40px;" class="barNegative contribBarNegative barNegative"><div class="barPositive contribBarPositive barPositive" style="width:100%"></div></div></div></td><td>100%</td>
+                <td class="inlineStat">Uncovered Elements: 0 (20)</td>
+                <td class="inlineStat">Complexity: 6</td>
+                <td class="inlineStat">Complexity Density: 0.6</td>
+                            </tr>
+        </table>
+    </td>
+</tr>
+<tr id="l43">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=43#src-43">43</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 43, 'Tests that hit validateOption(String)&#160;:&#160;void');" ><span title="Line 43, Col 5: method entered 611 times." class="nolink">&#160;611</span></td>
+<td class=" methodStart  srcCell" id="id-43"><img title="Method Statistics" onclick="toggleSrcRowVis(this, 43,75);" id="img-43" src="../../../../img/collapse.gif"  alt="toggle" class="icon"/><span id="src-43" class="srcLine"><span class="nolink" title="Line 43, Col 5: method entered 611 times.">    <span class="keyword">static</span> <span class="keyword">void</span> validateOption(String opt) <span class="keyword">throws</span> IllegalArgumentException</span><span class="foldControl" onclick="toggleSrcRowVis(document.getElementById('img-43'), 43,75);" id="e43" style="display:none;border:none;">...</span></span></td>
+</tr>
+ <tr id="l44">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=44#src-44">44</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-44" class="srcLine">    {</span></td>
+</tr>
+ <tr id="l45">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=45#src-45">45</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-45" class="srcLine">        <span class="comment">// check that opt is not NULL</span></span></td>
+</tr>
+ <tr id="l46">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=46#src-46">46</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 46, 'Tests that hit line # 46');" ><span title="Line 46, Col 12: true branch executed 78 times, false branch executed 533 times." class="nolink">&#160;611</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-46" class="srcLine"><span class="nolink" title="Line 46, Col 12: true branch executed 78 times, false branch executed 533 times.">        <span class="keyword">if</span> (opt == <span class="keyword">null</span>)</span></span></td>
+</tr>
+ <tr id="l47">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=47#src-47">47</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-47" class="srcLine">        {</span></td>
+</tr>
+ <tr id="l48">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=48#src-48">48</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 48, 'Tests that hit line # 48');" ><span title="Line 48, Col 13: statement executed 78 times." class="nolink">&#160;78</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-48" class="srcLine"><span class="nolink" title="Line 48, Col 13: statement executed 78 times.">            <span class="keyword">return</span>;</span></span></td>
+</tr>
+ <tr id="l49">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=49#src-49">49</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-49" class="srcLine">        }</span></td>
+</tr>
+ <tr id="l50">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=50#src-50">50</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-50" class="srcLine"></span></td>
+</tr>
+ <tr id="l51">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=51#src-51">51</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-51" class="srcLine">        <span class="comment">// handle the single character opt</span></span></td>
+</tr>
+ <tr id="l52">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=52#src-52">52</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 52, 'Tests that hit line # 52');" ><span title="Line 52, Col 17: true branch executed 510 times, false branch executed 23 times." class="nolink">&#160;533</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-52" class="srcLine"><span class="nolink" title="Line 52, Col 17: true branch executed 510 times, false branch executed 23 times.">        <span class="keyword">else</span> <span class="keyword">if</span> (opt.length() == 1)</span></span></td>
+</tr>
+ <tr id="l53">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=53#src-53">53</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-53" class="srcLine">        {</span></td>
+</tr>
+ <tr id="l54">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=54#src-54">54</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 54, 'Tests that hit line # 54');" ><span title="Line 54, Col 13: statement executed 510 times." class="nolink">&#160;510</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-54" class="srcLine"><span class="nolink" title="Line 54, Col 13: statement executed 510 times.">            <span class="keyword">char</span> ch = opt.charAt(0);</span></span></td>
+</tr>
+ <tr id="l55">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=55#src-55">55</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-55" class="srcLine"></span></td>
+</tr>
+ <tr id="l56">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=56#src-56">56</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 56, 'Tests that hit line # 56');" ><span title="Line 56, Col 16: true branch executed 1 time, false branch executed 509 times." class="nolink">&#160;510</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-56" class="srcLine"><span class="nolink" title="Line 56, Col 16: true branch executed 1 time, false branch executed 509 times.">            <span class="keyword">if</span> (!isValidOpt(ch))</span></span></td>
+</tr>
+ <tr id="l57">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=57#src-57">57</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-57" class="srcLine">            {</span></td>
+</tr>
+ <tr id="l58">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=58#src-58">58</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 58, 'Tests that hit line # 58');" ><span title="Line 58, Col 17: statement executed 1 time." class="nolink">&#160;1</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-58" class="srcLine"><span class="nolink" title="Line 58, Col 17: statement executed 1 time.">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;illegal option value '&quot;</span> + ch + <span class="string">&quot;'&quot;</span>);</span></span></td>
+</tr>
+ <tr id="l59">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=59#src-59">59</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-59" class="srcLine">            }</span></td>
+</tr>
+ <tr id="l60">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=60#src-60">60</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-60" class="srcLine">        }</span></td>
+</tr>
+ <tr id="l61">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=61#src-61">61</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-61" class="srcLine"></span></td>
+</tr>
+ <tr id="l62">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=62#src-62">62</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-62" class="srcLine">        <span class="comment">// handle the multi character opt</span></span></td>
+</tr>
+ <tr id="l63">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=63#src-63">63</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-63" class="srcLine">        <span class="keyword">else</span></span></td>
+</tr>
+ <tr id="l64">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=64#src-64">64</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-64" class="srcLine">        {</span></td>
+</tr>
+ <tr id="l65">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=65#src-65">65</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 65, 'Tests that hit line # 65');" ><span title="Line 65, Col 13: statement executed 23 times." class="nolink">&#160;23</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-65" class="srcLine"><span class="nolink" title="Line 65, Col 13: statement executed 23 times.">            <span class="keyword">char</span>[] chars = opt.toCharArray();</span></span></td>
+</tr>
+ <tr id="l66">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=66#src-66">66</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-66" class="srcLine"></span></td>
+</tr>
+ <tr id="l67">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=67#src-67">67</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 67, 'Tests that hit line # 67');" ><span title="Line 67, Col 28: true branch executed 135 times, false branch executed 22 times." class="nolink">&#160;157</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-67" class="srcLine"><span class="nolink" title="Line 67, Col 28: true branch executed 135 times, false branch executed 22 times.">            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; chars.length; i++)</span></span></td>
+</tr>
+ <tr id="l68">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=68#src-68">68</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-68" class="srcLine">            {</span></td>
+</tr>
+ <tr id="l69">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=69#src-69">69</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 69, 'Tests that hit line # 69');" ><span title="Line 69, Col 20: true branch executed 1 time, false branch executed 134 times." class="nolink">&#160;135</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-69" class="srcLine"><span class="nolink" title="Line 69, Col 20: true branch executed 1 time, false branch executed 134 times.">                <span class="keyword">if</span> (!isValidChar(chars[i]))</span></span></td>
+</tr>
+ <tr id="l70">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=70#src-70">70</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-70" class="srcLine">                {</span></td>
+</tr>
+ <tr id="l71">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=71#src-71">71</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 71, 'Tests that hit line # 71');" ><span title="Line 71, Col 21: statement executed 1 time." class="nolink">&#160;1</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-71" class="srcLine"><span class="nolink" title="Line 71, Col 21: statement executed 1 time.">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;opt contains illegal character value '&quot;</span> + chars[i] + <span class="string">&quot;'&quot;</span>);</span></span></td>
+</tr>
+ <tr id="l72">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=72#src-72">72</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-72" class="srcLine">                }</span></td>
+</tr>
+ <tr id="l73">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=73#src-73">73</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-73" class="srcLine">            }</span></td>
+</tr>
+ <tr id="l74">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=74#src-74">74</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-74" class="srcLine">        }</span></td>
+</tr>
+ <tr id="l75">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=75#src-75">75</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-75" class="srcLine">    }</span></td>
+</tr>
+ <tr id="l76">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=76#src-76">76</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-76" class="srcLine"></span></td>
+</tr>
+ <tr id="l77">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=77#src-77">77</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-77" class="srcLine">    <span class="comment">/**</span></span></td>
+</tr>
+ <tr id="l78">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=78#src-78">78</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-78" class="srcLine"><span class="comment">     * &lt;p&gt;Returns whether the specified character is a valid Option.&lt;/p&gt;</span></span></td>
+</tr>
+ <tr id="l79">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=79#src-79">79</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-79" class="srcLine"><span class="comment">     *</span></span></td>
+</tr>
+ <tr id="l80">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=80#src-80">80</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-80" class="srcLine"><span class="comment">     * </span><span class="javadoc">@param</span><span class="comment"> c the option to validate</span></span></td>
+</tr>
+ <tr id="l81">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=81#src-81">81</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-81" class="srcLine"><span class="comment">     * </span><span class="javadoc">@return</span><span class="comment"> true if &lt;code&gt;c&lt;/code&gt; is a letter, ' ', '?' or '@', </span></span></td>
+</tr>
+ <tr id="l82">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=82#src-82">82</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-82" class="srcLine"><span class="comment">     * otherwise false.</span></span></td>
+</tr>
+ <tr id="l83">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=83#src-83">83</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-83" class="srcLine"><span class="comment">     */</span></span></td>
+</tr>
+<tr class="inlineStatsRow" align="right" valign="middle">
+<td class="coverageCount"><a name="84" class="nolink">&#160;</a></td>
+    <td class="coverageCount aui-icon aui-icon-small aui-iconfont-arrows-right" id='inlineStatsToggle-84' onclick="toggleInlineStats(this, 'inlinestats-84');"/>
+    <td align="center" valign="middle">
+        <table id="inlinestats-84" style="display:none;" class="inlineStats" width="100%" cellspacing="1px" cellpadding="1px">
+            <tr onclick="toggleInlineStats(document.getElementById('inlineStatsToggle-84'), 'inlinestats-84');return true;">
+                <td><div>
+<div title="100% Covered" style="min-width:40px;" class="barNegative contribBarNegative barNegative"><div class="barPositive contribBarPositive barPositive" style="width:100%"></div></div></div></td><td>100%</td>
+                <td class="inlineStat">Uncovered Elements: 0 (1)</td>
+                <td class="inlineStat">Complexity: 1</td>
+                <td class="inlineStat">Complexity Density: 1</td>
+                            </tr>
+        </table>
+    </td>
+</tr>
+<tr id="l84">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=84#src-84">84</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 84, 'Tests that hit isValidOpt(char)&#160;:&#160;boolean');" ><span title="Line 84, Col 5: method entered 510 times." class="nolink">&#160;510</span></td>
+<td class=" methodStart  srcCell" id="id-84"><img title="Method Statistics" onclick="toggleSrcRowVis(this, 84,87);" id="img-84" src="../../../../img/collapse.gif"  alt="toggle" class="icon"/><span id="src-84" class="srcLine"><span class="nolink" title="Line 84, Col 5: method entered 510 times.">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> isValidOpt(<span class="keyword">char</span> c)</span><span class="foldControl" onclick="toggleSrcRowVis(document.getElementById('img-84'), 84,87);" id="e84" style="display:none;border:none;">...</span></span></td>
+</tr>
+ <tr id="l85">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=85#src-85">85</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-85" class="srcLine">    {</span></td>
+</tr>
+ <tr id="l86">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=86#src-86">86</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 86, 'Tests that hit line # 86');" ><span title="Line 86, Col 9: statement executed 510 times." class="nolink">&#160;510</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-86" class="srcLine"><span class="nolink" title="Line 86, Col 9: statement executed 510 times.">        <span class="keyword">return</span> (isValidChar(c) || (c == ' ') || (c == '?') || c == '@');</span></span></td>
+</tr>
+ <tr id="l87">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=87#src-87">87</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-87" class="srcLine">    }</span></td>
+</tr>
+ <tr id="l88">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=88#src-88">88</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-88" class="srcLine"></span></td>
+</tr>
+ <tr id="l89">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=89#src-89">89</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-89" class="srcLine">    <span class="comment">/**</span></span></td>
+</tr>
+ <tr id="l90">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=90#src-90">90</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-90" class="srcLine"><span class="comment">     * &lt;p&gt;Returns whether the specified character is a valid character.&lt;/p&gt;</span></span></td>
+</tr>
+ <tr id="l91">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=91#src-91">91</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-91" class="srcLine"><span class="comment">     *</span></span></td>
+</tr>
+ <tr id="l92">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=92#src-92">92</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-92" class="srcLine"><span class="comment">     * </span><span class="javadoc">@param</span><span class="comment"> c the character to validate</span></span></td>
+</tr>
+ <tr id="l93">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=93#src-93">93</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-93" class="srcLine"><span class="comment">     * </span><span class="javadoc">@return</span><span class="comment"> true if &lt;code&gt;c&lt;/code&gt; is a letter.</span></span></td>
+</tr>
+ <tr id="l94">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=94#src-94">94</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-94" class="srcLine"><span class="comment">     */</span></span></td>
+</tr>
+<tr class="inlineStatsRow" align="right" valign="middle">
+<td class="coverageCount"><a name="95" class="nolink">&#160;</a></td>
+    <td class="coverageCount aui-icon aui-icon-small aui-iconfont-arrows-right" id='inlineStatsToggle-95' onclick="toggleInlineStats(this, 'inlinestats-95');"/>
+    <td align="center" valign="middle">
+        <table id="inlinestats-95" style="display:none;" class="inlineStats" width="100%" cellspacing="1px" cellpadding="1px">
+            <tr onclick="toggleInlineStats(document.getElementById('inlineStatsToggle-95'), 'inlinestats-95');return true;">
+                <td><div>
+<div title="100% Covered" style="min-width:40px;" class="barNegative contribBarNegative barNegative"><div class="barPositive contribBarPositive barPositive" style="width:100%"></div></div></div></td><td>100%</td>
+                <td class="inlineStat">Uncovered Elements: 0 (1)</td>
+                <td class="inlineStat">Complexity: 1</td>
+                <td class="inlineStat">Complexity Density: 1</td>
+                            </tr>
+        </table>
+    </td>
+</tr>
+<tr id="l95">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=95#src-95">95</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 95, 'Tests that hit isValidChar(char)&#160;:&#160;boolean');" ><span title="Line 95, Col 5: method entered 645 times." class="nolink">&#160;645</span></td>
+<td class=" methodStart  srcCell" id="id-95"><img title="Method Statistics" onclick="toggleSrcRowVis(this, 95,98);" id="img-95" src="../../../../img/collapse.gif"  alt="toggle" class="icon"/><span id="src-95" class="srcLine"><span class="nolink" title="Line 95, Col 5: method entered 645 times.">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> isValidChar(<span class="keyword">char</span> c)</span><span class="foldControl" onclick="toggleSrcRowVis(document.getElementById('img-95'), 95,98);" id="e95" style="display:none;border:none;">...</span></span></td>
+</tr>
+ <tr id="l96">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=96#src-96">96</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-96" class="srcLine">    {</span></td>
+</tr>
+ <tr id="l97">
+<td align="right" class="lineCount Good"><a class="lineNumHref" href="?line=97#src-97">97</a></td>
+<td align="right" class="coverageCount Good hitByTest"   onclick="return showTestsForLine(this, 97, 'Tests that hit line # 97');" ><span title="Line 97, Col 9: statement executed 645 times." class="nolink">&#160;645</span></td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-97" class="srcLine"><span class="nolink" title="Line 97, Col 9: statement executed 645 times.">        <span class="keyword">return</span> Character.isJavaIdentifierPart(c);</span></span></td>
+</tr>
+ <tr id="l98">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=98#src-98">98</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-98" class="srcLine">    }</span></td>
+</tr>
+ <tr id="l99">
+<td align="right" class="lineCount NoHilight"><a class="lineNumHref" href="?line=99#src-99">99</a></td>
+<td align="right" class="coverageCount NoHilight "   >&#160;&#160;</td>
+<td class=" srcCell" ><span class="spacer"></span><span id="src-99" class="srcLine">}</span></td>
+</tr>
+ 
+    </tbody></table>    </div>
+</div><!-- .aui-tabs -->
+
+<script type="text/javascript"> 
+    var ol_bgclass = "overBG";
+    var ol_fgclass = "overFG";
+    var ol_cgclass = "overCaption";
+    var ol_captionfontclass= "overCaption";
+    var ol_closefontclass = "closeFont";
+    var ol_closeclick = 1;
+    var ol_close = 'X';
+    var ol_wrap = 1;
+    var rootRelPath = '../../../../';
+    var testsPerFile = -1;
+</script>
+<script src="OptionValidator.js" type="text/javascript"></script>
+
+                        </div> <!-- class="aui-page-panel-content-clover" -->
+                    <footer id="footer" role="contentinfo">
+    <section class="footer-body">
+        <ul>
+            <li>
+                Report generated by <a target="_new" href="https://openclover.org">OpenClover</a> v 4.5.2
+                on Mon Apr 29 2024 01:05:17 CDT using coverage data from Mon Apr 29 2024 01:05:14 CDT.
+            </li>
+        </ul>
+        <ul>
+            <li>OpenClover is free and open-source software. </li>
+        </ul>
+    </section>
+</footer>                </section> <!-- class="aui-page-panel-content" -->
+            </div> <!-- class="aui-page-panel-inner" -->
+        </div> <!-- class="aui-page-panel" -->
+    </div> <!-- id="page" -->
+</body>
+</html>

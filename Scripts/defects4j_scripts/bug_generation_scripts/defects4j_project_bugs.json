@@ -1,0 +1,410 @@
+[
+    {
+        "project": "Chart",
+        "id": "15",
+        "original": "Chart_15",
+        "test_dir": "tests/org/jfree/data/general"
+    },
+    {
+        "project": "Cli",
+        "id": "35",
+        "original": "Cli_35",
+        "test_dir": "src/test/org/apache/commons/cli"
+    },
+    {
+        "project": "Codec",
+        "id": "16",
+        "original": "Codec_16",
+        "test_dir": "src/test/org/apache/commons/codec"
+    },
+    {
+        "project": "Compress",
+        "id": "16",
+        "original": "Compress_16",
+        "test_dir": "src/test/java/org/apache/commons/compress"
+    },
+    {
+        "project": "Gson",
+        "id": "10",
+        "original": "Gson_10",
+        "test_dir": "gson/src/test/java/com/google/gson"
+    },
+    {
+        "project": "JacksonCore",
+        "id": "4",
+        "original": "JacksonCore_4",
+        "test_dir": "src/test/java/com/fasterxml/jackson/core/util"
+    },
+    {
+        "project": "JacksonXml",
+        "id": "3",
+        "original": "JacksonXml_3",
+        "test_dir": "src/test/java/com/fasterxml/jackson/dataformat/xml/deser"
+    },
+    {
+        "project": "JxPath",
+        "id": "19",
+        "original": "JxPath_19",
+        "test_dir": "src/test/org/apache/commons/jxpath/ri/model/beans"
+    },
+    {
+        "project": "Math",
+        "id": "67",
+        "original": "Math_67",
+        "test_dir": "src/test/java/org/apache/commons/math"
+    },
+    {
+        "project": "Mockito",
+        "id": "9",
+        "original": "Mockito_9",
+        "test_dir": "test/org/mockito/internal/util/reflection"
+    },
+    {
+        "project": "Chart",
+        "id": "16",
+        "original": "Chart_16",
+        "test_dir": "tests/org/jfree/data/general"
+    },
+    {
+        "project": "Closure",
+        "id": "114",
+        "original": "Closure_114",
+        "test_dir": "test/com/google/javascript/jscomp"
+    },
+    {
+        "project": "Codec",
+        "id": "3",
+        "original": "Codec_3",
+        "test_dir": "src/test/org/apache/commons/codec"
+    },
+    {
+        "project": "Compress",
+        "id": "23",
+        "original": "Compress_23",
+        "test_dir": "src/test/java/org/apache/commons/compress"
+    },
+    {
+        "project": "Gson",
+        "id": "12",
+        "original": "Gson_12",
+        "test_dir": "gson/src/test/java/com/google/gson"
+    },
+    {
+        "project": "JacksonDatabind",
+        "id": "3",
+        "original": "JacksonDatabind_3",
+        "test_dir": "src/test/java/com/fasterxml/jackson/databind/deser"
+    },
+    {
+        "project": "JacksonXml",
+        "id": "5",
+        "original": "JacksonXml_5",
+        "test_dir": "src/test/java/com/fasterxml/jackson/dataformat/xml/deser"
+    },
+    {
+        "project": "JxPath",
+        "id": "3",
+        "original": "JxPath_3",
+        "test_dir": "src/test/org/apache/commons/jxpath/ri/model/beans"
+    },
+    {
+        "project": "Math",
+        "id": "75",
+        "original": "Math_75",
+        "test_dir": "src/test/java/org/apache/commons/math"
+    },
+    {
+        "project": "Chart",
+        "id": "25",
+        "original": "Chart_25",
+        "test_dir": "tests/org/jfree/data/general"
+    },
+    {
+        "project": "Closure",
+        "id": "122",
+        "original": "Closure_122",
+        "test_dir": "test/com/google/javascript/jscomp"
+    },
+    {
+        "project": "Collections",
+        "id": "25",
+        "original": "Collections_25", 
+        "test_dir": "src/test/java/org/apache/commons/collections4"
+    },
+    {
+        "project": "Compress",
+        "id": "6",
+        "original": "Compress_6",
+        "test_dir": "src/test/java/org/apache/commons/compress"
+    },
+    {
+        "project": "Gson",
+        "id": "3",
+        "original": "Gson_3",
+        "test_dir": "gson/src/test/java/com/google/gson"
+    },
+    {
+        "project": "JacksonDatabind",
+        "id": "39",
+        "original": "JacksonDatabind_39",
+        "test_dir": "src/test/java/com/fasterxml/jackson/databind/deser"
+    },
+    {
+        "project": "Jsoup",
+        "id": "16",
+        "original": "Jsoup_16",
+        "test_dir": "src/test/java/org/jsoup/nodes"
+    },
+    {
+        "project": "JxPath",
+        "id": "5",
+        "original": "JxPath_5",
+        "test_dir": "src/test/org/apache/commons/jxpath/ri/model/beans"
+    },
+    {
+        "project": "Math",
+        "id": "78",
+        "original": "Math_78",
+        "test_dir": "src/test/java/org/apache/commons/math"
+    },
+    {
+        "project": "Time",
+        "id": "1",
+        "original": "Time_1",
+        "test_dir": "src/test/java/org/joda/time/field"
+    },
+    {
+        "project": "Chart",
+        "id": "3",
+        "original": "Chart_3",
+        "test_dir": "tests/org/jfree/data/general"
+    },
+    {
+        "project": "Closure",
+        "id": "153",
+        "original": "Closure_153",
+        "test_dir": "test/com/google/javascript/jscomp"
+    },
+    {
+        "project": "Collections",
+        "id": "26",
+        "original": "Collections_26", 
+        "test_dir": "src/test/java/org/apache/commons/collections4"
+    },
+    {
+        "project": "Csv",
+        "id": "10",
+        "original": "Csv_10",
+        "test_dir": "src/test/java/org/apache/commons/csv"
+    },
+    {
+        "project": "Gson",
+        "id": "5",
+        "original": "Gson_5",
+        "test_dir": "gson/src/test/java/com/google/gson"
+    },
+    {
+        "project": "JacksonDatabind",
+        "id": "87",
+        "original": "JacksonDatabind_87",
+        "test_dir": "src/test/java/com/fasterxml/jackson/databind/deser"
+    },
+    {
+        "project": "Jsoup",
+        "id": "38",
+        "original": "Jsoup_38",
+        "test_dir": "src/test/java/org/jsoup/nodes"
+    },
+    {
+        "project": "Lang",
+        "id": "41",
+        "original": "Lang_41",
+        "test_dir" : "src/test/java/org/apache/commons/lang3/math"
+    },
+    {
+        "project": "Math",
+        "id": "94",
+        "original": "Math_94",
+        "test_dir": "src/test/java/org/apache/commons/math"
+    },
+    {
+        "project": "Time",
+        "id": "10",
+        "original": "Time_10",
+        "test_dir": "src/test/java/org/joda/time/field"
+    },
+    {
+        "project": "Cli",
+        "id": "18",
+        "original": "Cli_18",
+        "test_dir": "src/test/org/apache/commons/cli"
+    },
+    {
+        "project": "Closure",
+        "id": "164",
+        "original": "Closure_164",
+        "test_dir": "test/com/google/javascript/jscomp"
+    },
+    {
+        "project": "Collections",
+        "id": "27",
+        "original": "Collections_27", 
+        "test_dir": "src/test/java/org/apache/commons/collections4"
+    },
+    {
+        "project": "Csv",
+        "id": "14",
+        "original": "Csv_14",
+        "test_dir": "src/test/java/org/apache/commons/csv"
+    },
+    {
+        "project": "JacksonCore",
+        "id": "17",
+        "original": "JacksonCore_17",
+        "test_dir": "src/test/java/com/fasterxml/jackson/core/util"
+    },
+    {
+        "project": "JacksonDatabind",
+        "id": "94",
+        "original": "JacksonDatabind_94",
+        "test_dir": "src/test/java/com/fasterxml/jackson/databind/deser"
+    },
+    {
+        "project": "Jsoup",
+        "id": "67",
+        "original": "Jsoup_67",
+        "test_dir": "src/test/java/org/jsoup/nodes"
+    },
+    {
+        "project": "Lang",
+        "id": "64",
+        "original": "Lang_64",
+        "test_dir" : "src/test/java/org/apache/commons/lang3/math"
+    },
+    {
+        "project": "Mockito",
+        "id": "11",
+        "original": "Mockito_11",
+        "test_dir": "test/org/mockito/internal/util/reflection"
+    },
+    {
+        "project": "Time",
+        "id": "26",
+        "original": "Time_26",
+        "test_dir": "src/test/java/org/joda/time/field"
+    },
+    {
+        "project": "Cli",
+        "id": "20",
+        "original": "Cli_20",
+        "test_dir": "src/test/org/apache/commons/cli"
+    },
+    {
+        "project": "Codec",
+        "id": "12",
+        "original": "Codec_12",
+        "test_dir": "src/test/org/apache/commons/codec"
+    },
+    {
+        "project": "Collections",
+        "id": "28",
+        "original": "Collections_28", 
+        "test_dir": "src/test/java/org/apache/commons/collections4"
+    },
+    {
+        "project": "Csv",
+        "id": "7",
+        "original": "Csv_7",
+        "test_dir": "src/test/java/org/apache/commons/csv"
+    },
+    {
+        "project": "JacksonCore",
+        "id": "19",
+        "original": "JacksonCore_19",
+        "test_dir": "src/test/java/com/fasterxml/jackson/core/util"
+    },
+    {
+        "project": "JacksonXml",
+        "id": "1",
+        "original": "JacksonXml_1",
+        "test_dir": "src/test/java/com/fasterxml/jackson/dataformat/xml/deser"
+    },
+    {
+        "project": "Jsoup",
+        "id": "7",
+        "original": "Jsoup_7",
+        "test_dir": "src/test/java/org/jsoup/nodes"
+    },
+    {
+        "project": "Lang",
+        "id": "7",
+        "original": "Lang_7",
+        "test_dir" : "src/test/java/org/apache/commons/lang3/math"
+    },
+    {
+        "project": "Mockito",
+        "id": "24",
+        "original": "Mockito_24",
+        "test_dir": "test/org/mockito/internal/util/reflection"
+    },
+    {
+        "project": "Time",
+        "id": "6",
+        "original": "Time_6",
+        "test_dir": "src/test/java/org/joda/time/field"
+    },
+    {
+        "project": "Cli",
+        "id": "25",
+        "original": "Cli_25",
+        "test_dir": "src/test/org/apache/commons/cli"
+    },
+    {
+        "project": "Codec",
+        "id": "15",
+        "original": "Codec_15",
+        "test_dir": "src/test/org/apache/commons/codec"
+    },
+    {
+        "project": "Compress",
+        "id": "1",
+        "original": "Compress_1",
+        "test_dir": "src/test/java/org/apache/commons/compress"
+    },
+    {
+        "project": "Csv",
+        "id": "8",
+        "original": "Csv_8",
+        "test_dir": "src/test/java/org/apache/commons/csv"
+    },
+    {
+        "project": "JacksonCore",
+        "id": "20",
+        "original": "JacksonCore_20",
+        "test_dir": "src/test/java/com/fasterxml/jackson/core/util"
+    },
+    {
+        "project": "JacksonXml",
+        "id": "2",
+        "original": "JacksonXml_2",
+        "test_dir": "src/test/java/com/fasterxml/jackson/dataformat/xml/deser"
+    },
+    {
+        "project": "JxPath",
+        "id": "16",
+        "original": "JxPath_16",
+        "test_dir": "src/test/org/apache/commons/jxpath/ri/model/beans"
+    },
+    {
+        "project": "Lang",
+        "id": "9",
+        "original": "Lang_9",
+        "test_dir" : "src/test/java/org/apache/commons/lang3/math"
+    },
+    {
+        "project": "Mockito",
+        "id": "7",
+        "original": "Mockito_7",
+        "test_dir": "test/org/mockito/internal/util/reflection"
+    }
+]

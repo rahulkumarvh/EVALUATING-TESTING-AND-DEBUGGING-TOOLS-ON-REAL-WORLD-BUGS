@@ -1,0 +1,22 @@
+Repo name,Bug ID,AR,FR
+QuixBugs,LEVENSHTEIN,1,1
+QuixBugs,BUCKETSORT,1,1
+QuixBugs,DETECT_CYCLE,4,4
+QuixBugs,FIND_IN_SORTED,5,5
+QuixBugs,FLATTEN,9,9
+QuixBugs,KHEAPSORT,4,4
+QuixBugs,KNAPSACK,2,2
+Bears,Bears-25,41,41
+Bears,Bears-107,19,19
+Bears,Bears-114,93,93
+Bears,Bears-115,1,1
+Bears,Bears-3,21.5,16
+Bears,Bears-101,38.3,1
+Bears,Bears-17,29.4,1
+Defects4J,Cli_18,24,24
+Defects4J,Cli_20,5,1
+Defects4J,Cli_22,18,1
+Defects4J,Cli_24,0,0
+Defects4J,Cli_26,6,6
+Defects4J,Cli_28,1,1
+Defects4J,Cli_30,4.5,1

@@ -1,0 +1,425 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ReaperApplication</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper</a>
+</div>
+
+<h1>Coverage Summary for Class: ReaperApplication (io.cassandrareaper)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReaperApplication</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/139)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper;
+&nbsp;
+&nbsp;import io.cassandrareaper.ReaperApplicationConfiguration.JmxCredentials;
+&nbsp;import io.cassandrareaper.jmx.JmxConnectionFactory;
+&nbsp;import io.cassandrareaper.jmx.JmxConnectionsInitializer;
+&nbsp;import io.cassandrareaper.resources.ClusterResource;
+&nbsp;import io.cassandrareaper.resources.PingResource;
+&nbsp;import io.cassandrareaper.resources.ReaperHealthCheck;
+&nbsp;import io.cassandrareaper.resources.RepairRunResource;
+&nbsp;import io.cassandrareaper.resources.RepairScheduleResource;
+&nbsp;import io.cassandrareaper.service.AutoSchedulingManager;
+&nbsp;import io.cassandrareaper.service.RepairManager;
+&nbsp;import io.cassandrareaper.service.SchedulingManager;
+&nbsp;import io.cassandrareaper.storage.CassandraStorage;
+&nbsp;import io.cassandrareaper.storage.IDistributedStorage;
+&nbsp;import io.cassandrareaper.storage.IStorage;
+&nbsp;import io.cassandrareaper.storage.MemoryStorage;
+&nbsp;import io.cassandrareaper.storage.PostgresStorage;
+&nbsp;
+&nbsp;import java.util.EnumSet;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.concurrent.Executors;
+&nbsp;import java.util.concurrent.ScheduledExecutorService;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;
+&nbsp;import javax.servlet.DispatcherType;
+&nbsp;import javax.servlet.FilterRegistration;
+&nbsp;
+&nbsp;import com.codahale.metrics.MetricRegistry;
+&nbsp;import com.codahale.metrics.Timer;
+&nbsp;import com.datastax.driver.core.policies.EC2MultiRegionAddressTranslator;
+&nbsp;import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+&nbsp;import com.google.common.annotations.VisibleForTesting;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import io.dropwizard.Application;
+&nbsp;import io.dropwizard.assets.AssetsBundle;
+&nbsp;import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+&nbsp;import io.dropwizard.configuration.SubstitutingSourceProvider;
+&nbsp;import io.dropwizard.db.DataSourceFactory;
+&nbsp;import io.dropwizard.jdbi.DBIFactory;
+&nbsp;import io.dropwizard.setup.Bootstrap;
+&nbsp;import io.dropwizard.setup.Environment;
+&nbsp;import io.prometheus.client.CollectorRegistry;
+&nbsp;import io.prometheus.client.dropwizard.DropwizardExports;
+&nbsp;import io.prometheus.client.exporter.MetricsServlet;
+&nbsp;import org.eclipse.jetty.servlets.CrossOriginFilter;
+&nbsp;import org.flywaydb.core.Flyway;
+&nbsp;import org.joda.time.DateTimeZone;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import sun.misc.Signal;
+&nbsp;
+&nbsp;public final class ReaperApplication extends Application&lt;ReaperApplicationConfiguration&gt; {
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(ReaperApplication.class);</b>
+<b class="nc">&nbsp;  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);</b>
+&nbsp;  private final AppContext context;
+&nbsp;
+&nbsp;  public ReaperApplication() {
+<b class="nc">&nbsp;    super();</b>
+<b class="nc">&nbsp;    LOG.info(&quot;default ReaperApplication constructor called&quot;);</b>
+<b class="nc">&nbsp;    this.context = new AppContext();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @VisibleForTesting
+&nbsp;  public ReaperApplication(AppContext context) {
+<b class="nc">&nbsp;    super();</b>
+<b class="nc">&nbsp;    LOG.info(&quot;ReaperApplication constructor called with custom AppContext&quot;);</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public static void main(String[] args) throws Exception {
+<b class="nc">&nbsp;    new ReaperApplication().run(args);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public String getName() {
+<b class="nc">&nbsp;    return &quot;cassandra-reaper&quot;;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Before a Dropwizard application can provide the command-line interface, parse a configuration file, or run as a
+&nbsp;   * server, it must first go through a bootstrapping phase. You can add Bundles, Commands, or register Jackson modules
+&nbsp;   * to allow you to include custom types as part of your configuration class.
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void initialize(Bootstrap&lt;ReaperApplicationConfiguration&gt; bootstrap) {
+<b class="nc">&nbsp;    bootstrap.addBundle(new AssetsBundle(&quot;/assets/&quot;, &quot;/webui&quot;, &quot;index.html&quot;));</b>
+<b class="nc">&nbsp;    bootstrap.getObjectMapper().registerModule(new JavaTimeModule());</b>
+&nbsp;
+&nbsp;    // enable using environment variables in yml files
+<b class="nc">&nbsp;    final SubstitutingSourceProvider envSourceProvider = new SubstitutingSourceProvider(</b>
+<b class="nc">&nbsp;        bootstrap.getConfigurationSourceProvider(), new EnvironmentVariableSubstitutor(false));</b>
+<b class="nc">&nbsp;    bootstrap.setConfigurationSourceProvider(envSourceProvider);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void run(ReaperApplicationConfiguration config, Environment environment) throws Exception {
+&nbsp;    // Using UTC times everywhere as default. Affects only Yoda time.
+<b class="nc">&nbsp;    DateTimeZone.setDefault(DateTimeZone.UTC);</b>
+&nbsp;
+<b class="nc">&nbsp;    checkConfiguration(config);</b>
+<b class="nc">&nbsp;    context.config = config;</b>
+&nbsp;
+<b class="nc">&nbsp;    addSignalHandlers(); // SIGHUP, etc.</b>
+&nbsp;
+<b class="nc">&nbsp;    context.metricRegistry = environment.metrics();</b>
+<b class="nc">&nbsp;    CollectorRegistry.defaultRegistry.register(new DropwizardExports(environment.metrics()));</b>
+&nbsp;
+<b class="nc">&nbsp;    environment</b>
+<b class="nc">&nbsp;        .admin()</b>
+<b class="nc">&nbsp;        .addServlet(&quot;prometheusMetrics&quot;, new MetricsServlet(CollectorRegistry.defaultRegistry))</b>
+<b class="nc">&nbsp;        .addMapping(&quot;/prometheusMetrics&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;    LOG.info(&quot;initializing runner thread pool with {} threads&quot;, config.getRepairRunThreadCount());</b>
+<b class="nc">&nbsp;    context.repairManager = RepairManager.create(context);</b>
+<b class="nc">&nbsp;    context.repairManager.initializeThreadPool(</b>
+<b class="nc">&nbsp;        config.getRepairRunThreadCount(),</b>
+<b class="nc">&nbsp;        config.getHangingRepairTimeoutMins(),</b>
+&nbsp;        TimeUnit.MINUTES,
+<b class="nc">&nbsp;        config.getRepairManagerSchedulingIntervalSeconds(),</b>
+&nbsp;        TimeUnit.SECONDS);
+&nbsp;
+<b class="nc">&nbsp;    if (context.storage == null) {</b>
+<b class="nc">&nbsp;      LOG.info(&quot;initializing storage of type: {}&quot;, config.getStorageType());</b>
+<b class="nc">&nbsp;      context.storage = initializeStorage(config, environment);</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      LOG.info(&quot;storage already given in context, not initializing a new one&quot;);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (context.jmxConnectionFactory == null) {</b>
+<b class="nc">&nbsp;      LOG.info(&quot;no JMX connection factory given in context, creating default&quot;);</b>
+<b class="nc">&nbsp;      context.jmxConnectionFactory = new JmxConnectionFactory(context.metricRegistry);</b>
+&nbsp;
+&nbsp;      // read jmx host/port mapping from config and provide to jmx con.factory
+<b class="nc">&nbsp;      Map&lt;String, Integer&gt; jmxPorts = config.getJmxPorts();</b>
+<b class="nc">&nbsp;      if (jmxPorts != null) {</b>
+<b class="nc">&nbsp;        LOG.debug(&quot;using JMX ports mapping: {}&quot;, jmxPorts);</b>
+<b class="nc">&nbsp;        context.jmxConnectionFactory.setJmxPorts(jmxPorts);</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      if (config.useAddressTranslator()) {</b>
+<b class="nc">&nbsp;        context.jmxConnectionFactory.setAddressTranslator(new EC2MultiRegionAddressTranslator());</b>
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      JmxCredentials jmxAuth = config.getJmxAuth();</b>
+<b class="nc">&nbsp;      if (jmxAuth != null) {</b>
+<b class="nc">&nbsp;        LOG.debug(&quot;using specified JMX credentials for authentication&quot;);</b>
+<b class="nc">&nbsp;        context.jmxConnectionFactory.setJmxAuth(jmxAuth);</b>
+&nbsp;      }
+&nbsp;    }
+&nbsp;
+&nbsp;    // Enable cross-origin requests for using external GUI applications.
+<b class="nc">&nbsp;    if (config.isEnableCrossOrigin() || System.getProperty(&quot;enableCrossOrigin&quot;) != null) {</b>
+<b class="nc">&nbsp;      final FilterRegistration.Dynamic cors</b>
+<b class="nc">&nbsp;          = environment.servlets().addFilter(&quot;crossOriginRequests&quot;, CrossOriginFilter.class);</b>
+<b class="nc">&nbsp;      cors.setInitParameter(&quot;allowedOrigins&quot;, &quot;*&quot;);</b>
+<b class="nc">&nbsp;      cors.setInitParameter(&quot;allowedHeaders&quot;, &quot;X-Requested-With,Content-Type,Accept,Origin&quot;);</b>
+<b class="nc">&nbsp;      cors.setInitParameter(&quot;allowedMethods&quot;, &quot;OPTIONS,GET,PUT,POST,DELETE,HEAD&quot;);</b>
+<b class="nc">&nbsp;      cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, &quot;/*&quot;);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    LOG.info(&quot;creating and registering health checks&quot;);</b>
+&nbsp;    // Notice that health checks are registered under the admin application on /healthcheck
+<b class="nc">&nbsp;    final ReaperHealthCheck healthCheck = new ReaperHealthCheck(context);</b>
+<b class="nc">&nbsp;    environment.healthChecks().register(&quot;reaper&quot;, healthCheck);</b>
+&nbsp;
+<b class="nc">&nbsp;    LOG.info(&quot;creating resources and registering endpoints&quot;);</b>
+<b class="nc">&nbsp;    final PingResource pingResource = new PingResource();</b>
+<b class="nc">&nbsp;    environment.jersey().register(pingResource);</b>
+&nbsp;
+<b class="nc">&nbsp;    final ClusterResource addClusterResource = new ClusterResource(context);</b>
+<b class="nc">&nbsp;    environment.jersey().register(addClusterResource);</b>
+&nbsp;
+<b class="nc">&nbsp;    final RepairRunResource addRepairRunResource = new RepairRunResource(context);</b>
+<b class="nc">&nbsp;    environment.jersey().register(addRepairRunResource);</b>
+&nbsp;
+<b class="nc">&nbsp;    final RepairScheduleResource addRepairScheduleResource = new RepairScheduleResource(context);</b>
+<b class="nc">&nbsp;    environment.jersey().register(addRepairScheduleResource);</b>
+<b class="nc">&nbsp;    Thread.sleep(1000);</b>
+&nbsp;
+<b class="nc">&nbsp;    SchedulingManager.start(context);</b>
+&nbsp;
+<b class="nc">&nbsp;    if (config.hasAutoSchedulingEnabled()) {</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;using specified configuration for auto scheduling: {}&quot;, config.getAutoScheduling());</b>
+<b class="nc">&nbsp;      AutoSchedulingManager.start(context);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    initializeJmxSeedsForAllClusters();</b>
+<b class="nc">&nbsp;    LOG.info(&quot;resuming pending repair runs&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;    if (context.storage instanceof IDistributedStorage) {</b>
+&nbsp;      // Allowing multiple Reaper instances to work concurrently requires
+&nbsp;      // us to poll the database for running repairs regularly
+&nbsp;      // only with Cassandra storage
+<b class="nc">&nbsp;      scheduler.scheduleWithFixedDelay(</b>
+&nbsp;          () -&gt; {
+&nbsp;            try {
+<b class="nc">&nbsp;              context.repairManager.resumeRunningRepairRuns();</b>
+<b class="nc">&nbsp;            } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;              LOG.error(&quot;Couldn&#39;t resume running repair runs&quot;, e);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;          },
+&nbsp;          0,
+&nbsp;          10,
+&nbsp;          TimeUnit.SECONDS);
+&nbsp;    } else {
+&nbsp;      // Storage is different than Cassandra, assuming we have a single instance
+<b class="nc">&nbsp;      context.repairManager.resumeRunningRepairRuns();</b>
+&nbsp;    }
+<b class="nc">&nbsp;    LOG.info(&quot;Initialization complete! Reaper is ready to get things done!&quot;);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private IStorage initializeStorage(ReaperApplicationConfiguration config, Environment environment)
+&nbsp;      throws ReaperException {
+&nbsp;    IStorage storage;
+&nbsp;
+<b class="nc">&nbsp;    if (&quot;memory&quot;.equalsIgnoreCase(config.getStorageType())) {</b>
+<b class="nc">&nbsp;      storage = new MemoryStorage();</b>
+<b class="nc">&nbsp;    } else if (&quot;cassandra&quot;.equalsIgnoreCase(config.getStorageType())) {</b>
+<b class="nc">&nbsp;      storage = new CassandraStorage(config, environment);</b>
+<b class="nc">&nbsp;    } else if (&quot;postgres&quot;.equalsIgnoreCase(config.getStorageType())</b>
+<b class="nc">&nbsp;        || &quot;h2&quot;.equalsIgnoreCase(config.getStorageType())</b>
+<b class="nc">&nbsp;        || &quot;database&quot;.equalsIgnoreCase(config.getStorageType())) {</b>
+&nbsp;      // create DBI instance
+<b class="nc">&nbsp;      final DBIFactory factory = new DBIFactory();</b>
+&nbsp;
+&nbsp;      // instanciate store
+<b class="nc">&nbsp;      storage = new PostgresStorage(factory.build(environment, config.getDataSourceFactory(), &quot;postgresql&quot;));</b>
+<b class="nc">&nbsp;      initDatabase(config);</b>
+<b class="nc">&nbsp;    } else {</b>
+<b class="nc">&nbsp;      LOG.error(&quot;invalid storageType: {}&quot;, config.getStorageType());</b>
+<b class="nc">&nbsp;      throw new ReaperException(&quot;invalid storage type: &quot; + config.getStorageType());</b>
+&nbsp;    }
+<b class="nc">&nbsp;    Preconditions.checkState(storage.isStorageConnected(), &quot;Failed to connect storage&quot;);</b>
+<b class="nc">&nbsp;    return storage;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void checkConfiguration(ReaperApplicationConfiguration config) {
+<b class="nc">&nbsp;    LOG.debug(&quot;repairIntensity: {}&quot;, config.getRepairIntensity());</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;incrementalRepair: {}&quot;, config.getIncrementalRepair());</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;repairRunThreadCount: {}&quot;, config.getRepairRunThreadCount());</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;segmentCount: {}&quot;, config.getSegmentCount());</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;repairParallelism: {}&quot;, config.getRepairParallelism());</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;hangingRepairTimeoutMins: {}&quot;, config.getHangingRepairTimeoutMins());</b>
+<b class="nc">&nbsp;    LOG.debug(&quot;jmxPorts: {}&quot;, config.getJmxPorts());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  void reloadConfiguration() {
+&nbsp;    // TODO: reload configuration, but how?
+<b class="nc">&nbsp;    LOG.warn(&quot;SIGHUP signal dropped, missing implementation for configuration reload&quot;);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void addSignalHandlers() {
+<b class="nc">&nbsp;    if (!System.getProperty(&quot;os.name&quot;).toLowerCase().contains(&quot;win&quot;)) {</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;adding signal handler for SIGHUP&quot;);</b>
+<b class="nc">&nbsp;      Signal.handle(new Signal(&quot;HUP&quot;), signal -&gt; {</b>
+<b class="nc">&nbsp;        LOG.info(&quot;received SIGHUP signal: {}&quot;, signal);</b>
+<b class="nc">&nbsp;        reloadConfiguration();</b>
+&nbsp;      });
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  private void initDatabase(ReaperApplicationConfiguration config) throws ReaperException {
+<b class="nc">&nbsp;    Flyway flyway = new Flyway();</b>
+<b class="nc">&nbsp;    DataSourceFactory dsfactory = config.getDataSourceFactory();</b>
+<b class="nc">&nbsp;    flyway.setDataSource(</b>
+<b class="nc">&nbsp;        dsfactory.getUrl(),</b>
+<b class="nc">&nbsp;        dsfactory.getUser(),</b>
+<b class="nc">&nbsp;        dsfactory.getPassword());</b>
+&nbsp;
+<b class="nc">&nbsp;    if (&quot;database&quot;.equals(config.getStorageType())) {</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;!!!!!!!!!!    USAGE &#39;database&#39; AS STORAGE TYPE IS NOW DEPRECATED   !!!!!!!!!!!!!!&quot;);</b>
+<b class="nc">&nbsp;      LOG.warn(&quot;!!!!!!!!!!    PLEASE USE EITHER &#39;postgres&#39; OR &#39;h2&#39; FROM NOW ON     !!!!!!!!!!!!!!&quot;);</b>
+<b class="nc">&nbsp;      if (config.getDataSourceFactory().getUrl().contains(&quot;h2&quot;)) {</b>
+<b class="nc">&nbsp;        flyway.setLocations(&quot;/db/h2&quot;);</b>
+&nbsp;      } else {
+<b class="nc">&nbsp;        flyway.setLocations(&quot;/db/postgres&quot;);</b>
+&nbsp;      }
+&nbsp;    } else {
+<b class="nc">&nbsp;      flyway.setLocations(&quot;/db/&quot;.concat(config.getStorageType().toLowerCase()));</b>
+&nbsp;    }
+<b class="nc">&nbsp;    flyway.setBaselineOnMigrate(true);</b>
+<b class="nc">&nbsp;    flyway.repair();</b>
+<b class="nc">&nbsp;    flyway.migrate();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void initializeJmxSeedsForAllClusters() {
+<b class="nc">&nbsp;    LOG.info(&quot;Initializing JMX seed list for all clusters...&quot;);</b>
+<b class="nc">&nbsp;    try (JmxConnectionsInitializer jmxConnectionsIntializer = JmxConnectionsInitializer.create(context);</b>
+<b class="nc">&nbsp;        Timer.Context cxt = context</b>
+&nbsp;                .metricRegistry
+<b class="nc">&nbsp;                .timer(MetricRegistry.name(JmxConnectionFactory.class, &quot;jmxConnectionsIntializer&quot;))</b>
+<b class="nc">&nbsp;                .time()) {</b>
+&nbsp;
+<b class="nc">&nbsp;      context</b>
+&nbsp;          .storage
+<b class="nc">&nbsp;          .getClusters()</b>
+<b class="nc">&nbsp;          .parallelStream()</b>
+<b class="nc">&nbsp;          .forEach(cluster -&gt; jmxConnectionsIntializer.on(cluster));</b>
+&nbsp;
+<b class="nc">&nbsp;      LOG.info(&quot;Initialized JMX seed list for all clusters.&quot;);</b>
+<b class="nc">&nbsp;    } catch (RuntimeException e) {</b>
+<b class="nc">&nbsp;      LOG.error(&quot;Failed initializing JMX seed list&quot;, e);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-02 20:50</div>
+</div>
+</body>
+</html>

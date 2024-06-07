@@ -1,0 +1,331 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ClusterRepairScheduler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.cassandrareaper.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ClusterRepairScheduler (io.cassandrareaper.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClusterRepairScheduler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/65)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClusterRepairScheduler$ScheduledRepairDiffView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/91)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package io.cassandrareaper.service;
+&nbsp;
+&nbsp;import io.cassandrareaper.AppContext;
+&nbsp;import io.cassandrareaper.ReaperException;
+&nbsp;import io.cassandrareaper.core.Cluster;
+&nbsp;import io.cassandrareaper.core.RepairSchedule;
+&nbsp;import io.cassandrareaper.core.RepairUnit;
+&nbsp;import io.cassandrareaper.jmx.JmxProxy;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.concurrent.atomic.AtomicInteger;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import com.google.common.base.Optional;
+&nbsp;import com.google.common.base.Throwables;
+&nbsp;import com.google.common.collect.ImmutableSet;
+&nbsp;import com.google.common.collect.Sets;
+&nbsp;import org.joda.time.DateTime;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import static java.lang.String.format;
+&nbsp;
+&nbsp;public final class ClusterRepairScheduler {
+&nbsp;
+<b class="nc">&nbsp;  private static final Logger LOG = LoggerFactory.getLogger(ClusterRepairScheduler.class);</b>
+&nbsp;  private static final String REPAIR_OWNER = &quot;auto-scheduling&quot;;
+&nbsp;  private static final String SYSTEM_KEYSPACE_PREFIX = &quot;system&quot;;
+&nbsp;
+&nbsp;  private final AppContext context;
+&nbsp;  private final RepairUnitService repairUnitService;
+&nbsp;  private final RepairScheduleService repairScheduleService;
+&nbsp;
+<b class="nc">&nbsp;  public ClusterRepairScheduler(AppContext context) {</b>
+<b class="nc">&nbsp;    this.context = context;</b>
+<b class="nc">&nbsp;    this.repairUnitService = RepairUnitService.create(context);</b>
+<b class="nc">&nbsp;    this.repairScheduleService = RepairScheduleService.create(context);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void scheduleRepairs(Cluster cluster) throws ReaperException {
+<b class="nc">&nbsp;    AtomicInteger scheduleIndex = new AtomicInteger();</b>
+<b class="nc">&nbsp;    ScheduledRepairDiffView schedulesDiff = ScheduledRepairDiffView.compareWithExistingSchedules(context, cluster);</b>
+<b class="nc">&nbsp;    schedulesDiff.keyspacesDeleted().forEach(keyspace -&gt; deleteRepairSchedule(cluster, keyspace));</b>
+<b class="nc">&nbsp;    schedulesDiff</b>
+<b class="nc">&nbsp;        .keyspacesWithoutSchedules()</b>
+<b class="nc">&nbsp;        .stream()</b>
+<b class="nc">&nbsp;        .filter(keyspace -&gt; keyspaceCandidateForRepair(cluster, keyspace))</b>
+<b class="nc">&nbsp;        .forEach(</b>
+<b class="nc">&nbsp;            keyspace</b>
+<b class="nc">&nbsp;              -&gt; createRepairSchedule(cluster, keyspace, nextActivationStartDate(scheduleIndex.getAndIncrement())));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private DateTime nextActivationStartDate(int scheduleIndex) {
+<b class="nc">&nbsp;    DateTime timeBeforeFirstSchedule</b>
+<b class="nc">&nbsp;        = DateTime.now().plus(context.config.getAutoScheduling().getTimeBeforeFirstSchedule().toMillis());</b>
+&nbsp;
+<b class="nc">&nbsp;    if (context.config.getAutoScheduling().hasScheduleSpreadPeriod()) {</b>
+<b class="nc">&nbsp;      return timeBeforeFirstSchedule.plus(</b>
+<b class="nc">&nbsp;          scheduleIndex * context.config.getAutoScheduling().getScheduleSpreadPeriod().toMillis());</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return timeBeforeFirstSchedule;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void deleteRepairSchedule(Cluster cluster, String keyspace) {
+<b class="nc">&nbsp;    Collection&lt;RepairSchedule&gt; scheduleCollection</b>
+<b class="nc">&nbsp;        = context.storage.getRepairSchedulesForClusterAndKeyspace(cluster.getName(), keyspace);</b>
+&nbsp;
+<b class="nc">&nbsp;    scheduleCollection.forEach(</b>
+<b class="nc">&nbsp;        repairSchedule -&gt; {</b>
+<b class="nc">&nbsp;          context.storage.deleteRepairSchedule(repairSchedule.getId());</b>
+<b class="nc">&nbsp;          LOG.info(&quot;Scheduled repair deleted: {}&quot;, repairSchedule);</b>
+&nbsp;        });
+&nbsp;  }
+&nbsp;
+&nbsp;  private boolean keyspaceCandidateForRepair(Cluster cluster, String keyspace) {
+<b class="nc">&nbsp;    if (keyspace.toLowerCase().startsWith(ClusterRepairScheduler.SYSTEM_KEYSPACE_PREFIX)</b>
+<b class="nc">&nbsp;        || context.config.getAutoScheduling().getExcludedKeyspaces().contains(keyspace)) {</b>
+<b class="nc">&nbsp;      LOG.debug(&quot;Scheduled repair skipped for system keyspace {} in cluster {}.&quot;, keyspace, cluster.getName());</b>
+<b class="nc">&nbsp;      return false;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    if (keyspaceHasNoTable(context, cluster, keyspace)) {</b>
+<b class="nc">&nbsp;      LOG.warn(</b>
+<b class="nc">&nbsp;          &quot;No tables found for keyspace {} in cluster {}. No repair will be scheduled for this keyspace.&quot;,</b>
+<b class="nc">&nbsp;          keyspace,</b>
+<b class="nc">&nbsp;          cluster.getName());</b>
+<b class="nc">&nbsp;      return false;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return true;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void createRepairSchedule(Cluster cluster, String keyspace, DateTime nextActivationTime) {
+&nbsp;    try {
+<b class="nc">&nbsp;      boolean incrementalRepair = context.config.getIncrementalRepair();</b>
+&nbsp;
+<b class="nc">&nbsp;      RepairSchedule repairSchedule =</b>
+<b class="nc">&nbsp;          repairScheduleService.storeNewRepairSchedule(</b>
+<b class="nc">&nbsp;              cluster,</b>
+<b class="nc">&nbsp;              repairUnitService.getNewOrExistingRepairUnit(</b>
+<b class="nc">&nbsp;                  cluster,</b>
+<b class="nc">&nbsp;                  keyspace,</b>
+<b class="nc">&nbsp;                  Collections.emptySet(),</b>
+<b class="nc">&nbsp;                  incrementalRepair,</b>
+<b class="nc">&nbsp;                  Collections.emptySet(),</b>
+<b class="nc">&nbsp;                  Collections.emptySet(),</b>
+<b class="nc">&nbsp;                  Collections.emptySet()),</b>
+<b class="nc">&nbsp;              context.config.getScheduleDaysBetween(),</b>
+<b class="nc">&nbsp;              nextActivationTime,</b>
+<b class="nc">&nbsp;              REPAIR_OWNER,</b>
+<b class="nc">&nbsp;              context.config.getSegmentCountPerNode(),</b>
+<b class="nc">&nbsp;              context.config.getRepairParallelism(),</b>
+<b class="nc">&nbsp;              context.config.getRepairIntensity());</b>
+&nbsp;
+<b class="nc">&nbsp;      LOG.info(&quot;Scheduled repair created: {}&quot;, repairSchedule);</b>
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      throw Throwables.propagate(e);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  private boolean keyspaceHasNoTable(AppContext context, Cluster cluster, String keyspace) {
+<b class="nc">&nbsp;    try (JmxProxy jmxProxy</b>
+<b class="nc">&nbsp;        = context.jmxConnectionFactory.connectAny(cluster, context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+&nbsp;
+<b class="nc">&nbsp;      Set&lt;String&gt; tables = jmxProxy.getTableNamesForKeyspace(keyspace);</b>
+<b class="nc">&nbsp;      return tables.isEmpty();</b>
+<b class="nc">&nbsp;    } catch (ReaperException e) {</b>
+<b class="nc">&nbsp;      throw Throwables.propagate(e);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  private static class ScheduledRepairDiffView {
+&nbsp;
+&nbsp;    private final ImmutableSet&lt;String&gt; keyspacesThatRequireSchedules;
+&nbsp;    private final ImmutableSet&lt;String&gt; keyspacesDeleted;
+&nbsp;
+<b class="nc">&nbsp;    ScheduledRepairDiffView(AppContext context, Cluster cluster) throws ReaperException {</b>
+<b class="nc">&nbsp;      Set&lt;String&gt; allKeyspacesInCluster = keyspacesInCluster(context, cluster);</b>
+<b class="nc">&nbsp;      Set&lt;String&gt; keyspacesThatHaveSchedules = keyspacesThatHaveSchedules(context, cluster);</b>
+&nbsp;
+<b class="nc">&nbsp;      keyspacesThatRequireSchedules</b>
+<b class="nc">&nbsp;          = Sets.difference(allKeyspacesInCluster, keyspacesThatHaveSchedules).immutableCopy();</b>
+&nbsp;
+<b class="nc">&nbsp;      keyspacesDeleted = Sets.difference(keyspacesThatHaveSchedules, allKeyspacesInCluster).immutableCopy();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    static ScheduledRepairDiffView compareWithExistingSchedules(AppContext context, Cluster cluster)
+&nbsp;        throws ReaperException {
+&nbsp;
+<b class="nc">&nbsp;      return new ScheduledRepairDiffView(context, cluster);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    Set&lt;String&gt; keyspacesWithoutSchedules() {
+<b class="nc">&nbsp;      return keyspacesThatRequireSchedules;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    Set&lt;String&gt; keyspacesDeleted() {
+<b class="nc">&nbsp;      return keyspacesDeleted;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Set&lt;String&gt; keyspacesThatHaveSchedules(AppContext context, Cluster cluster) {
+<b class="nc">&nbsp;      Collection&lt;RepairSchedule&gt; currentSchedules = context.storage.getRepairSchedulesForCluster(cluster.getName());</b>
+<b class="nc">&nbsp;      return currentSchedules</b>
+<b class="nc">&nbsp;          .stream()</b>
+<b class="nc">&nbsp;          .map(</b>
+<b class="nc">&nbsp;              repairSchedule -&gt; {</b>
+<b class="nc">&nbsp;                Optional&lt;RepairUnit&gt; repairUnit = context.storage.getRepairUnit(repairSchedule.getRepairUnitId());</b>
+<b class="nc">&nbsp;                return repairUnit.get().getKeyspaceName();</b>
+&nbsp;              })
+<b class="nc">&nbsp;          .collect(Collectors.toSet());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Set&lt;String&gt; keyspacesInCluster(AppContext context, Cluster cluster) throws ReaperException {
+<b class="nc">&nbsp;      try (JmxProxy jmxProxy</b>
+<b class="nc">&nbsp;          = context.jmxConnectionFactory.connectAny(cluster, context.config.getJmxConnectionTimeoutInSeconds())) {</b>
+<b class="nc">&nbsp;        List&lt;String&gt; keyspaces = jmxProxy.getKeyspaces();</b>
+<b class="nc">&nbsp;        if (keyspaces.isEmpty()) {</b>
+<b class="nc">&nbsp;          String message = format(&quot;No keyspace found in cluster %s&quot;, cluster.getName());</b>
+<b class="nc">&nbsp;          LOG.debug(message);</b>
+<b class="nc">&nbsp;          throw new IllegalArgumentException(message);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return Sets.newHashSet(keyspaces);</b>
+<b class="nc">&nbsp;      }</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>

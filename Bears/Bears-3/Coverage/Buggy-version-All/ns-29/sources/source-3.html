@@ -1,0 +1,181 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PubSubOperations</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.cloud.gcp.pubsub.core</a>
+</div>
+
+<h1>Coverage Summary for Class: PubSubOperations (org.springframework.cloud.gcp.pubsub.core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">PubSubOperations</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; *  Copyright 2017-2018 original author or authors.
+&nbsp; *
+&nbsp; *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; *  you may not use this file except in compliance with the License.
+&nbsp; *  You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *       http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; *  Unless required by applicable law or agreed to in writing, software
+&nbsp; *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; *  See the License for the specific language governing permissions and
+&nbsp; *  limitations under the License.
+&nbsp; */
+&nbsp;
+&nbsp;package org.springframework.cloud.gcp.pubsub.core;
+&nbsp;
+&nbsp;import java.nio.charset.Charset;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import com.google.api.gax.retrying.RetrySettings;
+&nbsp;import com.google.cloud.pubsub.v1.MessageReceiver;
+&nbsp;import com.google.cloud.pubsub.v1.Subscriber;
+&nbsp;import com.google.protobuf.ByteString;
+&nbsp;import com.google.pubsub.v1.PubsubMessage;
+&nbsp;
+&nbsp;import org.springframework.util.concurrent.ListenableFuture;
+&nbsp;
+&nbsp;/**
+&nbsp; * An abstraction for Google Cloud Pub/Sub.
+&nbsp; *
+&nbsp; * @author Vinicius Carvalho
+&nbsp; * @author João André Martins
+&nbsp; * @author Mike Eltsufin
+&nbsp; */
+&nbsp;public interface PubSubOperations {
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Send a message to Pub/Sub.
+&nbsp;	 * @param topic the name of an existing topic
+&nbsp;	 * @param payload the message String payload
+&nbsp;	 * @param headers map of String to String headers
+&nbsp;	 * @return the listenable future of the call
+&nbsp;	 */
+&nbsp;	ListenableFuture&lt;String&gt; publish(String topic, String payload, Map&lt;String, String&gt; headers);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Send a message to Pub/Sub.
+&nbsp;	 * @param topic the name of an existing topic
+&nbsp;	 * @param payload the message String payload
+&nbsp;	 * @param headers map of String to String headers
+&nbsp;	 * @param charset charset to decode the payload
+&nbsp;	 * @return the listenable future of the call
+&nbsp;	 */
+&nbsp;	ListenableFuture&lt;String&gt; publish(String topic, String payload, Map&lt;String, String&gt; headers,
+&nbsp;			Charset charset);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Send a message to Pub/Sub.
+&nbsp;	 * @param topic the name of an existing topic
+&nbsp;	 * @param payload the message payload in bytes
+&nbsp;	 * @param headers map of String to String headers
+&nbsp;	 * @return the listenable future of the call
+&nbsp;	 */
+&nbsp;	ListenableFuture&lt;String&gt; publish(String topic, byte[] payload, Map&lt;String, String&gt; headers);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Send a message to Pub/Sub.
+&nbsp;	 * @param topic the name of an existing topic
+&nbsp;	 * @param payload the message payload on the {@link PubsubMessage} payload format
+&nbsp;	 * @param headers map of String to String headers
+&nbsp;	 * @return the listenable future of the call
+&nbsp;	 */
+&nbsp;	ListenableFuture&lt;String&gt; publish(String topic, ByteString payload, Map&lt;String, String&gt; headers);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Send a message to Pub/Sub.
+&nbsp;	 * @param topic the name of an existing topic
+&nbsp;	 * @param pubsubMessage a Google Cloud Pub/Sub API message
+&nbsp;	 * @return the listenable future of the call
+&nbsp;	 */
+&nbsp;	ListenableFuture&lt;String&gt; publish(String topic, PubsubMessage pubsubMessage);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Add a callback method to an existing subscription.
+&nbsp;	 * &lt;p&gt;The created {@link Subscriber} is returned so it can be stopped.
+&nbsp;	 * @param subscription the name of an existing subscription
+&nbsp;	 * @param messageHandler the callback method triggered when new messages arrive
+&nbsp;	 * @return subscriber listening to new messages
+&nbsp;	 */
+&nbsp;	Subscriber subscribe(String subscription, MessageReceiver messageHandler);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Pull and auto-acknowledge a number of messages from a Google Cloud Pub/Sub subscription.
+&nbsp;	 * @param subscription the subscription name
+&nbsp;	 * @param maxMessages the maximum number of pulled messages
+&nbsp;	 * @param returnImmediately returns immediately even if subscription doesn&#39;t contain enough
+&nbsp;	 * messages to satisfy {@code maxMessages}
+&nbsp;	 * @param retrySettings the timeout and retry setting for the pull request
+&nbsp;	 * @return the list of received messages
+&nbsp;	 */
+&nbsp;	List&lt;PubsubMessage&gt; pull(String subscription, Integer maxMessages,
+&nbsp;			Boolean returnImmediately, RetrySettings retrySettings);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Pull and auto-acknowledge a message from a Google Cloud Pub/Sub subscription.
+&nbsp;	 * @param subscription the subscription name
+&nbsp;	 * @return a received message, or {@code null} if none exists in the subscription
+&nbsp;	 */
+&nbsp;	PubsubMessage pullNext(String subscription);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-09 22:17</div>
+</div>
+</body>
+</html>
