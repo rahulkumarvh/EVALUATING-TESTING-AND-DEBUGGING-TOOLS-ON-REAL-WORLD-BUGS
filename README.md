@@ -1,10 +1,10 @@
 # EVALUATING-TESTING-AND-DEBUGGING-TOOLS-ON-REAL-WORLD-BUGS
 
-## The project evaluated testing and debugging tools using real-world bug datasets like Defects4J, Bears, BugSwarm, and QuixBugs. Utilizing technologies such as JAVA, RANDOOP, EVOSUITE, CLOVER, PYTHON, and LEVENSHTEIN, the team generated test suites and conducted code coverage analysis. Metrics like Cyclomatic Complexity Change (CC) and Levenshtein distance (LD) were assessed, aiding in bug localization based on suspiciousness scores. This comprehensive analysis provided insights into effective bug detection and fixing methodologies.
+> The project evaluated testing and debugging tools using real-world bug datasets like Defects4J, Bears, BugSwarm, and QuixBugs. Utilizing technologies such as JAVA, RANDOOP, EVOSUITE, CLOVER, PYTHON, and LEVENSHTEIN, the team generated test suites and conducted code coverage analysis. Metrics like Cyclomatic Complexity Change (CC) and Levenshtein distance (LD) were assessed, aiding in bug localization based on suspiciousness scores. This comprehensive analysis provided insights into effective bug detection and fixing methodologies.
 
 ### Project Findings and Report
 
-<a href-"https://drive.google.com/file/d/1JmaF_pxYVp2Iw6j2ArNuqp7_0LvnzR8j/view?usp=share_link">Link to Project Document</a>
+<a href="https://drive.google.com/file/d/1JmaF_pxYVp2Iw6j2ArNuqp7_0LvnzR8j/view?usp=share_link">Link to Project Document</a>
 
 ### How to Reproduce Bug Localization Results for the Project?
 
